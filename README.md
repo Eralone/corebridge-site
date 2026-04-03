@@ -10,3 +10,4 @@ Next.js 14 (App Router) + TypeScript + Tailwind CSS + shadcn/ui
 - /billing — оплата подписки
 - /epf — скачивание .epf и JWT токен
 # test deploy
+# test deploy
