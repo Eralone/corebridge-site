@@ -1,0 +1,12 @@
+# /etc/postfix/virtual — приём почты для corebridge.ru (пересылка, без локальных ящиков)
+# Единый публичный адрес — info@. Остальные оставлены алиасами, чтобы ссылки
+# в юр. документах и старых письмах не отбивались.
+# Источник этого файла: corebridge-site/deploy/mail/virtual
+info@corebridge.ru        Eralone10@gmail.com
+support@corebridge.ru     Eralone10@gmail.com
+privacy@corebridge.ru     Eralone10@gmail.com
+hello@corebridge.ru       Eralone10@gmail.com
+sales@corebridge.ru       Eralone10@gmail.com
+alerts@corebridge.ru      Eralone10@gmail.com
+postmaster@corebridge.ru  Eralone10@gmail.com
+abuse@corebridge.ru       Eralone10@gmail.com

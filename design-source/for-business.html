@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Для бизнеса - CoreBridge | Интеграция 1С под ключ для B2B</title>
+<meta name="description" content="Готовые решения CoreBridge для ритейла, оптовой торговли, производства и ИТ-интеграторов. Кастомная разработка, SLA 99.95%, внедрение под ключ.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .b-hero { background: linear-gradient(135deg, var(--navy-900), var(--navy-700)); color:#fff; padding: 80px 24px; }
+  .b-hero .container { display:grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1200px; margin: 0 auto; }
+  @media (max-width:900px){.b-hero .container{grid-template-columns:1fr;}}
+  .b-hero h1 { color:#fff; font-size: 46px; letter-spacing: -0.02em; margin-bottom: 20px; }
+  .b-hero p { color:#C9D5F2; font-size: 18px; line-height: 1.6; margin-bottom: 24px; }
+  .lead-form { background: #fff; padding: 32px; border-radius: 16px; color: var(--text); box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+  .lead-form h3 { margin: 0 0 6px; }
+  .lead-form .sub { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
+  .lead-form .field { margin-bottom: 12px; }
+
+  .segments { max-width: 1200px; margin: 80px auto; padding: 0 24px; }
+  .segments h2 { text-align: center; font-size: 36px; margin-bottom: 40px; }
+  .seg-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  @media (max-width:900px){.seg-grid{grid-template-columns:1fr;}}
+  .seg-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
+  .seg-card .ic { width: 56px; height: 56px; border-radius: 14px; background: var(--blue-100); color: var(--blue-500); display:flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .seg-card h3 { margin: 0 0 10px; font-size: 22px; }
+  .seg-card .fit { color: var(--text-muted); margin-bottom: 16px; font-size: 14px; }
+  .seg-card ul { list-style: none; padding: 0; margin: 0 0 16px; font-size: 14px; }
+  .seg-card li { padding: 6px 0; display:flex; gap: 10px; align-items: flex-start; }
+  .seg-card li::before { content: "→"; color: var(--orange-500); font-weight: 700; }
+
+  .cases { background: var(--bg-alt); padding: 80px 24px; }
+  .cases .container { max-width: 1200px; margin: 0 auto; }
+  .cases h2 { text-align: center; font-size: 36px; margin-bottom: 40px; }
+  .case-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width:900px){.case-grid{grid-template-columns:1fr;}}
+  .case-card { background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+  .case-hero { padding: 32px; background: linear-gradient(135deg, var(--navy-900), var(--blue-500)); color: #fff; }
+  .case-hero .co { opacity: .8; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+  .case-hero h3 { color: #fff; font-size: 22px; margin: 8px 0 0; line-height: 1.3; }
+  .case-body { padding: 24px 32px; }
+  .case-body .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+  .metric .n { font-size: 22px; font-weight: 800; color: var(--orange-500); }
+  .metric .l { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; }
+  .case-body blockquote { font-size: 14px; color: var(--text); margin: 0; font-style: italic; line-height: 1.6; }
+  .case-body cite { display: block; font-style: normal; font-size: 13px; color: var(--text-muted); margin-top: 10px; }
+
+  .services { max-width: 1100px; margin: 80px auto; padding: 0 24px; }
+  .services h2 { text-align:center; font-size: 36px; margin-bottom: 40px; }
+  .svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width:900px){.svc-grid{grid-template-columns:1fr;}}
+  .svc { border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; background: #fff; }
+  .svc .price { font-family: var(--mono); color: var(--orange-500); font-weight:700; font-size: 14px; margin-top: 8px; }
+  .svc h4 { margin: 0 0 8px; }
+  .svc p { color: var(--text-muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container row" style="justify-content:space-between;align-items:center">
+    <a href="index.html" class="logo-mark"><span class="logo-glyph"></span>CoreBridge</a>
+    <nav class="nav-links">
+      <a href="index.html#features">Возможности</a><a href="index.html#integrations">Интеграции</a><a href="pricing.html">Тарифы</a><a href="for-business.html" class="active">Для бизнеса</a><a href="login.html">Войти</a>
+    </nav>
+  </div>
+</header>
+
+<!-- СЕКЦИЯ: hero -->
+<section class="b-hero">
+  <div class="container">
+    <div>
+      <h1>Корпоративные интеграции 1С<br>под ключ</h1>
+      <p>Для компаний с собственной инфраструктурой, выделенным контуром, жёсткими SLA и нестандартными процессами. Наши инженеры подключат вашу 1С к любому внешнему сервису за 2–6 недель.</p>
+      <div class="row gap-12">
+        <span class="badge badge-success badge-dot" style="color:#C9D5F2;background:rgba(31,157,85,.2)">SLA 99.95%</span>
+        <span class="badge badge-success badge-dot" style="color:#C9D5F2;background:rgba(31,157,85,.2)">On-premise</span>
+        <span class="badge badge-success badge-dot" style="color:#C9D5F2;background:rgba(31,157,85,.2)">24/7 поддержка</span>
+      </div>
+    </div>
+    <form class="lead-form">
+      <h3>Запросить внедрение</h3>
+      <p class="sub">Ответим в течение 1 рабочего дня</p>
+      <div class="field"><label>Компания</label><input class="input" placeholder="ООО «Пример»"/></div>
+      <div class="field"><label>Имя, должность</label><input class="input" placeholder="Иван Иванов, CTO"/></div>
+      <div class="field"><label>Рабочий email</label><input class="input" placeholder="ivan@company.ru"/></div>
+      <div class="field"><label>Задача</label><select class="select"><option>Интеграция с новым каналом</option><option>Миграция с другого решения</option><option>Кастомный коннектор</option><option>On-premise разворачивание</option></select></div>
+      <button type="button" class="btn btn-primary btn-block btn-lg mt-8">Отправить заявку</button>
+    </form>
+  </div>
+</section>
+
+<!-- СЕКЦИЯ: segments -->
+<section class="segments">
+  <h2>Готовые решения по сегментам</h2>
+  <div class="seg-grid">
+    <div class="seg-card">
+      <div class="ic"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 9 3-6h12l3 6M3 9h18M3 9v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9"/><path d="M9 14h6"/></svg></div>
+      <h3>Ритейл и e-commerce</h3>
+      <div class="fit">Подходит: сети магазинов от 10 точек, D2C-бренды, ритейлеры на маркетплейсах</div>
+      <ul><li>Синхронизация остатков по всем складам и магазинам</li><li>FBO/FBS по 3+ маркетплейсам одновременно</li><li>Маркировка, ГТД, возвраты</li><li>Интеграция с POS и WMS</li></ul>
+      <a href="#" class="btn btn-outline">Подробнее →</a>
+    </div>
+    <div class="seg-card">
+      <div class="ic" style="background:rgba(255,107,53,.1);color:var(--orange-500)"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+      <h3>Оптовая торговля</h3>
+      <div class="fit">Подходит: B2B-дистрибьюторы, маркетплейсы оптовых закупок, площадки с большим каталогом</div>
+      <ul><li>Массовая выгрузка прайс-листов и каталогов</li><li>B2B-порталы и личные кабинеты клиентов</li><li>ЭДО, УПД автоматически из 1С</li><li>Интеграция с CRM и тендерными площадками</li></ul>
+      <a href="#" class="btn btn-outline">Подробнее →</a>
+    </div>
+    <div class="seg-card">
+      <div class="ic" style="background:rgba(31,157,85,.1);color:var(--success)"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/></svg></div>
+      <h3>Производство</h3>
+      <div class="fit">Подходит: производители FMCG, B2B-продукции, компании с собственным e-commerce</div>
+      <ul><li>Синхронизация номенклатуры и BOM</li><li>Управление сериями, партиями, сроками</li><li>ERP / КА 2.5 и сложные конфигурации 1С</li><li>MES-системы и маркировка</li></ul>
+      <a href="#" class="btn btn-outline">Подробнее →</a>
+    </div>
+    <div class="seg-card">
+      <div class="ic" style="background:rgba(142,68,173,.1);color:#8E44AD"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="10"/></svg></div>
+      <h3>ИТ-интеграторы и партнёры</h3>
+      <div class="fit">Подходит: ИТ-компании, франчайзи 1С, агентства автоматизации</div>
+      <ul><li>Агентская программа со скидкой 25%</li><li>White-label для собственного бренда</li><li>Обучающая программа CoreBridge Partner</li><li>Техподдержка интеграторов 8×5</li></ul>
+      <a href="#" class="btn btn-outline">Стать партнёром →</a>
+    </div>
+  </div>
+</section>
+
+<!-- СЕКЦИЯ: cases -->
+<section class="cases">
+  <div class="container">
+    <h2>Клиенты, с которыми мы работаем</h2>
+    <div class="case-grid">
+      <div class="case-card">
+        <div class="case-hero"><div class="co">Ритейл-М · Сеть магазинов</div><h3>С 5 складов до 3 каналов без одной правки в 1С</h3></div>
+        <div class="case-body">
+          <div class="metrics">
+            <div class="metric"><div class="n">−82%</div><div class="l">времени на синхронизацию</div></div>
+            <div class="metric"><div class="n">3.4k</div><div class="l">заказов в день</div></div>
+            <div class="metric"><div class="n">0</div><div class="l">ошибок за квартал</div></div>
+          </div>
+          <blockquote>«У нас ни одной ошибки синхронизации за квартал. Это рекорд за всю нашу историю.»<cite>- Игорь Платонов, директор по развитию</cite></blockquote>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-hero" style="background:linear-gradient(135deg,#5C1F9D,var(--blue-500))"><div class="co">ТехноСнаб+ · B2B-дистрибьютор</div><h3>Единый контур 1С + Битрикс + СДЭК с нуля</h3></div>
+        <div class="case-body">
+          <div class="metrics">
+            <div class="metric"><div class="n">4 нед.</div><div class="l">внедрение</div></div>
+            <div class="metric"><div class="n">24</div><div class="l">интеграции</div></div>
+            <div class="metric"><div class="n">×3</div><div class="l">скорость обработки</div></div>
+          </div>
+          <blockquote>«Перешли с самописных обменов на CoreBridge. Раньше держали 1.5 разработчика - теперь 0.2.»<cite>- Наталья Ковтун, COO</cite></blockquote>
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-hero" style="background:linear-gradient(135deg,var(--orange-500),#D14715)"><div class="co">Aquarelle · Сеть цветочных</div><h3>Real-time остатки по 320 магазинам</h3></div>
+        <div class="case-body">
+          <div class="metrics">
+            <div class="metric"><div class="n">320</div><div class="l">магазинов</div></div>
+            <div class="metric"><div class="n">&lt;5 сек</div><div class="l">обновление остатков</div></div>
+            <div class="metric"><div class="n">99.98%</div><div class="l">uptime</div></div>
+          </div>
+          <blockquote>«Возврат инвестиций за 2 месяца - за счёт сокращения списаний на скоропорте.»<cite>- Анна Литвак, CFO</cite></blockquote>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- СЕКЦИЯ: services -->
+<section class="services">
+  <h2>Дополнительные услуги</h2>
+  <div class="svc-grid">
+    <div class="svc"><h4>Внедрение под ключ</h4><p>Настроим интеграции, перенесём данные, обучим команду. Берём на себя все этапы.</p><div class="price">от 35 000 ₽</div></div>
+    <div class="svc"><h4>Кастомный коннектор</h4><p>Разработка интеграции с любым вашим внутренним сервисом или нестандартной системой.</p><div class="price">от 80 000 ₽</div></div>
+    <div class="svc"><h4>On-premise разворачивание</h4><p>Установка платформы в ваш контур. Полная изоляция, свои ресурсы, SLA 99.95%.</p><div class="price">от 250 000 ₽</div></div>
+    <div class="svc"><h4>Аудит интеграций</h4><p>Проверим существующие обмены, найдём узкие места и предложим план оптимизации.</p><div class="price">от 50 000 ₽</div></div>
+    <div class="svc"><h4>Обучение команды</h4><p>Курс для администраторов и разработчиков 1С: как настраивать воркфлоу и управлять платформой.</p><div class="price">от 25 000 ₽</div></div>
+    <div class="svc"><h4>Техническая поддержка 24/7</h4><p>Выделенная линия, личный менеджер, реагирование за 15 минут для критических инцидентов.</p><div class="price">от 40 000 ₽ / мес</div></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><a href="index.html" class="logo-mark"><span class="logo-glyph"></span>CoreBridge</a><p class="text-muted mt-16" style="max-width:280px;font-size:13px">No-code платформа интеграции 1С.</p></div>
+      <div><h5>Продукт</h5><a href="index.html#features">Возможности</a><a href="pricing.html">Тарифы</a><a href="docs.html">Документация</a></div>
+      <div><h5>Компания</h5><a href="about.html">О нас</a><a href="for-business.html">Для бизнеса</a><a href="contacts.html">Контакты</a></div>
+      <div><h5>Контакты</h5><a href="mailto:hello@corebridge.ru">hello@corebridge.ru</a><a href="tel:+74951811234">+7 (495) 181‑12‑34</a></div>
+      <div><h5>Правовое</h5><a href="oferta.html">Оферта</a><a href="privacy.html">Конфиденциальность</a><a href="terms.html">Условия использования</a></div>
+    </div>
+    <div class="footer-bottom">© 2026 CoreBridge<br>ИП Королев Дмитрий Павлович · ИНН 120704119287</div>
+  </div>
+</footer>
+</body>
+</html>

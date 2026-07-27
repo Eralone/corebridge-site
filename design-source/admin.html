@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Админ · Обзор платформы — CoreBridge</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  @media (max-width:1100px){.kpi-row{grid-template-columns:repeat(2,1fr);}}
+  .health-card { background:#fff; border:1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+  .health-card h3 { margin:0 0 12px; font-size: 16px; }
+  .health-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 900px){ .health-grid { grid-template-columns: 1fr; } }
+  .health-item { padding: 12px 14px; border:1px solid var(--border); border-radius: 10px; display:flex; justify-content:space-between; align-items:center; }
+  .health-item.ok { border-color: rgba(31,157,85,.3); background: rgba(31,157,85,.05); }
+  .health-item.warn { border-color: rgba(198,139,0,.3); background: rgba(198,139,0,.05); }
+  .health-item .label { font-size:13px; color: var(--text); font-weight: 600; }
+  .health-item .sub { font-size: 11px; color: var(--text-muted); font-family: var(--mono); }
+
+  .tables-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 1024px) { .tables-grid { grid-template-columns: 1fr; } }
+  .activity-card { background:#fff; border:1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .activity-card .h { padding: 14px 18px; border-bottom: 1px solid var(--border); display:flex; justify-content: space-between; align-items: center; }
+  .activity-card .h h3 { margin: 0; font-size: 15px; }
+  .activity-card .h a { font-size: 12.5px; }
+  .compact td, .compact th { padding: 10px 14px; }
+  .compact { font-size: 13px; }
+  .email-cell { display:flex; flex-direction:column; gap:2px; }
+  .email-cell .ml { font-weight: 600; color: var(--text); }
+  .email-cell .id { font-size: 10.5px; color: var(--text-faint); font-family: var(--mono); }
+
+  .audit-card { background:#fff; border:1px solid var(--border); border-radius: var(--radius); padding: 0; overflow: hidden; margin-top: 24px; }
+  .audit-card .h { padding: 14px 18px; border-bottom: 1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+  .audit-card .h h3 { margin:0; font-size: 15px; }
+  .audit-list { list-style: none; padding: 0; margin: 0; }
+  .audit-list li { padding: 12px 18px; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 130px 110px 1fr 110px; gap: 16px; align-items: center; font-size: 13px; }
+  .audit-list li:last-child { border:none; }
+  .audit-list .ts { font-family: var(--mono); font-size: 11.5px; color: var(--text-muted); }
+  .audit-list .act { font-family: var(--mono); font-size: 11.5px; }
+  .audit-list .who { font-size: 11.5px; color: var(--text-muted); text-align: right; }
+</style>
+</head>
+<body>
+<div class="app app--admin">
+  <div id="side"></div>
+  <div class="app-main">
+    <div id="top"></div>
+    <main class="page">
+
+      <div class="page-head">
+        <div>
+          <h1>Обзор платформы</h1>
+          <p class="text-muted">Ключевые метрики · обновлено 12 мая 2026, 14:32 · <span style="font-family:var(--mono);color:var(--admin)">role=admin</span></p>
+        </div>
+        <div class="row">
+          <select class="select" style="width:auto"><option>Сегодня</option><option>7 дней</option><option selected>30 дней</option><option>Этот год</option></select>
+          <button class="btn btn-outline btn-sm">Экспорт CSV</button>
+        </div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="admin-kpi">
+          <div class="kh">
+            <span>Клиентов (всего)</span>
+            <span class="ki"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+          </div>
+          <div class="kv">1 247</div>
+          <div class="kd">+42 за 7 дней · <span style="color:var(--success)">конверсия 33.5%</span></div>
+        </div>
+        <div class="admin-kpi">
+          <div class="kh">
+            <span>Активных подписок</span>
+            <span class="ki"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></span>
+          </div>
+          <div class="kv">418</div>
+          <div class="kd">is_active=true · valid_until &gt; NOW()</div>
+        </div>
+        <div class="admin-kpi">
+          <div class="kh">
+            <span>Выручка · месяц</span>
+            <span class="ki"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+          </div>
+          <div class="kv">4.18 млн ₽</div>
+          <div class="kd">из 48.7 млн ₽ за 2026 · +8.2% MoM</div>
+        </div>
+        <div class="admin-kpi">
+          <div class="kh">
+            <span>Статус n8n</span>
+            <span class="ki" style="background:rgba(31,157,85,.12);color:var(--success)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg></span>
+          </div>
+          <div class="kv" style="display:flex;align-items:center;gap:8px;font-size:22px"><span style="color:var(--success)">●</span> Работает</div>
+          <div class="kd">GET /admin/health · p95 124ms</div>
+        </div>
+      </div>
+
+      <div class="health-card mb-24">
+        <h3>Статус сервисов платформы</h3>
+        <div class="health-grid">
+          <div class="health-item ok"><div><div class="label">● n8n воркфлоу</div><div class="sub">238 активных · 0 ошибок</div></div><span class="badge badge-success">100%</span></div>
+          <div class="health-item ok"><div><div class="label">● Platform API (F14)</div><div class="sub">p95 86ms · 4 инстанса</div></div><span class="badge badge-success">100%</span></div>
+          <div class="health-item ok"><div><div class="label">● PostgreSQL</div><div class="sub">primary + replica · 0 lag</div></div><span class="badge badge-success">100%</span></div>
+          <div class="health-item ok"><div><div class="label">● Redis (JWT cache)</div><div class="sub">12.4К ключей · 38мб</div></div><span class="badge badge-success">100%</span></div>
+          <div class="health-item ok"><div><div class="label">● Bridge Service (F2)</div><div class="sub">.epf токены валидируются</div></div><span class="badge badge-success">100%</span></div>
+          <div class="health-item warn"><div><div class="label">● ЮKassa</div><div class="sub">2 fail-платежа за 24ч</div></div><span class="badge badge-warning">99.4%</span></div>
+        </div>
+      </div>
+
+      <div class="tables-grid">
+        <div class="activity-card">
+          <div class="h">
+            <h3>Недавние регистрации</h3>
+            <a href="admin-users.html">Все пользователи →</a>
+          </div>
+          <table class="table compact">
+            <thead><tr><th>Email</th><th>Тариф</th><th>Дата</th><th>Верификация</th></tr></thead>
+            <tbody>
+              <tr><td class="email-cell"><span class="ml">a.morozov@aquarelle.ru</span><span class="id">tnt_8f3a…91c2</span></td><td><span class="badge badge-accent">Корпоративный</span></td><td>12 мая, 14:08</td><td><span class="badge badge-success badge-dot">verified</span></td></tr>
+              <tr><td class="email-cell"><span class="ml">o.semenova@retail-m.ru</span><span class="id">tnt_b4e1…06aa</span></td><td><span class="badge badge-info">Профессиональный</span></td><td>12 мая, 12:42</td><td><span class="badge badge-success badge-dot">verified</span></td></tr>
+              <tr><td class="email-cell"><span class="ml">info@flowershop24.ru</span><span class="id">tnt_2c70…4d11</span></td><td><span class="badge badge-neutral">Старт</span></td><td>12 мая, 11:17</td><td><span class="badge badge-warning badge-dot">pending</span></td></tr>
+              <tr><td class="email-cell"><span class="ml">k.zhirkov@tehnosnab.ru</span><span class="id">tnt_5d9f…b8e3</span></td><td><span class="badge badge-info">Бизнес</span></td><td>12 мая, 09:54</td><td><span class="badge badge-success badge-dot">verified</span></td></tr>
+              <tr><td class="email-cell"><span class="ml">admin@fabrika22.tech</span><span class="id">tnt_e102…7a44</span></td><td><span class="badge badge-neutral">Старт</span></td><td>11 мая, 22:31</td><td><span class="badge badge-success badge-dot">verified</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="activity-card">
+          <div class="h">
+            <h3>Недавние платежи</h3>
+            <a href="#">Все платежи →</a>
+          </div>
+          <table class="table compact">
+            <thead><tr><th>Клиент</th><th>Тариф / сумма</th><th>Дата</th><th>Статус</th></tr></thead>
+            <tbody>
+              <tr><td class="email-cell"><span class="ml">a.morozov@aquarelle.ru</span><span class="id">pay_91c2_240512</span></td><td>14 990 ₽ · Корп.</td><td>12.05, 14:08</td><td><span class="badge badge-success">paid</span></td></tr>
+              <tr><td class="email-cell"><span class="ml">o.semenova@retail-m.ru</span><span class="id">pay_06aa_240512</span></td><td>7 990 ₽ · Проф.</td><td>12.05, 12:43</td><td><span class="badge badge-success">paid</span></td></tr>
+              <tr><td class="email-cell"><span class="ml">k.zhirkov@tehnosnab.ru</span><span class="id">pay_b8e3_240512</span></td><td>4 990 ₽ · Бизнес</td><td>12.05, 09:54</td><td><span class="badge badge-success">paid</span></td></tr>
+              <tr><td class="email-cell"><span class="ml">orders@ritm-llc.ru</span><span class="id">pay_4f72_240511</span></td><td>7 990 ₽ · Проф.</td><td>11.05, 18:22</td><td><span class="badge badge-danger">failed</span></td></tr>
+              <tr><td class="email-cell"><span class="ml">info@bookcity.ru</span><span class="id">pay_92a0_240510</span></td><td>2 990 ₽ · Старт</td><td>10.05, 11:05</td><td><span class="badge badge-warning">refunded</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="audit-card">
+        <div class="h">
+          <h3>Audit log · последние действия admin</h3>
+          <span class="badge badge-neutral">INSERT only · F10</span>
+        </div>
+        <ul class="audit-list">
+          <li><span class="ts">12.05 14:11:08</span><span class="audit-pill">CHANGE_PLAN</span><span>Тариф <b>tnt_b4e1…06aa</b> изменён со «Старт» на «Профессиональный»</span><span class="who">d.korolev@corebridge.ru</span></li>
+          <li><span class="ts">12.05 13:47:55</span><span class="audit-pill">ISSUE_TOKEN</span><span>Ручная выдача JWT для <b>tnt_e102…7a44</b> (срок 30 дней)</span><span class="who">m.petrova@corebridge.ru</span></li>
+          <li><span class="ts">12.05 12:18:02</span><span class="audit-pill" style="background:var(--danger-bg);color:var(--danger)">BLOCK</span><span>Заблокирован <b>tnt_aa17…2f08</b> — задолженность по подписке &gt; 14 дн.</span><span class="who">d.korolev@corebridge.ru</span></li>
+          <li><span class="ts">12.05 11:02:39</span><span class="audit-pill">RESET_LIMIT</span><span>Сброшен счётчик исполнений для <b>tnt_5d9f…b8e3</b> · реактивировано 6 воркфлоу</span><span class="who">m.petrova@corebridge.ru</span></li>
+          <li><span class="ts">12.05 09:54:11</span><span class="audit-pill">UNBLOCK</span><span>Разблокирован <b>tnt_c930…1ab4</b> после оплаты</span><span class="who">d.korolev@corebridge.ru</span></li>
+        </ul>
+      </div>
+
+    </main>
+  </div>
+</div>
+<script>window.CB_USER={name:'Дмитрий Королев',org:'CoreBridge HQ',initials:'КД',role:'admin'};</script>
+<script src="assets/shell.js"></script>
+<script>
+  document.getElementById('side').outerHTML = window.renderAdminSidebar('admin');
+  document.getElementById('top').outerHTML = window.renderAdminTopbar('Обзор платформы', {crumbs:[{label:'Admin', href:'admin.html'}, {label:'Обзор'}]});
+</script>
+</body>
+</html>

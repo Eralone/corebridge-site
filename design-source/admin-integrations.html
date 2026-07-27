@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Админ · Интеграции n8n — CoreBridge</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .info-banner { background: linear-gradient(135deg, rgba(107,70,193,.08), rgba(62,146,204,.06)); border: 1px solid rgba(107,70,193,.18); border-radius: var(--radius); padding: 14px 18px; display:flex; gap:14px; align-items:flex-start; margin-bottom: 20px; }
+  .info-banner svg { color: var(--admin); flex-shrink: 0; margin-top:2px; }
+  .info-banner b { color: var(--text); }
+  .info-banner p { margin: 0; font-size: 13px; color: var(--text-muted); }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  @media (max-width: 1100px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+
+  .tenant-search { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; display:flex; gap:14px; align-items:center; flex-wrap: wrap; }
+  .tenant-search .si { position: relative; flex:1; min-width: 280px; }
+  .tenant-search .si svg { position:absolute; top:50%; left:14px; transform:translateY(-50%); color: var(--text-faint); }
+  .tenant-search .si input { width:100%; padding: 11px 14px 11px 42px; border: 1px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 14px; }
+  .tenant-search .si input:focus { outline:none; border-color: var(--admin); box-shadow: 0 0 0 3px rgba(107,70,193,.15); }
+  .tenant-chip { display:inline-flex; align-items:center; gap:10px; padding: 8px 14px; border-radius: 10px; background: rgba(107,70,193,.08); border: 1px solid rgba(107,70,193,.2); }
+  .tenant-chip .em { font-weight: 600; font-size: 13px; }
+  .tenant-chip .tid { font-family: var(--mono); font-size: 11px; color: var(--text-muted); }
+
+  .wf-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  @media (max-width: 900px) { .wf-grid { grid-template-columns: 1fr; } }
+  .wf-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+  .wf-card .wh { display:flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap:12px; }
+  .wf-card .wn { font-weight: 700; font-size: 15px; }
+  .wf-card .wd { font-family: var(--mono); font-size: 11px; color: var(--text-faint); margin-top: 2px; }
+  .wf-card .meta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 12.5px; padding: 12px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+  .wf-card .meta-row .lab { font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: .05em; }
+  .wf-card .meta-row .vv { font-weight: 600; margin-top: 2px; }
+
+  .wf-status { padding: 4px 9px; border-radius: 6px; font-size: 11px; font-weight: 700; font-family: var(--mono); }
+  .wf-status.active { background: var(--success-bg); color: var(--success); }
+  .wf-status.inactive { background: var(--bg-alt); color: var(--text-muted); }
+  .wf-status.limit { background: var(--danger-bg); color: var(--danger); }
+
+  .wf-actions { display: flex; gap: 8px; }
+  .wf-actions .btn { flex: 1; }
+
+  .stat-block { background: linear-gradient(135deg, var(--admin-900) 0%, #1e1430 100%); color: #E8DEFF; border-radius: var(--radius); padding: 22px 24px; margin-bottom: 24px; display:grid; grid-template-columns: 2fr 1fr; gap: 24px; align-items:center; }
+  .stat-block h2 { color: #fff; font-size: 20px; margin:0 0 6px; }
+  .stat-block p { color: #A99BD0; font-size: 13px; margin: 0; }
+  .stat-block .sb-right { font-family: var(--mono); font-size: 12px; color: #A99BD0; text-align: right; }
+  .stat-block code { background: rgba(255,255,255,.08); padding: 2px 8px; border-radius: 6px; color: #C7B6F0; }
+</style>
+</head>
+<body>
+<div class="app app--admin">
+  <div id="side"></div>
+  <div class="app-main">
+    <div id="top"></div>
+    <main class="page">
+
+      <div class="page-head">
+        <div>
+          <h1>Интеграции n8n</h1>
+          <p class="text-muted">Административный визуализатор воркфлоу · F6.7‑A Admin API Routes</p>
+        </div>
+        <div class="row">
+          <button class="btn btn-outline btn-sm">Открыть n8n UI</button>
+          <button class="btn btn-outline btn-sm">Перезапустить worker</button>
+        </div>
+      </div>
+
+      <div class="info-banner">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div>
+          <b>Ключевое отличие от пользовательского конструктора (F6.7).</b>
+          <p>В ЛК <code style="background:#fff;padding:1px 6px;border-radius:4px;font-size:12px">tenant_id</code> берётся из JWT — тенант видит только своё. В Admin API <code style="background:#fff;padding:1px 6px;border-radius:4px;font-size:12px">tenant_id</code> берётся из URL — admin может обратиться к любому тенанту. Общая логика F6.1–F6.6 без дублирования.</p>
+        </div>
+      </div>
+
+      <h3 style="margin: 8px 0 14px; font-size: 16px; color: var(--text-faint); text-transform: uppercase; letter-spacing: .08em; font-weight: 700;">Статистика платформы</h3>
+
+      <div class="stats-row">
+        <div class="admin-kpi">
+          <div class="kh"><span>Тенантов с воркфлоу</span>
+            <span class="ki"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
+          </div>
+          <div class="kv">387</div>
+          <div class="kd">из 418 активных подписок</div>
+        </div>
+        <div class="admin-kpi alert">
+          <div class="kh"><span>Тенантов у лимита</span>
+            <span class="ki"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+          </div>
+          <div class="kv" style="color:var(--danger)">7</div>
+          <div class="kd">требуется action: сбросить или повысить тариф</div>
+        </div>
+        <div class="admin-kpi">
+          <div class="kh"><span>Запусков в месяц</span>
+            <span class="ki"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+          </div>
+          <div class="kv">2.41 млн</div>
+          <div class="kd">+12.4% MoM · BYPASSRLS агрегация</div>
+        </div>
+        <div class="admin-kpi">
+          <div class="kh"><span>Активных воркфлоу</span>
+            <span class="ki" style="background:rgba(31,157,85,.12);color:var(--success)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></span>
+          </div>
+          <div class="kv">2 184</div>
+          <div class="kd">из 2 712 всего · 528 на паузе</div>
+        </div>
+      </div>
+
+      <h3 style="margin: 24px 0 14px; font-size: 16px; color: var(--text-faint); text-transform: uppercase; letter-spacing: .08em; font-weight: 700;">Воркфлоу тенанта</h3>
+
+      <div class="tenant-search">
+        <div class="si">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Найти тенанта по email или UUID…">
+        </div>
+        <div class="tenant-chip">
+          <span class="em">k.zhirkov@tehnosnab.ru</span>
+          <span class="tid">tnt_5d9f02ab…b8e3ad7f</span>
+          <span style="color:var(--text-muted);cursor:pointer">✕</span>
+        </div>
+        <button class="btn btn-outline btn-sm">Загрузить</button>
+      </div>
+
+      <div class="stat-block">
+        <div>
+          <h2>Тенант: ТехноСнаб+ <span class="badge badge-info" style="vertical-align:middle">Бизнес</span></h2>
+          <p>6 воркфлоу · 4 активных · 1 на лимите · последний запуск 4 мин назад · GET <code>/admin/n8n/tenants/:id/workflows</code></p>
+        </div>
+        <div class="sb-right">
+          <div>Лимит: <b style="color:#fff">10 000 / мес</b></div>
+          <div>Использовано: <b style="color:var(--orange-500)">9 842 (98%)</b></div>
+          <div>Сброс: <b style="color:#fff">01.06.2026</b></div>
+          <div style="margin-top:10px"><button class="btn btn-primary btn-sm" style="background:var(--orange-500)">Сбросить лимит</button></div>
+        </div>
+      </div>
+
+      <div class="wf-grid">
+        <div class="wf-card">
+          <div class="wh">
+            <div>
+              <div class="wn">Wildberries → 1С (заказы)</div>
+              <div class="wd">integration_id: wb_orders · n8n_wf_id: 4f2a8c</div>
+            </div>
+            <span class="wf-status active">● ACTIVE</span>
+          </div>
+          <div class="meta-row">
+            <div><div class="lab">Последний запуск</div><div class="vv">4 мин назад · ✓ ok</div></div>
+            <div><div class="lab">Запусков / мес</div><div class="vv">3 412</div></div>
+          </div>
+          <div class="wf-actions">
+            <button class="btn btn-outline btn-sm" disabled>Активировать</button>
+            <button class="btn btn-outline btn-sm">Деактивировать</button>
+          </div>
+        </div>
+
+        <div class="wf-card">
+          <div class="wh">
+            <div>
+              <div class="wn">Ozon → 1С (остатки)</div>
+              <div class="wd">integration_id: ozon_stock · n8n_wf_id: 7b91e0</div>
+            </div>
+            <span class="wf-status active">● ACTIVE</span>
+          </div>
+          <div class="meta-row">
+            <div><div class="lab">Последний запуск</div><div class="vv">12 мин назад · ✓ ok</div></div>
+            <div><div class="lab">Запусков / мес</div><div class="vv">2 891</div></div>
+          </div>
+          <div class="wf-actions">
+            <button class="btn btn-outline btn-sm" disabled>Активировать</button>
+            <button class="btn btn-outline btn-sm">Деактивировать</button>
+          </div>
+        </div>
+
+        <div class="wf-card" style="border-color: rgba(216,58,58,.3); background: rgba(216,58,58,.03)">
+          <div class="wh">
+            <div>
+              <div class="wn">amoCRM → 1С (контрагенты)</div>
+              <div class="wd">integration_id: amocrm_clients · n8n_wf_id: a02f3d</div>
+            </div>
+            <span class="wf-status limit">⚠ LIMIT</span>
+          </div>
+          <div class="meta-row">
+            <div><div class="lab">Отключён</div><div class="vv" style="color:var(--danger)">F6.5 ExecutionLimitWatcher</div></div>
+            <div><div class="lab">Запусков / мес</div><div class="vv">3 539 / 10 000</div></div>
+          </div>
+          <div class="wf-actions">
+            <button class="btn btn-primary btn-sm" style="background:var(--danger);flex:0 0 auto;padding:8px 16px">Сбросить лимит</button>
+            <button class="btn btn-outline btn-sm" disabled>Активировать</button>
+          </div>
+        </div>
+
+        <div class="wf-card">
+          <div class="wh">
+            <div>
+              <div class="wn">YandexMarket → 1С (заказы)</div>
+              <div class="wd">integration_id: yam_orders · n8n_wf_id: c12e91</div>
+            </div>
+            <span class="wf-status active">● ACTIVE</span>
+          </div>
+          <div class="meta-row">
+            <div><div class="lab">Последний запуск</div><div class="vv">3 ч назад · ✓ ok</div></div>
+            <div><div class="lab">Запусков / мес</div><div class="vv">1 408</div></div>
+          </div>
+          <div class="wf-actions">
+            <button class="btn btn-outline btn-sm" disabled>Активировать</button>
+            <button class="btn btn-outline btn-sm">Деактивировать</button>
+          </div>
+        </div>
+
+        <div class="wf-card">
+          <div class="wh">
+            <div>
+              <div class="wn">МойСклад → 1С (товары)</div>
+              <div class="wd">integration_id: ms_products · n8n_wf_id: 5d4b07</div>
+            </div>
+            <span class="wf-status inactive">● INACTIVE</span>
+          </div>
+          <div class="meta-row">
+            <div><div class="lab">Последний запуск</div><div class="vv">18 апр, отключён вручную</div></div>
+            <div><div class="lab">Запусков / мес</div><div class="vv">0</div></div>
+          </div>
+          <div class="wf-actions">
+            <button class="btn btn-primary btn-sm" style="background:var(--admin)">Активировать</button>
+            <button class="btn btn-outline btn-sm" disabled>Деактивировать</button>
+          </div>
+        </div>
+
+        <div class="wf-card">
+          <div class="wh">
+            <div>
+              <div class="wn">Telegram-уведомления (исходящие)</div>
+              <div class="wd">integration_id: tg_notify · n8n_wf_id: e80a44</div>
+            </div>
+            <span class="wf-status active">● ACTIVE</span>
+          </div>
+          <div class="meta-row">
+            <div><div class="lab">Последний запуск</div><div class="vv">2 мин назад · ✓ ok</div></div>
+            <div><div class="lab">Запусков / мес</div><div class="vv">1 590</div></div>
+          </div>
+          <div class="wf-actions">
+            <button class="btn btn-outline btn-sm" disabled>Активировать</button>
+            <button class="btn btn-outline btn-sm">Деактивировать</button>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin: 28px 0 14px; font-size: 16px; color: var(--text-faint); text-transform: uppercase; letter-spacing: .08em; font-weight: 700;">Тенанты у лимита (требуют внимания)</h3>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>Тенант</th><th>Тариф</th><th>Использовано / лимит</th><th>Отключено воркфлоу</th><th>Сброс</th><th style="text-align:right">Действие</th></tr></thead>
+          <tbody>
+            <tr><td><b>k.zhirkov@tehnosnab.ru</b><div style="font-size:11px;color:var(--text-faint);font-family:var(--mono)">tnt_5d9f…b8e3</div></td><td><span class="badge badge-info">Бизнес</span></td><td>9 842 / 10 000<div class="progress" style="margin-top:6px"><div style="width:98%;background:var(--danger)"></div></div></td><td>1</td><td>01.06.2026</td><td style="text-align:right"><button class="btn btn-primary btn-sm" style="background:var(--admin)">Сбросить лимит</button></td></tr>
+            <tr><td><b>shop@modahome.ru</b><div style="font-size:11px;color:var(--text-faint);font-family:var(--mono)">tnt_77c4…1180</div></td><td><span class="badge badge-neutral">Старт</span></td><td>1 002 / 1 000<div class="progress" style="margin-top:6px"><div style="width:100%;background:var(--danger)"></div></div></td><td>3</td><td>15.05.2026</td><td style="text-align:right"><button class="btn btn-primary btn-sm" style="background:var(--admin)">Сбросить лимит</button></td></tr>
+            <tr><td><b>it@svet-bel.ru</b><div style="font-size:11px;color:var(--text-faint);font-family:var(--mono)">tnt_aa50…9c12</div></td><td><span class="badge badge-info">Профессиональный</span></td><td>29 870 / 30 000<div class="progress" style="margin-top:6px"><div style="width:99%;background:var(--danger)"></div></div></td><td>2</td><td>03.06.2026</td><td style="text-align:right"><button class="btn btn-primary btn-sm" style="background:var(--admin)">Сбросить лимит</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>window.CB_USER={name:'Дмитрий Королев',org:'CoreBridge HQ',initials:'КД',role:'admin'};</script>
+<script src="assets/shell.js"></script>
+<script>
+  document.getElementById('side').outerHTML = window.renderAdminSidebar('admin-integrations');
+  document.getElementById('top').outerHTML = window.renderAdminTopbar('Интеграции n8n', {crumbs:[{label:'Admin',href:'admin.html'},{label:'Интеграции n8n'}]});
+</script>
+</body>
+</html>

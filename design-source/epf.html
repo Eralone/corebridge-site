@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Файл .epf · CoreBridge</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.step-head{display:flex;align-items:center;gap:12px;margin:24px 0 12px}
+.step-head .n{width:28px;height:28px;border-radius:50%;background:var(--navy-900);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:var(--mono)}
+.step-head h3{margin:0;font-size:18px}
+.cfg-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:900px){.cfg-grid{grid-template-columns:repeat(2,1fr)}}
+.cfg{background:#fff;border:2px solid var(--border);border-radius:12px;padding:18px;cursor:pointer;transition:all .15s;text-align:left;position:relative}
+.cfg:hover{border-color:var(--orange-500)}
+.cfg.selected{border-color:var(--orange-500);background:rgba(255,107,53,.04)}
+.cfg .cfg-name{font-weight:700;font-size:15px;margin-bottom:4px}
+.cfg .cfg-full{color:var(--text-muted);font-size:12px}
+.cfg .cfg-v{font-family:var(--mono);color:var(--text-faint);font-size:11px;margin-top:8px}
+.cfg.selected::after{content:"✓";position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:50%;background:var(--orange-500);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.token-box{background:var(--navy-900);color:#fff;border-radius:12px;padding:20px}
+.token-box label{display:block;color:rgba(255,255,255,.7);font-size:12px;margin-bottom:8px;letter-spacing:.04em;text-transform:uppercase}
+.token-line{display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.08);border-radius:8px;padding:10px 14px}
+.token-line code{flex:1;font-family:var(--mono);font-size:12px;color:#FFB89A;word-break:break-all;overflow:hidden}
+.token-line button{background:rgba(255,255,255,.12);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-weight:600;font-size:12px;cursor:pointer}
+.token-line button:hover{background:rgba(255,255,255,.2)}
+.token-meta{display:flex;gap:20px;margin-top:14px;color:rgba(255,255,255,.7);font-size:12px}
+.token-meta b{color:#fff}
+.dl-btn{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 20px;background:var(--orange-500);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;width:100%;text-align:left}
+.dl-btn:hover{background:#E2581D}
+.dl-btn .meta{font-size:11px;font-weight:500;opacity:.85}
+.dl-btn .ic{width:32px;height:32px;background:rgba(255,255,255,.18);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.int-pick{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.int-row{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--border);cursor:pointer}
+.int-row:last-child{border-bottom:none}
+.int-row:hover{background:var(--bg-alt)}
+.int-row .cb-ic{width:36px;height:36px;font-size:12px}
+.int-row .nm{flex:1}
+.int-row .nm b{display:block;font-size:14px}
+.int-row .nm span{color:var(--text-muted);font-size:12px}
+.int-row .arrow{color:var(--text-faint)}
+.filter-line{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.filter-line button{background:#fff;border:1px solid var(--border);padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer}
+.filter-line button.on{background:var(--navy-900);color:#fff;border-color:var(--navy-900)}
+.version-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.version{background:var(--bg-alt);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:12px;display:flex;justify-content:space-between;align-items:center}
+.version code{font-family:var(--mono);color:var(--text-muted)}
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="sidebar"></div>
+  <main class="app-main">
+    <div id="topbar"></div>
+    <div class="page">
+      <div class="row" style="gap:16px;margin-bottom:10px;font-size:13px;color:var(--text-muted)">
+        <a href="dashboard.html" style="color:inherit;text-decoration:none">Дашборд</a> / <span>Файл .epf</span>
+      </div>
+
+      <div class="card mb-20" style="background:linear-gradient(135deg,rgba(62,146,204,.08),rgba(255,107,53,.04));border-left:4px solid var(--blue-500)">
+        <div class="row gap-16" style="align-items:flex-start">
+          <div style="width:40px;height:40px;background:var(--blue-500);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          </div>
+          <div>
+            <b>Как это работает</b>
+            <p class="text-muted mt-8" style="font-size:13.5px;line-height:1.6;margin:0">(предварительно) Добавить сервис в Мои интеграции.<br>1. Выбираете свою конфигурацию 1С. 2. Копируете JWT-токен. 3. Скачиваете .epf. 4. Открываете файл в 1С, вставляете токен, выбираете преднастроенный сервис и настраиваете, согласно инструкции (PDF). 5. Запускаете проект. Весь процесс занимает около 30 минут.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 1: CONFIG -->
+      <div class="step-head"><div class="n">1</div><h3>Выберите конфигурацию 1С</h3></div>
+      <p class="text-muted mb-16" style="font-size:13.5px">Для каждой конфигурации - отдельная сборка .epf. Скачать можно только ту, что подходит вашей 1С.</p>
+      <div class="cfg-grid" id="cfg-grid">
+        <button class="cfg selected" data-cfg="ut"><div class="cfg-name">1С:УТ</div><div class="cfg-full">Управление торговлей</div><div class="cfg-v">v3.1.4 · 2.8 МБ</div></button>
+        <button class="cfg" data-cfg="unf"><div class="cfg-name">1С:УНФ</div><div class="cfg-full">Управление нашей фирмой</div><div class="cfg-v">v3.1.4 · 2.6 МБ</div></button>
+        <button class="cfg" data-cfg="ka"><div class="cfg-name">1С:КА</div><div class="cfg-full">Комплексная автоматизация</div><div class="cfg-v">v3.1.4 · 3.1 МБ</div></button>
+        <button class="cfg" data-cfg="erp"><div class="cfg-name">1С:ERP</div><div class="cfg-full">ERP Управление предприятием</div><div class="cfg-v">v3.1.4 · 3.4 МБ</div></button>
+      </div>
+
+      <!-- STEP 2: TOKEN -->
+      <div class="step-head"><div class="n">2</div><h3>Скопируйте ваш JWT-токен</h3></div>
+      <p class="text-muted mb-16" style="font-size:13.5px">Токен привязывает .epf к вашему аккаунту. При компрометации - обновите.</p>
+      <div class="token-box">
+        <label>JWT-токен</label>
+        <div class="token-line">
+          <code id="jwt">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnQiOiJjYi0xODQyIiwicGxhbiI6InRyaWFsIiwiaWF0IjoxNzE5ODQwMDAwLCJleHAiOjE3MjI1MTg0MDB9.7K4nq1v8xJw6m9pL3sZcEgYfHbAqRt5NDvMkP2</code>
+          <button id="copyBtn">Скопировать</button>
+          <button id="refreshBtn" title="Обновить токен">Обновить</button>
+        </div>
+        <div class="token-meta">
+          <div><b>Тариф:</b> Пробный</div>
+          <div><b>Действителен до:</b> 24 мая 2026</div>
+        </div>
+      </div>
+
+      <!-- STEP 3: DOWNLOAD -->
+      <div class="step-head"><div class="n">3</div><h3>Скачайте файл .epf</h3></div>
+      <div class="row gap-12" style="flex-wrap:wrap">
+        <button class="dl-btn" id="dlBtn" style="max-width:420px">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></div>
+          <div style="flex:1"><span id="dlName">CoreBridge_UT_v3.1.4.epf</span><div class="meta" id="dlMeta">Для 1С:Управление торговлей · 2.8 МБ</div></div>
+        </button>
+        <button class="btn btn-outline" data-popup data-popup-title="Инструкция по установке" data-popup-body="Подробная пошаговая инструкция в PDF: как загрузить .epf в 1С, где вставить токен и как активировать интеграции для каждой конфигурации.">📄 Инструкция (PDF)</button>
+      </div>
+      <div class="version-list">
+        <div class="version"><span>Предыдущая версия</span><code>v3.1.3 · 15 апр 2026</code></div>
+        <div class="version"><span>Текущая</span><code>v3.1.4 · 22 апр 2026</code></div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="assets/shell.js"></script>
+<script src="assets/integrations-data.js"></script>
+<script src="assets/popup.js"></script>
+<script>
+document.getElementById('sidebar').innerHTML = window.renderSidebar('epf');
+document.getElementById('topbar').innerHTML = window.renderTopbar('Файл .epf и JWT-токен', {subtitle:'Всё, чтобы запустить интеграцию за 30 минут'});
+
+// Config
+const cfgs = {
+  ut:  {name:'CoreBridge_UT_v3.1.4.epf', label:'1С:Управление торговлей', size:'2.8 МБ'},
+  unf: {name:'CoreBridge_UNF_v3.1.4.epf', label:'1С:Управление нашей фирмой', size:'2.6 МБ'},
+  ka:  {name:'CoreBridge_KA_v3.1.4.epf', label:'1С:Комплексная автоматизация', size:'3.1 МБ'},
+  erp: {name:'CoreBridge_ERP_v3.1.4.epf', label:'1С:ERP Управление предприятием', size:'3.4 МБ'},
+};
+document.querySelectorAll('.cfg').forEach(b => {
+  b.onclick = () => {
+    document.querySelectorAll('.cfg').forEach(x=>x.classList.remove('selected'));
+    b.classList.add('selected');
+    const c = cfgs[b.dataset.cfg];
+    document.getElementById('dlName').textContent = c.name;
+    document.getElementById('dlMeta').textContent = `Для ${c.label} · ${c.size}`;
+  };
+});
+
+// Copy / refresh
+document.getElementById('copyBtn').onclick = () => {
+  const t = document.getElementById('jwt').textContent;
+  navigator.clipboard?.writeText(t);
+  const b = document.getElementById('copyBtn'); b.textContent = 'Скопировано ✓';
+  setTimeout(()=>b.textContent='Скопировать', 1500);
+};
+document.getElementById('refreshBtn').onclick = () => {
+  window.CBPopup.open({title:'Обновить JWT-токен?', body:'<p>Старый токен перестанет работать. После обновления нужно будет вставить новый в .epf.</p>', actions:[{label:'Отмена'},{label:'Обновить', primary:true}]});
+};
+document.getElementById('dlBtn').onclick = () => {
+  window.CBPopup.open({title:'Скачивание началось', body:'<p>Файл .epf скачивается. Скоро появится в папке «Загрузки». Вместе с файлом мы отправили PDF-инструкцию на ваш email.</p>'});
+};
+
+// (Step 4 integration picker removed)
+</script>
+</body>
+</html>

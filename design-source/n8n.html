@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>n8n-воркфлоу · CoreBridge</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.lock-banner{background:linear-gradient(135deg,var(--navy-900),var(--navy-700));color:#fff;border-radius:16px;padding:32px;display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;margin-bottom:24px}
+@media(max-width:900px){.lock-banner{grid-template-columns:1fr;text-align:center}}
+.lock-banner .icn{width:64px;height:64px;border-radius:16px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center}
+.lock-banner h2{color:#fff;margin:0 0 6px;font-size:22px}
+.lock-banner p{color:#C9D5F2;margin:0;font-size:14px;line-height:1.6}
+.tabs-row{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:20px}
+.tabs-row button{background:none;border:none;padding:12px 16px;font-size:14px;font-weight:600;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs-row button.on{color:var(--navy-900);border-color:var(--orange-500)}
+.tpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.tpl-grid{grid-template-columns:1fr}}
+.tpl{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;cursor:pointer;transition:all .15s}
+.tpl:hover{border-color:var(--orange-500);transform:translateY(-1px)}
+.tpl .ic{width:40px;height:40px;border-radius:10px;background:var(--blue-100);color:var(--blue-500);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.tpl h4{margin:0 0 6px;font-size:15px}
+.tpl p{margin:0;color:var(--text-muted);font-size:12.5px;line-height:1.5}
+.tpl .tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.tpl .tag{background:var(--bg-alt);color:var(--text-muted);padding:2px 8px;border-radius:10px;font-size:11px;font-family:var(--mono)}
+/* Canvas preview (locked) */
+.canvas{background:#F4F6FB;border:1px dashed var(--border);border-radius:12px;padding:30px;min-height:360px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.canvas::before{content:"";position:absolute;inset:0;background-image:radial-gradient(#D1DAEA 1px, transparent 1px);background-size:20px 20px;opacity:.6}
+.nodes{position:relative;display:flex;gap:50px;align-items:center;z-index:1;filter:blur(0)}
+.nd{background:#fff;border:2px solid var(--border);border-radius:10px;padding:12px 16px;font-size:13px;font-weight:600;min-width:120px;text-align:center;box-shadow:0 4px 12px rgba(10,36,99,.06)}
+.nd.trg{border-color:var(--success);color:var(--success)}
+.nd.act{border-color:var(--blue-500);color:var(--blue-500)}
+.nd.out{border-color:var(--orange-500);color:var(--orange-500)}
+.ln{height:2px;background:var(--border);flex:1;min-width:30px;position:relative}
+.ln::after{content:"▶";position:absolute;right:-4px;top:50%;transform:translateY(-50%);color:var(--border);font-size:10px}
+.lock-overlay{position:absolute;inset:0;background:rgba(244,246,251,.85);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;z-index:2}
+.lock-overlay .lk{width:56px;height:56px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.12);color:var(--orange-500)}
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="sidebar"></div>
+  <main class="app-main">
+    <div id="topbar"></div>
+    <div class="page">
+
+      <div class="lock-banner">
+        <div class="icn"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <div>
+          <h2>n8n-воркфлоу доступны на Профессионал</h2>
+          <p>Свои сценарии, если стандартных интеграций недостаточно. Например: «если заказ старше 2 часов и оплачен - отправить в Telegram». Вы получаете отдельный интерфейс n8n внутри кабинета.</p>
+        </div>
+        <a href="pricing.html" class="btn btn-primary btn-lg">Перейти на Профессионал</a>
+      </div>
+
+      <div class="tabs-row">
+        <button class="on" data-tab="templates">Шаблоны</button>
+        <button data-tab="canvas">Редактор</button>
+        <button data-tab="docs">Как это работает</button>
+      </div>
+
+      <div id="tab-templates">
+        <p class="text-muted mb-20" style="font-size:14px">12 готовых сценариев, которые активируются одной кнопкой после перехода на Энтерпрайз. Их можно изменять и комбинировать.</p>
+        <div class="tpl-grid" id="tpl-grid"></div>
+      </div>
+
+      <div id="tab-canvas" style="display:none">
+        <p class="text-muted mb-20" style="font-size:14px">Так выглядит рабочая область редактора. Перетаскиваете блоки, соединяете - готовый сценарий.</p>
+        <div class="canvas">
+          <div class="nodes">
+            <div class="nd trg">Новый заказ Ozon</div>
+            <div class="ln"></div>
+            <div class="nd act">Проверить оплату</div>
+            <div class="ln"></div>
+            <div class="nd act">Создать в 1С</div>
+            <div class="ln"></div>
+            <div class="nd out">Telegram</div>
+          </div>
+          <div class="lock-overlay">
+            <div class="lk"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            <div style="font-weight:700;color:var(--navy-900)">Разблокируется на Профессионал</div>
+            <a href="pricing.html" class="btn btn-primary">Повысить тариф</a>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-docs" style="display:none">
+        <div class="card" style="max-width:760px">
+          <h3>Зачем нужны n8n-воркфлоу</h3>
+          <p class="text-muted mt-8" style="line-height:1.7">Стандартные интеграции в .epf покрывают типовые сценарии: «получить заказы», «отправить остатки», «выгрузить цены». Но у бизнеса часто бывают свои правила: «только если заказ из Москвы - отправить в отдельный склад», «если товар с маркировкой - уведомить кладовщика в Telegram» и так далее.</p>
+          <p class="text-muted mt-16" style="line-height:1.7">n8n-воркфлоу решают именно это. Вы собираете правило из готовых блоков: триггер (что запускает), действия (что делать), условия (когда именно) и выход (куда отправить результат).</p>
+          <h3 style="margin-top:24px">Что доступно</h3>
+          <ul class="text-muted" style="line-height:1.8;padding-left:22px">
+            <li>300+ готовых блоков n8n (включая все сервисы CoreBridge)</li>
+            <li>Визуальный редактор drag-n-drop</li>
+            <li>Тест сценария на одном заказе перед запуском</li>
+            <li>История запусков с логами по каждому шагу</li>
+            <li>Расписания: запускать по крону или по событию</li>
+          </ul>
+          <div class="mt-16"><a href="docs.html" class="btn btn-outline">Документация по воркфлоу</a></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="assets/shell.js"></script>
+<script src="assets/popup.js"></script>
+<script>
+document.getElementById('sidebar').innerHTML = window.renderSidebar('n8n');
+document.getElementById('topbar').innerHTML = window.renderTopbar('n8n-воркфлоу', {subtitle:'Свои сценарии автоматизации. Интеграция через механики "Иное" во внешнем модуле (.epf)'});
+
+// Tabs
+document.querySelectorAll('.tabs-row button').forEach(b => {
+  b.onclick = () => {
+    document.querySelectorAll('.tabs-row button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    ['templates','canvas','docs'].forEach(t => {
+      document.getElementById('tab-'+t).style.display = (t===b.dataset.tab?'':'none');
+    });
+  };
+});
+
+// Templates
+const templates = [
+  {ic:'⚡', t:'Новый заказ → Telegram', d:'Когда приходит заказ с маркетплейса, отправить уведомление менеджеру в Telegram.', tags:['Ozon','Telegram']},
+  {ic:'📦', t:'Остатки по складам', d:'Каждые 15 минут синхронизировать остатки из 1С в Ozon, WB и Яндекс Маркет.', tags:['1С','Маркетплейсы']},
+  {ic:'💰', t:'Оплата → чек 54-ФЗ', d:'После оплаты через ЮKassa - автоматически создать чек в 1С и отправить покупателю.', tags:['ЮKassa','1С']},
+  {ic:'🚚', t:'Заказ → СДЭК', d:'Оформить отправку в СДЭК сразу после сборки заказа и добавить трек-номер в 1С.', tags:['1С','СДЭК']},
+  {ic:'📊', t:'Ежедневный отчёт в Google Sheets', d:'В 9:00 выгрузить вчерашние заказы в таблицу с разбивкой по каналам.', tags:['Google Sheets']},
+  {ic:'🔔', t:'Остаток < 5 → WhatsApp', d:'Если по товару остаётся меньше 5 штук - отправить WhatsApp закупщику.', tags:['WhatsApp']},
+  {ic:'🎯', t:'Сделка в Битрикс24 → 1С', d:'При переводе сделки в статус «Оплачено» - создать реализацию в 1С.', tags:['Битрикс24','1С']},
+  {ic:'↩️', t:'Возврат → MindBox', d:'Помечать клиента в CDP как «вернул заказ» и добавлять в сегмент для ретеншна.', tags:['MindBox']},
+  {ic:'🏷️', t:'Маркировка ЧЗ', d:'Получать коды маркировки от производителя и добавлять в товар в 1С.', tags:['1С','ЧЗ']},
+  {ic:'📥', t:'Виджет сайта → CRM', d:'Лид с Tilda создаёт сделку в AmoCRM и контрагента в 1С.', tags:['Tilda','AmoCRM']},
+  {ic:'⚠️', t:'Ошибка .epf → email', d:'При сбое синхронизации - email администратору и тикет в поддержку.', tags:['Email']},
+  {ic:'📈', t:'KPI в Power BI', d:'Еженедельно выгружать сводку по продажам в Power BI для руководителя.', tags:['Power BI']},
+];
+const grid = document.getElementById('tpl-grid');
+grid.innerHTML = templates.map(t => `<div class="tpl" data-tpl="${t.t}">
+  <div class="ic">${t.ic}</div>
+  <h4>${t.t}</h4>
+  <p>${t.d}</p>
+  <div class="tags">${t.tags.map(x=>`<span class="tag">${x}</span>`).join('')}</div>
+</div>`).join('');
+grid.addEventListener('click', e => {
+  const el = e.target.closest('[data-tpl]'); if(!el) return;
+  window.CBPopup.open({
+    title: el.dataset.tpl,
+    body: '<p>Шаблон становится доступен после перехода на тариф Энтерпрайз. После активации его можно будет скопировать в свой кабинет и поменять под себя.</p>',
+    actions: [{label:'Повысить тариф', primary:true, href:'pricing.html'},{label:'Закрыть'}]
+  });
+});
+</script>
+</body>
+</html>

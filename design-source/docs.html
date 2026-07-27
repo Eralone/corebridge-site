@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Документация CoreBridge - интеграция 1С с маркетплейсами</title>
+<meta name="description" content="Полная документация CoreBridge: установка .epf, настройка интеграций с Ozon, WB, Битрикс24, API Reference, примеры воркфлоу.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .docs-hero { background: linear-gradient(135deg, var(--navy-900), var(--navy-700)); color:#fff; padding: 60px 24px; text-align: center; }
+  .docs-hero h1 { color:#fff; font-size: 40px; margin-bottom: 12px; }
+  .docs-hero p { color: #C9D5F2; margin: 0 auto 28px; max-width: 560px; }
+  .docs-search { max-width: 560px; margin: 0 auto; position: relative; }
+  .docs-search input { width: 100%; padding: 16px 20px 16px 52px; border-radius: 14px; border: none; font-size: 15px; }
+  .docs-search svg { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+  .docs-search .kbd { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); background: var(--bg-alt); padding: 4px 8px; border-radius: 6px; font-size: 12px; color: var(--text-muted); font-family: var(--mono); }
+
+  .docs-layout { display: grid; grid-template-columns: 260px 1fr 240px; max-width: 1440px; margin: 0 auto; padding: 40px 24px; gap: 40px; }
+  @media (max-width: 1100px) { .docs-layout { grid-template-columns: 240px 1fr; } .toc { display: none; } }
+  @media (max-width: 820px) { .docs-layout { grid-template-columns: 1fr; } .docs-side { display: none; } }
+
+  .docs-side { position: sticky; top: 20px; height: fit-content; max-height: calc(100vh - 40px); overflow-y: auto; font-size: 14px; }
+  .docs-side h5 { font-size: 12px; text-transform: uppercase; color: var(--text-faint); letter-spacing: .08em; margin: 20px 0 8px; font-weight: 700; }
+  .docs-side h5:first-child { margin-top: 0; }
+  .docs-side a { display: block; padding: 6px 10px; border-radius: 6px; color: var(--text-muted); text-decoration: none; }
+  .docs-side a:hover { background: var(--bg-alt); color: var(--text); }
+  .docs-side a.active { background: var(--blue-100); color: var(--blue-500); font-weight: 600; }
+
+  .docs-content h1 { font-size: 36px; margin: 0 0 16px; }
+  .docs-content .crumbs { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+  .docs-content h2 { font-size: 24px; margin: 40px 0 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .docs-content h3 { font-size: 18px; margin: 24px 0 8px; }
+  .docs-content p { line-height: 1.75; color: var(--text); }
+  .docs-content ol, .docs-content ul { line-height: 1.75; }
+  .docs-content code { background: var(--bg-alt); padding: 2px 8px; border-radius: 4px; font-family: var(--mono); font-size: 13px; }
+  .docs-content pre {
+    background: #0E1A2E; color: #D4E0F4; border-radius: var(--radius); padding: 16px 20px;
+    font-family: var(--mono); font-size: 13px; line-height: 1.6; overflow-x: auto; margin: 16px 0;
+  }
+  .docs-content pre .c-k { color: #3E92CC; }
+  .docs-content pre .c-s { color: #FF9966; }
+  .docs-content pre .c-n { color: #C9D5F2; }
+  .docs-content pre .c-g { color: #8298b5; }
+
+  .callout { padding: 16px 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid; }
+  .callout.tip { background: var(--info-bg); border-color: var(--info); }
+  .callout.warn { background: var(--warning-bg); border-color: var(--warning); }
+  .callout b { display: block; margin-bottom: 4px; }
+
+  .toc { position: sticky; top: 20px; height: fit-content; font-size: 13px; }
+  .toc h5 { font-size: 12px; text-transform: uppercase; color: var(--text-faint); letter-spacing: .08em; margin: 0 0 8px; }
+  .toc a { display: block; padding: 4px 0; color: var(--text-muted); border-left: 2px solid var(--border); padding-left: 12px; }
+  .toc a.active { color: var(--blue-500); border-color: var(--blue-500); font-weight: 600; }
+
+  .card-link {
+    background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px; margin: 12px 0; display: flex; gap: 14px; align-items: center;
+    text-decoration: none; color: var(--text);
+  }
+  .card-link:hover { border-color: var(--blue-500); text-decoration: none; }
+  .card-link .ic { width: 40px; height: 40px; border-radius: 10px; background: var(--blue-100); color: var(--blue-500); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .card-link .ttl { font-weight: 600; }
+  .card-link .sub { font-size: 13px; color: var(--text-muted); }
+
+  table.api-tbl { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  table.api-tbl th, table.api-tbl td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); font-size: 13px; }
+  table.api-tbl th { background: var(--bg-alt); font-weight: 600; }
+  table.api-tbl td code { font-size: 12px; }
+</style>
+</head>
+<body>
+<!-- СЕКЦИЯ: header -->
+<header class="site-header">
+  <div class="container row" style="justify-content:space-between;align-items:center">
+    <a href="index.html" class="logo-mark"><span class="logo-glyph"></span>CoreBridge</a>
+    <nav class="nav-links">
+      <a href="index.html#features">Возможности</a>
+      <a href="index.html#integrations">Интеграции</a>
+      <a href="pricing.html">Тарифы</a>
+      <a href="docs.html" class="active">Документация</a>
+      <a href="login.html">Войти</a>
+    </nav>
+  </div>
+</header>
+
+<!-- СЕКЦИЯ: hero -->
+<section class="docs-hero">
+  <h1>Документация</h1>
+  <p>180+ статей, 22 механики, API Reference и готовые рецепты - всё, чтобы развернуть интеграцию за один день.</p>
+  <div class="docs-search">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg>
+    <input placeholder="Поиск по документации…"/>
+    <span class="kbd">⌘ K</span>
+  </div>
+</section>
+
+<!-- СЕКЦИЯ: three-column layout -->
+<div class="docs-layout">
+  <aside class="docs-side">
+    <h5>Старт</h5>
+    <a href="#" class="active">Установка .epf в 1С</a>
+    <a href="#">Первая интеграция</a>
+    <a href="#">Совместимость 1С</a>
+    <a href="#">Миграция данных</a>
+
+    <h5>Маркетплейсы</h5>
+    <a href="#">Ozon · FBO и FBS</a>
+    <a href="#">Wildberries</a>
+    <a href="#">Яндекс Маркет</a>
+    <a href="#">Lamoda · Мегамаркет</a>
+
+    <h5>CRM</h5>
+    <a href="#">Битрикс24</a>
+    <a href="#">AmoCRM</a>
+    <a href="#">Воронки и статусы</a>
+
+    <h5>Сервисы</h5>
+    <a href="#">СДЭК · Почта · ЯМ Логистика</a>
+    <a href="#">ЮKassa · СБП · Сбер</a>
+    <a href="#">Маркировка ЧЗ · ГТД</a>
+
+    <h5>API</h5>
+    <a href="#">Аутентификация</a>
+    <a href="#">Объекты и коллекции</a>
+    <a href="#">Webhooks</a>
+    <a href="#">Rate limits</a>
+
+    <h5>Воркфлоу</h5>
+    <a href="#">n8n-шаблоны</a>
+    <a href="#">Триггеры в 1С</a>
+    <a href="#">Рецепты</a>
+  </aside>
+
+  <main class="docs-content">
+    <div class="crumbs">Документация · Старт · <b style="color:var(--text)">Установка .epf в 1С</b></div>
+    <h1 id="install">Установка .epf в 1С</h1>
+    <p>За 5 минут вы получите рабочую интеграцию 1С с выбранным сервисом. Ниже - пошаговое руководство для всех поддерживаемых конфигураций: <b>УТ 11.5</b>, <b>УНФ 3.0</b>, <b>Бухгалтерия 3.0</b>, <b>Комплексная автоматизация</b> и <b>ERP 2.5</b>.</p>
+
+    <div class="callout tip">
+      <b>💡 Совет</b>
+      Если у вас несколько конфигураций 1С - установите .epf в каждую отдельно. Они не мешают друг другу и умеют обмениваться данными через общий API-ключ CoreBridge.
+    </div>
+
+    <h2 id="requirements">Требования</h2>
+    <ul>
+      <li>1С:Предприятие 8.3.18 или выше (рекомендуется 8.3.22+)</li>
+      <li>Доступ в интернет с сервера 1С (HTTPS, исходящие порты 443 и 80)</li>
+      <li>Учётная запись пользователя 1С с правом на работу с внешними обработками</li>
+      <li>Аккаунт CoreBridge с действующим тарифом или пробным периодом</li>
+    </ul>
+
+    <h2 id="download">Шаг 1. Скачать .epf</h2>
+    <p>В личном кабинете перейдите в раздел <a href="epf.html"><b>EPF модули</b></a> и скачайте файл для вашей конфигурации:</p>
+
+    <a href="#" class="card-link">
+      <div class="ic">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+      </div>
+      <div>
+        <div class="ttl">unified_ut11.epf <span class="badge badge-info" style="font-size:10px;margin-left:6px">v3.0.4</span></div>
+        <div class="sub">Для Управления торговлей 11.5 · 842 КБ</div>
+      </div>
+    </a>
+
+    <h2 id="load">Шаг 2. Загрузить в 1С</h2>
+    <ol>
+      <li>Откройте 1С под пользователем с правами администратора.</li>
+      <li>Перейдите в меню <code>Файл → Открыть…</code> и выберите скачанный <code>.epf</code>-файл.</li>
+      <li>В открывшемся окне нажмите <b>«Установить в справочник обработок»</b> - это позволит запускать интеграцию прямо из интерфейса 1С, без ручного открытия файла.</li>
+      <li>Подтвердите установку в меню <code>Администрирование → Печатные формы, отчёты и обработки → Дополнительные обработки</code>.</li>
+    </ol>
+
+    <h2 id="activate">Шаг 3. Активировать API-ключом</h2>
+    <p>После загрузки обработка предложит ввести <b>API-ключ</b>. Получить ключ можно в личном кабинете: <b>Настройки → API → Создать ключ</b>.</p>
+
+    <pre><span class="c-g">// Пример ключа (32 символа)</span>
+<span class="c-k">key</span>: <span class="c-s">"cb_live_8f3a91c2d5e74b0f9a1c6b8d2e4f7a93"</span>
+<span class="c-k">env</span>: <span class="c-s">"production"</span>
+<span class="c-k">workspace</span>: <span class="c-s">"retail-m"</span></pre>
+
+    <div class="callout warn">
+      <b>⚠️ Важно</b>
+      Не делитесь API-ключом с третьими лицами и не храните его в открытых репозиториях. Ключ даёт полный доступ к вашим интеграциям. Если ключ скомпрометирован - отзовите его в «Настройки → API» и создайте новый.
+    </div>
+
+    <h2 id="test">Шаг 4. Тестовая синхронизация</h2>
+    <p>После активации запустите тестовую синхронизацию, нажав в обработке кнопку <b>«Проверить соединение»</b>. В течение ~3 секунд CoreBridge вернёт статус:</p>
+
+    <pre><span class="c-k">{</span>
+  <span class="c-s">"status"</span>: <span class="c-s">"ok"</span>,
+  <span class="c-s">"version"</span>: <span class="c-s">"3.0.4"</span>,
+  <span class="c-s">"config"</span>: <span class="c-s">"УТ 11.5"</span>,
+  <span class="c-s">"operations_left"</span>: <span class="c-n">149 821</span>,
+  <span class="c-s">"integrations_ready"</span>: <span class="c-n">8</span>
+<span class="c-k">}</span></pre>
+
+    <p>Если всё ок - можно переходить к настройке первой интеграции. Инструкция для популярных сценариев:</p>
+
+    <a href="#" class="card-link"><div class="ic" style="background:rgba(0,91,255,.1);color:#005BFF"><b>O</b></div><div><div class="ttl">Подключить Ozon примерно за 30 минут</div><div class="sub">FBO, FBS, etiquettes, маркировка</div></div></a>
+    <a href="#" class="card-link"><div class="ic" style="background:rgba(203,17,171,.1);color:#CB11AB"><b>WB</b></div><div><div class="ttl">Подключить Wildberries</div><div class="sub">Заказы, остатки, финансовые отчёты</div></div></a>
+    <a href="#" class="card-link"><div class="ic" style="background:rgba(45,140,255,.1);color:#2D8CFF"><b>Б24</b></div><div><div class="ttl">Подключить Битрикс24</div><div class="sub">OAuth, воронки, двусторонняя синхронизация</div></div></a>
+
+    <h2 id="api">API Reference (preview)</h2>
+    <p>Все возможности интерфейса доступны через REST API. Базовый URL:</p>
+    <pre><span class="c-k">GET</span> <span class="c-n">https://api.corebridge.ru/v1/</span><span class="c-s">{resource}</span></pre>
+
+    <table class="api-tbl">
+      <thead><tr><th>Метод</th><th>Endpoint</th><th>Описание</th></tr></thead>
+      <tbody>
+        <tr><td><code>GET</code></td><td><code>/integrations</code></td><td>Список интеграций</td></tr>
+        <tr><td><code>POST</code></td><td><code>/integrations</code></td><td>Создать интеграцию</td></tr>
+        <tr><td><code>GET</code></td><td><code>/integrations/{id}/events</code></td><td>События интеграции</td></tr>
+        <tr><td><code>POST</code></td><td><code>/workflows/{id}/run</code></td><td>Запустить воркфлоу вручную</td></tr>
+        <tr><td><code>GET</code></td><td><code>/usage</code></td><td>Потребление в текущем периоде</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="next">Что дальше</h2>
+    <a href="#" class="card-link"><div class="ic">📚</div><div><div class="ttl">Частые ошибки и как их избежать</div><div class="sub">Токены, права, журналирование</div></div></a>
+    <a href="#" class="card-link"><div class="ic">⚡</div><div><div class="ttl">Рецепты воркфлоу</div><div class="sub">12 готовых шаблонов: 1С→Telegram, Ozon→1С, ЮKassa→ПКО</div></div></a>
+    <a href="#" class="card-link"><div class="ic">🛡️</div><div><div class="ttl">Безопасность и изоляция</div><div class="sub">Архитектура no-lock, on-premise, SLA</div></div></a>
+  </main>
+
+  <aside class="toc">
+    <h5>На странице</h5>
+    <a href="#install" class="active">Установка .epf</a>
+    <a href="#requirements">Требования</a>
+    <a href="#download">Шаг 1. Скачать</a>
+    <a href="#load">Шаг 2. Загрузить</a>
+    <a href="#activate">Шаг 3. Активировать</a>
+    <a href="#test">Шаг 4. Тест</a>
+    <a href="#api">API Reference</a>
+    <a href="#next">Что дальше</a>
+  </aside>
+</div>
+
+<!-- СЕКЦИЯ: footer -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><a href="index.html" class="logo-mark"><span class="logo-glyph"></span>CoreBridge</a><p class="text-muted mt-16" style="max-width:280px;font-size:13px">No-code платформа интеграции 1С.</p></div>
+      <div><h5>Продукт</h5><a href="index.html#features">Возможности</a><a href="pricing.html">Тарифы</a><a href="docs.html">Документация</a></div>
+      <div><h5>Компания</h5><a href="about.html">О нас</a><a href="for-business.html">Для бизнеса</a><a href="contacts.html">Контакты</a></div>
+      <div><h5>Контакты</h5><a href="mailto:hello@corebridge.ru">hello@corebridge.ru</a><a href="tel:+74951811234">+7 (495) 181‑12‑34</a></div>
+      <div><h5>Правовое</h5><a href="oferta.html">Оферта</a><a href="privacy.html">Конфиденциальность</a><a href="terms.html">Условия использования</a></div>
+    </div>
+    <div class="footer-bottom">© 2026 CoreBridge<br>ИП Королев Дмитрий Павлович · ИНН 120704119287</div>
+  </div>
+</footer>
+</body>
+</html>

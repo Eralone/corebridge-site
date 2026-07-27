@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Биллинг и тариф - CoreBridge</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/robokassa.css">
+<style>
+  .billing-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+  @media (max-width: 1024px){ .billing-grid { grid-template-columns: 1fr; } }
+  .card { background:#fff; border:1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+  .card h3 { margin: 0 0 16px; font-size: 18px; }
+  .plan-head { display:flex; justify-content: space-between; align-items: flex-start; padding-bottom: 20px; margin-bottom:20px; border-bottom: 1px solid var(--border);}
+  .plan-name { font-size: 24px; font-weight: 800; color: var(--navy-900); letter-spacing:-0.015em; }
+  .plan-price { font-size:28px; font-weight:800; color: var(--orange-500); }
+  .usage-bar { height: 8px; background: var(--bg-alt); border-radius: 4px; overflow: hidden; margin-top: 6px; }
+  .usage-bar > span { display:block; height:100%; background: linear-gradient(90deg, var(--blue-500), var(--orange-500)); }
+  .usage-row { display:flex; justify-content:space-between; font-size:13px; }
+  .usage-row + .usage-row { margin-top: 18px; }
+  .trial-ribbon { display:inline-flex; align-items:center; gap:8px; padding:6px 12px; background: rgba(31,157,85,.12); color: var(--success); border-radius:100px; font-size:12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; margin-bottom:10px; }
+  .trial-ribbon::before { content:""; width:8px; height:8px; border-radius:50%; background: var(--success); }
+
+  /* Payment history */
+  .pay-history { width:100%; border-collapse:collapse; font-size:13.5px; }
+  .pay-history th { text-align:left; padding:10px 12px; background: var(--bg-alt); font-size:11px; text-transform:uppercase; letter-spacing:.06em; color: var(--text-muted); font-weight:700; border-bottom:1px solid var(--border); }
+  .pay-history td { padding:14px 12px; border-bottom:1px solid var(--border); vertical-align:middle; }
+  .pay-history tr:last-child td { border-bottom:none; }
+  .pay-history .amt { font-family:var(--mono); font-weight:700; color:var(--navy-900); }
+  .pay-history .doc { font-family:var(--mono); font-size:12px; color:var(--text-muted); }
+  .ph-status { display:inline-flex; gap:6px; align-items:center; padding:3px 10px; border-radius:100px; font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+  .ph-status.ok { background:rgba(31,157,85,.12); color:var(--success); }
+  .ph-status.ok::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--success); }
+  .ph-link { font-size:12px; color:var(--blue-500); text-decoration:none; font-weight:600; }
+  .ph-link + .ph-link { margin-left:10px; }
+  .rk-tag { display:inline-flex; gap:6px; align-items:center; font-size:11px; color:var(--text-muted); font-family:var(--mono); }
+  .rk-dot { width:6px; height:6px; border-radius:50%; background:#26A65B; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="side"></div>
+  <div class="app-main">
+    <div id="top"></div>
+    <main class="page">
+      <div class="page-head">
+        <div><h1>Биллинг и тариф</h1><p class="text-muted">Тарифный план, лимиты и история платежей</p></div>
+        <a href="pricing.html" class="btn btn-primary">Сменить тариф</a>
+      </div>
+
+      <div class="billing-grid">
+        <div>
+          <div class="card">
+            <div class="plan-head">
+              <div>
+                <div class="trial-ribbon">Пробный период</div>
+                <div class="plan-name">Пробный</div>
+                <div class="text-muted" style="font-size:13px;margin-top:4px">Истекает 14 июня 2026 · осталось 24 дня</div>
+              </div>
+              <div class="text-right">
+                <div class="plan-price">0 ₽</div>
+                <div class="text-faint" style="font-size:12px">до конца пробного периода</div>
+              </div>
+            </div>
+
+            <h3>Использование в этом месяце</h3>
+            <div class="usage-row"><span>Интеграций</span><b>1 / 1</b></div>
+            <div class="usage-bar"><span style="width:100%"></span></div>
+
+            <div class="usage-row mt-16"><span>Операций</span><b>127 / 500</b></div>
+            <div class="usage-bar"><span style="width:25%"></span></div>
+
+            <div class="usage-row mt-16"><span>Пользователей</span><b>1 / 1</b></div>
+            <div class="usage-bar"><span style="width:100%"></span></div>
+
+            <div class="row gap-8 mt-20">
+              <button class="btn btn-primary" data-robokassa data-rk-plan="Профессионал" data-rk-amount="10" data-rk-period="первые 30 дней">30 дней «Профессионал» за 10 ₽</button>
+              <a href="pricing.html" class="btn btn-outline">Все тарифы</a>
+            </div>
+          </div>
+
+          <!-- Payment history -->
+          <div class="card mt-24" style="padding:0">
+            <div class="row" style="justify-content:space-between;align-items:center;padding:20px 24px 16px">
+              <h3 style="margin:0">История платежей</h3>
+              <span class="rk-tag"><span class="rk-dot"></span>Robokassa</span>
+            </div>
+            <table class="pay-history">
+              <thead>
+                <tr>
+                  <th style="padding-left:24px">Дата</th>
+                  <th>Описание</th>
+                  <th>Сумма</th>
+                  <th>Статус</th>
+                  <th style="padding-right:24px">Документы</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="padding-left:24px">12.05.2026<div class="doc">14:32</div></td>
+                  <td><b>Бизнес</b> · 30 дней<div class="doc">Промо-период за 10 ₽</div></td>
+                  <td class="amt">10,00 ₽</td>
+                  <td><span class="ph-status ok">Оплачено</span></td>
+                  <td style="padding-right:24px">
+                    <a href="#" class="ph-link">Чек</a>
+                    <a href="#" class="ph-link">УПД</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-left:24px">28.04.2026<div class="doc">10:18</div></td>
+                  <td><b>Старт</b> · 1 месяц<div class="doc">Оплата подписки</div></td>
+                  <td class="amt">990,00 ₽</td>
+                  <td><span class="ph-status ok">Оплачено</span></td>
+                  <td style="padding-right:24px">
+                    <a href="#" class="ph-link">Чек</a>
+                    <a href="#" class="ph-link">УПД</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-left:24px">28.03.2026<div class="doc">09:44</div></td>
+                  <td><b>Старт</b> · 1 месяц<div class="doc">Оплата подписки</div></td>
+                  <td class="amt">990,00 ₽</td>
+                  <td><span class="ph-status ok">Оплачено</span></td>
+                  <td style="padding-right:24px">
+                    <a href="#" class="ph-link">Чек</a>
+                    <a href="#" class="ph-link">УПД</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div style="padding:14px 24px;border-top:1px solid var(--border);background:var(--bg-alt);font-size:12px;color:var(--text-muted);display:flex;justify-content:space-between;align-items:center;border-radius:0 0 var(--radius) var(--radius)">
+              <span>Платежи проходят через защищённый шлюз <b>Robokassa</b>. Чеки соответствуют 54-ФЗ.</span>
+              <a href="#" class="ph-link">Скачать все →</a>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <!-- Payment via Robokassa -->
+          <div class="card">
+            <h3>Способ оплаты</h3>
+            <div style="display:flex;gap:12px;align-items:center;padding:14px;background:var(--bg-alt);border:1px solid var(--border);border-radius:10px;margin-bottom:14px">
+              <div style="width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,#26A65B,#0E8B47);color:#fff;font-weight:800;font-size:22px;display:flex;align-items:center;justify-content:center;letter-spacing:-0.04em">R</div>
+              <div style="flex:1">
+                <div style="font-weight:700;font-size:14px;color:var(--navy-900)">Robokassa</div>
+                <div style="font-size:12px;color:var(--text-muted)">Карта · СБП · SberPay · Кошелёк</div>
+              </div>
+            </div>
+            <div class="text-muted" style="font-size:12px;line-height:1.6">При оплате тарифа форма Robokassa открывается в защищённом окне. Привязка карты не требуется — каждый платёж подтверждается отдельно.</div>
+
+            <div class="mt-20" style="padding-top:16px;border-top:1px solid var(--border)">
+              <b style="font-size:14px">Оплата по счёту для юрлиц</b>
+              <p class="text-muted" style="font-size:13px;margin:6px 0 10px">Выставим счёт на реквизиты вашей компании</p>
+              <button class="btn btn-outline btn-block btn-sm" data-popup data-popup-title="Счёт для юрлица" data-popup-body="Запрос уйдёт на info@corebridge.ru. Мы вышлем счёт и договор на указанный email в течение рабочего дня." data-popup-action="Отправить запрос">Запросить счёт</button>
+            </div>
+          </div>
+
+          <!-- Company details -->
+          <div class="card mt-24">
+            <h3>Реквизиты плательщика</h3>
+            <div style="font-size:13px;line-height:1.7">
+              <div class="text-muted">Организация</div><div>Не заполнено</div>
+              <div class="text-muted mt-8">ИНН</div><div>Не заполнено</div>
+            </div>
+            <button class="btn btn-ghost btn-sm mt-16" onclick="location.href='settings.html'">Заполнить в настройках</button>
+          </div>
+
+          <!-- Promo -->
+          <div class="card mt-24" style="background: linear-gradient(135deg, var(--navy-900), var(--navy-700)); color:#fff; border:none">
+            <div style="font-size:12px;opacity:.7;letter-spacing:.08em;text-transform:uppercase">Популярный выбор</div>
+            <h3 style="color:#fff;margin:8px 0 10px">Тариф «Профессионал»</h3>
+            <p style="color:#C9D5F2;font-size:13px;margin-bottom:16px">До 20 интеграций, 100 000 операций в месяц, прямой доступ к n8n UI. Первые 30 дней — 10 ₽.</p>
+            <button class="btn btn-primary btn-block" data-robokassa data-rk-plan="Профессионал" data-rk-amount="10" data-rk-period="первые 30 дней">30 дней за 10 ₽</button>
+          </div>
+
+          <!-- Legal -->
+          <div class="card mt-24">
+            <h3 style="margin-bottom:10px">Документы</h3>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+              <a href="oferta.html" target="_blank" style="color:var(--text);text-decoration:none;display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border:1px solid var(--border);border-radius:8px">Договор-оферта<span class="text-faint">↗</span></a>
+              <a href="privacy.html" target="_blank" style="color:var(--text);text-decoration:none;display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border:1px solid var(--border);border-radius:8px">Политика конфиденциальности<span class="text-faint">↗</span></a>
+              <a href="terms.html" target="_blank" style="color:var(--text);text-decoration:none;display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border:1px solid var(--border);border-radius:8px">Условия использования<span class="text-faint">↗</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script>window.CB_USER={name:'Дмитрий Королев',org:'Пробный тариф',initials:'КД',role:'user'};</script>
+<script src="assets/shell.js"></script>
+<script src="assets/popup.js"></script>
+<script src="assets/robokassa.js"></script>
+<script>
+  document.getElementById('side').outerHTML = window.renderSidebar('billing');
+  document.getElementById('top').outerHTML = window.renderTopbar('Биллинг и тариф');
+</script>
+</body>
+</html>

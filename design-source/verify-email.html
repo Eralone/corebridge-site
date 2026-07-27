@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Подтверждение email - CoreBridge</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  body { background: var(--bg-alt); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .auth-card { width: 100%; max-width: 440px; background: #fff; border-radius: var(--radius-lg); padding: 40px 36px; box-shadow: 0 8px 40px rgba(10,36,99,.08); text-align: center; }
+  .auth-card h1 { font-size: 24px; margin-bottom: 8px; }
+  .auth-card .sub { color: var(--text-muted); font-size: 14px; margin-bottom: 28px; }
+  .big-icon { width: 96px; height: 96px; border-radius: 50%; background: var(--blue-100); color: var(--blue-500); display:flex; align-items:center; justify-content:center; margin: 0 auto 24px; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(62,146,204,.35); } 50% { box-shadow: 0 0 0 16px rgba(62,146,204,0); } }
+  .timer { font-size: 13px; color: var(--text-muted); margin-top: 16px; }
+</style>
+</head>
+<body>
+<main>
+  <!-- PAGE: Verify Email -->
+  <section class="auth-card">
+    <div class="big-icon">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="m3 8 9 6 9-6"/></svg>
+    </div>
+    <h1>Подтвердите email</h1>
+    <p class="sub">Мы отправили письмо на <strong style="color:var(--text)">you@company.ru</strong>. Перейдите по ссылке из письма, чтобы активировать аккаунт.</p>
+    <button type="button" class="btn btn-outline btn-block is-disabled">Отправить повторно</button>
+    <p class="timer">Повторная отправка через 59 сек</p>
+    <p style="font-size:13px;margin-top:20px"><a href="login.html">← Вернуться к входу</a></p>
+  </section>
+</main>
+</body>
+</html>

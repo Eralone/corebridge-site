@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Все интеграции · CoreBridge</title>
+<meta name="description" content="Полный каталог интеграций CoreBridge: 33 сервиса в 8 категориях - маркетплейсы, сайты, CRM, доставка, оплата, аналитика.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.hero-s{padding:60px 0 40px;background:linear-gradient(180deg,#fff,var(--bg-alt))}
+.hero-s h1{font-size:clamp(32px,4vw,48px);letter-spacing:-0.02em;margin-bottom:14px;max-width:720px}
+.hero-s p{color:var(--text-muted);font-size:18px;max-width:620px;line-height:1.6}
+.stat-strip{display:flex;gap:30px;margin-top:24px;flex-wrap:wrap}
+.stat-strip .s b{font-size:22px;font-weight:800;color:var(--orange-500);font-family:var(--mono)}
+.stat-strip .s span{color:var(--text-muted);font-size:13px;margin-left:6px}
+
+.filter-bar{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:16px 0}
+.filter-bar .chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip-f{background:#fff;border:1px solid var(--border);padding:8px 14px;border-radius:20px;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;transition:all .15s;white-space:nowrap}
+.chip-f:hover{border-color:var(--orange-500)}
+.chip-f.active{background:var(--navy-900);color:#fff;border-color:var(--navy-900)}
+
+.cat-section{padding:60px 0 20px}
+.cat-section h2{font-size:28px;margin-bottom:6px;display:flex;align-items:center;gap:12px}
+.cat-section h2 .cnt{font-family:var(--mono);font-size:14px;color:var(--text-faint);font-weight:500}
+.cat-section .sub{color:var(--text-muted);margin-bottom:24px}
+.int-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:960px){.int-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.int-grid{grid-template-columns:1fr}}
+.int{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;gap:14px;align-items:flex-start;transition:all .15s;cursor:pointer;text-align:left;font:inherit;width:100%}
+.int:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(10,36,99,.08);border-color:var(--orange-500)}
+.int h4{margin:0 0 4px;font-size:15px}
+.int p{margin:0;color:var(--text-muted);font-size:12.5px;line-height:1.5}
+
+.cta-section{padding:70px 0;background:var(--navy-900);color:#fff;text-align:center;margin-top:60px}
+.cta-section h2{color:#fff;font-size:32px;margin-bottom:10px}
+.cta-section p{color:#C9D5F2;margin-bottom:24px}
+
+/* modal integration details */
+.int-det{display:flex;gap:16px;align-items:center;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.int-det .cb-ic{width:56px;height:56px;font-size:18px;border-radius:14px}
+.int-det h3{margin:0}
+.int-det .cat-pill{font-size:11px;color:var(--text-muted);background:var(--bg-alt);padding:3px 8px;border-radius:10px;display:inline-block;margin-top:4px}
+.req-list{margin:0;padding:0;list-style:none;font-size:13.5px}
+.req-list li{padding:6px 0;display:flex;gap:8px}
+.req-list li::before{content:"→";color:var(--orange-500);font-weight:700}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container row" style="justify-content:space-between;align-items:center">
+    <a href="index.html" class="logo-mark"><span class="logo-glyph"></span>CoreBridge</a>
+    <nav class="nav-links">
+      <a href="index.html#features">Возможности</a>
+      <a href="integrations.html" class="active">Интеграции</a>
+      <a href="pricing.html">Тарифы</a>
+      <a href="docs.html">Документация</a>
+      <a href="about.html">
+</a>
+    </nav>
+    <div class="row gap-12">
+      <a href="login.html" class="btn btn-ghost">Войти</a>
+      <a href="register.html" class="btn btn-primary">Попробовать бесплатно</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero-s">
+  <div class="container">
+    <div class="text-muted" style="font-size:13px;margin-bottom:12px"><a href="index.html" style="color:inherit;text-decoration:none">Главная</a> / Интеграции</div>
+    <h1>33 сервиса, которые подключаются к 1С</h1>
+    <p>Все готовые интеграции CoreBridge. Выбираете нужные галочками в файле .epf и вставляете API-ключ сервиса. Остальное настраивает .epf сам.</p>
+    <div class="stat-strip">
+      <div class="s"><b>33</b><span>сервиса</span></div>
+      <div class="s"><b>8</b><span>категорий</span></div>
+      <div class="s"><b>4</b><span>конфигурации 1С</span></div>
+      <div class="s"><b>1</b><span>файл .epf</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="filter-bar">
+  <div class="container">
+    <div class="chips" id="chips"></div>
+  </div>
+</div>
+
+<main id="cats"></main>
+
+<section class="cta-section">
+  <div class="container">
+    <h2>Не нашли нужный сервис?</h2>
+    <p>В пункте «Иное» можно настроить произвольную REST-интеграцию. Или напишите нам - добавим в каталог.</p>
+    <div class="row gap-12" style="justify-content:center">
+      <a href="register.html" class="btn btn-primary btn-lg">Попробовать бесплатно</a>
+      <a href="mailto:info@corebridge.ru?subject=Запрос%20интеграции" class="btn btn-ghost btn-lg" style="color:#fff;border-color:rgba(255,255,255,.3)">Запросить интеграцию</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><a href="index.html" class="logo-mark"><span class="logo-glyph"></span>CoreBridge</a><p class="text-muted mt-16" style="max-width:300px;font-size:13px">No-code сервисная интеграция 1С.</p></div>
+      <div><h5>Продукт</h5><a href="integrations.html">Интеграции</a><a href="pricing.html">Тарифы</a><a href="docs.html">Документация</a></div>
+      <div><h5>Компания</h5><a href="about.html">О проекте</a><a href="for-business.html">Для бизнеса</a><a href="contacts.html">Контакты</a></div>
+      <div><h5>Связь</h5><a href="mailto:info@corebridge.ru">info@corebridge.ru</a><a href="support.html">Поддержка</a></div>
+      <div><h5>Правовое</h5><a href="oferta.html">Оферта</a><a href="privacy.html">Конфиденциальность</a><a href="terms.html">Условия использования</a></div>
+    </div>
+    <div class="footer-bottom">© 2026 CoreBridge<br>ИП Королев Дмитрий Павлович · ИНН 120704119287</div>
+  </div>
+</footer>
+
+<script src="assets/integrations-data.js"></script>
+<script src="assets/popup.js"></script>
+<script>
+(function(){
+  const catsEl = document.getElementById('cats');
+  const chipsEl = document.getElementById('chips');
+  const cats = window.CB_CATEGORIES;
+  const items = window.CB_INTEGRATIONS;
+
+  // Chips
+  const allChip = el('button','chip-f active','Все · '+items.length);
+  allChip.onclick = ()=>filter('all', allChip);
+  chipsEl.appendChild(allChip);
+  cats.forEach(c => {
+    const n = items.filter(i=>i.cat===c).length;
+    const ch = el('button','chip-f',`${c} · ${n}`);
+    ch.onclick = ()=>filter(c, ch);
+    chipsEl.appendChild(ch);
+  });
+
+  // Render sections
+  cats.forEach(c => {
+    const list = items.filter(i=>i.cat===c);
+    const section = document.createElement('section');
+    section.className = 'cat-section';
+    section.id = encodeURIComponent(c);
+    section.innerHTML = `<div class="container"><h2>${c} <span class="cnt">${list.length}</span></h2><p class="sub">${catDesc(c)}</p><div class="int-grid">${
+      list.map(i => `<button class="int" data-id="${i.id}">
+        <div class="cb-ic" style="background:${i.color};color:${i.fg||'#fff'};width:44px;height:44px;font-size:14px;border-radius:11px">${i.glyph}</div>
+        <div><h4>${i.name}</h4><p>${i.desc}</p></div>
+      </button>`).join('')
+    }</div></div>`;
+    catsEl.appendChild(section);
+  });
+
+  // Click -> modal
+  catsEl.addEventListener('click', e => {
+    const btn = e.target.closest('[data-id]');
+    if(!btn) return;
+    const it = items.find(i=>i.id===btn.dataset.id);
+    if(!it) return;
+    window.CBPopup.open({
+      title: it.name,
+      body: `<div class="int-det">
+        <div class="cb-ic" style="background:${it.color};color:${it.fg||'#fff'};width:56px;height:56px;font-size:18px;border-radius:14px">${it.glyph}</div>
+        <div><h3 style="margin:0">${it.name}</h3><div class="cat-pill">${it.cat}</div></div>
+      </div>
+      <p style="margin-bottom:10px"><b>Что делает:</b> ${it.desc}</p>
+      <p style="margin-bottom:10px"><b>Что нужно для подключения:</b></p>
+      <ul class="req-list">
+        <li>Зарегистрироваться в CoreBridge и скачать .epf для вашей 1С</li>
+        <li>В личном кабинете ${it.name} получить API-ключ или токен</li>
+        <li>В файле .epf отметить «${it.name}» галочкой и вставить ключ</li>
+      </ul>`,
+      actions: [
+        {label:'Попробовать бесплатно', primary:true, href:'register.html'},
+        {label:'Закрыть'}
+      ]
+    });
+  });
+
+  function filter(c, chip){
+    chipsEl.querySelectorAll('.chip-f').forEach(x=>x.classList.remove('active'));
+    chip.classList.add('active');
+    catsEl.querySelectorAll('.cat-section').forEach(s=>{
+      s.style.display = (c==='all' || decodeURIComponent(s.id)===c) ? '' : 'none';
+    });
+  }
+
+  function el(tag, cls, txt){ const n=document.createElement(tag); n.className=cls; n.textContent=txt; return n; }
+  function catDesc(c){
+    return ({
+      'Маркетплейсы':'Заказы, остатки, цены и возвраты с ведущих российских площадок.',
+      'Сайт':'Свой интернет-магазин на любой из популярных платформ или через REST.',
+      'CRM':'Сделки, лиды и клиенты в одной точке с вашей 1С.',
+      'Доставка':'Расчёт стоимости, оформление отправлений и отслеживание.',
+      'Оплата':'Приём платежей и чеки 54-ФЗ автоматически из 1С.',
+      'CDP / Маркетинг':'Сегменты, рассылки, карточки клиентов.',
+      'Соцсети':'Уведомления клиентам и приём заказов через мессенджеры.',
+      'Аналитика':'Выгрузка данных и готовые отчёты.'
+    })[c] || '';
+  }
+
+  // Handle hash scroll
+  if(location.hash){
+    const t = document.getElementById(location.hash.slice(1));
+    if(t) t.scrollIntoView({block:'start'});
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вход в CoreBridge - личный кабинет</title>
+<meta name="description" content="Войдите в личный кабинет CoreBridge - платформу интеграции 1С с маркетплейсами и CRM.">
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  body { background: var(--bg-alt); min-height: 100vh; }
+  .auth-wrap { display: grid; grid-template-columns: 1fr 480px; min-height: 100vh; }
+  .auth-panel {
+    background: linear-gradient(135deg, var(--navy-900), var(--navy-700));
+    color: #fff; padding: 48px; display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .auth-panel::before { content:""; position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 80%, rgba(62,146,204,.3), transparent 60%); }
+  .auth-panel > * { position: relative; }
+  .auth-panel h2 { color: #fff; font-size: 32px; letter-spacing: -0.015em; margin-bottom: 16px; }
+  .auth-panel p { color: #C9D5F2; font-size: 16px; max-width: 400px; }
+  .auth-feature-list { list-style: none; padding: 0; margin: 24px 0 0; }
+  .auth-feature-list li { padding: 10px 0; display: flex; gap: 12px; align-items: center; color: #C9D5F2; font-size: 14px; }
+  .auth-feature-list li::before { content: "✓"; color: var(--success); font-weight: 700; width: 20px; height: 20px; background: rgba(31,157,85,.15); border-radius: 50%; display:flex; align-items:center; justify-content:center; font-size: 11px; }
+  .auth-brand { color: #fff; font-size: 20px; font-weight: 700; display:flex; align-items:center; gap:10px; }
+  .auth-brand .logo { width:32px; height:32px; border-radius: 8px; background: linear-gradient(135deg, #fff, var(--blue-400)); }
+  .auth-footer-note { color: #8FA3CC; font-size: 12px; }
+
+  .auth-form-wrap {
+    display: flex; align-items: center; justify-content: center; padding: 40px 24px;
+    background: #fff;
+  }
+  .auth-card { width: 100%; max-width: 400px; }
+  .auth-card h1 { font-size: 28px; margin-bottom: 6px; }
+  .auth-card .sub { color: var(--text-muted); font-size: 15px; margin-bottom: 28px; }
+  .auth-card .field { margin-bottom: 16px; }
+  .input-group { position: relative; }
+  .input-group .eye { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-faint); cursor: pointer; display: flex; }
+  .row-between { display: flex; justify-content: space-between; align-items: center; margin: 10px 0 20px; }
+  .divider { display: flex; align-items: center; gap: 12px; color: var(--text-faint); font-size: 13px; margin: 20px 0; }
+  .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+  .google-btn { display:flex; align-items:center; justify-content:center; gap:10px; }
+  .google-btn svg { width: 18px; height: 18px; }
+  .switch-link { text-align: center; font-size: 14px; color: var(--text-muted); margin-top: 20px; }
+  .back-link { display:inline-flex; gap: 6px; align-items: center; font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
+
+  /* Password strength */
+  .pwd-strength { display: flex; gap: 4px; margin-top: 8px; }
+  .pwd-strength span { flex: 1; height: 4px; background: var(--border); border-radius: 2px; }
+  .pwd-strength.weak span:nth-child(1) { background: var(--danger); }
+  .pwd-strength.medium span:nth-child(1), .pwd-strength.medium span:nth-child(2) { background: var(--warning); }
+  .pwd-strength.strong span { background: var(--success); }
+  .pwd-hint { font-size: 12px; color: var(--text-faint); margin-top: 6px; }
+
+  /* Verify email */
+  .big-icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--blue-100); color: var(--blue-500);
+    display:flex; align-items:center; justify-content:center;
+    margin: 0 auto 20px;
+  }
+  .big-icon.success { background: var(--success-bg); color: var(--success); }
+  .big-icon.pulse { animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(62,146,204,.3); }
+    50% { box-shadow: 0 0 0 12px rgba(62,146,204,0); }
+  }
+
+  .tabs-nav {
+    display: flex; gap: 8px; padding: 6px; background: var(--bg-alt); border-radius: 10px;
+    margin-bottom: 24px;
+  }
+  .tabs-nav a {
+    flex: 1; text-align: center; padding: 8px 10px; border-radius: 8px;
+    font-size: 13px; font-weight: 600; color: var(--text-muted); text-decoration: none;
+  }
+  .tabs-nav a.active { background: #fff; color: var(--navy-900); box-shadow: var(--shadow-sm); }
+
+  @media (max-width: 900px) {
+    .auth-wrap { grid-template-columns: 1fr; }
+    .auth-panel { display: none; }
+  }
+</style>
+</head>
+<body>
+<main class="auth-wrap">
+  <section class="auth-panel" aria-hidden="true">
+    <div class="auth-brand"><span class="logo"></span><span>CoreBridge</span></div>
+    <div>
+      <h2>Интеграция 1С с маркетплейсами - без единой строки кода</h2>
+      <p>Один .epf-файл соединяет вашу 1С с Ozon, Wildberries, Битрикс24, СДЭК и ещё 30+ сервисами.</p>
+      <ul class="auth-feature-list">
+        <li>22 готовые механики интеграции</li>
+        <li>Поддержка УТ 11, УНФ, КА/ERP, БП 3.0</li>
+        <li>30 дней пробного доступа</li>
+        <li>Данные не покидают ваш контур</li>
+      </ul>
+    </div>
+    <div class="auth-footer-note">«У нас ни одной ошибки синхронизации за квартал» - Игорь П., Ритейл-М</div>
+  </section>
+
+  <!-- PAGE: Login -->
+  <section class="auth-form-wrap">
+    <div class="auth-card">
+      <a href="index.html" class="back-link">← На главную</a>
+      <div class="tabs-nav">
+        <a href="login.html" class="active">Вход</a>
+        <a href="register.html">Регистрация</a>
+      </div>
+      <h1>Войти в аккаунт</h1>
+      <p class="sub">Рады снова вас видеть в CoreBridge</p>
+
+      <form autocomplete="on" novalidate>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" class="input" type="email" placeholder="your@email.com" autocomplete="email" />
+        </div>
+        <div class="field">
+          <label for="password">Пароль</label>
+          <div class="input-group">
+            <input id="password" class="input" type="password" placeholder="Введите пароль" autocomplete="current-password" />
+            <span class="eye" aria-label="Показать пароль">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="row-between">
+          <label class="cb"><input type="checkbox" /> Запомнить меня</label>
+          <a href="forgot-password.html" style="font-size:14px">Забыли пароль?</a>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-block btn-lg">Войти</button>
+
+        <div class="divider">или</div>
+
+        <button type="button" class="btn btn-outline btn-block google-btn">
+          <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 8 3l5.7-5.7C34.1 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.6 15.1 18.9 12 24 12c3.1 0 5.8 1.2 8 3l5.7-5.7C34.1 6.1 29.3 4 24 4c-7.7 0-14.4 4.4-17.7 10.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.6-5.3l-6.3-5.1c-2 1.5-4.5 2.4-7.3 2.4-5.3 0-9.8-3.4-11.3-8l-6.5 5C9.4 39.6 16.1 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4 5.5l6.3 5.1c-.4.4 6.4-4.6 6.4-14.1 0-1.3-.1-2.7-.4-4z"/></svg>
+          Войти через Google
+        </button>
+
+        <p class="switch-link">Нет аккаунта? <a href="register.html" style="font-weight:600">Зарегистрироваться</a></p>
+      </form>
+    </div>
+  </section>
+</main>
+</body>
+</html>

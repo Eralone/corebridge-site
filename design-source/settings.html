@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Настройки - CoreBridge</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .settings-grid { display:grid; grid-template-columns: 240px 1fr; gap: 32px; }
+  @media (max-width:1024px){ .settings-grid { grid-template-columns: 1fr; } }
+  .set-side a { display: block; padding: 10px 14px; border-radius: 8px; color: var(--text-muted); font-size: 14px; text-decoration: none; margin-bottom: 2px; }
+  .set-side a:hover { background: var(--bg-alt); color: var(--text); }
+  .set-side a.active { background: var(--navy-900); color: #fff; font-weight: 600; }
+  .card { background:#fff; border:1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+  .card + .card { margin-top: 20px; }
+  .card h3 { margin: 0 0 6px; font-size: 18px; }
+  .card .sub { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
+  .form-row { display: grid; grid-template-columns: 200px 1fr; gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--border); align-items: center; }
+  .form-row:last-child { border: none; padding-bottom: 0; }
+  .form-row label { font-weight: 600; font-size: 14px; }
+  .form-row .hint { color: var(--text-faint); font-size: 12px; margin-top: 4px; }
+
+  .toggle { position: relative; width: 40px; height: 22px; background: var(--border-strong); border-radius: 11px; cursor: pointer; flex-shrink: 0; transition: background .15s; }
+  .toggle::after { content: ""; position: absolute; left: 2px; top: 2px; width: 18px; height: 18px; background: #fff; border-radius: 50%; transition: .15s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+  .toggle.on { background: var(--success); }
+  .toggle.on::after { left: 20px; }
+
+  .api-key { display: flex; gap: 10px; align-items: center; background: var(--bg-alt); padding: 12px 16px; border-radius: 10px; font-family: var(--mono); font-size: 13px; }
+  .api-key code { flex: 1; letter-spacing: .02em; }
+  .avatar-lg { width: 80px; height: 80px; border-radius: 50%; background: var(--orange-500); color: #fff; font-size: 28px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+  .sess-row { display:flex; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .sess-row:last-child { border: none; }
+  .sess-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--bg-alt); display: flex; align-items: center; justify-content: center; }
+  .sess-row .info { flex: 1; font-size: 14px; }
+  .sess-row .meta { font-size: 12px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="side"></div>
+  <div class="app-main">
+    <div id="top"></div>
+    <main class="page">
+      <div class="page-head">
+        <div><h1>Настройки</h1><p class="text-muted">Профиль, компания, безопасность, уведомления, API</p></div>
+      </div>
+
+      <div class="settings-grid">
+        <aside class="set-side">
+          <a class="active">Профиль</a>
+          <a>Компания</a>
+          <a>Безопасность</a>
+          <a>Уведомления</a>
+          <a>API ключи</a>
+          <a>Команда</a>
+          <a>Webhooks</a>
+          <a>Интеграция 1С</a>
+          <a>Экспорт данных</a>
+          <a style="color:var(--danger)">Удалить аккаунт</a>
+        </aside>
+
+        <section>
+          <!-- СЕКЦИЯ: профиль -->
+          <div class="card">
+            <h3>Профиль</h3>
+            <p class="sub">Личная информация, видна только вам и команде</p>
+            <div class="form-row">
+              <label>Аватар</label>
+              <div class="row gap-16">
+                <div class="avatar-lg">КД</div>
+                <div><button class="btn btn-outline btn-sm">Загрузить фото</button><div class="hint">PNG или JPG, до 2 МБ</div></div>
+              </div>
+            </div>
+            <div class="form-row">
+              <label>Имя</label>
+              <div><input class="input" value="Дмитрий Королев"/></div>
+            </div>
+            <div class="form-row">
+              <label>Email</label>
+              <div><input class="input" value="a.kuznetsov@retail-m.ru"/><div class="hint">Подтверждён 12.01.2026 · <a href="#">Сменить</a></div></div>
+            </div>
+            <div class="form-row">
+              <label>Телефон</label>
+              <div><input class="input" value="+7 (916) 412‑85‑30"/></div>
+            </div>
+            <div class="form-row">
+              <label>Должность</label>
+              <div><input class="input" value="Руководитель e-commerce"/></div>
+            </div>
+            <div class="form-row">
+              <label>Язык интерфейса</label>
+              <div><select class="select"><option>Русский</option><option>English</option></select></div>
+            </div>
+            <div class="form-row">
+              <label>Часовой пояс</label>
+              <div><select class="select"><option>(UTC+3) Москва</option><option>(UTC+5) Екатеринбург</option><option>(UTC+7) Новосибирск</option></select></div>
+            </div>
+            <div class="row gap-8 mt-16">
+              <button class="btn btn-primary">Сохранить</button>
+              <button class="btn btn-ghost">Отмена</button>
+            </div>
+          </div>
+
+          <!-- СЕКЦИЯ: безопасность -->
+          <div class="card">
+            <h3>Безопасность</h3>
+            <p class="sub">Пароль, двухфакторная аутентификация, активные сессии</p>
+            <div class="form-row">
+              <label>Пароль</label>
+              <div><button class="btn btn-outline btn-sm">Изменить пароль</button><div class="hint">Последнее изменение 12.02.2026</div></div>
+            </div>
+            <div class="form-row">
+              <label>Двухфакторная</label>
+              <div class="row gap-16"><div class="toggle on"></div><span class="text-muted" style="font-size:13px">Включено через SMS · <a href="#">Настроить приложение</a></span></div>
+            </div>
+            <div class="form-row">
+              <label>Активные сессии</label>
+              <div style="width:100%">
+                <div class="sess-row">
+                  <div class="sess-icon">💻</div>
+                  <div class="info"><b>MacBook Pro · Safari</b><div class="meta">Москва · Сейчас · Эта сессия</div></div>
+                  <span class="badge badge-success badge-dot">Активна</span>
+                </div>
+                <div class="sess-row">
+                  <div class="sess-icon">📱</div>
+                  <div class="info"><b>iPhone 15 · CoreBridge App</b><div class="meta">Москва · 2 часа назад</div></div>
+                  <button class="btn btn-ghost btn-sm">Завершить</button>
+                </div>
+                <div class="sess-row">
+                  <div class="sess-icon">🖥️</div>
+                  <div class="info"><b>Windows · Chrome</b><div class="meta">Москва · Вчера</div></div>
+                  <button class="btn btn-ghost btn-sm">Завершить</button>
+                </div>
+                <button class="btn btn-danger-outline btn-sm mt-12">Завершить все остальные</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- СЕКЦИЯ: уведомления -->
+          <div class="card">
+            <h3>Уведомления</h3>
+            <p class="sub">Куда и о чём писать</p>
+            <div class="form-row">
+              <label>Ошибки интеграций</label>
+              <div class="row gap-20"><span class="row gap-8"><span class="toggle on"></span>Email</span><span class="row gap-8"><span class="toggle on"></span>Telegram</span><span class="row gap-8"><span class="toggle"></span>SMS</span></div>
+            </div>
+            <div class="form-row">
+              <label>Превышение лимитов</label>
+              <div class="row gap-20"><span class="row gap-8"><span class="toggle on"></span>Email</span><span class="row gap-8"><span class="toggle on"></span>Telegram</span><span class="row gap-8"><span class="toggle"></span>SMS</span></div>
+            </div>
+            <div class="form-row">
+              <label>Отчёты (раз в неделю)</label>
+              <div class="row gap-20"><span class="row gap-8"><span class="toggle on"></span>Email</span><span class="row gap-8"><span class="toggle"></span>Telegram</span></div>
+            </div>
+            <div class="form-row">
+              <label>Новости продукта</label>
+              <div class="row gap-20"><span class="row gap-8"><span class="toggle on"></span>Email (1 раз / мес)</span></div>
+            </div>
+          </div>
+
+          <!-- СЕКЦИЯ: API keys -->
+          <div class="card">
+            <h3>API ключи</h3>
+            <p class="sub">Для работы с REST API и .epf</p>
+            <div class="api-key">
+              <span class="badge badge-success badge-dot">prod</span>
+              <code>cb_live_8f3a91c2d5e74b0f9a1c6b8d••••••••</code>
+              <button class="btn btn-ghost btn-sm">Показать</button>
+              <button class="btn btn-ghost btn-sm">Копировать</button>
+              <button class="btn btn-danger-outline btn-sm">Отозвать</button>
+            </div>
+            <div class="api-key mt-12">
+              <span class="badge badge-warning badge-dot">test</span>
+              <code>cb_test_4e7c2b9a1f8d63520e9b7c4a••••••••</code>
+              <button class="btn btn-ghost btn-sm">Показать</button>
+              <button class="btn btn-ghost btn-sm">Копировать</button>
+              <button class="btn btn-danger-outline btn-sm">Отозвать</button>
+            </div>
+            <button class="btn btn-outline mt-16">+ Создать ключ</button>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+<script>window.CB_USER={name:'Дмитрий Королев',org:'Пробный тариф',initials:'КД',role:'user'};</script>
+<script src="assets/shell.js"></script>
+<script>
+  document.getElementById('side').outerHTML = window.renderSidebar('settings');
+  document.getElementById('top').outerHTML = window.renderTopbar('Настройки');
+</script>
+</body>
+</html>

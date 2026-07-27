@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тарифы CoreBridge</title>
+<meta name="description" content="Тарифы CoreBridge: Пробный (бесплатно), Старт 990 ₽, Бизнес 2490 ₽, Профессионал 5990 ₽ (30 дней за 10 ₽), Энтерпрайз по запросу. При годовой оплате скидка 20%.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/robokassa.css">
+<style>
+.p-hero{padding:60px 0 20px;text-align:center}
+.p-hero h1{font-size:clamp(32px,4vw,44px);margin-bottom:10px;letter-spacing:-0.02em}
+.p-hero p{color:var(--text-muted);max-width:540px;margin:0 auto;font-size:17px}
+.toggle{display:inline-flex;background:var(--bg-alt);border:1px solid var(--border);border-radius:100px;padding:4px;margin:24px auto 0}
+.toggle button{border:none;background:transparent;padding:10px 22px;border-radius:100px;font-weight:600;font-size:14px;cursor:pointer;color:var(--text-muted)}
+.toggle button.on{background:#fff;color:var(--navy-900);box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.toggle .save{font-size:11px;color:var(--success);font-weight:700;margin-left:6px}
+.plans{padding:40px 0 40px}
+.plan-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:stretch}
+@media(max-width:1100px){.plan-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.plan-grid{grid-template-columns:1fr}}
+.plan{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:28px;display:flex;flex-direction:column;position:relative}
+.plan.highlight{border-color:var(--orange-500);box-shadow:0 16px 40px rgba(255,107,53,.14)}
+.plan.current{border-color:var(--success);background:linear-gradient(180deg,rgba(31,157,85,.04),#fff)}
+.plan .tag{position:absolute;top:-12px;right:20px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;color:#fff}
+.plan .tag.t-pop{background:var(--orange-500)}
+.plan .tag.t-cur{background:var(--success)}
+.plan h4{margin:0 0 4px;font-size:16px;color:var(--navy-900)}
+.plan .pd{color:var(--text-muted);font-size:13px;min-height:38px;margin-top:6px}
+.plan .pr{font-size:30px;font-weight:800;letter-spacing:-0.02em;margin-top:10px}
+.plan .pr small{font-size:13px;color:var(--text-muted);font-weight:500}
+.plan .old{text-decoration:line-through;color:var(--text-faint);font-size:14px;margin-left:6px}
+.plan ul{list-style:none;padding:0;margin:18px 0;font-size:13.5px;flex:1}
+.plan li{padding:6px 0;display:flex;gap:8px;align-items:flex-start}
+.plan li::before{content:"✓";color:var(--success);font-weight:700;flex-shrink:0}
+.plan li.muted{color:var(--text-faint)}
+.plan li.muted::before{content:"·";color:var(--text-faint)}
+.cur-chip{display:inline-block;padding:10px;text-align:center;width:100%;background:var(--bg-alt);border-radius:10px;color:var(--success);font-weight:700;font-size:14px}
+
+.comp{padding:80px 0;background:var(--bg-alt)}
+.comp h2{text-align:center;font-size:32px;margin-bottom:30px}
+.comp-tbl{background:#fff;border-radius:var(--radius);overflow:auto;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:720px}
+table th,table td{padding:14px 18px;text-align:left;border-bottom:1px solid var(--border)}
+table th{background:var(--bg-alt);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-muted)}
+table td{text-align:center}
+table td:first-child,table th:first-child{text-align:left;font-weight:600}
+.check{color:var(--success);font-weight:700;font-size:16px}
+.dash{color:var(--text-faint)}
+
+.faq{padding:80px 0}
+.faq h2{text-align:center;font-size:32px;margin-bottom:30px}
+.faq-list{max-width:720px;margin:0 auto}
+details{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:10px;padding:18px 22px}
+summary{font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+summary::after{content:"+";font-size:22px;color:var(--orange-500);font-weight:400}
+details[open] summary::after{content:"−"}
+details p{margin:12px 0 0;color:var(--text-muted);line-height:1.7;font-size:14px}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container row" style="justify-content:space-between;align-items:center">
+    <a href="index.html" class="logo-mark"><span class="logo-glyph"></span>CoreBridge</a>
+    <nav class="nav-links">
+      <a href="index.html#features">Возможности</a><a href="integrations.html">Интеграции</a><a href="pricing.html" class="active">Тарифы</a><a href="docs.html">Документация</a><a href="about.html">
+</a>
+    </nav>
+    <div class="row gap-12">
+      <a href="login.html" class="btn btn-ghost">Войти</a>
+      <a href="register.html" class="btn btn-primary">Попробовать бесплатно</a>
+    </div>
+  </div>
+</header>
+
+<section class="p-hero">
+  <div class="container">
+    <div class="text-muted" style="font-size:13px;margin-bottom:12px"><a href="index.html" style="color:inherit;text-decoration:none">Главная</a> / Тарифы</div>
+    <h1>Понятные тарифы, без сюрпризов</h1>
+    <p>Начните с пробного - он активируется при регистрации автоматически. Оплачивайте месяц или год со скидкой 20%. Поменять тариф можно в любой момент.</p>
+    <div class="toggle" role="tablist">
+      <button class="on" data-period="m">Помесячно</button>
+      <button data-period="y">Ежегодно <span class="save">−20%</span></button>
+    </div>
+  </div>
+</section>
+
+<section class="plans">
+  <div class="container">
+    <div class="plan-grid" style="grid-template-columns:repeat(5,1fr)">
+
+      <div class="plan current">
+        <div class="tag t-cur">Активен</div>
+        <h4>Пробный</h4>
+        <div class="pr">0 ₽</div>
+        <div class="pd">Без карты. Активируется при регистрации.</div>
+        <ul>
+          <li>1 интеграция</li>
+          <li>500 операций в месяц</li>
+          <li>1 пользователь</li>
+          <li>Доступ к документации</li>
+        </ul>
+        <div class="cur-chip">Текущий</div>
+      </div>
+
+      <div class="plan">
+        <h4>Старт</h4>
+        <div class="pr"><span data-price="m" data-m="990" data-y="792">990</span> ₽<small>/мес</small></div>
+        <div class="pd">Для одного сервиса. Подходит к большинству интеграций.</div>
+        <ul>
+          <li>До 3 интеграций</li>
+          <li>До 5 000 операций в месяц</li>
+          <li>1 пользователь</li>
+          <li>Email-поддержка</li>
+          <li class="muted">n8n-воркфлоу недоступны</li>
+        </ul>
+        <button class="btn btn-outline btn-block" data-robokassa data-rk-plan="Старт" data-rk-amount="990" data-rk-period="мес">Оплатить</button>
+      </div>
+
+      <div class="plan">
+        <h4>Бизнес</h4>
+        <div class="pr"><span data-price="m" data-m="2490" data-y="1992">2 490</span> ₽<small>/мес</small></div>
+        <div class="pd">Универсальный тариф под ваши бизнес-процессы.</div>
+        <ul>
+          <li>До 10 интеграций</li>
+          <li>До 30 000 операций в месяц</li>
+          <li>До 3 пользователей</li>
+          <li>Поддержка в Telegram</li>
+          <li class="muted">n8n-воркфлоу недоступны</li>
+        </ul>
+        <button class="btn btn-outline btn-block" data-robokassa data-rk-plan="Бизнес" data-rk-amount="2490" data-rk-period="мес">Оплатить</button>
+      </div>
+
+      <div class="plan highlight">
+        <div class="tag t-pop">Популярный</div>
+        <h4>Профессионал</h4>
+        <div class="pr"><span data-price="m" data-m="5990" data-y="4792">5 990</span> ₽<small>/мес</small></div>
+        <div class="pd">Первые 30 дней за 10 рублей. Для тех, кому нужны собственные сценарии и автоматическая обработка передаваемых данных.</div>
+        <ul>
+          <li>До 20 интеграций</li>
+          <li>До 100 000 операций в месяц</li>
+          <li>До 5 пользователей</li>
+          <li>Поддержка в Telegram и по почте</li>
+          <li><b>Прямой доступ к n8n UI</b></li>
+        </ul>
+        <button class="btn btn-primary btn-block" data-robokassa data-rk-plan="Профессионал" data-rk-amount="5990" data-rk-period="мес">Попробовать</button>
+      </div>
+
+      <div class="plan">
+        <h4>Энтерпрайз</h4>
+        <div class="pr">По запросу</div>
+        <div class="pd">Для сетей, крупного бизнеса, on-premise.</div>
+        <ul>
+          <li>Без лимитов по интеграциям и операциям</li>
+          <li>Свой сервер (on-premise)</li>
+          <li>Доступ к n8n-воркфлоу</li>
+          <li>SLA 99.95%</li>
+          <li>Выделенный менеджер и поддержка 24/7</li>
+        </ul>
+        <a href="mailto:info@corebridge.ru?subject=Энтерпрайз%20тариф" class="btn btn-outline btn-block">Обсудить</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="comp">
+  <div class="container">
+    <h2>Сравнение тарифов</h2>
+    <div class="comp-tbl">
+      <table>
+        <thead><tr><th>Возможность</th><th>Пробный</th><th>Старт</th><th>Бизнес</th><th>Профессионал</th><th>Энтерпрайз</th></tr></thead>
+        <tbody>
+          <tr><td>Цена в месяц</td><td>0 ₽</td><td>990 ₽</td><td>2 490 ₽</td><td>5 990 ₽</td><td>По запросу</td></tr>
+          <tr><td>Количество интеграций</td><td>1</td><td>До 3</td><td>До 10</td><td>До 20</td><td>Без лимита</td></tr>
+          <tr><td>Операций в месяц</td><td>500</td><td>5 000</td><td>30 000</td><td>100 000</td><td>Без лимита</td></tr>
+          <tr><td>Пользователей в компании</td><td>1</td><td>1</td><td>3</td><td>5</td><td>Без лимита</td></tr>
+          <tr><td>Все 4 конфигурации 1С</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+          <tr><td>Полный каталог (33 сервиса)</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+          <tr><td>Прямой доступ к n8n UI</td><td class="dash">−</td><td class="dash">−</td><td class="dash">−</td><td class="check">✓</td><td class="check">✓</td></tr>
+          <tr><td>Поддержка в Telegram</td><td class="dash">−</td><td class="dash">−</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+          <tr><td>On-premise (свой сервер)</td><td class="dash">−</td><td class="dash">−</td><td class="dash">−</td><td class="dash">−</td><td class="check">✓</td></tr>
+          <tr><td>SLA 99.95%</td><td class="dash">−</td><td class="dash">−</td><td class="dash">−</td><td class="dash">−</td><td class="check">✓</td></tr>
+          <tr><td>
+</td><td>
+</td><td>
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="container">
+    <h2>Частые вопросы</h2>
+    <div class="faq-list">
+      <details open><summary>Что входит в пробный тариф?</summary><p>Пробный тариф бессрочный — активируется при первой авторизации и не имеет срока действия. Он включает 1 активную интеграцию и до 500 операций в месяц. Этого хватит, чтобы настроить связку с одним сервисом и убедиться, что всё работает. Карта при регистрации не требуется.</p></details>
+      <details><summary>Как считаются «операции»?</summary><p>Одна операция - это одно событие обмена: получение списка новых заказов, выгрузка остатков, создание чека оплаты. Для небольшого магазина с 1-2 каналами типично уходит 3 000-5 000 операций в месяц.</p></details>
+      <details><summary>Можно ли сменить тариф в середине месяца?</summary><p>Да. Повысить тариф можно в любой момент - доплачиваете разницу пропорционально оставшимся дням. Понизить - с начала следующего периода.</p></details>
+      <details><summary>Что будет при превышении лимита?</summary><p>Мы пришлём предупреждение на почту при достижении 80% и 100% лимита. После 100% новые операции ставятся в очередь до начала следующего периода или до перехода на план выше. Уже работающие интеграции не остановятся.</p></details>
+      <details><summary>Как оплатить?</summary><p>Физлицам — через Robokassa (карта, СБП, электронные кошельки). Юрлицам — по счёту, выставляем счёт и договор на реквизиты вашей организации. Оплата возможна помесячно или на год со скидкой 20%.</p></details>
+      <details><summary>Что такое n8n-воркфлоу?</summary><p>Это конструктор собственных сценариев: «если заказ старше 2 часов и оплачен - отправить в Telegram-канал с пометкой». На Энтерпрайзе вы получаете доступ к отдельному интерфейсу n8n внутри личного кабинета.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><a href="index.html" class="logo-mark"><span class="logo-glyph"></span>CoreBridge</a><p class="text-muted mt-16" style="max-width:300px;font-size:13px">No-code сервисная интеграция 1С.</p></div>
+      <div><h5>Продукт</h5><a href="integrations.html">Интеграции</a><a href="pricing.html">Тарифы</a><a href="docs.html">Документация</a></div>
+      <div><h5>Компания</h5><a href="about.html">О проекте</a><a href="for-business.html">Для бизнеса</a><a href="contacts.html">Контакты</a></div>
+      <div><h5>Связь</h5><a href="mailto:info@corebridge.ru">info@corebridge.ru</a><a href="support.html">Поддержка</a></div>
+      <div><h5>Правовое</h5><a href="oferta.html">Оферта</a><a href="privacy.html">Конфиденциальность</a><a href="terms.html">Условия использования</a></div>
+    </div>
+    <div class="footer-bottom">© 2026 CoreBridge<br>ИП Королев Дмитрий Павлович · ИНН 120704119287</div>
+  </div>
+</footer>
+
+<script src="assets/popup.js"></script>
+<script src="assets/robokassa.js"></script>
+<script>
+// Period toggle
+document.querySelectorAll('.toggle button').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.toggle button').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    const p = btn.dataset.period;
+    document.querySelectorAll('[data-price]').forEach(el => {
+      const v = p==='y' ? el.dataset.y : el.dataset.m;
+      el.textContent = Number(v).toLocaleString('ru-RU');
+    });
+  };
+});
+</script>
+</body>
+</html>

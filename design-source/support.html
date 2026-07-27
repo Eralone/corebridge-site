@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Поддержка - CoreBridge</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .sup-grid { display:grid; grid-template-columns: 300px 1fr 340px; gap: 0; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; min-height: 640px; }
+  @media (max-width:1100px){ .sup-grid { grid-template-columns: 260px 1fr; } .sup-info { display:none; } }
+  .ticket-list { border-right: 1px solid var(--border); overflow-y: auto; }
+  .ticket-list header { padding: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .ticket-list header h3 { margin: 0; font-size: 15px; }
+  .ticket-item { padding: 14px 16px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .ticket-item:hover { background: var(--bg-tinted); }
+  .ticket-item.active { background: var(--blue-100); border-left: 3px solid var(--blue-500); padding-left: 13px; }
+  .ticket-item .subj { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .ticket-item .preview { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ticket-item .meta { display:flex; justify-content:space-between; margin-top: 6px; font-size: 11px; color: var(--text-faint); }
+
+  .chat-wrap { display:flex; flex-direction: column; }
+  .chat-head { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .chat-body { flex: 1; padding: 20px; background: var(--bg-alt); display: flex; flex-direction: column; gap: 16px; overflow-y: auto; }
+  .msg { max-width: 70%; padding: 12px 16px; border-radius: 14px; font-size: 14px; line-height: 1.5; }
+  .msg .when { font-size: 11px; color: var(--text-faint); margin-top: 4px; }
+  .msg.user { align-self: flex-end; background: var(--navy-900); color: #fff; border-bottom-right-radius: 4px; }
+  .msg.user .when { color: rgba(255,255,255,.7); }
+  .msg.agent { background: #fff; border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+  .agent-chip { display:flex; gap:8px; align-items:center; font-size: 12px; color: var(--text-muted); }
+  .agent-ava { width:24px; height:24px; border-radius:50%; background: var(--orange-500); color:#fff; font-size:11px; font-weight:700; display:flex;align-items:center;justify-content:center; }
+  .chat-input { padding: 14px 20px; border-top: 1px solid var(--border); display: flex; gap: 10px; background: #fff; }
+  .chat-input textarea { flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; resize: none; font-family: inherit; font-size: 14px; }
+  .sup-info { padding: 20px; border-left: 1px solid var(--border); overflow-y: auto; }
+  .sup-info h4 { font-size: 13px; color: var(--text-faint); text-transform: uppercase; letter-spacing: .08em; margin: 20px 0 8px; font-weight: 600; }
+  .sup-info h4:first-child { margin-top: 0; }
+
+  .chan-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  @media (max-width:1024px){ .chan-grid { grid-template-columns: repeat(2, 1fr); } }
+  .chan { background:#fff; border:1px solid var(--border); border-radius: var(--radius); padding: 20px; display:flex; gap:14px; align-items:center; text-decoration:none; color: var(--text); }
+  .chan:hover { border-color: var(--blue-500); text-decoration: none; }
+  .chan-ic { width:44px; height:44px; border-radius: 10px; display:flex; align-items:center; justify-content:center; }
+  .kb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
+  @media (max-width: 900px) { .kb-grid { grid-template-columns: 1fr; } }
+  .kb-card { background:#fff; border:1px solid var(--border); border-radius: var(--radius); padding: 22px; }
+  .kb-card h4 { margin: 0 0 10px; font-size: 15px; }
+  .kb-card ul { list-style: none; padding:0; margin:0; font-size: 13px; }
+  .kb-card li { padding: 6px 0; }
+  .kb-card a { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="side"></div>
+  <div class="app-main">
+    <div id="top"></div>
+    <main class="page">
+      <div class="page-head">
+        <div><h1>Поддержка</h1><p class="text-muted">Среднее время ответа - 2 часа в рабочие часы · С 9:00 до 21:00 по МСК</p></div>
+        <button class="btn btn-primary">+ Новый тикет</button>
+      </div>
+
+      <!-- СЕКЦИЯ: каналы связи -->
+      <div class="chan-grid">
+        <a href="#" class="chan"><div class="chan-ic" style="background:var(--blue-100);color:var(--blue-500)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><b>Онлайн-чат</b><div class="text-muted" style="font-size:12px">Обычно ~4 мин</div></div></a>
+        <a href="#" class="chan"><div class="chan-ic" style="background:rgba(34,158,217,.12);color:#229ED9"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="m22 3-10 9L2 7v13l20-8z"/></svg></div><div><b>Telegram</b><div class="text-muted" style="font-size:12px">@corebridge_support</div></div></a>
+        <a href="#" class="chan"><div class="chan-ic" style="background:rgba(31,157,85,.12);color:var(--success)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-17.7-17.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.6a16 16 0 0 0 6.4 6.4l1.1-1.1a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2z"/></svg></div><div><b>Телефон</b><div class="text-muted" style="font-size:12px">+7 (495) 181‑12‑34</div></div></a>
+        <a href="docs.html" class="chan"><div class="chan-ic" style="background:rgba(255,107,53,.12);color:var(--orange-500)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div><b>База знаний</b><div class="text-muted" style="font-size:12px">180+ статей</div></div></a>
+      </div>
+
+      <!-- СЕКЦИЯ: чат с поддержкой -->
+      <div class="sup-grid">
+        <aside class="ticket-list">
+          <header><h3>Мои тикеты</h3><span class="badge badge-info">3 открыто</span></header>
+          <div class="ticket-item active">
+            <div class="subj">Ошибка 401 в Битрикс24</div>
+            <div class="preview">Алексей, здравствуйте! Давайте посмотрим…</div>
+            <div class="meta"><span>#2141</span><span>Сейчас</span></div>
+          </div>
+          <div class="ticket-item">
+            <div class="subj">Как настроить FBO на Ozon?</div>
+            <div class="preview">Спасибо, всё получилось!</div>
+            <div class="meta"><span class="badge badge-success" style="font-size:10px;padding:2px 6px">Closed</span><span>Вчера</span></div>
+          </div>
+          <div class="ticket-item">
+            <div class="subj">Настройка воркфлоу ЮKassa→ПКО</div>
+            <div class="preview">Приложил шаги, попробуйте пересоздать…</div>
+            <div class="meta"><span>#2108</span><span>2 дня назад</span></div>
+          </div>
+          <div class="ticket-item">
+            <div class="subj">Обновление .epf для УТ 11.5</div>
+            <div class="preview">Загрузил в базу, всё синхронизируется…</div>
+            <div class="meta"><span class="badge badge-success" style="font-size:10px;padding:2px 6px">Closed</span><span>11.04</span></div>
+          </div>
+        </aside>
+
+        <section class="chat-wrap">
+          <div class="chat-head">
+            <div>
+              <b>#2141 · Ошибка 401 в Битрикс24</b>
+              <div class="text-muted" style="font-size:12px;margin-top:2px">Интеграция: CRM_001 · Приоритет: высокий</div>
+            </div>
+            <span class="badge badge-warning">В работе</span>
+          </div>
+          <div class="chat-body">
+            <div class="msg user">
+              <div>Здравствуйте! После последнего обновления Битрикс24 перестал синхронизировать сделки. В логе 401 Unauthorized. Вчера всё работало.</div>
+              <div class="when">12:42</div>
+            </div>
+            <div class="agent-chip"><div class="agent-ava">МК</div>Мария · Поддержка CoreBridge</div>
+            <div class="msg agent">
+              <div>Алексей, здравствуйте! Похоже, истёк OAuth-токен на стороне Битрикс24 - это штатная ситуация после массового сброса прав.<br><br>Давайте сделаем так:<br>1. Зайдите в <b>Интеграции → CRM_001 → Настроить</b><br>2. Нажмите <b>«Переподключить»</b> и авторизуйтесь заново<br>3. Проверьте тестовую синхронизацию</div>
+              <div class="when">12:47</div>
+            </div>
+            <div class="msg user">
+              <div>Сделал, всё вернулось! Огонь, спасибо 🙌</div>
+              <div class="when">12:51</div>
+            </div>
+            <div class="msg agent">
+              <div>Отлично! Оставляю тикет открытым на сутки - если через день всё стабильно, закроем. Хорошего дня!</div>
+              <div class="when">12:52</div>
+            </div>
+          </div>
+          <div class="chat-input">
+            <textarea rows="2" placeholder="Напишите сообщение…"></textarea>
+            <button class="btn btn-ghost">📎</button>
+            <button class="btn btn-primary">Отправить</button>
+          </div>
+        </section>
+
+        <aside class="sup-info">
+          <h4>Информация</h4>
+          <div style="font-size:13px;line-height:1.7">
+            <div class="text-muted">ID тикета</div><div><b>#2141</b></div>
+            <div class="text-muted mt-8">Создан</div><div>Сегодня, 12:42</div>
+            <div class="text-muted mt-8">Компания</div><div>Ритейл-М</div>
+            <div class="text-muted mt-8">Тариф</div><div>Профессиональный</div>
+          </div>
+          <h4>Связано</h4>
+          <a href="#" style="font-size:13px">→ Интеграция CRM_001</a><br>
+          <a href="#" style="font-size:13px">→ Логи за последний час</a>
+          <h4>Рекомендуем</h4>
+          <ul style="list-style:none;padding:0;margin:0;font-size:13px">
+            <li style="padding:4px 0">• <a href="#">Что делать при 401 в CRM?</a></li>
+            <li style="padding:4px 0">• <a href="#">Переподключение OAuth</a></li>
+            <li style="padding:4px 0">• <a href="#">Автообновление токенов</a></li>
+          </ul>
+        </aside>
+      </div>
+
+      <!-- СЕКЦИЯ: база знаний -->
+      <h2 class="mt-32">База знаний</h2>
+      <div class="kb-grid">
+        <div class="kb-card"><h4>🚀 Начало работы</h4><ul>
+          <li>• <a href="#">Установка .epf в 1С</a></li>
+          <li>• <a href="#">Первая интеграция примерно за 30 минут</a></li>
+          <li>• <a href="#">Требования к конфигурации</a></li>
+          <li>• <a href="#">Миграция с 1С-Битрикс.Модуля</a></li>
+        </ul></div>
+        <div class="kb-card"><h4>🛒 Маркетплейсы</h4><ul>
+          <li>• <a href="#">Ozon: FBO и FBS</a></li>
+          <li>• <a href="#">Wildberries: маркировка</a></li>
+          <li>• <a href="#">Яндекс Маркет: этикетки</a></li>
+          <li>• <a href="#">Синхронизация остатков по складам</a></li>
+        </ul></div>
+        <div class="kb-card"><h4>🔄 CRM</h4><ul>
+          <li>• <a href="#">Битрикс24: настройка OAuth</a></li>
+          <li>• <a href="#">AmoCRM: сделки и контакты</a></li>
+          <li>• <a href="#">Двусторонняя синхронизация</a></li>
+          <li>• <a href="#">Статусы сделок → документы 1С</a></li>
+        </ul></div>
+      </div>
+    </main>
+  </div>
+</div>
+<script>window.CB_USER={name:'Дмитрий Королев',org:'Пробный тариф',initials:'КД',role:'user'};</script>
+<script src="assets/shell.js"></script>
+<script>
+  document.getElementById('side').outerHTML = window.renderSidebar('support');
+  document.getElementById('top').outerHTML = window.renderTopbar('Поддержка');
+</script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дашборд - CoreBridge | Личный кабинет</title>
+<meta name="description" content="Дашборд CoreBridge - мониторинг интеграций 1С, синхронизация заказов, остатков и цен.">
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .chart-card { background:#fff; border:1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+  .chart-head { display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+  .chart-head h3 { margin:0; font-size:18px; }
+  .seg { display:inline-flex; padding:4px; background: var(--bg-alt); border-radius: 10px; gap: 2px; }
+  .seg input { display:none; }
+  .seg label { padding: 6px 14px; font-size: 13px; font-weight: 600; color: var(--text-muted); border-radius: 7px; cursor: pointer; }
+  .seg input:checked + label { background: #fff; color: var(--navy-900); box-shadow: var(--shadow-sm); }
+
+  .chart-svg { width: 100%; height: 220px; }
+
+  .grid-dash { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 24px; }
+  @media (max-width: 1024px) { .grid-dash { grid-template-columns: 1fr; } }
+
+  .events-list { display: flex; flex-direction: column; gap: 2px; }
+  .event {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 12px; border-radius: 10px;
+  }
+  .event:hover { background: var(--bg-tinted); }
+  .event-dot {
+    width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .event-dot.ok { background: var(--success-bg); color: var(--success); }
+  .event-dot.err { background: var(--danger-bg); color: var(--danger); }
+  .event-dot.info { background: var(--info-bg); color: var(--info); }
+  .event-text { font-size: 14px; color: var(--text); }
+  .event-time { font-size: 12px; color: var(--text-faint); margin-top: 2px; }
+  .event-text b { color: var(--navy-900); }
+
+  .int-row {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 80px;
+    gap: 16px; align-items: center;
+    padding: 14px 0; border-bottom: 1px solid var(--border);
+  }
+  .int-row:last-child { border: none; }
+  .int-row .ic { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color:#fff; font-weight:700; font-size:12px; }
+  .int-name { display: flex; gap: 12px; align-items: center; }
+  .int-name .nm { font-weight: 600; font-size: 14px; }
+  .int-name .id { font-family: var(--mono); font-size: 11px; color: var(--text-faint); }
+
+  .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+  .qa {
+    background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px;
+    display: flex; gap: 14px; align-items: center; text-decoration: none; color: var(--text);
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .qa:hover { border-color: var(--blue-500); transform: translateY(-2px); text-decoration: none; }
+  .qa-ic { width: 44px; height: 44px; border-radius: 10px; background: var(--blue-100); color: var(--blue-500); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .qa .ttl { font-weight: 600; font-size: 14px; }
+  .qa .sb { font-size: 12px; color: var(--text-muted); }
+  @media (max-width: 1024px) { .quick-actions { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="side"></div>
+  <div class="app-main">
+    <div id="top"></div>
+    <main class="page">
+      <div class="page-head">
+        <div>
+          <h1>Дашборд</h1>
+          <p class="text-muted">Добрый день, Алексей. Все ключевые интеграции в норме.</p>
+        </div>
+        <div class="row">
+          <a href="integrations-app.html" class="btn btn-outline">+ Новая интеграция</a>
+          <a href="#" class="btn btn-primary">Скачать .epf</a>
+        </div>
+      </div>
+
+      <!-- СЕКЦИЯ: KPI -->
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-head"><span>Активные интеграции</span>
+            <span class="kpi-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-13h-8l1-7z"/></svg></span>
+          </div>
+          <div class="kpi-value">8</div>
+          <div class="kpi-delta up">+2 за неделю</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-head"><span>Операций за месяц</span>
+            <span class="kpi-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></span>
+          </div>
+          <div class="kpi-value">42.7<span style="font-size:18px;color:var(--text-muted)"> тыс</span></div>
+          <div class="kpi-delta up">+12% к апрелю</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-head"><span>Успешность синхронизации</span>
+            <span class="kpi-icon" style="background:var(--success-bg);color:var(--success)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg></span>
+          </div>
+          <div class="kpi-value">99.7<span style="font-size:18px">%</span></div>
+          <div class="kpi-delta up">+0.3 п.п.</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-head"><span>Текущий тариф</span>
+            <span class="kpi-icon" style="background:rgba(255,107,53,.12);color:var(--orange-500)"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M5 16L3 8l5.5 4L12 5l3.5 7L21 8l-2 8H5z"/></svg></span>
+          </div>
+          <div class="kpi-value" style="font-size:26px">Пробный</div>
+          <div class="kpi-delta" style="color:var(--text-muted)">1 интеграция · 500 операций/мес</div>
+        </div>
+      </div>
+
+      <!-- СЕКЦИЯ: Активность + события -->
+      <div class="grid-dash">
+        <div class="chart-card">
+          <div class="chart-head">
+            <div><h3>Активность интеграций</h3><div class="text-faint" style="font-size:13px">Событий в сутки</div></div>
+            <div class="seg">
+              <input type="radio" name="range" id="r1"/><label for="r1">7д</label>
+              <input type="radio" name="range" id="r2" checked/><label for="r2">30д</label>
+              <input type="radio" name="range" id="r3"/><label for="r3">90д</label>
+            </div>
+          </div>
+          <svg class="chart-svg" viewBox="0 0 640 220" preserveAspectRatio="none" aria-label="График активности">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#3E92CC" stop-opacity=".35"/><stop offset="100%" stop-color="#3E92CC" stop-opacity="0"/></linearGradient>
+            </defs>
+            <g stroke="#EEF2F9" stroke-width="1">
+              <line x1="0" y1="40" x2="640" y2="40"/><line x1="0" y1="90" x2="640" y2="90"/>
+              <line x1="0" y1="140" x2="640" y2="140"/><line x1="0" y1="190" x2="640" y2="190"/>
+            </g>
+            <path d="M0,160 L30,150 L60,135 L90,120 L120,130 L150,95 L180,85 L210,100 L240,70 L270,60 L300,75 L330,50 L360,65 L390,40 L420,55 L450,30 L480,45 L510,35 L540,20 L570,30 L600,25 L640,40 L640,220 L0,220 Z"
+                  fill="url(#g1)"/>
+            <path d="M0,160 L30,150 L60,135 L90,120 L120,130 L150,95 L180,85 L210,100 L240,70 L270,60 L300,75 L330,50 L360,65 L390,40 L420,55 L450,30 L480,45 L510,35 L540,20 L570,30 L600,25 L640,40"
+                  fill="none" stroke="#3E92CC" stroke-width="2.5"/>
+          </svg>
+          <div class="row mt-16" style="gap:20px;font-size:13px;color:var(--text-muted)">
+            <span><span style="display:inline-block;width:10px;height:10px;background:var(--blue-500);border-radius:50%;margin-right:6px"></span>Синхронизации: 42 712</span>
+            <span><span style="display:inline-block;width:10px;height:10px;background:var(--success);border-radius:50%;margin-right:6px"></span>Успешно: 42 583</span>
+            <span><span style="display:inline-block;width:10px;height:10px;background:var(--danger);border-radius:50%;margin-right:6px"></span>Ошибок: 129</span>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-head"><h3>Последние события</h3><a href="#" style="font-size:13px">Все →</a></div>
+          <div class="events-list">
+            <div class="event"><div class="event-dot ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg></div><div><div class="event-text">Синхронизация остатков <b>Ozon MP_001</b> завершена</div><div class="event-time">3 минуты назад · 842 позиции</div></div></div>
+            <div class="event"><div class="event-dot info"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16v-4M12 8h.01"/><circle cx="12" cy="12" r="10"/></svg></div><div><div class="event-text">Новый заказ <b>#WB-83412</b> из Wildberries → документ в 1С</div><div class="event-time">12 минут назад</div></div></div>
+            <div class="event"><div class="event-dot err"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6 6 18M6 6l12 12"/></svg></div><div><div class="event-text">Ошибка API <b>Битрикс24 CRM_002</b>: 401 Unauthorized</div><div class="event-time">28 минут назад · Retry через 5 мин</div></div></div>
+            <div class="event"><div class="event-dot ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg></div><div><div class="event-text">ЮKassa подтвердила оплату счёта <b>ИК-00442</b> → ПКО создан</div><div class="event-time">52 минуты назад · 124 800 ₽</div></div></div>
+            <div class="event"><div class="event-dot info"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 17 6-6 4 4 8-8"/></svg></div><div><div class="event-text">Воркфлоу <b>«1С → Telegram»</b> выполнен 127 раз</div><div class="event-time">2 часа назад</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- СЕКЦИЯ: Интеграции (последние) -->
+      <div class="chart-card mt-24">
+        <div class="chart-head">
+          <h3>Мои интеграции</h3>
+          <a href="integrations-app.html" style="font-size:13px">Все интеграции →</a>
+        </div>
+        <div>
+          <div class="int-row">
+            <div class="int-name"><div class="ic" style="background:#005bff">O</div><div><div class="nm">Ozon (основной)</div><div class="id">MP_001 · marketplace</div></div></div>
+            <span class="badge badge-success badge-dot">Active</span>
+            <span class="text-muted" style="font-size:13px">12 284 / мес</span>
+            <span class="text-muted" style="font-size:13px">3 мин назад</span>
+            <div class="text-right"><button class="btn btn-outline btn-sm">Настроить</button></div>
+          </div>
+          <div class="int-row">
+            <div class="int-name"><div class="ic" style="background:#CB11AB">WB</div><div><div class="nm">Wildberries</div><div class="id">MP_002 · marketplace</div></div></div>
+            <span class="badge badge-success badge-dot">Active</span>
+            <span class="text-muted" style="font-size:13px">8 942 / мес</span>
+            <span class="text-muted" style="font-size:13px">5 мин назад</span>
+            <div class="text-right"><button class="btn btn-outline btn-sm">Настроить</button></div>
+          </div>
+          <div class="int-row">
+            <div class="int-name"><div class="ic" style="background:#FFCC00;color:#000">ЯМ</div><div><div class="nm">Яндекс Маркет</div><div class="id">MP_003 · marketplace</div></div></div>
+            <span class="badge badge-warning badge-dot">Paused</span>
+            <span class="text-muted" style="font-size:13px">2 118 / мес</span>
+            <span class="text-muted" style="font-size:13px">вчера</span>
+            <div class="text-right"><button class="btn btn-outline btn-sm">Настроить</button></div>
+          </div>
+          <div class="int-row">
+            <div class="int-name"><div class="ic" style="background:#2D8CFF">Б24</div><div><div class="nm">Битрикс24 (продажи)</div><div class="id">CRM_001 · crm</div></div></div>
+            <span class="badge badge-danger badge-dot">Error</span>
+            <span class="text-muted" style="font-size:13px">4 520 / мес</span>
+            <span class="text-muted" style="font-size:13px">28 мин назад</span>
+            <div class="text-right"><button class="btn btn-outline btn-sm">Настроить</button></div>
+          </div>
+          <div class="int-row">
+            <div class="int-name"><div class="ic" style="background:#00B956">СД</div><div><div class="nm">СДЭК</div><div class="id">SVC_001 · services</div></div></div>
+            <span class="badge badge-success badge-dot">Active</span>
+            <span class="text-muted" style="font-size:13px">1 804 / мес</span>
+            <span class="text-muted" style="font-size:13px">14 мин назад</span>
+            <div class="text-right"><button class="btn btn-outline btn-sm">Настроить</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- СЕКЦИЯ: Quick actions -->
+      <div class="quick-actions">
+        <a href="integrations-app.html" class="qa">
+          <div class="qa-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+          <div><div class="ttl">Добавить интеграцию</div><div class="sb">Маркетплейс, CRM, сервис</div></div>
+        </a>
+        <a href="docs.html" class="qa">
+          <div class="qa-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg></div>
+          <div><div class="ttl">Документация</div><div class="sb">Гайды и API Reference</div></div>
+        </a>
+        <a href="support.html" class="qa">
+          <div class="qa-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <div><div class="ttl">Поддержка</div><div class="sb">Ответ в среднем - 2 часа</div></div>
+        </a>
+        <a href="billing.html" class="qa">
+          <div class="qa-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 16 3 8l5.5 4L12 5l3.5 7L21 8l-2 8H5z"/></svg></div>
+          <div><div class="ttl">Сменить тариф</div><div class="sb">30 дней интеграций за 10 ₽</div></div>
+        </a>
+      </div>
+    </main>
+  </div>
+</div>
+<script>window.CB_USER={name:'Дмитрий Королев',org:'Пробный тариф',initials:'КД',role:'user'};</script>
+<script src="assets/shell.js"></script>
+<script>
+  document.getElementById('side').outerHTML = window.renderSidebar('dashboard');
+  document.getElementById('top').outerHTML = window.renderTopbar('Дашборд');
+</script>
+</body>
+</html>

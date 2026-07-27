@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Интеграции - CoreBridge | Автоматизация процессов 1С</title>
+<meta name="description" content="Управление интеграциями 1С с маркетплейсами, CRM и сервисами. No-code подключение примерно за 30 минут.">
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .toolbar { display:flex; justify-content:space-between; align-items:center; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+  .tabs { display: inline-flex; gap: 4px; padding: 4px; background: #fff; border: 1px solid var(--border); border-radius: 10px; }
+  .tabs a { padding: 7px 14px; border-radius: 7px; font-size: 13px; font-weight: 600; color: var(--text-muted); text-decoration: none; }
+  .tabs a.active { background: var(--navy-900); color: #fff; }
+  .filters { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .search-input { position: relative; }
+  .search-input .input { padding-left: 38px; width: 280px; }
+  .search-input svg { position: absolute; top: 50%; left: 12px; transform: translateY(-50%); color: var(--text-faint); }
+
+  .int-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 1100px) { .int-cards { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 700px) { .int-cards { grid-template-columns: 1fr; } }
+  .icard { background:#fff; border:1px solid var(--border); border-radius: var(--radius); padding: 20px; display:flex; flex-direction: column; gap: 12px; transition: border-color .15s, box-shadow .15s; }
+  .icard:hover { border-color: var(--border-strong); box-shadow: var(--shadow-sm); }
+  .icard-head { display: flex; justify-content: space-between; align-items: flex-start; }
+  .ic-ic { width: 46px; height: 46px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color:#fff; font-weight:700; font-size:14px; }
+  .icard h4 { margin: 0; font-size: 16px; }
+  .icard .id { font-family: var(--mono); font-size: 11px; color: var(--text-faint); }
+  .meta-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); padding: 10px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .meta-row span strong { color: var(--text); display: block; font-size: 14px; }
+  .icard-footer { display: flex; justify-content: space-between; gap: 8px; }
+  .menu-dot { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+  .icard-empty {
+    background: transparent; border: 2px dashed var(--border-strong);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; min-height: 260px; gap: 12px; color: var(--text-muted);
+    text-decoration: none;
+  }
+  .icard-empty:hover { border-color: var(--blue-500); color: var(--blue-500); }
+  .icard-empty .pluscir { width: 48px; height: 48px; border-radius: 50%; background: var(--bg-alt); display:flex; align-items:center; justify-content:center; }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(10,22,38,.45); backdrop-filter: blur(2px);
+    display: flex; align-items: center; justify-content: center; padding: 24px; z-index: 50;
+  }
+  .modal {
+    background: #fff; border-radius: var(--radius-lg); width: 100%; max-width: 640px;
+    box-shadow: 0 20px 60px rgba(10,36,99,.2); max-height: 85vh; overflow: auto;
+  }
+  .modal-head { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .modal-head h2 { margin: 0; font-size: 20px; }
+  .modal-body { padding: 24px; }
+  .modal-foot { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; }
+
+  .catalog-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+  .catalog-tile { border: 1px solid var(--border); border-radius: 10px; padding: 14px 10px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; }
+  .catalog-tile:hover { border-color: var(--blue-500); }
+  .catalog-tile.sel { border-color: var(--blue-500); background: var(--blue-100); }
+
+  .preview-block {
+    margin-top: 40px; padding-top: 40px; border-top: 1px dashed var(--border);
+  }
+  .preview-label { font-family: var(--mono); font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px; }
+
+  /* Empty state preview */
+  .empty-state { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 64px 24px; text-align: center; }
+  .empty-state svg { margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="side"></div>
+  <div class="app-main">
+    <div id="top"></div>
+    <main class="page">
+      <div class="page-head">
+        <div>
+          <h1>Мои интеграции</h1>
+          <p class="text-muted">Управляйте подключёнными сервисами и автоматизациями · <span class="badge badge-success badge-dot">4 активных</span> · <span class="badge badge-danger badge-dot">1 с ошибкой</span></p>
+        </div>
+        <button class="btn btn-primary" data-cb-add>+ Добавить интеграцию</button>
+      </div>
+
+      <!-- СЕКЦИЯ: toolbar -->
+      <div class="toolbar">
+        <div class="tabs">
+          <a class="active">Все (6)</a>
+          <a>Маркетплейсы (3)</a>
+          <a>CRM (2)</a>
+          <a>Сервисы (1)</a>
+          <a>Соцсети (0)</a>
+          <a>Аналитика (0)</a>
+        </div>
+        <div class="filters">
+          <div class="search-input">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg>
+            <input class="input" placeholder="Поиск по названию…"/>
+          </div>
+          <select class="select" style="width:auto">
+            <option>Все статусы</option><option>Active</option><option>Paused</option><option>Error</option>
+          </select>
+          <div class="row" style="gap:4px;padding:4px;border:1px solid var(--border);border-radius:8px;background:#fff">
+            <button class="btn btn-sm" style="background:var(--bg-alt)">▦</button>
+            <button class="btn btn-sm btn-ghost">☰</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- СЕКЦИЯ: cards grid -->
+      <div class="int-cards">
+        <article class="icard" data-int="ozon" data-name="Ozon - основной кабинет" data-int-id="MP_001" data-status="Active" data-status-kind="badge-success" data-requests="12 284 / мес" data-last="3 мин назад" data-running="true">
+          <div class="icard-head">
+            <div class="row gap-12">
+              <div class="ic-ic" style="background:#005bff">O</div>
+              <div><h4>Ozon - основной кабинет</h4><div class="id">MP_001</div></div>
+            </div>
+          </div>
+          <div class="row gap-8" style="flex-wrap:wrap">
+            <span class="badge badge-neutral">marketplace</span>
+            <span class="badge badge-success badge-dot">Active</span>
+          </div>
+          <div class="meta-row">
+            <span>Запросов<strong>12 284 / мес</strong></span>
+            <span>Последняя<strong>3 мин назад</strong></span>
+            <span>Склад 1С<strong>Основной</strong></span>
+          </div>
+          <div class="icard-footer">
+            <button class="btn btn-outline btn-sm" style="flex:1" data-cb-action="settings">Настроить</button>
+          </div>
+        </article>
+
+        <article class="icard" data-int="wb" data-name="Wildberries" data-int-id="MP_002" data-status="Active" data-status-kind="badge-success" data-requests="8 942 / мес" data-last="5 мин назад" data-running="true">
+          <div class="icard-head">
+            <div class="row gap-12">
+              <div class="ic-ic" style="background:#CB11AB">WB</div>
+              <div><h4>Wildberries</h4><div class="id">MP_002</div></div>
+            </div>
+          </div>
+          <div class="row gap-8"><span class="badge badge-neutral">marketplace</span><span class="badge badge-success badge-dot">Active</span></div>
+          <div class="meta-row">
+            <span>Запросов<strong>8 942 / мес</strong></span>
+            <span>Последняя<strong>5 мин назад</strong></span>
+            <span>Склад 1С<strong>FBO-1</strong></span>
+          </div>
+          <div class="icard-footer">
+            <button class="btn btn-outline btn-sm" style="flex:1" data-cb-action="settings">Настроить</button>
+          </div>
+        </article>
+
+        <article class="icard" data-int="ym" data-name="Яндекс Маркет" data-int-id="MP_003" data-status="Paused" data-status-kind="badge-warning" data-requests="2 118 / мес" data-last="вчера" data-running="false">
+          <div class="icard-head">
+            <div class="row gap-12">
+              <div class="ic-ic" style="background:#FFCC00;color:#000">ЯМ</div>
+              <div><h4>Яндекс Маркет</h4><div class="id">MP_003</div></div>
+            </div>
+          </div>
+          <div class="row gap-8"><span class="badge badge-neutral">marketplace</span><span class="badge badge-warning badge-dot">Paused</span></div>
+          <div class="meta-row">
+            <span>Запросов<strong>2 118 / мес</strong></span>
+            <span>Последняя<strong>вчера</strong></span>
+            <span>Склад 1С<strong>Основной</strong></span>
+          </div>
+          <div class="icard-footer">
+            <button class="btn btn-outline btn-sm" style="flex:1" data-cb-action="settings">Настроить</button>
+          </div>
+        </article>
+
+        <article class="icard" data-int="bitrix24" data-name="Битрикс24 (продажи)" data-int-id="CRM_001" data-status="Error · 401" data-status-kind="badge-danger" data-requests="4 520 / мес" data-last="28 мин назад" data-running="true">
+          <div class="icard-head">
+            <div class="row gap-12">
+              <div class="ic-ic" style="background:#2D8CFF">Б24</div>
+              <div><h4>Битрикс24 (продажи)</h4><div class="id">CRM_001</div></div>
+            </div>
+          </div>
+          <div class="row gap-8"><span class="badge badge-neutral">crm</span><span class="badge badge-danger badge-dot">Error · 401</span></div>
+          <div class="meta-row">
+            <span>Запросов<strong>4 520 / мес</strong></span>
+            <span>Последняя<strong>28 мин назад</strong></span>
+            <span>Токен<strong>Истёк</strong></span>
+          </div>
+          <div class="icard-footer">
+            <button class="btn btn-danger-outline btn-sm" style="flex:1" data-cb-action="reauth">Обновить токен</button>
+          </div>
+        </article>
+
+        <article class="icard" data-int="amocrm" data-name="AmoCRM" data-int-id="CRM_002" data-status="Active" data-status-kind="badge-success" data-requests="3 102 / мес" data-last="7 мин назад" data-running="true">
+          <div class="icard-head">
+            <div class="row gap-12">
+              <div class="ic-ic" style="background:#339AF0">AM</div>
+              <div><h4>AmoCRM</h4><div class="id">CRM_002</div></div>
+            </div>
+          </div>
+          <div class="row gap-8"><span class="badge badge-neutral">crm</span><span class="badge badge-success badge-dot">Active</span></div>
+          <div class="meta-row">
+            <span>Запросов<strong>3 102 / мес</strong></span>
+            <span>Последняя<strong>7 мин назад</strong></span>
+            <span>Воронка<strong>Основная</strong></span>
+          </div>
+          <div class="icard-footer">
+            <button class="btn btn-outline btn-sm" style="flex:1" data-cb-action="settings">Настроить</button>
+          </div>
+        </article>
+
+        <a class="icard icard-empty" href="#" data-cb-add>
+          <div class="pluscir">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          </div>
+          <div style="font-weight:600">Добавить интеграцию</div>
+          <div style="font-size:12px">30+ готовых сервисов в каталоге</div>
+        </a>
+      </div>
+
+      <!-- СЕКЦИЯ: List view preview -->
+      <div class="preview-block">
+        <div class="preview-label">Представление: таблица</div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>Интеграция</th><th>Тип</th><th>Статус</th><th>Запросов</th><th>Последняя</th><th style="text-align:right">Действия</th></tr></thead>
+            <tbody>
+              <tr><td><div class="row gap-12"><div class="ic-ic" style="background:#005bff;width:32px;height:32px;font-size:12px">O</div><div><b>Ozon</b><div class="id">MP_001</div></div></div></td><td>marketplace</td><td><span class="badge badge-success badge-dot">Active</span></td><td>12 284</td><td>3 мин назад</td><td style="text-align:right"><button class="btn btn-sm btn-outline">Настроить</button></td></tr>
+              <tr><td><div class="row gap-12"><div class="ic-ic" style="background:#229ED9;width:32px;height:32px;font-size:12px">TG</div><div><b>Telegram Bot</b><div class="id">SOC_001</div></div></div></td><td>social</td><td><span class="badge badge-success badge-dot">Active</span></td><td>842</td><td>1 мин назад</td><td style="text-align:right"><button class="btn btn-sm btn-outline">Настроить</button></td></tr>
+              <tr><td><div class="row gap-12"><div class="ic-ic" style="background:#00B956;width:32px;height:32px;font-size:12px">СД</div><div><b>СДЭК</b><div class="id">SVC_001</div></div></div></td><td>services</td><td><span class="badge badge-success badge-dot">Active</span></td><td>1 804</td><td>14 мин</td><td style="text-align:right"><button class="btn btn-sm btn-outline">Настроить</button></td></tr>
+              <tr><td><div class="row gap-12"><div class="ic-ic" style="background:#8E44AD;width:32px;height:32px;font-size:12px">ЮK</div><div><b>ЮKassa</b><div class="id">SVC_002</div></div></div></td><td>services</td><td><span class="badge badge-success badge-dot">Active</span></td><td>524</td><td>52 мин</td><td style="text-align:right"><button class="btn btn-sm btn-outline">Настроить</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- СЕКЦИЯ: Empty state preview -->
+      <div class="preview-block">
+        <div class="preview-label">Состояние: пусто</div>
+        <div class="empty-state">
+          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+            <rect x="8" y="16" width="64" height="48" rx="6" stroke="#C9CFDB" stroke-width="2" stroke-dasharray="4 4"/>
+            <circle cx="28" cy="36" r="4" fill="#3E92CC"/><circle cx="40" cy="36" r="4" fill="#FF6B35"/><circle cx="52" cy="36" r="4" fill="#1F9D55"/>
+            <path d="M28 48h24" stroke="#C9CFDB" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <h3>У вас пока нет интеграций</h3>
+          <p>Добавьте первую интеграцию, чтобы начать синхронизацию заказов, остатков и цен.</p>
+          <a href="#" class="btn btn-primary mt-8">+ Добавить интеграцию</a>
+        </div>
+      </div>
+
+      <!-- СЕКЦИЯ: Modal preview (inline) -->
+      <div class="preview-block">
+        <div class="preview-label">Модальное окно: добавление интеграции</div>
+        <div style="position:relative;background:var(--navy-900);border-radius:var(--radius-lg);padding:40px;overflow:hidden">
+          <div class="modal" style="margin:0 auto">
+            <div class="modal-head">
+              <h2>Выберите интеграцию</h2>
+              <button class="menu-dot">✕</button>
+            </div>
+            <div class="modal-body">
+              <div class="search-input" style="width:100%"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg><input class="input" placeholder="Поиск по каталогу…" style="width:100%"/></div>
+              <div class="catalog-grid">
+                <div class="catalog-tile sel"><div class="ic-ic" style="background:#005bff;width:36px;height:36px">O</div>Ozon</div>
+                <div class="catalog-tile"><div class="ic-ic" style="background:#CB11AB;width:36px;height:36px">WB</div>Wildberries</div>
+                <div class="catalog-tile"><div class="ic-ic" style="background:#FFCC00;color:#000;width:36px;height:36px">ЯМ</div>Яндекс Маркет</div>
+                <div class="catalog-tile"><div class="ic-ic" style="background:#2D8CFF;width:36px;height:36px">Б24</div>Битрикс24</div>
+                <div class="catalog-tile"><div class="ic-ic" style="background:#339AF0;width:36px;height:36px">AM</div>AmoCRM</div>
+                <div class="catalog-tile"><div class="ic-ic" style="background:#00B956;width:36px;height:36px">СД</div>СДЭК</div>
+                <div class="catalog-tile"><div class="ic-ic" style="background:#8E44AD;width:36px;height:36px">ЮK</div>ЮKassa</div>
+                <div class="catalog-tile"><div class="ic-ic" style="background:#229ED9;width:36px;height:36px">TG</div>Telegram</div>
+              </div>
+            </div>
+            <div class="modal-foot">
+              <button class="btn btn-ghost">Отмена</button>
+              <button class="btn btn-primary">Подключить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script>window.CB_USER={name:'Дмитрий Королев',org:'Пробный тариф',initials:'КД',role:'user'};</script>
+<script src="assets/shell.js"></script>
+<script src="assets/integrations-manager.js"></script>
+<script>
+  document.getElementById('side').outerHTML = window.renderSidebar('integrations');
+  document.getElementById('top').outerHTML = window.renderTopbar('Мои интеграции');
+
+  // ── Wire up integration cards to the manager modal ──
+  document.addEventListener('click', function (e) {
+    // "+ Добавить интеграцию" → каталог
+    var add = e.target.closest('[data-cb-add]');
+    if (add) {
+      e.preventDefault();
+      window.CBIntegrations.openCatalog();
+      return;
+    }
+
+    // Карточка: «Настроить» / «Обновить токен» → менеджер
+    var act = e.target.closest('[data-cb-action]');
+    if (act) {
+      e.preventDefault();
+      var card = act.closest('[data-int]');
+      if (!card) return;
+      var mode = act.getAttribute('data-cb-action'); // 'settings' | 'reauth'
+      var id = card.getAttribute('data-int');
+      var meta = {
+        name: card.getAttribute('data-name'),
+        id: card.getAttribute('data-int-id'),
+        status: card.getAttribute('data-status'),
+        statusKind: card.getAttribute('data-status-kind'),
+        requests: card.getAttribute('data-requests'),
+        lastRun: card.getAttribute('data-last'),
+        running: card.getAttribute('data-running') === 'true'
+      };
+      window.CBIntegrations.openManager(id, { mode: mode, meta: meta });
+      return;
+    }
+
+    // Кнопка «Подключить» в модальном превью каталога (демо ниже на странице)
+    var demoConnect = e.target.closest('.modal-foot .btn-primary');
+    if (demoConnect && demoConnect.textContent.trim() === 'Подключить') {
+      e.preventDefault();
+      // выбран Ozon в превью каталога
+      window.CBIntegrations.openManager('ozon', { mode: 'connect' });
+      return;
+    }
+  });
+</script>
+</body>
+</html>

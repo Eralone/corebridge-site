@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Админ · Пользователи — CoreBridge</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .filter-bar { background:#fff; border:1px solid var(--border); border-radius: var(--radius); padding: 14px; display:flex; gap:12px; align-items:center; margin-bottom:18px; flex-wrap:wrap; }
+  .search-input { position: relative; flex: 1; min-width: 260px; }
+  .search-input svg { position:absolute; top:50%; left:14px; transform:translateY(-50%); color: var(--text-faint); }
+  .search-input input { width:100%; padding: 11px 14px 11px 42px; border: 1px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 14px; }
+  .search-input input:focus { outline:none; border-color: var(--admin); box-shadow: 0 0 0 3px rgba(107,70,193,.15); }
+  .chip-set { display:flex; gap:6px; }
+  .chip { padding: 7px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 600; border: 1px solid var(--border); background: #fff; color: var(--text-muted); cursor:pointer; }
+  .chip.active { background: var(--admin-900); color: #fff; border-color: var(--admin-900); }
+  .user-stats { display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
+  @media (max-width: 900px) { .user-stats { grid-template-columns: repeat(2, 1fr); } }
+  .ustat { background:#fff; border:1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .ustat .lb { font-size:11px; text-transform:uppercase; letter-spacing:.06em; color: var(--text-faint); font-weight:600; }
+  .ustat .vl { font-size: 22px; font-weight: 800; margin-top:4px; }
+  .ustat.danger .vl { color: var(--danger); }
+
+  .row-actions { position: relative; }
+  .menu-btn { width: 32px; height: 28px; background:#fff; border:1px solid var(--border); border-radius: 8px; cursor:pointer; }
+  .dropdown { position:absolute; right:0; top: 32px; background:#fff; border:1px solid var(--border); border-radius: 10px; box-shadow: 0 12px 30px rgba(10,36,99,.12); min-width: 200px; z-index: 8; padding: 6px; display:none; }
+  .dropdown.open { display:block; }
+  .dropdown a { display:block; padding: 8px 12px; font-size: 13px; color: var(--text); border-radius:6px; text-decoration:none; }
+  .dropdown a:hover { background: var(--bg-tinted); text-decoration:none; }
+  .dropdown a.danger { color: var(--danger); }
+  .dropdown hr { border: 0; border-top: 1px solid var(--border); margin: 4px 0; }
+
+  .vu-soon { color: var(--danger); font-weight: 600; }
+  .ck { color: var(--success); }
+  .xx { color: var(--text-faint); }
+
+  .pager { display:flex; justify-content:space-between; align-items:center; padding: 14px 18px; background:#fff; border:1px solid var(--border); border-top:none; border-radius: 0 0 var(--radius) var(--radius); }
+  .pager .pg { display:flex; gap:6px; }
+  .pager .pg button { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background:#fff; cursor:pointer; font-size: 13px; }
+  .pager .pg button.cur { background: var(--admin); color:#fff; border-color: var(--admin); }
+</style>
+</head>
+<body>
+<div class="app app--admin">
+  <div id="side"></div>
+  <div class="app-main">
+    <div id="top"></div>
+    <main class="page">
+
+      <div class="page-head">
+        <div>
+          <h1>Пользователи платформы</h1>
+          <p class="text-muted">1 247 тенантов · 418 активных · 23 заблокированы</p>
+        </div>
+        <div class="row">
+          <button class="btn btn-outline btn-sm">Экспорт CSV</button>
+          <button class="btn btn-primary btn-sm">+ Создать тенант</button>
+        </div>
+      </div>
+
+      <div class="user-stats">
+        <div class="ustat"><div class="lb">Всего</div><div class="vl">1 247</div></div>
+        <div class="ustat"><div class="lb">Активных подписок</div><div class="vl" style="color:var(--success)">418</div></div>
+        <div class="ustat"><div class="lb">Trial / истекает &lt;3д</div><div class="vl" style="color:var(--warning)">37</div></div>
+        <div class="ustat danger"><div class="lb">Заблокированы</div><div class="vl">23</div></div>
+      </div>
+
+      <div class="filter-bar">
+        <div class="search-input">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Поиск по email или UUID (debounce 300ms)…">
+        </div>
+        <div class="chip-set">
+          <div class="chip active">Все тарифы</div>
+          <div class="chip">Старт</div>
+          <div class="chip">Бизнес</div>
+          <div class="chip">Профессиональный</div>
+          <div class="chip">Корпоративный</div>
+        </div>
+        <div class="chip-set">
+          <div class="chip active">Все</div>
+          <div class="chip">Активные</div>
+          <div class="chip">Заблокированные</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>Email / ID тенанта</th><th>Тариф</th><th>valid_until</th><th>n8n</th><th>Создан</th><th style="text-align:right">Действия</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div style="font-weight:600">a.morozov@aquarelle.ru</div><div style="font-size:11px;color:var(--text-faint);font-family:var(--mono)">tnt_8f3a4e21-c903-491c-b7d8-0a91c2776e44</div></td>
+              <td><span class="badge badge-accent">Корпоративный</span></td>
+              <td>12.05.2027<div style="font-size:11px;color:var(--text-faint)">365 дн.</div></td>
+              <td><span class="ck">✓ initialized</span></td>
+              <td>12.05.2026<div style="font-size:11px;color:var(--text-faint)">сегодня</div></td>
+              <td style="text-align:right"><div class="row-actions"><button class="menu-btn" onclick="toggleMenu(this)">⋮</button>
+                <div class="dropdown">
+                  <a href="#" onclick="openProfile(event)">Просмотр профиля</a>
+                  <a href="#" onclick="openIssueToken(event)">Выдать JWT вручную</a>
+                  <a href="#" onclick="openChangePlan(event)">Сменить тариф</a>
+                  <hr/>
+                  <a href="#" class="danger">Заблокировать</a>
+                </div>
+              </div></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:600">o.semenova@retail-m.ru</div><div style="font-size:11px;color:var(--text-faint);font-family:var(--mono)">tnt_b4e1f30a-7c98-44e2-a1c1-1e2906aa901c</div></td>
+              <td><span class="badge badge-info">Профессиональный</span></td>
+              <td>20.06.2026<div style="font-size:11px;color:var(--text-faint)">39 дн.</div></td>
+              <td><span class="ck">✓ initialized</span></td>
+              <td>04.11.2025</td>
+              <td style="text-align:right"><div class="row-actions"><button class="menu-btn" onclick="toggleMenu(this)">⋮</button>
+                <div class="dropdown">
+                  <a href="#" onclick="openProfile(event)">Просмотр профиля</a>
+                  <a href="#" onclick="openIssueToken(event)">Выдать JWT вручную</a>
+                  <a href="#" onclick="openChangePlan(event)">Сменить тариф</a>
+                  <hr/>
+                  <a href="#" class="danger">Заблокировать</a>
+                </div>
+              </div></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:600">k.zhirkov@tehnosnab.ru</div><div style="font-size:11px;color:var(--text-faint);font-family:var(--mono)">tnt_5d9f02ab-13ee-4571-bb29-3300b8e3ad7f</div></td>
+              <td><span class="badge badge-info">Бизнес</span></td>
+              <td><span class="vu-soon">15.05.2026</span><div style="font-size:11px;color:var(--danger)">через 3 дн.</div></td>
+              <td><span class="ck">✓ initialized</span></td>
+              <td>17.02.2026</td>
+              <td style="text-align:right"><div class="row-actions"><button class="menu-btn" onclick="toggleMenu(this)">⋮</button>
+                <div class="dropdown">
+                  <a href="#" onclick="openProfile(event)">Просмотр профиля</a>
+                  <a href="#" onclick="openIssueToken(event)">Выдать JWT вручную</a>
+                  <a href="#" onclick="openChangePlan(event)">Сменить тариф</a>
+                  <hr/>
+                  <a href="#" class="danger">Заблокировать</a>
+                </div>
+              </div></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:600">info@flowershop24.ru</div><div style="font-size:11px;color:var(--text-faint);font-family:var(--mono)">tnt_2c700b89-aa14-4f01-940e-7be24d11ae22</div></td>
+              <td><span class="badge badge-neutral">Старт</span></td>
+              <td>15.05.2026 (trial)<div style="font-size:11px;color:var(--warning)">trial</div></td>
+              <td><span class="xx">✗ pending</span></td>
+              <td>12.05.2026</td>
+              <td style="text-align:right"><div class="row-actions"><button class="menu-btn" onclick="toggleMenu(this)">⋮</button>
+                <div class="dropdown">
+                  <a href="#" onclick="openProfile(event)">Просмотр профиля</a>
+                  <a href="#" onclick="openIssueToken(event)">Выдать JWT вручную</a>
+                  <a href="#" onclick="openChangePlan(event)">Сменить тариф</a>
+                  <hr/>
+                  <a href="#" class="danger">Заблокировать</a>
+                </div>
+              </div></td>
+            </tr>
+            <tr style="background: rgba(216,58,58,.04)">
+              <td><div style="font-weight:600">orders@ritm-llc.ru <span class="badge badge-danger" style="margin-left:6px">blocked</span></div><div style="font-size:11px;color:var(--text-faint);font-family:var(--mono)">tnt_aa170c93-5fae-4012-8a01-2f08b774e990</div></td>
+              <td><span class="badge badge-info">Профессиональный</span></td>
+              <td>истёк 28.04.2026<div style="font-size:11px;color:var(--danger)">−14 дн.</div></td>
+              <td><span class="ck">✓ initialized</span></td>
+              <td>11.07.2025</td>
+              <td style="text-align:right"><div class="row-actions"><button class="menu-btn" onclick="toggleMenu(this)">⋮</button>
+                <div class="dropdown">
+                  <a href="#" onclick="openProfile(event)">Просмотр профиля</a>
+                  <a href="#" onclick="openIssueToken(event)">Выдать JWT вручную</a>
+                  <a href="#" onclick="openChangePlan(event)">Сменить тариф</a>
+                  <hr/>
+                  <a href="#" style="color:var(--success)">Разблокировать</a>
+                </div>
+              </div></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:600">admin@fabrika22.tech</div><div style="font-size:11px;color:var(--text-faint);font-family:var(--mono)">tnt_e102ad55-99bf-43cf-a8e3-7a44ec3201ee</div></td>
+              <td><span class="badge badge-neutral">Старт</span></td>
+              <td>15.06.2026<div style="font-size:11px;color:var(--text-faint)">34 дн.</div></td>
+              <td><span class="ck">✓ initialized</span></td>
+              <td>11.05.2026</td>
+              <td style="text-align:right"><div class="row-actions"><button class="menu-btn" onclick="toggleMenu(this)">⋮</button>
+                <div class="dropdown">
+                  <a href="#" onclick="openProfile(event)">Просмотр профиля</a>
+                  <a href="#" onclick="openIssueToken(event)">Выдать JWT вручную</a>
+                  <a href="#" onclick="openChangePlan(event)">Сменить тариф</a>
+                  <hr/>
+                  <a href="#" class="danger">Заблокировать</a>
+                </div>
+              </div></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:600">it@nordkod-pro.ru</div><div style="font-size:11px;color:var(--text-faint);font-family:var(--mono)">tnt_44a701ee-cd02-4198-8b9c-9f33ac10a7b2</div></td>
+              <td><span class="badge badge-accent">Корпоративный</span></td>
+              <td>01.01.2027<div style="font-size:11px;color:var(--text-faint)">234 дн.</div></td>
+              <td><span class="ck">✓ initialized</span></td>
+              <td>02.01.2025</td>
+              <td style="text-align:right"><div class="row-actions"><button class="menu-btn" onclick="toggleMenu(this)">⋮</button>
+                <div class="dropdown">
+                  <a href="#" onclick="openProfile(event)">Просмотр профиля</a>
+                  <a href="#" onclick="openIssueToken(event)">Выдать JWT вручную</a>
+                  <a href="#" onclick="openChangePlan(event)">Сменить тариф</a>
+                  <hr/>
+                  <a href="#" class="danger">Заблокировать</a>
+                </div>
+              </div></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:600">director@bookcity.ru</div><div style="font-size:11px;color:var(--text-faint);font-family:var(--mono)">tnt_92a04611-77c0-4ff1-94aa-019202aa5b1c</div></td>
+              <td><span class="badge badge-neutral">Старт</span></td>
+              <td>09.06.2026<div style="font-size:11px;color:var(--text-faint)">28 дн.</div></td>
+              <td><span class="ck">✓ initialized</span></td>
+              <td>09.05.2026</td>
+              <td style="text-align:right"><div class="row-actions"><button class="menu-btn" onclick="toggleMenu(this)">⋮</button>
+                <div class="dropdown">
+                  <a href="#" onclick="openProfile(event)">Просмотр профиля</a>
+                  <a href="#" onclick="openIssueToken(event)">Выдать JWT вручную</a>
+                  <a href="#" onclick="openChangePlan(event)">Сменить тариф</a>
+                  <hr/>
+                  <a href="#" class="danger">Заблокировать</a>
+                </div>
+              </div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pager">
+        <div class="text-muted" style="font-size:13px">Показано 1–8 из 1 247 · 20 на страницу</div>
+        <div class="pg">
+          <button>‹</button>
+          <button class="cur">1</button>
+          <button>2</button>
+          <button>3</button>
+          <button>…</button>
+          <button>156</button>
+          <button>›</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Profile Sheet -->
+<div class="sheet-overlay" id="profileOverlay" onclick="closeProfile()"></div>
+<aside class="sheet" id="profileSheet" aria-label="Профиль тенанта">
+  <div class="sheet-head">
+    <div>
+      <h3>Профиль тенанта</h3>
+      <div style="font-size:11px;color:var(--text-faint);font-family:var(--mono)">tnt_8f3a4e21-c903-491c-b7d8-0a91c2776e44</div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="closeProfile()">✕</button>
+  </div>
+  <div class="sheet-body">
+    <div class="sheet-section">
+      <h5>Личные данные</h5>
+      <div class="kv-row"><span class="k">Email</span><span class="v">a.morozov@aquarelle.ru</span></div>
+      <div class="kv-row"><span class="k">Контактное лицо</span><span class="v">Андрей Морозов</span></div>
+      <div class="kv-row"><span class="k">Компания</span><span class="v">Сеть Aquarelle</span></div>
+      <div class="kv-row"><span class="k">ИНН</span><span class="v">7727823412</span></div>
+      <div class="kv-row"><span class="k">Телефон</span><span class="v">+7 495 287-44-12</span></div>
+    </div>
+    <div class="sheet-section">
+      <h5>Тариф и лицензия</h5>
+      <div class="kv-row"><span class="k">План</span><span class="v"><span class="badge badge-accent">Корпоративный</span></span></div>
+      <div class="kv-row"><span class="k">valid_until</span><span class="v">12.05.2027</span></div>
+      <div class="kv-row"><span class="k">is_active</span><span class="v" style="color:var(--success)">true</span></div>
+      <div class="kv-row"><span class="k">n8n_initialized</span><span class="v" style="color:var(--success)">true · 2026-05-12T14:09Z</span></div>
+      <div class="kv-row"><span class="k">Лимит исполнений / мес</span><span class="v">100 000 · 4 217 использовано</span></div>
+    </div>
+    <div class="sheet-section">
+      <h5>История JWT-токенов</h5>
+      <div class="kv-row"><span class="k" style="font-family:var(--mono);font-size:12px">jwt_…ae72</span><span class="v" style="font-size:12px">12.05 14:09 · авто · 365 дн.</span></div>
+      <div class="kv-row"><span class="k" style="font-family:var(--mono);font-size:12px">jwt_…91c0</span><span class="v" style="font-size:12px">15.04 09:22 · авто · истёк</span></div>
+      <div class="kv-row"><span class="k" style="font-family:var(--mono);font-size:12px">jwt_…3f5e</span><span class="v" style="font-size:12px">12.03 11:00 · admin · отозван</span></div>
+    </div>
+    <div class="sheet-section">
+      <h5>История платежей</h5>
+      <div class="kv-row"><span class="k">12.05.2026</span><span class="v">14 990 ₽ · <span class="badge badge-success">paid</span></span></div>
+      <div class="kv-row"><span class="k">12.04.2026</span><span class="v">14 990 ₽ · <span class="badge badge-success">paid</span></span></div>
+      <div class="kv-row"><span class="k">12.03.2026</span><span class="v">14 990 ₽ · <span class="badge badge-success">paid</span></span></div>
+    </div>
+    <div class="row gap-12" style="margin-top:24px">
+      <button class="btn btn-primary btn-sm">Выдать JWT</button>
+      <button class="btn btn-outline btn-sm">Сменить тариф</button>
+      <button class="btn btn-danger-outline btn-sm" style="margin-left:auto">Заблокировать</button>
+    </div>
+  </div>
+</aside>
+
+<!-- Issue Token Dialog -->
+<div class="cb-modal-bd" id="tokenModal">
+  <div class="cb-modal">
+    <button class="x" onclick="closeIssueToken()">×</button>
+    <h3>Выдать JWT вручную</h3>
+    <p>Вызов <code style="background:var(--bg-alt);padding:2px 6px;border-radius:4px;font-size:12px">F3 LicenseService.issueToken()</code>. Действие будет записано в <b>audit_log</b> с флагом <code style="background:var(--bg-alt);padding:2px 6px;border-radius:4px;font-size:12px">issued_by_admin=true</code>.</p>
+    <div class="field"><label>Срок действия</label>
+      <select class="select"><option>7 дней</option><option selected>30 дней</option><option>90 дней</option><option>365 дней</option></select>
+    </div>
+    <div class="field"><label>Сгенерированный токен</label>
+      <textarea class="textarea" style="font-family:var(--mono);font-size:11px;background:var(--bg-tinted)" readonly>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0bnQiOiJ0bnRfOGYzYTRlMjEtYzkwMy00OTFjLWI3ZDgtMGE5MWMyNzc2ZTQ0Iiwicm9sZSI6InRlbmFudCIsInBsYW4iOiJjb3Jwb3JhdGUiLCJleHAiOjE3NzgwMjQ0ODB9.Sv8nQ_kPmRGNZxQ8aFLn3WzKvHxYpO-yA1cT4mB5XnY</textarea>
+    </div>
+    <div class="row gap-12" style="margin-top:16px">
+      <button class="btn btn-outline btn-sm">Копировать</button>
+      <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="closeIssueToken()">Готово</button>
+    </div>
+  </div>
+</div>
+
+<!-- Change Plan Dialog -->
+<div class="cb-modal-bd" id="planModal">
+  <div class="cb-modal">
+    <button class="x" onclick="closeChangePlan()">×</button>
+    <h3>Сменить тариф</h3>
+    <p>Обновит <code style="background:var(--bg-alt);padding:2px 6px;border-radius:4px;font-size:12px">platform.licenses.plan</code> для <b>a.morozov@aquarelle.ru</b>. Лимиты и валидность сбросятся.</p>
+    <div class="col" style="gap:8px">
+      <label class="cb" style="padding:12px;border:1px solid var(--border);border-radius:10px"><input type="radio" name="plan"/><div><b>Старт</b> · 990 ₽/мес · 1 000 исп.</div></label>
+      <label class="cb" style="padding:12px;border:1px solid var(--border);border-radius:10px"><input type="radio" name="plan"/><div><b>Бизнес</b> · 4 990 ₽/мес · 10 000 исп.</div></label>
+      <label class="cb" style="padding:12px;border:1px solid var(--border);border-radius:10px"><input type="radio" name="plan"/><div><b>Профессиональный</b> · 7 990 ₽/мес · 30 000 исп.</div></label>
+      <label class="cb" style="padding:12px;border:1px solid var(--admin);border-radius:10px;background:rgba(107,70,193,.04)"><input type="radio" name="plan" checked/><div><b>Корпоративный</b> · 14 990 ₽/мес · 100 000 исп. <span class="badge badge-accent" style="margin-left:6px">текущий</span></div></label>
+    </div>
+    <div class="row gap-12" style="margin-top:18px">
+      <button class="btn btn-outline btn-sm" onclick="closeChangePlan()">Отмена</button>
+      <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="closeChangePlan()">Применить</button>
+    </div>
+  </div>
+</div>
+
+<script>window.CB_USER={name:'Дмитрий Королев',org:'CoreBridge HQ',initials:'КД',role:'admin'};</script>
+<script src="assets/shell.js"></script>
+<script>
+  document.getElementById('side').outerHTML = window.renderAdminSidebar('admin-users');
+  document.getElementById('top').outerHTML = window.renderAdminTopbar('Пользователи', {crumbs:[{label:'Admin',href:'admin.html'},{label:'Пользователи'}]});
+
+  function toggleMenu(btn){
+    document.querySelectorAll('.dropdown.open').forEach(d => { if (d !== btn.nextElementSibling) d.classList.remove('open'); });
+    btn.nextElementSibling.classList.toggle('open');
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.row-actions')) document.querySelectorAll('.dropdown.open').forEach(d => d.classList.remove('open'));
+  });
+  function openProfile(e){ e && e.preventDefault(); document.getElementById('profileOverlay').classList.add('open'); document.getElementById('profileSheet').classList.add('open'); }
+  function closeProfile(){ document.getElementById('profileOverlay').classList.remove('open'); document.getElementById('profileSheet').classList.remove('open'); }
+  function openIssueToken(e){ e && e.preventDefault(); document.getElementById('tokenModal').classList.add('open'); }
+  function closeIssueToken(){ document.getElementById('tokenModal').classList.remove('open'); }
+  function openChangePlan(e){ e && e.preventDefault(); document.getElementById('planModal').classList.add('open'); }
+  function closeChangePlan(){ document.getElementById('planModal').classList.remove('open'); }
+</script>
+</body>
+</html>
