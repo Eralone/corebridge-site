@@ -120,39 +120,54 @@
 - [x] Разведены коллизии маршрутов: `/integrations` (публичный) vs `/my-integrations` (ЛК),
       `/n8n` (SEO) vs `/workflows` (ЛК)
 - [x] `npm run build` зелёный, сайт открывается на `https://corebridge.ru`
+- [x] **Э0.1 `middleware.ts`** (2026-07-28). Разводка субдоменов + guard ЛК.
+      Проверено на проде:
+      · ЛК без сессии → `307 /login?next=…` (все 6 маршрутов, `next` сохраняет цель);
+      · публичные `/`, `/pricing`, `/login`, `/oferta`, `/integrations`, `/n8n` → 200;
+      · `corebridge.ru/admin*` → **404** (админка с основного домена закрыта);
+      · `admin.corebridge.ru/`, `/users`, `/integrations` → 200, экран реально отдаётся;
+      · `admin.corebridge.ru/admin/health` → 403 от IP-whitelist, middleware его **не перехватывает**.
+      **Коллизия путей админки закрыта.**
+      Обработка 403: код из тела (`TENANT_BLOCKED` / `TENANT_PENDING_DELETION`) пробрасывается
+      в `/login?error=…` — экраны разные. Если API недоступен, ведём на `/login`, а не показываем
+      сломанный дашборд.
 
 ---
 
 ## 5. Следующая задача
 
-### [ ] Э0.1 — `middleware.ts`
+### [ ] Э0.2 — компоненты из `shell.js`
 
-**Зачем:** чинит коллизию путей админки (сейчас экран недостижим) и закрывает ЛК от неавторизованных.
+**Зачем:** каркас страниц. Без них нельзя начинать перенос ни одного экрана ЛК или админки.
 
-**Что сделать:**
-1. **Разводка субдоменов.** На `admin.corebridge.ru` переписывать входящий путь на внутренний роут:
-   `/` → `/admin`, `/users` → `/admin/users`, `/integrations` → `/admin/integrations`.
-   Путь `/admin/*` **не трогать** — он уходит в nginx → 3003 (API).
-   Обратно: админские роуты не должны открываться с `corebridge.ru`, и наоборот.
-2. **Guard ЛК.** Для `/dashboard`, `/epf`, `/my-integrations`, `/billing`, `/settings`,
-   `/support`, `/workflows` — проверка `GET /lk/auth/session`; при 401 → редирект на `/login`.
-3. Обработать `403 TENANT_BLOCKED` и `403 TENANT_PENDING_DELETION` (разные экраны:
-   «заблокирован» и «аккаунт удаляется»).
+**Что сделать.** Перенести в React с **идентичной разметкой и классами**:
+`renderSidebar`, `renderTopbar`, `renderAdminSidebar`, `renderAdminTopbar`,
+`renderPublicHeader`, `renderPublicFooter` → `components/`.
+`popup.js` → `<Popup>` через портал.
 
-**Проверить после:** `admin.corebridge.ru/` отдаёт экран админки (сейчас 200, но это заглушка
-из `(admin)/admin`), `/admin/health` по-прежнему 403 от whitelist, `corebridge.ru/dashboard`
-без сессии редиректит на `/login`.
+**Источники:** `design-source/assets/shell.js` (10,7 КБ), `design-source/assets/popup.js` (2 КБ).
 
-**Источники:** README раздел «Коллизия путей в админке», `site_S8_S9_RESPONSE.md` §7 (`tenant_status`).
+**Ловушки:**
+- В `shell.js` пункт меню заведён с `id: 'integrations-app'`, а страница вызывает
+  `renderSidebar('integrations')` — из-за этого пункт **не подсвечивается**. Исправить,
+  использовать `active="integrations-app"`.
+- Ссылки на `about.html` → `/for-business` (страницы `about` не существует).
+- Пути в меню из дизайна (`dashboard.html`, `epf.html`) → маршруты Next.js
+  (`/dashboard`, `/epf`, `/my-integrations`, `/workflows`).
+- `window.CB_USER` → данные из `GET /lk/profile` через React-контекст `useUser()`.
+- Пункт «Админ-панель» в сайдбаре показывать только при `role === 'admin'`,
+  вести на `https://admin.corebridge.ru` (отдельный субдомен, не путь).
+- В `renderAdminTopbar` зашит `d.korolev@corebridge.ru` — брать из `GET /admin/auth/me`.
 
----
+**Проверить после:** сайдбар и топбар рендерятся на заглушках ЛК, активный пункт
+подсвечивается, вёрстка совпадает с `design-source/dashboard.html` при сравнении в браузере.
 
 ## 6. Бэклог
 
 ### Э0 — доделать каркас
 
-- [ ] **Э0.1 `middleware.ts`** — см. раздел 5 выше.
-- [ ] **Э0.2 Компоненты из `shell.js`.** Перенести `renderSidebar`, `renderTopbar`,
+- [x] **Э0.1 `middleware.ts`** — сделано 2026-07-28, см. раздел «Сделано».
+- [~] **Э0.2 Компоненты из `shell.js`.** ← в работе Перенести `renderSidebar`, `renderTopbar`,
       `renderAdminSidebar`, `renderAdminTopbar`, `renderPublicHeader`, `renderPublicFooter`
       в React с **идентичной разметкой и классами**. `popup.js` → `<Popup>` (портал).
       Источник: `design-source/assets/shell.js`, `design-source/assets/popup.js`.
