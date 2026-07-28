@@ -48,3 +48,6 @@ export const sendContact = (input: {
     method: 'POST',
     body: { honeypot: '', ...input },
   });
+
+/** Гасит сессию на сервере. Без этого «выход» оставлял бы cookie живой. */
+export const logout = () => api<{ ok: true }>('/lk/auth/logout', { method: 'POST' });

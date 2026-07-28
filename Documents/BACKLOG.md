@@ -120,6 +120,25 @@
 - [x] Разведены коллизии маршрутов: `/integrations` (публичный) vs `/my-integrations` (ЛК),
       `/n8n` (SEO) vs `/workflows` (ЛК)
 - [x] `npm run build` зелёный, сайт открывается на `https://corebridge.ru`
+- [x] **Э0.2 компоненты из `shell.js`** (2026-07-28). Перенесены с дословной разметкой:
+      `Sidebar`, `Topbar`, `AdminSidebar`, `AdminTopbar`, `PublicHeader`, `PublicFooter`,
+      `Popup` (портал, замена императивного `CBPopup`), оболочки `LkShell` / `AdminShell`,
+      заглушка `StubBody`. `window.CB_USER` → `lib/user-context.tsx` (`UserProvider` +
+      `useUser`), данные из `GET /lk/profile`, инициалы вычисляются из имени.
+      Проверено на собранном HTML и вживую:
+      · `admin.corebridge.ru/users` — сайдбар, топбар, `app--admin`, `admin-badge` на месте,
+        активный пункт `<a class="active" href="/users">` подсвечен;
+      · `dashboard` — `class="app"`, сайдбар с `/my-integrations` и `/workflows`,
+        активный пункт подсвечен, `sidebar-user` отрисован;
+      · пункт «Админ-панель» **скрыт** при `role !== 'admin'` (0 вхождений в HTML);
+      · **ни одной ссылки на `about.html`** во всей сборке.
+      Исправлены баги эталона: подсветка пункта интеграций (`integrations-app` вместо
+      `integrations`), `about.html` → `/for-business`, «Выйти» теперь дёргает
+      `POST /lk/auth/logout`, а не просто ведёт на `/login`.
+      Отступления: пункт «Поддержка» в админ-сайдбаре **не перенесён** (тикет-системы нет,
+      поддержка вне MVP, бейдж «12» был заглушкой); зашитый `d.korolev@corebridge.ru`
+      в админ-топбаре вынесен в параметр (источник `GET /admin/auth/me`); бейдж
+      «Системы в норме» стал параметром (источник `GET /admin/health`).
 - [x] **Э0.1 `middleware.ts`** (2026-07-28). Разводка субдоменов + guard ЛК.
       Проверено на проде:
       · ЛК без сессии → `307 /login?next=…` (все 6 маршрутов, `next` сохраняет цель);
@@ -136,38 +155,32 @@
 
 ## 5. Следующая задача
 
-### [ ] Э0.2 — компоненты из `shell.js`
+### [ ] Э0.3 — Vitest + Playwright + MSW
 
-**Зачем:** каркас страниц. Без них нельзя начинать перенос ни одного экрана ЛК или админки.
+**Зачем:** дальше начинается перенос экранов, и без тестов регрессии будут находиться руками.
 
-**Что сделать.** Перенести в React с **идентичной разметкой и классами**:
-`renderSidebar`, `renderTopbar`, `renderAdminSidebar`, `renderAdminTopbar`,
-`renderPublicHeader`, `renderPublicFooter` → `components/`.
-`popup.js` → `<Popup>` через портал.
+**Что сделать:**
+1. `vitest.config.ts` + `jsdom`, алиас `@/*`. Контрактные тесты на `lib/api/client.ts`:
+   разбор `{ error: CODE }` в `ApiError`, коды из `ERR`, `204` без тела, не-JSON ответ.
+2. Playwright: `playwright.config.ts` на `http://127.0.0.1:3005`, smoke-набор —
+   `/` и `/pricing` отдают 200 и подключают `site.css`; `/dashboard` без сессии
+   редиректит на `/login?next=…`; `admin.corebridge.ru/users` рендерит сайдбар.
+   ⚠️ Для проверки субдомена в Playwright нужен `Host`-заголовок или запись в `/etc/hosts`.
+3. MSW — только для того немногого, чего нет на сервере (см. `gap_analysis.md`).
+   Сейчас это фактически ничего: S1–S9 покрыли всё. Ставить, но не разворачивать моки
+   без нужды.
 
-**Источники:** `design-source/assets/shell.js` (10,7 КБ), `design-source/assets/popup.js` (2 КБ).
+**Проверить после:** `npm run test` и `npm run test:e2e` зелёные.
 
-**Ловушки:**
-- В `shell.js` пункт меню заведён с `id: 'integrations-app'`, а страница вызывает
-  `renderSidebar('integrations')` — из-за этого пункт **не подсвечивается**. Исправить,
-  использовать `active="integrations-app"`.
-- Ссылки на `about.html` → `/for-business` (страницы `about` не существует).
-- Пути в меню из дизайна (`dashboard.html`, `epf.html`) → маршруты Next.js
-  (`/dashboard`, `/epf`, `/my-integrations`, `/workflows`).
-- `window.CB_USER` → данные из `GET /lk/profile` через React-контекст `useUser()`.
-- Пункт «Админ-панель» в сайдбаре показывать только при `role === 'admin'`,
-  вести на `https://admin.corebridge.ru` (отдельный субдомен, не путь).
-- В `renderAdminTopbar` зашит `d.korolev@corebridge.ru` — брать из `GET /admin/auth/me`.
-
-**Проверить после:** сайдбар и топбар рендерятся на заглушках ЛК, активный пункт
-подсвечивается, вёрстка совпадает с `design-source/dashboard.html` при сравнении в браузере.
+**Ловушка:** `npm run test:e2e` требует `npx playwright install --with-deps chromium` —
+браузер в образ не входит.
 
 ## 6. Бэклог
 
 ### Э0 — доделать каркас
 
 - [x] **Э0.1 `middleware.ts`** — сделано 2026-07-28, см. раздел «Сделано».
-- [~] **Э0.2 Компоненты из `shell.js`.** ← в работе Перенести `renderSidebar`, `renderTopbar`,
+- [x] **Э0.2 Компоненты из `shell.js`.** Сделано 2026-07-28. ← в работе Перенести `renderSidebar`, `renderTopbar`,
       `renderAdminSidebar`, `renderAdminTopbar`, `renderPublicHeader`, `renderPublicFooter`
       в React с **идентичной разметкой и классами**. `popup.js` → `<Popup>` (портал).
       Источник: `design-source/assets/shell.js`, `design-source/assets/popup.js`.

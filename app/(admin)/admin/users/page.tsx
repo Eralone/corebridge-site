@@ -1,4 +1,10 @@
-import { Stub } from '@/components/Stub';
+import { AdminShell } from '@/components/AdminShell';
+import { StubBody } from '@/components/StubBody';
+
 export default function Page() {
-  return <Stub title="Пользователи платформы" source="admin-users.html" stage="Э7" />;
+  return (
+    <AdminShell active="admin-users" title="Пользователи платформы" crumbs={[{ label: 'Admin', href: '/' }, { label: 'Пользователи' }]}>
+      <StubBody source="admin-users.html" stage="Э7" />
+    </AdminShell>
+  );
 }

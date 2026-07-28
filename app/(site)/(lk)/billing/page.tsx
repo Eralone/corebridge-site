@@ -1,4 +1,10 @@
-import { Stub } from '@/components/Stub';
+import { LkShell } from '@/components/LkShell';
+import { StubBody } from '@/components/StubBody';
+
 export default function Page() {
-  return <Stub title="Биллинг и тариф" source="billing.html" stage="Э4" />;
+  return (
+    <LkShell active="billing" title="Биллинг и тариф" subtitle="Тарифный план, лимиты и история платежей">
+      <StubBody source="billing.html" stage="Э4" />
+    </LkShell>
+  );
 }

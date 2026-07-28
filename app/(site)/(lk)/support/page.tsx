@@ -1,4 +1,10 @@
-import { Stub } from '@/components/Stub';
+import { LkShell } from '@/components/LkShell';
+import { StubBody } from '@/components/StubBody';
+
 export default function Page() {
-  return <Stub title="Поддержка" source="support.html" stage="Э6" />;
+  return (
+    <LkShell active="support" title="Поддержка" subtitle="">
+      <StubBody source="support.html" stage="Э6" />
+    </LkShell>
+  );
 }
