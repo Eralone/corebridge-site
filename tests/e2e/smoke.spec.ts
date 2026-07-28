@@ -151,6 +151,39 @@ test.describe('Оболочка кабинета', () => {
   });
 });
 
+test.describe('Индексация', () => {
+  test('sitemap.xml перечисляет публичные страницы и не выдаёт кабинет', async ({ request }) => {
+    const res = await request.get('/sitemap.xml');
+    expect(res.status()).toBe(200);
+    const xml = await res.text();
+
+    for (const path of ['/', '/pricing', '/docs', '/integrations', '/n8n', '/contacts', '/oferta']) {
+      expect(xml, `${path} в карте`).toContain(`<loc>https://corebridge.ru${path}</loc>`);
+    }
+    for (const path of ['/dashboard', '/billing', '/settings', '/login', '/admin']) {
+      expect(xml, `${path} не должен попадать в карту`).not.toContain(`corebridge.ru${path}<`);
+    }
+  });
+
+  test('robots.txt закрывает кабинет и указывает на карту', async ({ request }) => {
+    const res = await request.get('/robots.txt');
+    expect(res.status()).toBe(200);
+    const txt = await res.text();
+    expect(txt).toContain('Sitemap: https://corebridge.ru/sitemap.xml');
+    for (const path of ['/dashboard', '/billing', '/settings', '/lk/', '/admin']) {
+      expect(txt, `${path} закрыт`).toContain(`Disallow: ${path}`);
+    }
+  });
+
+  test('админ-субдомен закрыт от обхода целиком', async ({ request }) => {
+    // отдаёт nginx: Next.js на 3005 общий и вернул бы robots основного домена
+    const res = await request.get(ADMIN + '/robots.txt');
+    expect(res.status()).toBe(200);
+    expect((await res.text()).replace(/\s+/g, ' ')).toContain('Disallow: /');
+    expect(await res.text()).not.toContain('Allow: /');
+  });
+});
+
 test.describe('Эталон дизайна', () => {
   test('design-source отдаётся на 3006 — без этого сверка не поедет', async ({ request }) => {
     const res = await request.get('http://127.0.0.1:3006/index.html');
