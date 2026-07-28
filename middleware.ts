@@ -55,6 +55,17 @@ export async function middleware(req: NextRequest) {
     return NextResponse.rewrite(new URL('/admin', req.url));
   }
 
+  // ── Приглашение в команду ─────────────────────────────────────────────────
+  // Сервер шлёт в письме ссылку ${LK_BASE_URL}/lk/invite/accept?token=…, а весь
+  // /lk/* забирает API — ссылка приводила в 404. В vhost заведено точное
+  // совпадение location = /lk/invite/accept на Next.js, здесь путь приводим
+  // к нашей странице. Бэкенд менять не понадобилось.
+  if (pathname === '/lk/invite/accept') {
+    const url = new URL('/invite/accept', req.url);
+    url.search = req.nextUrl.search;
+    return NextResponse.rewrite(url);
+  }
+
   // ── Основной домен: админские роуты закрыты ───────────────────────────────
   if (pathname === '/admin' || pathname.startsWith('/admin/')) {
     return new NextResponse(null, { status: 404 });

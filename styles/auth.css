@@ -1,0 +1,394 @@
+/*
+ * Стили экранов входа, регистрации и восстановления доступа.
+ *
+ * В макете они лежали в <style> внутри каждой страницы (login.html,
+ * register.html, forgot-password.html, reset-password.html, verify-email.html)
+ * и повторялись почти дословно. Здесь сведены в один файл — значения перенесены
+ * как есть, дописаны только комментарии.
+ *
+ * Две раскладки, и в макете обе называли карточку одним классом .auth-card:
+ *   · .auth-wrap   — экран на две колонки: тёмная панель + форма (вход, регистрация);
+ *   · .auth-center — одна карточка по центру (восстановление, подтверждение почты).
+ * Раз файл общий, вариант «по центру» вынесен в отдельную область видимости,
+ * иначе правила перебивали бы друг друга.
+ */
+
+/* ── Общее: экран на две колонки ─────────────────────────────────────────── */
+.auth-wrap {
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  min-height: 100vh;
+  background: var(--bg-alt);
+}
+
+.auth-panel {
+  background: linear-gradient(135deg, var(--navy-900), var(--navy-700));
+  color: #fff;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+.auth-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 20% 80%, rgba(62, 146, 204, 0.3), transparent 60%);
+}
+/* На регистрации подсветка тёплая и с другого угла — так в макете */
+.auth-panel--warm::before {
+  background: radial-gradient(ellipse at 80% 20%, rgba(255, 107, 53, 0.2), transparent 60%);
+}
+.auth-panel > * {
+  position: relative;
+}
+.auth-panel h2 {
+  color: #fff;
+  font-size: 32px;
+  letter-spacing: -0.015em;
+  margin-bottom: 16px;
+}
+.auth-panel p {
+  color: #c9d5f2;
+  font-size: 16px;
+  max-width: 400px;
+}
+
+.auth-feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0;
+}
+.auth-feature-list li {
+  padding: 10px 0;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: #c9d5f2;
+  font-size: 14px;
+}
+.auth-feature-list li::before {
+  content: '✓';
+  color: var(--success);
+  font-weight: 700;
+  width: 20px;
+  height: 20px;
+  background: rgba(31, 157, 85, 0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+
+.auth-brand {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.auth-brand .logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #fff, var(--blue-400));
+}
+.auth-footer-note {
+  color: #8fa3cc;
+  font-size: 12px;
+}
+
+.auth-form-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  background: #fff;
+}
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+}
+.auth-card h1 {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+.auth-card .sub {
+  color: var(--text-muted);
+  font-size: 15px;
+  margin-bottom: 28px;
+}
+.auth-card .field {
+  margin-bottom: 16px;
+}
+
+/* ── Форма ───────────────────────────────────────────────────────────────── */
+.input-group {
+  position: relative;
+}
+.input-group .eye {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-faint);
+  cursor: pointer;
+  display: flex;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+.row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0 20px;
+}
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-faint);
+  font-size: 13px;
+  margin: 20px 0;
+}
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+/* В макете класс назывался .google-btn. Google удалён с сервера и из РФ,
+   вход через сторонний сервис теперь Яндекс ID — имя приведено к смыслу. */
+.oauth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.oauth-btn svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+/* У .btn в site.css стоит white-space: nowrap, и на узком экране подпись
+   «Зарегистрироваться через Яндекс ID» распирала колонку — появлялась
+   горизонтальная прокрутка (нашёл обход, 397px против 390px). Тексту этой
+   кнопки разрешаем переноситься: на широком экране он и так в одну строку. */
+/* .btn и .oauth-btn — одинаковая специфичность, а стили Next.js подключаются
+   раньше <link> на site.css, поэтому nowrap побеждал. Отсюда двойной класс. */
+.btn.oauth-btn {
+  white-space: normal;
+  text-align: center;
+}
+.switch-link {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 20px;
+}
+.back-link {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.tabs-nav {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  background: var(--bg-alt);
+  border-radius: 10px;
+  margin-bottom: 24px;
+}
+.tabs-nav a {
+  flex: 1;
+  text-align: center;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+.tabs-nav a.active {
+  background: #fff;
+  color: var(--navy-900);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Надёжность пароля ───────────────────────────────────────────────────── */
+.pwd-strength {
+  display: flex;
+  gap: 4px;
+  margin-top: 8px;
+}
+.pwd-strength span {
+  flex: 1;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+}
+.pwd-strength.weak span:nth-child(1) {
+  background: var(--danger);
+}
+.pwd-strength.medium span:nth-child(1),
+.pwd-strength.medium span:nth-child(2) {
+  background: var(--warning);
+}
+.pwd-strength.strong span {
+  background: var(--success);
+}
+.pwd-hint {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-top: 6px;
+}
+
+/* ── Крупная иконка состояния ────────────────────────────────────────────── */
+.big-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--blue-100);
+  color: var(--blue-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+.big-icon.success {
+  background: var(--success-bg);
+  color: var(--success);
+}
+.big-icon.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(62, 146, 204, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(62, 146, 204, 0);
+  }
+}
+
+/* ── Раскладка «карточка по центру» ──────────────────────────────────────── */
+.auth-center {
+  background: var(--bg-alt);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.auth-center .auth-card {
+  max-width: 440px;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 40px 36px;
+  box-shadow: 0 8px 40px rgba(10, 36, 99, 0.08);
+}
+.auth-center .auth-card h1 {
+  font-size: 24px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.auth-center .auth-card .sub {
+  color: var(--text-muted);
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 28px;
+}
+.auth-center .back-link {
+  margin-bottom: 20px;
+}
+/* На подтверждении почты карточка целиком по центру и иконка крупнее */
+.auth-center--icon .auth-card {
+  text-align: center;
+}
+.auth-center--icon .auth-card h1 {
+  text-align: center;
+}
+.auth-center--icon .big-icon {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 24px;
+}
+.auth-center .timer {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 16px;
+}
+
+/* ── Сообщения об ошибке и об успехе ─────────────────────────────────────── */
+/* В макете их не было: он рисовал только спокойное состояние формы. */
+.auth-alert {
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  border: 1px solid transparent;
+}
+.auth-alert--error {
+  background: var(--danger-bg);
+  border-color: rgba(203, 45, 62, 0.25);
+  color: var(--danger);
+}
+.auth-alert--info {
+  background: var(--blue-100);
+  border-color: rgba(62, 146, 204, 0.3);
+  color: var(--navy-700);
+}
+.auth-alert--success {
+  background: var(--success-bg);
+  border-color: rgba(31, 157, 85, 0.3);
+  color: var(--success);
+}
+
+/* Кнопка, которая по виду ссылка: «Отправить повторно» рядом с текстом.
+   Именно кнопка, а не <a href="#">, — действие никуда не ведёт. */
+.link-btn {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--blue-500);
+  font-weight: 600;
+  cursor: pointer;
+}
+.link-btn:hover {
+  text-decoration: underline;
+}
+.link-btn[disabled] {
+  color: var(--text-faint);
+  cursor: default;
+  text-decoration: none;
+}
+
+/* Поле для шестизначного кода второго фактора: цифры вразрядку, моноширинно */
+.code-input {
+  text-align: center;
+  letter-spacing: 0.5em;
+  font-family: var(--mono);
+  font-size: 22px;
+  padding-left: 0.5em;
+}
+
+@media (max-width: 900px) {
+  .auth-wrap {
+    grid-template-columns: 1fr;
+  }
+  .auth-panel {
+    display: none;
+  }
+}

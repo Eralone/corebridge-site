@@ -129,7 +129,7 @@
       "host": "main",
       "design": "login.html",
       "auth": "none",
-      "ported": false,
+      "ported": true,
       "maxDiff": 0.1,
       "note": "Google удалён с сервера → кнопка Яндекс ID. Отзыв «Игорь П., Ритейл-М» выдуман, не переносим. Добавляется magic-link, которого нет в макете."
     },
@@ -139,7 +139,7 @@
       "host": "main",
       "design": "register.html",
       "auth": "none",
-      "ported": false,
+      "ported": true,
       "maxDiff": 0.1,
       "note": "«30 дней» → «бессрочный пробный», «5 операций в сутки» → «500 в месяц», убрать «Уже с нами: 1 247 компаний»."
     },
@@ -149,7 +149,7 @@
       "host": "main",
       "design": "forgot-password.html",
       "auth": "none",
-      "ported": false,
+      "ported": true,
       "maxDiff": 0.05,
       "note": null
     },
@@ -159,7 +159,7 @@
       "host": "main",
       "design": "reset-password.html",
       "auth": "none",
-      "ported": false,
+      "ported": true,
       "maxDiff": 0.05,
       "note": "При включённой 2FA сервер не ставит cookie после сброса — ведёт на экран кода."
     },
@@ -169,7 +169,7 @@
       "host": "main",
       "design": "verify-email.html",
       "auth": "none",
-      "ported": false,
+      "ported": true,
       "maxDiff": 0.05,
       "note": null
     },
@@ -181,7 +181,7 @@
       "auth": "none",
       "ported": false,
       "maxDiff": null,
-      "note": "Макета нет вовсе. Сервер шлёт приглашения на ${LK_BASE_URL}/lk/invite/accept, а /lk/* занят API — куда реально ведёт ссылка, ещё не проверено."
+      "note": "Макета нет вовсе, верстали по образцу остальных экранов входа. Ссылка из письма ведёт на /lk/invite/accept — раньше это был 404 (весь /lk/* забирает API). Починено на своей стороне: точное совпадение в vhost + переписывание пути в middleware.ts."
     },
 
     {

@@ -62,6 +62,18 @@ export async function api<T>(path: string, opts: Options = {}): Promise<T> {
  */
 export const ERR = {
   UNAUTHORIZED: 'UNAUTHORIZED',
+  /** Вход: одинаково для неверной почты и неверного пароля — чтобы нельзя было
+   *  перебором выяснить, кто у нас зарегистрирован. Проверено на живом сервере:
+   *  это НЕ UNAUTHORIZED, как можно подумать по сводке пакета S1. */
+  INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
+  MISSING_FIELDS: 'MISSING_FIELDS',
+  INVALID_EMAIL: 'INVALID_EMAIL',
+  WEAK_PASSWORD: 'WEAK_PASSWORD',
+  EMAIL_EXISTS: 'EMAIL_EXISTS',
+  MISSING_TOKEN: 'MISSING_TOKEN',
+  TOKEN_INVALID: 'TOKEN_INVALID',
+  TOKEN_EXPIRED: 'TOKEN_EXPIRED',
+  ALREADY_VERIFIED: 'ALREADY_VERIFIED',
   TENANT_BLOCKED: 'TENANT_BLOCKED',
   TENANT_PENDING_DELETION: 'TENANT_PENDING_DELETION',
   NO_ACTIVE_SUBSCRIPTION: 'NO_ACTIVE_SUBSCRIPTION',
