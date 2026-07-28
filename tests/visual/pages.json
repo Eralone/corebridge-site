@@ -1,0 +1,304 @@
+{
+  "$schema": "нет схемы, просто данные",
+  "$about": [
+    "Карта «страница сайта → эталон дизайна». Единственный источник для tools/inspect.mjs,",
+    "tools/compare.mjs и tests/visual/compare.spec.ts — правится здесь, а не в трёх местах.",
+    "",
+    "Поля:",
+    "  id      — имя папки в artifacts/",
+    "  path    — путь на сайте",
+    "  host    — main | admin (у админки свой субдомен, см. middleware.ts)",
+    "  design  — файл в design-source/ или null, если макета нет",
+    "  auth    — none | lk | admin — нужна ли сессия, чтобы экран вообще открылся",
+    "  ported  — перенесён ли экран. false = сейчас заглушка, попиксельная сверка",
+    "            бессмысленна и в гейт не идёт (tests/visual/compare.spec.ts её пропустит)",
+    "  maxDiff — допустимая доля несовпавших пикселей (0.02 = 2%). Действует при ported:true",
+    "  note    — что важно помнить про эту страницу при сверке"
+  ],
+
+  "viewports": {
+    "desktop": { "width": 1440, "height": 900 },
+    "mobile": { "width": 390, "height": 844 }
+  },
+
+  "pages": [
+    {
+      "id": "index",
+      "path": "/",
+      "host": "main",
+      "design": "index.html",
+      "auth": "none",
+      "ported": false,
+      "maxDiff": 0.02,
+      "note": "Лендинг. Standalone-версия (456 КБ) совпадает с index.html на 99,6%."
+    },
+    {
+      "id": "pricing",
+      "path": "/pricing",
+      "host": "main",
+      "design": "pricing.html",
+      "auth": "none",
+      "ported": false,
+      "maxDiff": 0.03,
+      "note": "Цены только из GET /lk/plans. Расхождение в цифрах с макетом — норма, в раскладке — нет."
+    },
+    {
+      "id": "docs",
+      "path": "/docs",
+      "host": "main",
+      "design": "docs.html",
+      "auth": "none",
+      "ported": false,
+      "maxDiff": 0.05,
+      "note": "Документируем только API типа 1 (.epf). Блоки cb_live_* и /usage не переносим — сверка будет расходиться намеренно."
+    },
+    {
+      "id": "integrations",
+      "path": "/integrations",
+      "host": "main",
+      "design": "integrations.html",
+      "auth": "none",
+      "ported": false,
+      "maxDiff": 0.02,
+      "note": "Публичный каталог. 34 записи в integrations-data.js, но «Иное» не сервис → «33 сервиса»."
+    },
+    {
+      "id": "n8n",
+      "path": "/n8n",
+      "host": "main",
+      "design": "n8n.html",
+      "auth": "none",
+      "ported": false,
+      "maxDiff": 0.02,
+      "note": "SEO-страница про n8n. Не путать с экраном ЛК /workflows."
+    },
+    {
+      "id": "contacts",
+      "path": "/contacts",
+      "host": "main",
+      "design": "contacts.html",
+      "auth": "none",
+      "ported": false,
+      "maxDiff": 0.4,
+      "note": "Большое расхождение ожидаемо: в макете реквизиты несуществующего ООО, офис в Москве, карта и гендиректор — всё это не переносим (ограничение 7)."
+    },
+    {
+      "id": "for-business",
+      "path": "/for-business",
+      "host": "main",
+      "design": "for-business.html",
+      "auth": "none",
+      "ported": false,
+      "maxDiff": 0.4,
+      "note": "Расхождение ожидаемо: раздел «Клиенты, с которыми мы работаем» — выдуманные отзывы, не переносим."
+    },
+    {
+      "id": "oferta",
+      "path": "/oferta",
+      "host": "main",
+      "design": "oferta.html",
+      "auth": "none",
+      "ported": false,
+      "maxDiff": 0.15,
+      "note": "Тексты правятся по legal_corrections.md: Германия вместо Нидерландов, бессрочный trial, адрес убран."
+    },
+    {
+      "id": "privacy",
+      "path": "/privacy",
+      "host": "main",
+      "design": "privacy.html",
+      "auth": "none",
+      "ported": false,
+      "maxDiff": 0.15,
+      "note": "Адрес оставляем (решение Дмитрия). Остальные правки — по legal_corrections.md."
+    },
+    {
+      "id": "terms",
+      "path": "/terms",
+      "host": "main",
+      "design": "terms.html",
+      "auth": "none",
+      "ported": false,
+      "maxDiff": 0.15,
+      "note": "Правки по legal_corrections.md."
+    },
+
+    {
+      "id": "login",
+      "path": "/login",
+      "host": "main",
+      "design": "login.html",
+      "auth": "none",
+      "ported": false,
+      "maxDiff": 0.1,
+      "note": "Google удалён с сервера → кнопка Яндекс ID. Отзыв «Игорь П., Ритейл-М» выдуман, не переносим. Добавляется magic-link, которого нет в макете."
+    },
+    {
+      "id": "register",
+      "path": "/register",
+      "host": "main",
+      "design": "register.html",
+      "auth": "none",
+      "ported": false,
+      "maxDiff": 0.1,
+      "note": "«30 дней» → «бессрочный пробный», «5 операций в сутки» → «500 в месяц», убрать «Уже с нами: 1 247 компаний»."
+    },
+    {
+      "id": "forgot-password",
+      "path": "/forgot-password",
+      "host": "main",
+      "design": "forgot-password.html",
+      "auth": "none",
+      "ported": false,
+      "maxDiff": 0.05,
+      "note": null
+    },
+    {
+      "id": "reset-password",
+      "path": "/reset-password",
+      "host": "main",
+      "design": "reset-password.html",
+      "auth": "none",
+      "ported": false,
+      "maxDiff": 0.05,
+      "note": "При включённой 2FA сервер не ставит cookie после сброса — ведёт на экран кода."
+    },
+    {
+      "id": "verify-email",
+      "path": "/verify-email",
+      "host": "main",
+      "design": "verify-email.html",
+      "auth": "none",
+      "ported": false,
+      "maxDiff": 0.05,
+      "note": null
+    },
+    {
+      "id": "invite-accept",
+      "path": "/invite/accept",
+      "host": "main",
+      "design": null,
+      "auth": "none",
+      "ported": false,
+      "maxDiff": null,
+      "note": "Макета нет вовсе. Сервер шлёт приглашения на ${LK_BASE_URL}/lk/invite/accept, а /lk/* занят API — куда реально ведёт ссылка, ещё не проверено."
+    },
+
+    {
+      "id": "dashboard",
+      "path": "/dashboard",
+      "host": "main",
+      "design": "dashboard.html",
+      "auth": "lk",
+      "ported": false,
+      "maxDiff": 0.05,
+      "note": "Дельты («+2 за неделю») не показываем — истории нет. days_left: null = «Бессрочно». Период 90д убрать."
+    },
+    {
+      "id": "epf",
+      "path": "/epf",
+      "host": "main",
+      "design": "epf.html",
+      "auth": "lk",
+      "ported": false,
+      "maxDiff": 0.05,
+      "note": "Конфигурации УТ 11 / УНФ / КА / БП 3.0. Карточки «1С:ERP» из макета нет на сервере."
+    },
+    {
+      "id": "my-integrations",
+      "path": "/my-integrations",
+      "host": "main",
+      "design": "integrations-app.html",
+      "auth": "lk",
+      "ported": false,
+      "maxDiff": 0.3,
+      "note": "Три .preview-block внизу макета — это макеты состояний, а не секции экрана. Расхождение по высоте ожидаемо."
+    },
+    {
+      "id": "workflows",
+      "path": "/workflows",
+      "host": "main",
+      "design": null,
+      "auth": "lk",
+      "ported": false,
+      "maxDiff": null,
+      "note": "Макета нет: в shell.js пункт «n8n-воркфлоу» ведёт на публичную n8n.html. Экран ЛК верстаем сами по аналогии."
+    },
+    {
+      "id": "billing",
+      "path": "/billing",
+      "host": "main",
+      "design": "billing.html",
+      "auth": "lk",
+      "ported": false,
+      "maxDiff": 0.1,
+      "note": "Ссылки «Чек» и «УПД» убрать. Оплата ждёт Robokassa."
+    },
+    {
+      "id": "settings",
+      "path": "/settings",
+      "host": "main",
+      "design": "settings.html",
+      "auth": "lk",
+      "ported": false,
+      "maxDiff": 0.2,
+      "note": "Из макета убираем: SMS-двухфакторку, API-ключи cb_*, аватар, Должность, Язык, Часовой пояс. Добавляем Компанию и Команду, которых в макете нет."
+    },
+    {
+      "id": "support",
+      "path": "/support",
+      "host": "main",
+      "design": "support.html",
+      "auth": "lk",
+      "ported": false,
+      "maxDiff": null,
+      "note": "Вне MVP: заглушка + email. Тикеты и чат из макета не собираем, сверка не применяется."
+    },
+
+    {
+      "id": "admin",
+      "path": "/",
+      "host": "admin",
+      "design": "admin.html",
+      "auth": "admin",
+      "ported": false,
+      "maxDiff": 0.1,
+      "note": "KPI из /admin/stats, статус из /admin/health, журнал из /admin/audit. Проценты uptime и дельты не показывать."
+    },
+    {
+      "id": "admin-users",
+      "path": "/users",
+      "host": "admin",
+      "design": "admin-users.html",
+      "auth": "admin",
+      "ported": false,
+      "maxDiff": 0.1,
+      "note": "В модалку смены тарифа добавить поле «Причина» — сервер требует reason, в макете его нет."
+    },
+    {
+      "id": "admin-integrations",
+      "path": "/integrations",
+      "host": "admin",
+      "design": "admin-integrations.html",
+      "auth": "admin",
+      "ported": false,
+      "maxDiff": 0.1,
+      "note": null
+    }
+  ],
+
+  "designOnly": [
+    {
+      "design": "admin-support.html",
+      "why": "Тикет-системы на сервере нет, поддержка вне MVP — экран не переносим."
+    },
+    {
+      "design": "sitemap.html",
+      "why": "Оглавление дизайн-поставки, а не страница сайта."
+    },
+    {
+      "design": "CoreBridge - Лендинг (standalone).html",
+      "why": "Та же страница, что index.html (совпадение 99,6%)."
+    }
+  ]
+}

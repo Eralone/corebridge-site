@@ -16,7 +16,11 @@ export interface CurrentUser {
   email: string;
 }
 
-const Ctx = createContext<CurrentUser | null>(null);
+/**
+ * Экспортируем сам контекст, а не только провайдер: тестам и сториз нужен
+ * заранее заданный пользователь без похода в GET /lk/profile.
+ */
+export const UserContext = createContext<CurrentUser | null>(null);
 
 /** «Дмитрий Королев» → «ДК». В дизайне было «КД» — там инициалы заданы вручную. */
 export function initialsOf(name: string | null | undefined): string {
@@ -56,7 +60,7 @@ export function UserProvider({
     };
   }, [planTitle]);
 
-  return <Ctx.Provider value={user}>{children}</Ctx.Provider>;
+  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 }
 
-export const useUser = () => useContext(Ctx);
+export const useUser = () => useContext(UserContext);

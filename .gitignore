@@ -34,3 +34,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# тестовые артефакты: скриншоты обхода, диффы сверки, отчёты Playwright
+/artifacts/
+/test-results/

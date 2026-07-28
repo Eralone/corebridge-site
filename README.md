@@ -39,7 +39,7 @@ api.corebridge.ru    ─── как было, не трогаем (работ�
 |---|---|---|
 | Фреймворк | Next.js 14 App Router + TypeScript | по арх-доке |
 | Стили | **готовый `site.css` как есть**, без Tailwind и без shadcn/ui | дизайн уже готов на чистом CSS с токенами; Tailwind preflight ломает попиксельное совпадение (`implementation_strategy.md` §3) |
-| Шрифты | Inter (400–800) + JetBrains Mono | из `site.css` |
+| Шрифты | Inter (400–800) + JetBrains Mono, **выложены у себя** | из `site.css`. В макете подключались с `fonts.googleapis.com`, и на живом сайте это молча не работало: CSP из nginx разрешает стили и шрифты только со своего origin. Заодно снята зависимость от доступности Google в РФ |
 | Данные | `fetch` + SWR, `credentials: 'include'` | cookie-сессия |
 | Типы API | `lib/contracts/*.ts` локально | git-submodule `contracts` **не заводим** — дублировал бы существующие механики сервера (решение Дмитрия) |
 | Тесты | Vitest (контрактные/unit) + Playwright (e2e) + MSW (моки) | разработка через тесты |
@@ -265,9 +265,14 @@ lib/api/                  тонкие fetch-обёртки (auth, lk, admin, pu
 lib/contracts/            TS-типы эндпоинтов; `@tentative` = ещё нет на сервере
 lib/mocks/                MSW-хендлеры
 public/assets/            site.css, legal.css, robokassa.css — копия design-source/assets как есть
+public/assets/fonts*      Inter и JetBrains Mono у себя: CSP не пускает fonts.googleapis.com
 design-source/            ЭТАЛОН дизайна (28 HTML + assets). Только чтение, не править
 deploy/                   systemd-юнит + nginx vhost'ы
-tests/unit  tests/e2e     Vitest + Playwright
+tools/                    инспектор сайта и попиксельная сверка с макетом (Firefox)
+tests/unit                Vitest: контракт API, оболочки
+tests/e2e                 Playwright: маршруты, guard ЛК, субдомены, шрифты
+tests/visual              гейт сверки с макетом + карта «страница ↔ макет» (pages.json)
+artifacts/                скриншоты и отчёты прогонов (в git не попадает)
 Documents/                см. ниже
 ```
 
@@ -300,11 +305,54 @@ Documents/                см. ниже
 
 ```bash
 npm install
-npm run dev                  # localhost:3000 в dev
+npm run dev                  # порт 3005 (3000 занят контейнером lk-api)
 npm run build && npm start   # прод-сборка, порт 3005 (см. deploy/)
-npm run test                 # Vitest
-npm run test:e2e             # Playwright
+npm run test                 # Vitest — контракт API и оболочки
+npm run test:e2e             # Playwright — smoke + гейт сверки с макетом
+npm run test:all             # то и другое
 ```
+
+### Проверка глазами
+
+Браузер в образ не входит, ставится один раз:
+
+```bash
+npx playwright install firefox
+```
+
+Дальше:
+
+```bash
+npm run inspect              # обойти все страницы: скриншоты, ошибки, битые ссылки
+npm run inspect -- pricing login          # только эти
+npm run inspect -- lk                     # по области: none | lk | admin
+CB_SESSION=<cookie lk_session> npm run inspect -- lk   # снять закрытые экраны
+
+npm run design               # раздать design-source/ на 3006 (эталон)
+npm run compare              # попиксельно сверить сайт с макетом
+npm run compare -- --ported  # только перенесённые экраны — то же, что в гейте
+```
+
+Результат — в `artifacts/` (в git не попадает):
+
+| Файл | Что |
+|---|---|
+| `artifacts/report.md` | что нашёл обход: ошибки консоли, упавшие запросы, битые ссылки, результаты кликов |
+| `artifacts/compare.md` | доля расхождения с макетом по каждой странице |
+| `artifacts/<страница>/desktop.png`, `mobile.png` | как выглядит сейчас |
+| `artifacts/<страница>/design.png`, `live.png`, `diff.png` | эталон, факт и разница |
+| `artifacts/<страница>/clicks/*.png` | что открылось после каждого нажатия |
+
+Карта «страница ↔ макет» — `tests/visual/pages.json`. Перенёс экран — поставил
+там `ported: true`, и попиксельная сверка начинает держать его в допуске
+`maxDiff`. Пока `ported: false`, тест сверки помечается пропущенным: сравнивать
+заглушку с макетом смысла нет.
+
+Тесты и обход гоняются **против прода** — там крутится ровно та сборка, что в
+репозитории, и попутно проверяются nginx, сертификаты и разводка субдоменов.
+Локально: `BASE_URL=http://127.0.0.1:3005 npx playwright test`, но тесты
+админ-субдомена тогда отвалятся — Host в Firefox не подменить, а разводку
+`middleware.ts` делает именно по нему.
 
 ## Правила
 

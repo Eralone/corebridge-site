@@ -15,17 +15,24 @@ export const metadata: Metadata = {
  * их preflight переопределяет базовые стили site.css и ломает совпадение с макетом
  * (implementation_strategy.md §3).
  *
- * Шрифты: Inter 400–800 и JetBrains Mono 400/500 — те же, что в макетах.
+ * Шрифты: Inter 400–800 и JetBrains Mono 400/500 — те же, что в макетах, но
+ * выложенные у себя (public/assets/fonts.css). В макете они подключались с
+ * fonts.googleapis.com, и на живом сайте это молча не работало: CSP из nginx
+ * разрешает стили и шрифты только со своего origin, браузер блокировал запрос,
+ * и весь сайт рисовался системным шрифтом. Нашёл обход `node tools/inspect.mjs`.
  */
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ru">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* шрифты первыми: site.css сразу ссылается на семейство Inter */}
+        <link rel="stylesheet" href="/assets/fonts.css" />
         <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+          rel="preload"
+          as="font"
+          type="font/woff2"
+          href="/assets/fonts/inter-cyrillic.woff2"
+          crossOrigin="anonymous"
         />
         <link rel="stylesheet" href="/assets/site.css" />
       </head>
