@@ -1,6 +1,6 @@
 import { api } from './client';
 import type {
-  Activity, Dashboard, Integration, NotificationSettings, Plan,
+  Activity, AuditEntry, Dashboard, EpfConfig, EpfVersion, Integration, NotificationSettings, Plan,
   PrivacyRequest, PrivacyRequestType, Profile, Session, TwoFactorStatus, ContactSource,
 } from '@/lib/contracts/lk';
 
@@ -51,3 +51,21 @@ export const sendContact = (input: {
 
 /** Гасит сессию на сервере. Без этого «выход» оставлял бы cookie живой. */
 export const logout = () => api<{ ok: true }>('/lk/auth/logout', { method: 'POST' });
+
+/** Лента событий тенанта. Глубина хранения зависит от тарифа (log_retention_days) */
+export const getLogs = (limit = 20) => api<AuditEntry[]>(`/lk/logs?limit=${limit}`);
+
+/** Полный JWT для .epf. Только владельцу: остальным сервер отдаёт маскированный */
+export const getFullToken = () =>
+  api<{ token: string; valid_until: number | null }>('/lk/token/full');
+
+/**
+ * Перевыпуск токена.
+ * ⚠️ На сервере доступен только при подтверждённой оплате: на пробном тарифе
+ * всегда 402 NO_ACTIVE_SUBSCRIPTION, даже если лицензия активна и бессрочна.
+ */
+export const refreshToken = () => api<{ token: string }>('/lk/token/refresh', { method: 'POST' });
+
+/** Список сборок .epf для конфигурации. Пустой массив = сборка ещё не публиковалась */
+export const getEpfVersions = (config: EpfConfig) =>
+  api<{ config: EpfConfig; versions: EpfVersion[] }>(`/lk/epf/versions?config=${config}`);

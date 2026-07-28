@@ -158,3 +158,36 @@ export type ContactSource =
   | 'for_business'
   | 'billing'
   | 'epf';
+
+/**
+ * Строка журнала из `GET /lk/logs` — это `platform.audit_log` тенанта.
+ * Набор `action` открытый: сервер добавляет новые по мере роста механик,
+ * поэтому в интерфейсе нужен разумный запасной вариант, а не падение.
+ */
+export interface AuditEntry {
+  id: string;
+  action: string;
+  actor: string;
+  entity_type: string | null;
+  entity_id: string | null;
+  new_value: Record<string, unknown> | null;
+  created_at: string;
+}
+
+/**
+ * Конфигурации 1С, для которых собирается .epf.
+ * ⚠️ Список проверен на живом сервере: `/lk/epf/versions?config=erp` отвечает
+ * `INVALID_CONFIG` со списком `["ut11","unf","ka","bp"]`. Карточки «1С:ERP»
+ * из макета такой сборки нет, зато есть «БП 3.0», которой в макете нет.
+ */
+export type EpfConfig = 'ut11' | 'unf' | 'ka' | 'bp';
+
+export interface EpfVersion {
+  version: string;
+  release_notes: string | null;
+  sha256: string;
+  file_size: number;
+  force_update: boolean;
+  released_at: string;
+  is_active: boolean;
+}

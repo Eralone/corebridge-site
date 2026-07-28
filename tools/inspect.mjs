@@ -46,6 +46,14 @@ const CLICKABLE = [
 ];
 const MAX_CLICKS = 10;
 
+/**
+ * Чего не трогаем даже с виду безобидной кнопкой. Обход идёт по живому серверу:
+ * «Обновить» на экране .epf перевыпускает JWT, «Отвязать» рвёт Telegram. Один
+ * раз уже дёрнул /lk/token/refresh (спасло только то, что на пробном тарифе
+ * сервер отвечает 402).
+ */
+const NEVER_CLICK = /обнов|удал|отвяз|отключ|сохран|оплат|выйти|прекрат|перевыпуст|сброс/i;
+
 async function checkLinks(page, origin) {
   const hrefs = await page
     .$$eval('a[href]', (as) => as.map((a) => a.getAttribute('href')))
@@ -102,6 +110,11 @@ async function clickAround(page, dir, id) {
         (await el.textContent().catch(() => ''))?.trim().slice(0, 40) ||
         (await el.getAttribute('aria-label').catch(() => '')) ||
         sel;
+
+      if (NEVER_CLICK.test(label)) {
+        results.push({ selector: sel, label, outcome: 'пропущено: меняет данные', errors: [], shot: null });
+        continue;
+      }
 
       const errors = [];
       const onErr = (e) => errors.push(String(e));

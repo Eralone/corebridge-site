@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { UserProvider } from '@/lib/user-context';
+import '@/styles/lk.css';
 
 /**
  * Каркас ЛК — структура .app из design-source (dashboard.html и др.):

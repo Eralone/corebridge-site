@@ -41,22 +41,11 @@ export async function newContext(browser, { viewport, cookies } = {}) {
     // проверка имени хоста мешала бы
     ignoreHTTPSErrors: true,
   });
-  await ctx.addInitScript(() => {
-    // фиксируем время: макеты и экраны рисуют «сегодня» в разных местах
-    // (заголовки периодов, «последняя синхронизация»), иначе сверка плывёт
-    // от запуска к запуску
-    const FIXED = new Date('2026-01-15T12:00:00+03:00').getTime();
-    const RealDate = Date;
-    // @ts-expect-error подмена глобального Date — только внутри страницы
-    globalThis.Date = class extends RealDate {
-      constructor(...a) {
-        return a.length ? new RealDate(...a) : new RealDate(FIXED);
-      }
-      static now() {
-        return FIXED;
-      }
-    };
-  });
+  // Время НЕ подменяем. Раньше здесь стояла фиксированная дата ради стабильности
+  // снимков, но экраны кабинета считают «сколько прошло» от настоящего момента,
+  // и подмена превращала свежие события в «через 6 месяцев». Небольшой разброс
+  // подписей вида «3 минуты назад» сверка переживает, ложные данные — нет.
+
   if (cookies?.length) await ctx.addCookies(cookies);
   return ctx;
 }
@@ -111,8 +100,8 @@ export async function openWithDiagnostics(ctx, url, { waitFor = 'networkidle' } 
   diag.finalUrl = page.url();
 
   await page.addStyleTag({ content: FREEZE_CSS }).catch(() => {});
-  // шрифты грузятся с fonts.googleapis.com; без ожидания первый снимок
-  // выходит в системном шрифте и сверка врёт
+  // ждём шрифты: без этого первый снимок выходит в системном начертании
+  // и сверка ловит разницу в буквах вместо разницы в вёрстке
   await page.evaluate(() => document.fonts?.ready).catch(() => {});
 
   return { page, diag };
