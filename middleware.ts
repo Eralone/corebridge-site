@@ -25,6 +25,21 @@ const LK_ROUTES = [
   '/support',
 ];
 
+/**
+ * Куда middleware ходит проверять сессию.
+ *
+ * ⚠️ Ловушка, на которой guard молча не работал: внутри middleware `req.url`
+ * равен `https://localhost:3005/...` — Next подставляет свой внутренний хост,
+ * но со схемой https, хотя на 3005 слушает обычный http. Любой
+ * `fetch(new URL('/lk/auth/session', req.url))` падал на рукопожатии TLS,
+ * управление уходило в catch, и человека с валидной сессией всё равно
+ * уводило на форму входа. Пока сессий не существовало, это было незаметно.
+ *
+ * Поэтому адрес задаём явно и ходим прямо в lk-api: порт 3000 слушает только
+ * 127.0.0.1, лишний круг через nginx и TLS тут не нужен.
+ */
+const LK_API = process.env.LK_API_INTERNAL ?? 'http://127.0.0.1:3000';
+
 /** Пути админ-субдомена → внутренние роуты Next.js */
 const ADMIN_MAP: Record<string, string> = {
   '/': '/admin',
@@ -81,9 +96,12 @@ export async function middleware(req: NextRequest) {
   }
 
   try {
-    // single-origin: nginx на этом же хосте проксирует /lk/* в lk-api
-    const res = await fetch(new URL('/lk/auth/session', req.url), {
-      headers: { cookie: req.headers.get('cookie') ?? '' },
+    const res = await fetch(`${LK_API}/lk/auth/session`, {
+      headers: {
+        cookie: req.headers.get('cookie') ?? '',
+        // ходим в обход nginx, поэтому имя домена сообщаем сами
+        host: req.headers.get('host') ?? 'corebridge.ru',
+      },
       cache: 'no-store',
     });
 

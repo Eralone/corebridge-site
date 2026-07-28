@@ -98,6 +98,43 @@ test.describe('Guard личного кабинета', () => {
   }
 });
 
+test.describe('Guard пропускает с сессией', () => {
+  // Держит баг, который жил незамеченным: guard собирал адрес проверки из
+  // req.url, а внутри middleware это https://localhost:3005 — https поверх
+  // обычного http-порта. Запрос падал на TLS, и человека с рабочей сессией
+  // всё равно уводило на вход. Отказ без cookie при этом работал исправно,
+  // поэтому тесты ничего не замечали.
+  const session = process.env.CB_SESSION;
+  test.skip(!session, 'нужен CB_SESSION — см. Documents/test_account.md');
+
+  test.use({
+    storageState: {
+      cookies: [
+        {
+          name: 'lk_session',
+          value: process.env.CB_SESSION ?? '',
+          domain: 'corebridge.ru',
+          path: '/',
+          expires: -1,
+          httpOnly: true,
+          secure: true,
+          sameSite: 'Strict',
+        },
+      ],
+      origins: [],
+    },
+  });
+
+  for (const path of LK) {
+    test(`${path} открывается, а не редиректит`, async ({ page }) => {
+      const res = await page.goto(path);
+      expect(res?.status()).toBe(200);
+      expect(new URL(page.url()).pathname).toBe(path);
+      await expect(page.locator('aside.sidebar')).toBeVisible();
+    });
+  }
+});
+
 test.describe('Разводка субдоменов', () => {
   test('на основном домене админка закрыта: /admin отдаёт 404', async ({ page }) => {
     const res = await page.goto('/admin', { waitUntil: 'domcontentloaded' });
