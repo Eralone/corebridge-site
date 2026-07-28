@@ -1,0 +1,41 @@
+# Next.js фронтенд corebridge.ru
+# Порт 3005 — 3000 занят контейнером corebridge-lk-api.
+# nginx (/etc/nginx/sites-available/corebridge.ru.conf) проксирует:
+#   /lk/*     → 127.0.0.1:3000  (lk-api)
+#   /api/v1/* → 127.0.0.1:3001  (bridge)
+#   /         → 127.0.0.1:3005  (этот сервис)
+#
+# Источник файла: corebridge-site/deploy/systemd/corebridge-site.service
+# Устанавливается в /etc/systemd/system/
+
+[Unit]
+Description=CoreBridge site (Next.js)
+Documentation=https://github.com/Eralone/corebridge-site
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=deploy
+Group=deploy
+WorkingDirectory=/opt/corebridge-site
+Environment=NODE_ENV=production
+Environment=PORT=3005
+# single-origin: пути к API как в контракте сервера, без префикса
+Environment=NEXT_PUBLIC_API_BASE=
+ExecStart=/usr/bin/npm run start
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=corebridge-site
+
+# Ограничения: сервису нужен только свой каталог
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=read-only
+ReadWritePaths=/opt/corebridge-site/.next
+
+[Install]
+WantedBy=multi-user.target

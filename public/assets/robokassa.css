@@ -1,0 +1,107 @@
+/* Robokassa modal — placeholder widget */
+.rk-bd{
+  position:fixed; inset:0; background:rgba(10,36,99,.55);
+  backdrop-filter:blur(4px); z-index:1100;
+  display:none; align-items:center; justify-content:center; padding:20px;
+}
+.rk-bd.open{ display:flex; }
+.rk-modal{
+  background:#fff; border-radius:18px; width:100%; max-width:480px;
+  padding:28px; position:relative;
+  box-shadow:0 24px 80px rgba(0,0,0,.35);
+  font-family:var(--font, "Inter", sans-serif);
+  max-height:92vh; overflow:auto;
+}
+.rk-x{
+  position:absolute; top:14px; right:14px; width:34px; height:34px;
+  border-radius:8px; border:none; background:transparent; cursor:pointer;
+  font-size:22px; color:#5B647A;
+}
+.rk-x:hover{ background:#F4F6FA; }
+
+.rk-head{
+  display:flex; justify-content:space-between; align-items:center;
+  padding-bottom:18px; border-bottom:1px solid #E4E7EF; margin-bottom:18px;
+}
+.rk-brand{ display:flex; gap:12px; align-items:center; }
+.rk-logo{
+  width:40px; height:40px; border-radius:10px;
+  background:linear-gradient(135deg,#26A65B,#0E8B47);
+  color:#fff; font-weight:800; font-size:22px;
+  display:flex; align-items:center; justify-content:center;
+  letter-spacing:-0.04em;
+}
+.rk-brand-name{ font-weight:700; font-size:15px; color:#0F1626; }
+.rk-brand-sub{ font-size:12px; color:#8A93A6; }
+.rk-secure{
+  display:inline-flex; gap:6px; align-items:center;
+  font-size:11px; color:#1F9D55; font-weight:600;
+  background:#E6F5ED; padding:6px 10px; border-radius:999px;
+}
+
+.rk-title{
+  margin:0 0 14px; font-size:18px; font-weight:700;
+  color:#0F1626; letter-spacing:-0.01em;
+}
+
+.rk-summary{
+  background:#F7F8FC; border:1px solid #E4E7EF; border-radius:12px;
+  padding:14px 16px; margin-bottom:18px;
+}
+.rk-summary-row{
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:14px; padding:4px 0;
+}
+.rk-summary-row span{ color:#5B647A; }
+.rk-summary-row b{ color:#0F1626; font-weight:600; }
+.rk-summary-total{
+  border-top:1px dashed #C9CFDB; margin-top:6px; padding-top:10px;
+}
+.rk-summary-total b{ font-size:18px; font-weight:800; color:#FF6B35; }
+
+.rk-method-title{
+  font-size:11px; font-weight:700; letter-spacing:.06em;
+  text-transform:uppercase; color:#8A93A6; margin-bottom:8px;
+}
+.rk-method-grid{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-bottom:18px;
+}
+.rk-method{
+  border:1px solid #E4E7EF; background:#fff; padding:10px 6px;
+  border-radius:10px; font-size:12px; font-weight:600; color:#0F1626;
+  cursor:pointer; transition:all .12s ease;
+}
+.rk-method:hover{ border-color:#C9CFDB; }
+.rk-method.active{ border-color:#0A2463; background:#0A2463; color:#fff; }
+
+.rk-placeholder{
+  background:#F4F6FA; border:1px dashed #C9CFDB; border-radius:12px;
+  padding:18px; margin-bottom:18px;
+}
+.rk-ph-bar{ display:flex; gap:6px; margin-bottom:10px; }
+.rk-ph-block{
+  height:36px; background:linear-gradient(90deg,#E4E7EF,#EEF1F6,#E4E7EF);
+  background-size:200% 100%; border-radius:8px;
+  animation:rkSh 1.6s linear infinite;
+}
+@keyframes rkSh{ 0%{background-position:0% 0} 100%{background-position:-200% 0} }
+.rk-ph-note{
+  font-size:12px; color:#8A93A6; text-align:center; margin-top:8px;
+  font-family:"JetBrains Mono", ui-monospace, monospace;
+}
+
+.rk-pay{
+  width:100%; padding:14px; border:none; border-radius:10px;
+  background:#26A65B; color:#fff; font-weight:700; font-size:15px;
+  cursor:not-allowed; opacity:.55; letter-spacing:-0.01em;
+}
+.rk-legal{
+  margin-top:12px; font-size:11px; color:#8A93A6;
+  text-align:center; line-height:1.5;
+}
+.rk-legal a{ color:#5B647A; text-decoration:underline; }
+
+@media (max-width:480px){
+  .rk-modal{ padding:20px; }
+  .rk-method-grid{ grid-template-columns:repeat(2,1fr); }
+}
