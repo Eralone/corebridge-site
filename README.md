@@ -201,6 +201,33 @@ deep-link опрашивать `GET /lk/notifications/telegram/status` раз в
 Смена email — 🟡 остаётся в бэклоге сервера. Блок API-ключей `cb_*` — **скрыт** (§8.5).
 Ошибка смены пароля у Яндекс-аккаунта — код **`OAUTH_ACCOUNT`** (не `GOOGLE_ACCOUNT`).
 
+### ⚠️ Коллизия путей в админке — решается в `middleware.ts`
+
+Обнаружено 2026-07-28 при поднятии vhost. На `admin.corebridge.ru` путь `/admin/*`
+**занят API** (nginx проксирует в `corebridge-admin:3003`), а Next.js по дереву
+`app/(admin)/admin/` отдаёт UI по тому же `/admin`. Проверено:
+
+```
+/admin       → 301 Location: /admin/     (редирект Next.js)
+/admin/      → 403                       (уже API, IP-whitelist)
+```
+
+То есть экран админки недостижим: браузер отбрасывает на путь API. Та же природа,
+что у `/lk/*` на основном домене — префикс принадлежит бэкенду, не фронту.
+
+**Решение (делать в Э0 вместе с `middleware.ts`):** на субдомене админки UI живёт в
+корне, а не под `/admin`. Middleware переписывает входящие пути на внутренние роуты
+Next.js, оставляя `/admin/*` бэкенду:
+
+| Браузер | Внутренний роут Next.js |
+|---|---|
+| `admin.corebridge.ru/` | `app/(admin)/admin/page.tsx` |
+| `admin.corebridge.ru/users` | `app/(admin)/admin/users/page.tsx` |
+| `admin.corebridge.ru/integrations` | `app/(admin)/admin/integrations/page.tsx` |
+| `admin.corebridge.ru/admin/*` | **не переписывается** — уходит в nginx → 3003 |
+
+Так же middleware не даёт открыть админские роуты с основного домена и наоборот.
+
 ### Э7 — Admin (`admin.corebridge.ru`)
 
 Всё ✅ real: `GET /admin/stats`, `GET /admin/integrations`, `GET /admin/users` (кросс-тенантно),
