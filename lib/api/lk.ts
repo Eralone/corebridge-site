@@ -69,3 +69,13 @@ export const refreshToken = () => api<{ token: string }>('/lk/token/refresh', { 
 /** Список сборок .epf для конфигурации. Пустой массив = сборка ещё не публиковалась */
 export const getEpfVersions = (config: EpfConfig) =>
   api<{ config: EpfConfig; versions: EpfVersion[] }>(`/lk/epf/versions?config=${config}`);
+
+/**
+ * Запрос на скачивание .epf. Файл отдаёт не этот эндпоинт: он выдаёт одноразовый
+ * токен и адрес `/cdn/epf/download?token=…`, по которому файл раздаёт bridge.
+ * Токен живёт 10 минут и гасится после первого использования.
+ */
+export const requestEpfDownload = (config: EpfConfig) =>
+  api<{ token: string; version: string; sha256: string; expiresIn: number; downloadUrl: string }>(
+    `/lk/epf/download?config=${config}`,
+  );

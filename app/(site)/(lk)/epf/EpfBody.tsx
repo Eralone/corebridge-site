@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ApiError } from '@/lib/api/client';
-import { getEpfVersions, getFullToken, refreshToken } from '@/lib/api/lk';
+import { getEpfVersions, getFullToken, refreshToken, requestEpfDownload } from '@/lib/api/lk';
 import type { EpfConfig, EpfVersion } from '@/lib/contracts/lk';
 
 /**
@@ -36,6 +36,8 @@ export function EpfBody() {
   const [copied, setCopied] = useState(false);
   const [note, setNote] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [downloading, setDownloading] = useState(false);
+  const [dlError, setDlError] = useState<string | null>(null);
 
   useEffect(() => {
     getFullToken()
@@ -213,11 +215,28 @@ export function EpfBody() {
       </div>
       <div className="row gap-12" style={{ flexWrap: 'wrap' }}>
         {active ? (
-          <a
+          <button
+            type="button"
             className="dl-btn"
             style={{ maxWidth: 420 }}
-            href={`/lk/epf/download?config=${config}`}
-            download
+            disabled={downloading}
+            onClick={async () => {
+              setDlError(null);
+              setDownloading(true);
+              try {
+                // эндпоинт отдаёт не файл, а одноразовый адрес — по нему и уходим
+                const r = await requestEpfDownload(config);
+                window.location.href = r.downloadUrl;
+              } catch (e) {
+                setDlError(
+                  e instanceof ApiError && e.code === 'EPF_NOT_FOUND'
+                    ? 'Сборка для этой конфигурации ещё не опубликована.'
+                    : 'Скачивание временно недоступно. Мы уже знаем о проблеме — попробуйте позже.',
+                );
+              } finally {
+                setDownloading(false);
+              }
+            }}
           >
             <div className="ic">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
@@ -225,12 +244,12 @@ export function EpfBody() {
               </svg>
             </div>
             <div style={{ flex: 1 }}>
-              <span>{`CoreBridge_${config.toUpperCase()}_v${active.version}.epf`}</span>
+              <span>{downloading ? 'Готовим файл…' : `CoreBridge_${config.toUpperCase()}_v${active.version}.epf`}</span>
               <div className="meta">
                 Для {cfg.full} · {size(active.file_size)}
               </div>
             </div>
-          </a>
+          </button>
         ) : (
           <button className="dl-btn" style={{ maxWidth: 420 }} disabled>
             <div className="ic">
@@ -248,6 +267,8 @@ export function EpfBody() {
           Инструкция по установке
         </Link>
       </div>
+
+      {dlError && <div className="lk-error" style={{ marginTop: 12 }}>{dlError}</div>}
 
       {list && list.length > 0 && (
         <div className="version-list">
@@ -278,8 +299,10 @@ export function EpfBody() {
   );
 }
 
-function size(bytes: number): string {
-  return `${(bytes / 1024 / 1024).toFixed(1)} МБ`;
+/** bigint из Postgres приезжает строкой — приводим явно, иначе NaN */
+function size(bytes: number | string): string {
+  const mb = Number(bytes) / 1024 / 1024;
+  return mb < 0.1 ? `${Math.max(1, Math.round(Number(bytes) / 1024))} КБ` : `${mb.toFixed(1)} МБ`;
 }
 
 function date(iso: string): string {
