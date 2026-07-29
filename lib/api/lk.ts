@@ -1,6 +1,6 @@
 import { api } from './client';
 import type {
-  Activity, AuditEntry, Dashboard, EpfConfig, EpfVersion, Integration, NotificationSettings, Plan,
+  Activity, AuditEntry, Dashboard, EpfConfig, EpfVersion, Integration, NotificationSettings, Plan, WorkflowExecution, WorkflowTemplate,
   PrivacyRequest, PrivacyRequestType, Profile, Session, TwoFactorStatus, ContactSource,
 } from '@/lib/contracts/lk';
 
@@ -79,3 +79,36 @@ export const requestEpfDownload = (config: EpfConfig) =>
   api<{ token: string; version: string; sha256: string; expiresIn: number; downloadUrl: string }>(
     `/lk/epf/download?config=${config}`,
   );
+
+/** Приостановить обмен по интеграции. owner/manager */
+export const pauseIntegration = (id: string) =>
+  api<{ ok: true }>(`/lk/integrations/${encodeURIComponent(id)}/pause`, { method: 'POST' });
+
+export const resumeIntegration = (id: string) =>
+  api<{ ok: true }>(`/lk/integrations/${encodeURIComponent(id)}/resume`, { method: 'POST' });
+
+/** Сохранить доступы к сервису. Ключи шифруются на сервере (AES-256-GCM) */
+export const saveCredentials = (
+  id: string,
+  body: { adapter_type: string; api_key: string; api_secret?: string; extra?: Record<string, string> },
+) =>
+  api<{ ok: true }>(`/lk/integrations/${encodeURIComponent(id)}/credentials`, {
+    method: 'POST',
+    body,
+  });
+
+/** Удалить интеграцию. Только владелец */
+export const deleteIntegration = (id: string) =>
+  api<{ ok: true }>(`/lk/integrations/${encodeURIComponent(id)}`, { method: 'DELETE' });
+
+/** Каталог готовых воркфлоу n8n. Пустой массив = шаблоны ещё не публиковались */
+export const getWorkflowCatalog = () => api<WorkflowTemplate[]>('/lk/workflows/catalog');
+
+export const getWorkflowExecutions = (limit = 20) =>
+  api<WorkflowExecution[]>(`/lk/workflows/executions?limit=${limit}`);
+
+export const activateWorkflow = (template_id: string) =>
+  api<{ workflow_id: string; status: string }>('/lk/workflows/activate', {
+    method: 'POST',
+    body: { template_id },
+  });

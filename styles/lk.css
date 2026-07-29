@@ -486,3 +486,167 @@
   font-family: var(--mono);
   color: var(--text-muted);
 }
+
+/* ══ Экран «Мои интеграции» ══════════════════════════════════════════════
+   Стили из <style> в design-source/integrations-app.html. Модальное окно
+   каталога не переносим: создать интеграцию с сайта нельзя — она заводится
+   из .epf через bridge, у /lk/integrations есть только чтение, пауза,
+   ключи и удаление. */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.tabs {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  flex-wrap: wrap;
+}
+.tabs a {
+  padding: 7px 14px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+  cursor: pointer;
+}
+.tabs a.active {
+  background: var(--navy-900);
+  color: #fff;
+}
+.filters {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.search-input {
+  position: relative;
+}
+.search-input .input {
+  padding-left: 38px;
+  width: 280px;
+  max-width: 100%;
+}
+.search-input svg {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: var(--text-faint);
+}
+
+.int-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 1100px) {
+  .int-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 700px) {
+  .int-cards {
+    grid-template-columns: 1fr;
+  }
+}
+.icard {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+.icard:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-sm);
+}
+.icard-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.ic-ic {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.icard h4 {
+  margin: 0;
+  font-size: 16px;
+}
+.icard .id {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-faint);
+}
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.meta-row span strong {
+  color: var(--text);
+  display: block;
+  font-size: 14px;
+}
+.icard-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.icard-empty {
+  background: transparent;
+  border: 2px dashed var(--border-strong);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 260px;
+  gap: 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 24px;
+}
+.icard-empty:hover {
+  border-color: var(--blue-500);
+  color: var(--blue-500);
+  text-decoration: none;
+}
+.icard-empty .pluscir {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bg-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

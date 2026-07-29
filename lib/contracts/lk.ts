@@ -191,3 +191,27 @@ export interface EpfVersion {
   released_at: string;
   is_active: boolean;
 }
+
+/**
+ * Готовый сценарий n8n. Экран ЛК для воркфлоу в макете отсутствует — в дизайне
+ * пункт меню «n8n-воркфлоу» вёл на публичную страницу n8n.html. Поля описаны
+ * по контракту `GET /lk/workflows/catalog`; на живом сервере каталог пока пуст,
+ * поэтому набор поддерживается терпимым к отсутствующим значениям.
+ */
+export interface WorkflowTemplate {
+  template_id: string;
+  name: string;
+  description?: string | null;
+  category?: string | null;
+  requires?: string[] | null;
+  is_active?: boolean;
+}
+
+export interface WorkflowExecution {
+  execution_id: string;
+  workflow_id: string;
+  workflow_name?: string | null;
+  status: 'success' | 'error' | 'running' | string;
+  started_at: string;
+  finished_at?: string | null;
+}

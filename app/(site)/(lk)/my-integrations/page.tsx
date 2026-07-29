@@ -1,10 +1,13 @@
+import type { Metadata } from 'next';
 import { LkShell } from '@/components/LkShell';
-import { StubBody } from '@/components/StubBody';
+import { IntegrationsBody } from './IntegrationsBody';
+
+export const metadata: Metadata = { title: 'Мои интеграции — CoreBridge', robots: { index: false } };
 
 export default function Page() {
   return (
-    <LkShell active="integrations-app" title="Мои интеграции" subtitle="Подключённые сервисы и автоматизации">
-      <StubBody source="integrations-app.html" stage="Э3" />
+    <LkShell active="integrations-app" title="Мои интеграции">
+      <IntegrationsBody />
     </LkShell>
   );
 }
