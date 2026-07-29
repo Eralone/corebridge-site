@@ -1,6 +1,6 @@
 import { api } from './client';
 import type {
-  Activity, AuditEntry, Dashboard, EpfConfig, EpfVersion, Integration, NotificationSettings, Plan, WorkflowExecution, WorkflowTemplate,
+  Activity, AuditEntry, Dashboard, EpfConfig, EpfVersion, Integration, NotificationSettings, Payment, Plan, WorkflowExecution, WorkflowTemplate,
   PrivacyRequest, PrivacyRequestType, Profile, Session, TwoFactorStatus, ContactSource,
 } from '@/lib/contracts/lk';
 
@@ -111,4 +111,18 @@ export const activateWorkflow = (template_id: string) =>
   api<{ workflow_id: string; status: string }>('/lk/workflows/activate', {
     method: 'POST',
     body: { template_id },
+  });
+
+/** История платежей. Пустой массив — оплат ещё не было */
+export const getPayments = () => api<Payment[]>('/lk/billing');
+
+/**
+ * Инициация оплаты.
+ * ⚠️ До подключения Robokassa вернётся ошибка или `payment_url: null` —
+ * заглушка на этот случай нужна и после подключения, на случай сбоя платёжки.
+ */
+export const startPayment = (plan: string, period: 'monthly' | 'yearly', promo_code?: string) =>
+  api<{ payment_url: string | null; payment_id?: string }>('/lk/billing/pay', {
+    method: 'POST',
+    body: { plan, period, ...(promo_code ? { promo_code } : {}) },
   });

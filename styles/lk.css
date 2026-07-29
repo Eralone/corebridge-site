@@ -650,3 +650,164 @@
   align-items: center;
   justify-content: center;
 }
+
+/* ══ Экран «Биллинг и тариф» ═════════════════════════════════════════════
+   Стили из <style> в design-source/billing.html. Не перенесены .ph-link
+   (ссылки «Чек» и «УПД») — сервер документов не отдаёт, а УПД у ИП на УСН
+   не выдаётся. */
+.billing-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+@media (max-width: 1024px) {
+  .billing-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.plan-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.plan-name {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--navy-900);
+  letter-spacing: -0.015em;
+}
+.plan-price {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--orange-500);
+}
+.usage-bar {
+  height: 8px;
+  background: var(--bg-alt);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+.usage-bar > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue-500), var(--orange-500));
+}
+.usage-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+.usage-row + .usage-row {
+  margin-top: 18px;
+}
+.trial-ribbon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(31, 157, 85, 0.12);
+  color: var(--success);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.trial-ribbon::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+}
+
+.pay-history {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.pay-history th {
+  text-align: left;
+  padding: 10px 12px;
+  background: var(--bg-alt);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+}
+.pay-history td {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.pay-history tr:last-child td {
+  border-bottom: none;
+}
+.pay-history .amt {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--navy-900);
+}
+.pay-history .doc {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.ph-status {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.ph-status.ok {
+  background: rgba(31, 157, 85, 0.12);
+  color: var(--success);
+}
+.ph-status.ok::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+}
+.ph-status.pending {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+.ph-status.fail {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+.rk-tag {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--mono);
+}
+.rk-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #26a65b;
+}
+/* Таблица платежей на телефоне не встаёт пятью колонками — даём прокрутку ей,
+   а не всей странице */
+.pay-scroll {
+  overflow-x: auto;
+}

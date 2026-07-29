@@ -1,10 +1,13 @@
+import type { Metadata } from 'next';
 import { LkShell } from '@/components/LkShell';
-import { StubBody } from '@/components/StubBody';
+import { BillingBody } from './BillingBody';
+
+export const metadata: Metadata = { title: 'Биллинг и тариф — CoreBridge', robots: { index: false } };
 
 export default function Page() {
   return (
-    <LkShell active="billing" title="Биллинг и тариф" subtitle="Тарифный план, лимиты и история платежей">
-      <StubBody source="billing.html" stage="Э4" />
+    <LkShell active="billing" title="Биллинг и тариф" subtitle="Тариф, лимиты и платежи">
+      <BillingBody />
     </LkShell>
   );
 }

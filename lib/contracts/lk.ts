@@ -215,3 +215,15 @@ export interface WorkflowExecution {
   started_at: string;
   finished_at?: string | null;
 }
+
+/** Строка истории платежей из `GET /lk/billing` */
+export interface Payment {
+  id: string;
+  plan: PlanCode | string;
+  period?: string | null;
+  amount: number;
+  currency?: string | null;
+  status: 'confirmed' | 'pending' | 'failed' | string;
+  promo_code?: string | null;
+  created_at: string;
+}
