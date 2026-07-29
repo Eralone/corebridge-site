@@ -230,7 +230,7 @@ export function EpfBody() {
               try {
                 // эндпоинт отдаёт не файл, а одноразовый адрес — по нему и уходим
                 const r = await requestEpfDownload(config);
-                window.location.href = r.downloadUrl;
+                window.location.href = r.download_url;
               } catch (e) {
                 setDlError(
                   e instanceof ApiError && e.code === 'EPF_NOT_FOUND'

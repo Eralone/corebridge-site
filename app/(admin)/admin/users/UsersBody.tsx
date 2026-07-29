@@ -8,6 +8,7 @@ import {
   getAdminPayments,
   getAdminStats,
   getAdminUsers,
+  getTenantTokens,
   issueTenantToken,
   setTenantPlan,
   unblockTenant,
@@ -16,6 +17,7 @@ import type {
   AdminN8nStats,
   AdminPayment,
   AdminStats,
+  AdminTokenRecord,
   AdminUser,
 } from '@/lib/contracts/admin';
 import { Blocked, PLAN_CODES, TenantStatus, dt, planTitle, ts } from '@/components/admin/bits';
@@ -397,12 +399,16 @@ function RowMenu({
 /** Боковая панель профиля. Часть блоков зависит от эндпоинтов, которые сейчас 500 */
 function ProfileSheet({ user, onClose }: { user: AdminUser; onClose: () => void }) {
   const [payments, setPayments] = useState<AdminPayment[] | null>(null);
+  const [tokens, setTokens] = useState<AdminTokenRecord[] | null>(null);
   const [n8n, setN8n] = useState<AdminN8nStats['tenants'][number] | null>(null);
 
   useEffect(() => {
     getAdminPayments({ tenant_id: user.tenant_id, limit: 5 })
       .then((r) => setPayments(r.payments))
       .catch(() => setPayments([]));
+    getTenantTokens(user.tenant_id)
+      .then((r) => setTokens(r.tokens))
+      .catch(() => setTokens([]));
     getAdminN8nStats()
       .then((r) => setN8n(r.tenants.find((t) => t.tenant_id === user.tenant_id) ?? null))
       .catch(() => undefined);
@@ -456,15 +462,26 @@ function ProfileSheet({ user, onClose }: { user: AdminUser; onClose: () => void 
           </div>
 
           <div className="sheet-section">
-            <h5>История JWT-токенов</h5>
-            {/* ⚠️ GET /admin/tenants/:id/tokens отвечает 500: SQL обращается к колонкам
-                issued_at и details, которых в platform.licenses нет. Промт S13 §2.
-                Показываем причину, а не пустой блок — иначе выглядело бы как «токенов не было». */}
-            <p className="text-muted" style={{ fontSize: 12.5, margin: 0 }}>
-              Источник недоступен: сервер отвечает ошибкой на <code>GET /admin/tenants/:id/tokens</code>.
-              Починка описана в промте S13 для бэкенда. Факт ручной выдачи виден в журнале
-              на обзоре — действие <code>admin_token_issued</code>.
-            </p>
+            <h5>История лицензий</h5>
+            {tokens === null ? (
+              <p className="text-muted" style={{ fontSize: 13, margin: 0 }}>Загружаем…</p>
+            ) : tokens.length === 0 ? (
+              <p className="text-muted" style={{ fontSize: 13, margin: 0 }}>Лицензий не выдавалось</p>
+            ) : (
+              tokens.map((t, i) => (
+                <Kv
+                  key={i}
+                  k={dt(t.created_at)}
+                  v={
+                    <>
+                      {planTitle(t.plan)} ·{' '}
+                      {t.issued_by_admin ? 'выдана сотрудником' : 'автоматически'}
+                      {t.is_active ? '' : ' · отозвана'}
+                    </>
+                  }
+                />
+              ))
+            )}
           </div>
 
           <div className="sheet-section">

@@ -69,10 +69,8 @@ function AdminLogin({ onDone }: { onDone: () => void }) {
           setStep({ token: r.step_token, requiresTotp: true });
           return;
         }
-        // ⚠️ Сессия выдаётся только на шаге 2, а маршрут отвергает пустой код
-        // ещё до проверки. При выключенном TOTP сервер код игнорирует, но поле
-        // требует непустым — отсюда заглушка. Чинится на сервере, промт S13 §5.
-        await adminVerifyTotp(r.step_token, '000000');
+        // При выключенном TOTP сервер ставит cookie уже на этом шаге (S13 §4.4) —
+        // второй запрос не нужен, заглушечный код тоже.
       } else {
         await adminVerifyTotp(step.token, code.trim());
       }

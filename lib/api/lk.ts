@@ -76,9 +76,13 @@ export const getEpfVersions = (config: EpfConfig) =>
  * Токен живёт 10 минут и гасится после первого использования.
  */
 export const requestEpfDownload = (config: EpfConfig) =>
-  api<{ token: string; version: string; sha256: string; expiresIn: number; downloadUrl: string }>(
-    `/lk/epf/download?config=${config}`,
-  );
+  api<{
+    token: string;
+    version: string;
+    sha256: string;
+    expires_in: number;
+    download_url: string;
+  }>(`/lk/epf/download?config=${config}`);
 
 /** Приостановить обмен по интеграции. owner/manager */
 export const pauseIntegration = (id: string) =>
@@ -104,39 +108,15 @@ export const deleteIntegration = (id: string) =>
 /**
  * Каталог готовых воркфлоу n8n. Пустой массив = шаблоны ещё не публиковались.
  *
- * ⚠️ Нормализуем ответ. Сервер отдаёт `tags` в том виде, в каком они лежат
- * в JSON шаблона, — а там это объекты `{ name }`, а не строки. Плюс у части
- * шаблонов нет ни `template_id`, ни человекочитаемого `name` (лежит шаблонная
- * строка `{TENANT_ID}__{PROJECT_ID}__…`). Чинить это серверу — промт S12,
- * но падать из-за формы данных экран не должен.
+ * Нормализация ответа снята 2026-07-29: сервер (пакет S12) теперь отдаёт
+ * человекочитаемый `name`, плоские строки в `tags` и отфильтровывает служебные
+ * JSON без узлов. До этого приходили плейсхолдеры `{TENANT_ID}__…` и объекты.
  */
-export const getWorkflowCatalog = async (): Promise<WorkflowTemplate[]> => {
-  const raw = await api<unknown[]>('/lk/workflows/catalog');
-  return raw.map((item) => {
-    const t = item as Record<string, unknown>;
-    const tags = Array.isArray(t.tags)
-      ? t.tags
-          .map((x) => (typeof x === 'string' ? x : (x as { name?: string })?.name))
-          .filter((x): x is string => typeof x === 'string' && !x.startsWith('{'))
-      : [];
-    const id = String(t.template_id ?? '');
-    const name = String(t.name ?? '');
-    return {
-      template_id: id,
-      // шаблонная строка вместо названия — показываем идентификатор, он читается лучше
-      name: name && !name.includes('{') ? name : id,
-      description: typeof t.description === 'string' && t.description ? t.description : null,
-      required_integrations: Array.isArray(t.required_integrations)
-        ? (t.required_integrations as string[])
-        : [],
-      tags,
-    };
-  });
-};
+export const getWorkflowCatalog = () => api<WorkflowTemplate[]>('/lk/workflows/catalog');
 
-/** ⚠️ Сервер игнорирует `limit` и отдаёт всё, что нашёл в n8n. Режем на своей стороне */
-export const getWorkflowExecutions = () =>
-  api<WorkflowExecution[]>('/lk/workflows/executions');
+/** `limit` учитывается сервером с пакета S12: умолчание 50, потолок 200 */
+export const getWorkflowExecutions = (limit = 10) =>
+  api<WorkflowExecution[]>(`/lk/workflows/executions?limit=${limit}`);
 
 /**
  * ⚠️ `integration_id` обязателен: без него сервер отвечает `400 MISSING_FIELDS`.

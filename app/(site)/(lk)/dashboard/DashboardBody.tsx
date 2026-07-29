@@ -16,9 +16,9 @@ import { EventRow, timeAgo } from '@/components/lk/events';
  * · период **90д убран**: `GET /lk/dashboard/activity` принимает только 7d и 30d;
  * · «Успешность синхронизации» отдельного источника не имеет — считаем на
  *   клиенте как ok/(ok+error) по тем же точкам, что и график;
- * · ⚠️ «Операций за месяц» — сервер пока считает только запуски n8n
- *   (`executions_this_month`). Общего счётчика операций нет (промт S10),
- *   поэтому подписываем честно, а не выдаём одно за другое;
+ * · счётчик операций сервер завёл 2026-07-29 (промт S10) — он в `operations_usage`
+ *   и показан в биллинге. Здесь KPI остаётся про запуски n8n, чтобы плитки
+ *   не дублировали друг друга;
  * · строки интеграций: `requests_this_month` сервер не отдаёт → «—».
  */
 
@@ -104,11 +104,14 @@ export function DashboardBody() {
           title="Запусков n8n за месяц"
           value={data ? data.executions_this_month.toLocaleString('ru-RU') : null}
           icon={<path d="M3 12h4l3-8 4 16 3-8h4" />}
-          /* ⚠️ Лимит — из каталога тарифов, а не из `n8n_usage.limit`: тот берётся
-             из usage_counters и равен нулю, пока не было ни одного запуска, —
-             на любом тарифе, включая оплаченный (проверено на проде 2026-07-29) */
+          /* Лимит снова из `n8n_usage`: сервер (S10) починил его так, что он
+             отражает тариф с первого дня. Каталог оставлен запасным вариантом. */
           note={
-            plan ? `из ${plan.limits.n8n_executions_month.toLocaleString('ru-RU')} по тарифу` : undefined
+            data?.n8n_usage.limit
+              ? `из ${data.n8n_usage.limit.toLocaleString('ru-RU')} по тарифу`
+              : plan
+                ? `из ${plan.limits.n8n_executions_month.toLocaleString('ru-RU')} по тарифу`
+                : undefined
           }
         />
         <Kpi

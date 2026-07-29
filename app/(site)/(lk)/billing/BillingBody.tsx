@@ -12,8 +12,9 @@ import { Popup } from '@/components/Popup';
  *
  * · ⚠️ ссылки **«Чек» и «УПД» убраны**: сервер документов не отдаёт, а УПД
  *   у ИП на УСН и не выдаётся. Убрана и «Скачать все →» по той же причине;
- * · ⚠️ прогресс-бар **«Операций X / Y» показывает только лимит**: фактического
- *   счётчика операций на сервере нет (ждёт промт S10), выдумывать число нельзя;
+ * · прогресс-бар «Операций X / Y» показывает факт с 2026-07-29: сервер завёл
+ *   счётчик по промту S10. Операция — событие, доставленное в сценарии; ретраи
+ *   и недоехавшее не считаются. Лимит **мягкий**, обмен на нём не встаёт;
  * · срок действия: признак бессрочности — `valid_until === null`, а не
  *   `days_left` (на пробном тарифе сервер отдаёт `0` при бессрочной лицензии);
  * · цены, лимиты и промо — только из `GET /lk/plans`, ничего не зашито;
@@ -132,20 +133,28 @@ export function BillingBody() {
                 <Usage
                   label="Запусков n8n"
                   used={data.n8n_usage.used}
-                  limit={plan.limits.n8n_executions_month}
+                  limit={data.n8n_usage.limit || plan.limits.n8n_executions_month}
                   className="mt-16"
                 />
-                {/* ⚠️ Факта по операциям сервер не отдаёт — показываем только лимит */}
-                <div className="usage-row mt-16">
-                  <span>Операций в месяц</span>
-                  <b>до {plan.limits.monthly_operations.toLocaleString('ru-RU')}</b>
-                </div>
+                <Usage
+                  label="Операций в месяц"
+                  used={data.operations_usage?.used ?? 0}
+                  limit={data.operations_usage?.limit ?? plan.limits.monthly_operations}
+                  className="mt-16"
+                />
                 <div className="usage-row mt-16">
                   <span>Пользователей</span>
                   <b>до {plan.limits.users_per_company}</b>
                 </div>
               </>
             )}
+
+            {/* сервер уведомляет на 80 % и 100 %, но обмен не останавливает (S10 §1.4) */}
+            <p className="text-muted" style={{ fontSize: 12, margin: '14px 0 0' }}>
+              Лимиты мягкие: при их достижении мы предупредим, но обмен не остановим.
+              Операция — это событие, доставленное в ваши сценарии; повторные попытки
+              не считаются.
+            </p>
 
             <div className="row gap-8" style={{ flexWrap: 'wrap', marginTop: 28 }}>
               {showPromo && promoPlan?.promo ? (

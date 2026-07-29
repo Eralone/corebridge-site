@@ -7,12 +7,12 @@ import {
   activateWorkflow,
   getDashboard,
   getIntegrations,
-  getPlans,
   getWorkflowCatalog,
   getWorkflowExecutions,
 } from '@/lib/api/lk';
-import type { Dashboard, Integration, Plan, WorkflowExecution, WorkflowTemplate } from '@/lib/contracts/lk';
+import type { Dashboard, Integration, WorkflowExecution, WorkflowTemplate } from '@/lib/contracts/lk';
 import { timeAgo } from '@/components/lk/events';
+import { adapterInfo } from '@/lib/adapters';
 import { useUser } from '@/lib/user-context';
 
 /**
@@ -22,13 +22,11 @@ import { useUser } from '@/lib/user-context';
  * чтобы не выбиваться из системы.
  *
  * Источники: `GET /lk/workflows/catalog`, `GET /lk/workflows/executions`,
- * `POST /lk/workflows/activate`, `GET /lk/integrations`.
+ * `POST /lk/workflows/activate`, `GET /lk/integrations`, `GET /lk/dashboard`.
  *
- * ⚠️ Лимит запусков берём из каталога тарифов (`GET /lk/plans`), а **не** из
- * `dashboard.n8n_usage.limit`. Проверено на проде 2026-07-29: `n8n_usage` читается
- * из `platform.usage_counters`, а строка там появляется только после первого запуска.
- * До него сервер отдаёт `limit: 0` на любом тарифе — включая оплаченный
- * «Профессионал». Считать это признаком «тариф без n8n» нельзя.
+ * Лимит запусков снова берётся из `dashboard.n8n_usage`: сервер (пакет S10) починил
+ * его так, что лимит отражает тариф с первого дня. Обход через каталог тарифов снят.
+ * Лимит **мягкий** — на 100 % приходит предупреждение, обмен не останавливается.
  */
 export function WorkflowsBody() {
   // сервер отвечает 403 на activate для роли «только чтение» — не обещаем зря
@@ -36,7 +34,6 @@ export function WorkflowsBody() {
   const [catalog, setCatalog] = useState<WorkflowTemplate[] | null>(null);
   const [runs, setRuns] = useState<WorkflowExecution[] | null>(null);
   const [dash, setDash] = useState<Dashboard | null>(null);
-  const [plans, setPlans] = useState<Plan[] | null>(null);
   const [integrations, setIntegrations] = useState<Integration[]>([]);
   const [bind, setBind] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState<string | null>(null);
@@ -48,30 +45,31 @@ export function WorkflowsBody() {
       getWorkflowCatalog(),
       getWorkflowExecutions(),
       getDashboard(),
-      getPlans(),
       getIntegrations(),
     ])
-      .then(([c, e, d, p, i]) => {
+      .then(([c, e, d, i]) => {
         setCatalog(c);
         setRuns(e);
         setDash(d);
-        setPlans(p.plans);
         setIntegrations(i.filter((x) => !x.paused));
       })
       .catch(() => setFailed(true));
   }, []);
 
   const usage = useMemo(() => {
-    if (!dash || !plans) return null;
-    const limit = plans.find((p) => p.code === dash.plan)?.limits.n8n_executions_month ?? 0;
-    const used = dash.n8n_usage?.used ?? 0;
-    return { used, limit, isHit: dash.n8n_usage?.is_limit_hit || (limit > 0 && used >= limit) };
-  }, [dash, plans]);
+    if (!dash?.n8n_usage) return null;
+    const { used, limit, is_limit_hit } = dash.n8n_usage;
+    return { used, limit, isHit: is_limit_hit || (limit > 0 && used >= limit) };
+  }, [dash]);
 
-  /** Какие интеграции годятся для сценария. Пустой `required_integrations` — любые */
+  /**
+   * Какие интеграции годятся для сценария. `required_integrations` — это
+   * **поддерживаемые типы адаптеров** (S12 §3.3), сверяем с `adapter_type`,
+   * а не с `integration_id`. Пустой список — подойдёт любая интеграция.
+   */
   const fits = (t: WorkflowTemplate) =>
     t.required_integrations?.length
-      ? integrations.filter((i) => t.required_integrations!.includes(i.integration_id))
+      ? integrations.filter((i) => t.required_integrations!.includes(i.adapter_type))
       : integrations;
 
   async function activate(t: WorkflowTemplate) {
@@ -131,7 +129,8 @@ export function WorkflowsBody() {
           </div>
           {usage.isHit && (
             <p className="text-muted" style={{ fontSize: 13, marginBottom: 0, marginTop: 10 }}>
-              Лимит запусков исчерпан — сценарии не выполняются до следующего месяца.{' '}
+              Лимит запусков по тарифу исчерпан. Сценарии продолжают работать, но лучше
+              перейти на тариф выше — иначе к концу месяца упрётесь в него совсем.{' '}
               <Link href="/billing">Сменить тариф</Link>
             </p>
           )}
@@ -251,7 +250,7 @@ export function WorkflowsBody() {
                 <div>
                   <div className="event-text">{r.workflow_name || r.execution_id}</div>
                   <div className="event-time">
-                    {timeAgo(r.startedAt)}
+                    {timeAgo(r.started_at)}
                     {r.status === 'error' && ' · завершился ошибкой'}
                   </div>
                 </div>
@@ -268,16 +267,28 @@ export function WorkflowsBody() {
 function blockReason(canEdit: boolean, total: number, fitting: number): string | null {
   if (!canEdit) return 'Включать сценарии может владелец или менеджер';
   if (total === 0) return 'Сначала подключите интеграцию — сценарий работает поверх неё.';
-  if (fitting === 0) return 'Нет активной интеграции, которую требует этот сценарий.';
+  if (fitting === 0) return 'Нет подходящей интеграции: сценарий работает с другими сервисами.';
   return null;
 }
 
-/** Коды сверены с `workflow_catalog.service.js`: NO_ACTIVE_SUBSCRIPTION здесь не бывает */
+/**
+ * Коды сверены с ответом сервера по пакету S12. `NO_ACTIVE_SUBSCRIPTION` здесь
+ * не бывает: тарифной проверки при включении нет. `MISSING_REQUIRED_INTEGRATION`
+ * больше не возвращается — его заменили на два точных кода.
+ */
 function activateError(e: unknown): string {
   if (!(e instanceof ApiError)) return 'Не удалось включить сценарий. Попробуйте позже.';
   if (e.status === 403) return 'Включать сценарии может владелец или менеджер.';
-  if (e.code === 'MISSING_REQUIRED_INTEGRATION')
-    return 'Для этого сценария нужна интеграция, которой у вас пока нет.';
+  if (e.code === 'INTEGRATION_NOT_FOUND')
+    return 'Выбранной интеграции больше нет — обновите страницу.';
+  if (e.code === 'INTEGRATION_TYPE_NOT_SUPPORTED') {
+    // сервер присылает, что именно подойдёт — грех не показать
+    const supported = Array.isArray(e.details?.supported) ? (e.details.supported as string[]) : [];
+    const names = supported.map((c) => adapterInfo(c).name).filter(Boolean);
+    return names.length > 0
+      ? `Этот сценарий работает с другими сервисами: ${names.join(', ')}.`
+      : 'Этот сценарий не работает с выбранной интеграцией.';
+  }
   if (e.code === 'TEMPLATE_NOT_FOUND') return 'Сценарий больше не публикуется.';
   if (e.code === 'N8N_CREATE_FAILED')
     return 'n8n сейчас недоступен, сценарий не включён. Попробуйте позже.';

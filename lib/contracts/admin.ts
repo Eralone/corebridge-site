@@ -5,11 +5,10 @@
  * `corebridge-admin` (прогон 2026-07-29): `API_ENDPOINTS.md` перечисляет маршруты,
  * но форм ответов не содержит, а часть маршрутов там устарела.
  *
- * Четыре эндпоинта на момент сверки отвечают 500 из-за расхождения SQL со схемой БД:
- * `GET /admin/tenants`, `GET /admin/tenants/:id/tokens`, `GET /admin/epf/versions`,
- * `GET /admin/queues/stats`. Подробности и что чинить —
- * `Documents/prompts/backend_S13_admin.md`. Экраны, которые их используют, обязаны
- * переживать отказ и объяснять его, а не падать и не молчать.
+ * Четыре эндпоинта отвечали 500 из-за расхождения SQL со схемой БД — сервер починил
+ * их пакетом S13, проверено на проде 2026-07-29. Обработку отказа на экранах
+ * оставляю: она стоила дёшево, а без неё падение любого источника снова превратится
+ * в пустую таблицу, которая соврёт «данных нет».
  */
 
 import type { PlanCode, UserRole } from './lk';
@@ -158,9 +157,10 @@ export interface AdminDlqEntry {
 }
 
 /**
- * `GET /admin/epf/versions`. ⚠️ Сейчас отвечает 500 — выборка обращается
- * к колонкам `is_public` и `tenant_id`, которых в `platform.epf_versions` нет
- * (промт S13 §3). Поля ниже — фактические колонки таблицы.
+ * `GET /admin/epf/versions`.
+ * ⚠️ В таблице две колонки хэша — `sha256_hash` (её читает админка) и `sha256`
+ * (её отдаёт `GET /lk/epf/versions`). Сервер оставил это как есть: сведение
+ * требует решить, какая каноничная. Пока обе заполняются, расхождения нет.
  */
 export interface AdminEpfVersion {
   id: string;
@@ -231,4 +231,24 @@ export interface AdminN8nStats {
     is_limit_hit: boolean;
     active_workflows_count: number;
   }[];
+}
+
+/**
+ * `GET /admin/tenants/:id/tokens` — история выданных лицензий.
+ * `issued_by_admin` сервер вычисляет по журналу: ищет действие `admin_*` в окне
+ * ±1 минута от выдачи. Полного JWT в ответе нет даже у администратора — только
+ * префикс: это действующий доступ, а не справочная строка.
+ */
+export interface AdminTokenRecord {
+  id: string;
+  plan: string;
+  valid_until: string | null;
+  jwt_expires_at: string | null;
+  is_active: boolean;
+  is_trial: boolean;
+  created_at: string;
+  invalidated_at: string | null;
+  jti: string | null;
+  jwt_token_masked?: string | null;
+  issued_by_admin?: boolean;
 }

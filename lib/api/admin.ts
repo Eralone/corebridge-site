@@ -12,6 +12,7 @@ import type {
   AdminPayment,
   AdminPrivacyPage,
   AdminStats,
+  AdminTokenRecord,
   AdminUsersPage,
   AdminWorkflow,
 } from '@/lib/contracts/admin';
@@ -43,9 +44,9 @@ export const adminLogin = (email: string, password: string) =>
   api<AdminLoginStep>('/admin/auth/login', { method: 'POST', body: { email, password } });
 
 /**
- * ⚠️ Шаг 2 обязателен даже при выключенном TOTP: сессия выдаётся только здесь.
- * Сервер в этом случае код не проверяет, но требует, чтобы поле было непустым —
- * см. `backend_S13_admin.md`, п. 5.
+ * Шаг 2 — только когда `requires_totp: true`. При выключенном TOTP сервер
+ * (с пакета S13) ставит cookie сразу на шаге 1, а `totp_code` больше не требует
+ * непустым. Заглушку `'000000'` из клиента убрал.
  */
 export const adminVerifyTotp = (step_token: string, totp_code: string) =>
   api<{ ok: true }>('/admin/auth/totp/verify', { method: 'POST', body: { step_token, totp_code } });
@@ -110,6 +111,10 @@ export const setTenantPlan = (
  * ⚠️ Срока действия не принимает: токен выпускается на условиях текущего тарифа.
  * Селектор «7 / 30 / 90 / 365 дней» из макета не переносим — выбирать нечего.
  */
+/** История лицензий тенанта. Полный JWT сервер не отдаёт даже админу — только префикс */
+export const getTenantTokens = (id: string) =>
+  api<{ tokens: AdminTokenRecord[] }>(`/admin/tenants/${encodeURIComponent(id)}/tokens`);
+
 export const issueTenantToken = (id: string) =>
   api<{ token: string; plan: string; valid_until: string | null }>(
     `/admin/tenants/${encodeURIComponent(id)}/issue-token`,

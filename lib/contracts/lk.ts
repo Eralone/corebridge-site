@@ -57,11 +57,18 @@ export interface Dashboard {
   integrations_count: number;
   executions_this_month: number;
   /**
-   * ⚠️ Читается из `platform.usage_counters`. Строки там нет, пока не было ни одного
-   * запуска, — тогда сервер отдаёт `limit: 0, period: null` **на любом тарифе**.
-   * Ноль здесь не значит «тариф без n8n»: настоящий лимит — в каталоге `GET /lk/plans`.
+   * Запуски сценариев за месяц. `limit` берётся из снимка тарифа в лицензии
+   * и верен с первого дня (исправлено сервером в S10) — до этого он был нулевым,
+   * пока не случилось ни одного запуска, и сайт из-за этого писал оплатившему
+   * человеку «на пробном тарифе n8n недоступен».
    */
   n8n_usage: { used: number; limit: number; is_limit_hit: boolean; period: string | null };
+  /**
+   * Операции за месяц — событие, доставленное в сценарии. Ретраи и недоехавшее
+   * не считаются (решение сервера, S10 §0). Лимит **мягкий**: на 80 % и 100 %
+   * приходит уведомление, но обмен не останавливается — обещать блокировку нельзя.
+   */
+  operations_usage: { used: number; limit: number; is_limit_hit: boolean; period: string | null };
 }
 
 export interface ActivityPoint {
@@ -210,20 +217,26 @@ export interface WorkflowTemplate {
   template_id: string;
   name: string;
   description?: string | null;
-  /** Коды интеграций, без которых сценарий не включить */
+  /**
+   * ⚠️ Это **поддерживаемые типы адаптеров**, а не обязательный набор.
+   * Семантику уточнил сервер (S12 §3.3): требовать все три маркетплейса сразу
+   * бессмысленно — сценарий включается на одной подходящей интеграции.
+   * Пустой список = подойдёт любая. Сверять с `Integration.adapter_type`.
+   */
   required_integrations?: string[] | null;
   tags?: string[] | null;
 }
 
 /**
- * ⚠️ Единственное место в API, где поле пришло в camelCase: сервер отдаёт
- * `startedAt`, а не `started_at`. Так в `workflow_catalog.service.js`.
+ * Запуск сценария. Набор `status` открытый: сервер передаёт значения n8n как есть
+ * (`success`, `error`, `crashed`, `canceled`, `running`), поэтому запасной вариант
+ * обязателен. С пакета S12 поле называется `started_at` — camelCase исправлен.
  */
 export interface WorkflowExecution {
   execution_id: string;
   workflow_name?: string | null;
   status: 'success' | 'error' | 'running' | string;
-  startedAt: string;
+  started_at: string;
   duration_ms?: number | null;
 }
 
