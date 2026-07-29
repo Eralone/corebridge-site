@@ -1,10 +1,10 @@
 import { AdminShell } from '@/components/AdminShell';
-import { StubBody } from '@/components/StubBody';
+import { OverviewBody } from './OverviewBody';
 
 export default function Page() {
   return (
     <AdminShell active="admin" title="Обзор платформы" crumbs={[{ label: 'Admin', href: '/' }, { label: 'Обзор' }]}>
-      <StubBody source="admin.html" stage="Э7" />
+      <OverviewBody />
     </AdminShell>
   );
 }

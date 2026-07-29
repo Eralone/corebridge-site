@@ -226,6 +226,56 @@ docker exec corebridge-postgres psql -U corebridge -d corebridge -q \
 
 Состояние возвращено в исходное 2026-07-29: `owner` · `trial` · лицензия активна, бессрочная.
 
+## 4a. Временный админ-аккаунт и два локальных костыля (2026-07-29)
+
+Для сборки и проверки админки понадобилось три вещи. **Все три временные, все три
+чистятся вместе с тестовым аккаунтом.**
+
+**1. Отдельный админ-аккаунт.** Пароль боевого `admin@corebridge.ru` неизвестен, а
+менять его я не стал — это чужая учётная запись. Завёл рядом свою:
+
+| Поле | Значение |
+|---|---|
+| Email | `qa-admin@corebridge.ru` |
+| Пароль | `Qa-Admin-2026-e2!` |
+| `id` | `d6269b40-ae61-4a8f-a82b-68b318acb145` |
+| TOTP | выключен (`totp_secret` — заглушка, не рабочий секрет) |
+
+```bash
+# получить admin-сессию
+S=$(curl -s -X POST https://admin.corebridge.ru/admin/auth/login \
+     -H 'Content-Type: application/json' \
+     -d '{"email":"qa-admin@corebridge.ru","password":"Qa-Admin-2026-e2!"}' \
+   | sed 's/.*"step_token":"\([^"]*\)".*/\1/')
+curl -s -i -X POST https://admin.corebridge.ru/admin/auth/totp/verify \
+  -H 'Content-Type: application/json' \
+  -d "{\"step_token\":\"$S\",\"totp_code\":\"000000\"}" | grep -i set-cookie
+
+CB_ADMIN_SESSION=<значение> npm run inspect -- admin
+```
+
+Удалить при чистке: `delete from platform.admin_users where email='qa-admin@corebridge.ru';`
+
+**2. Проброс порта 3003.** Контейнер `corebridge-admin` не опубликован на хост, а nginx
+проксирует `/admin/` в `127.0.0.1:3003` — весь админский API отдавал 502. Это баг сервера,
+описан в промте S13 §0. До его починки на сервере запущен:
+
+```bash
+socat TCP-LISTEN:3003,bind=127.0.0.1,fork,reuseaddr TCP:172.21.0.2:3003 &
+```
+
+Держится до перезагрузки и до пересоздания контейнера (IP в сети Docker не закреплён).
+После правки `docker-compose.yml` проброс снять: `pkill -f 'TCP-LISTEN:3003'`.
+
+**3. Запись в `/etc/hosts`.** `/admin/*` за IP-whitelist, а запросы с самого сервера идут
+с публичного адреса и получают 403. Чтобы проверять админку браузером с сервера:
+
+```
+127.0.0.1 admin.corebridge.ru
+```
+
+Только локальное разрешение имени; на браузер Дмитрия не влияет. Убрать при чистке.
+
 ## 5. Что этот аккаунт уже помог найти
 
 **Роль кэшируется в сессии и не обновляется до перелогина.** Меняешь роль в базе —

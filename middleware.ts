@@ -45,6 +45,10 @@ const ADMIN_MAP: Record<string, string> = {
   '/': '/admin',
   '/users': '/admin/users',
   '/integrations': '/admin/integrations',
+  '/payments': '/admin/payments',
+  '/epf': '/admin/epf',
+  '/queues': '/admin/queues',
+  '/privacy': '/admin/privacy',
 };
 
 function isAdminHost(host: string) {

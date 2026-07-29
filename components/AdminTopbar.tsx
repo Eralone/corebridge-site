@@ -1,9 +1,13 @@
+'use client';
+
 import Link from 'next/link';
+import { adminLogout } from '@/lib/api/admin';
+import { useAdmin } from './admin/AdminGuard';
 
 /**
  * Перенос window.renderAdminTopbar из shell.js.
- * ⚠️ В эталоне email был зашит как d.korolev@corebridge.ru — здесь приходит
- * параметром (источник: GET /admin/auth/me).
+ * ⚠️ В эталоне email был зашит как d.korolev@corebridge.ru — здесь берётся
+ * из `GET /admin/auth/me` через контекст входа.
  * ⚠️ Бейдж «Системы в норме» в эталоне статичный — источник GET /admin/health.
  */
 export function AdminTopbar({
@@ -19,6 +23,8 @@ export function AdminTopbar({
   email?: string;
   health?: { label: string; kind: 'success' | 'warning' | 'danger' };
 }) {
+  const me = useAdmin();
+  const shownEmail = email ?? me?.email;
   const items = crumbs ?? [{ label: 'Admin', href: '/' }, { label: title }];
   return (
     <header className="topbar">
@@ -49,11 +55,21 @@ export function AdminTopbar({
         )}
         <div style={{ textAlign: 'right', lineHeight: 1.25 }}>
           <div style={{ fontSize: 13, fontWeight: 600 }}>{adminName ?? 'Администратор'}</div>
-          <div style={{ fontSize: 11, color: 'var(--text-faint)' }}>{email ?? ''}</div>
+          <div style={{ fontSize: 11, color: 'var(--text-faint)' }}>{shownEmail ?? ''}</div>
         </div>
-        <a href="/login" className="btn btn-outline btn-sm">
+        {/* в эталоне это была ссылка на /login: сессию она бы не погасила */}
+        <button
+          className="btn btn-outline btn-sm"
+          onClick={async () => {
+            try {
+              await adminLogout();
+            } finally {
+              window.location.reload();
+            }
+          }}
+        >
           Выйти
-        </a>
+        </button>
       </div>
     </header>
   );

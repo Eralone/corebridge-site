@@ -52,11 +52,34 @@ export async function newContext(browser, { viewport, cookies } = {}) {
 
 /** Cookie сессии ЛК из переменной окружения — чтобы снимать закрытые экраны */
 export function sessionCookies() {
-  const value = process.env.CB_SESSION;
-  if (!value) return [];
-  return [
-    { name: 'lk_session', value, domain: '.corebridge.ru', path: '/', httpOnly: true, secure: true },
-  ];
+  const out = [];
+  if (process.env.CB_SESSION) {
+    out.push({
+      name: 'lk_session',
+      value: process.env.CB_SESSION,
+      domain: '.corebridge.ru',
+      path: '/',
+      httpOnly: true,
+      secure: true,
+    });
+  }
+  /**
+   * Админ-сессия. ⚠️ `path: '/admin'` — так её ставит сервер, и это не мелочь:
+   * на запрос самой страницы (`/`, `/users`) браузер её не шлёт, поэтому guard
+   * админки работает из браузера, а не в middleware. Если поставить path '/',
+   * проверка пройдёт не так, как у живого пользователя.
+   */
+  if (process.env.CB_ADMIN_SESSION) {
+    out.push({
+      name: 'admin_session_id',
+      value: process.env.CB_ADMIN_SESSION,
+      domain: 'admin.corebridge.ru',
+      path: '/admin',
+      httpOnly: true,
+      secure: true,
+    });
+  }
+  return out;
 }
 
 /**

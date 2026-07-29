@@ -15,12 +15,16 @@
     "  maxDiff — допустимая доля несовпавших пикселей (0.02 = 2%). Действует при ported:true",
     "  note    — что важно помнить про эту страницу при сверке"
   ],
-
   "viewports": {
-    "desktop": { "width": 1440, "height": 900 },
-    "mobile": { "width": 390, "height": 844 }
+    "desktop": {
+      "width": 1440,
+      "height": 900
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844
+    }
   },
-
   "pages": [
     {
       "id": "index",
@@ -122,7 +126,6 @@
       "maxDiff": 0.15,
       "note": "Правки по legal_corrections.md."
     },
-
     {
       "id": "login",
       "path": "/login",
@@ -183,7 +186,6 @@
       "maxDiff": null,
       "note": "Макета нет вовсе, верстали по образцу остальных экранов входа. Ссылка из письма ведёт на /lk/invite/accept — раньше это был 404 (весь /lk/* забирает API). Починено на своей стороне: точное совпадение в vhost + переписывание пути в middleware.ts."
     },
-
     {
       "id": "dashboard",
       "path": "/dashboard",
@@ -254,7 +256,6 @@
       "maxDiff": null,
       "note": "Вне MVP: заглушка + email. Тикеты и чат из макета не собираем, сверка не применяется."
     },
-
     {
       "id": "admin",
       "path": "/",
@@ -284,9 +285,48 @@
       "ported": false,
       "maxDiff": 0.1,
       "note": null
+    },
+    {
+      "id": "admin-payments",
+      "path": "/payments",
+      "host": "admin",
+      "design": null,
+      "auth": "admin",
+      "ported": false,
+      "maxDiff": 0.1,
+      "note": "Макета нет: экран собран по образцу admin-users.html. Возврат платежа не выводим — Robokassa не подключена."
+    },
+    {
+      "id": "admin-epf",
+      "path": "/epf",
+      "host": "admin",
+      "design": null,
+      "auth": "admin",
+      "ported": false,
+      "maxDiff": 0.1,
+      "note": "Макета нет. Список версий сейчас 500 (промт S13 §3), публикация и откат работают."
+    },
+    {
+      "id": "admin-queues",
+      "path": "/queues",
+      "host": "admin",
+      "design": null,
+      "auth": "admin",
+      "ported": false,
+      "maxDiff": 0.1,
+      "note": "Макета нет. Сводка /admin/queues/stats сейчас 500 (промт S13 §4), список DLQ работает."
+    },
+    {
+      "id": "admin-privacy",
+      "path": "/privacy",
+      "host": "admin",
+      "design": null,
+      "auth": "admin",
+      "ported": false,
+      "maxDiff": 0.1,
+      "note": "Макета нет. Очередь обращений по ПДн: выгрузка и удаление аккаунта, срок ответа 30 дней."
     }
   ],
-
   "designOnly": [
     {
       "design": "admin-support.html",
