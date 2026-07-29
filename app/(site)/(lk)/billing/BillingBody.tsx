@@ -49,6 +49,18 @@ export function BillingBody() {
   const plan = plans?.find((p) => p.code === data?.plan);
   const promoPlan = plans?.find((p) => p.promo);
 
+  /**
+   * Промо предлагаем, только если человеку есть что от него получить.
+   * ⚠️ Найдено прогоном 2026-07-29: на тарифе «Профессионал» страница звала
+   * «Попробовать» тот же самый «Профессионал» — и в карточке тарифа, и в баннере.
+   * У промо `once_per_tenant`, так что оплата ещё и упёрлась бы в `PROMO_ALREADY_USED`.
+   * Тому, кто уже на промо-тарифе, нужно продление, а не «попробовать».
+   */
+  const onPromoPlan = promoPlan != null && data?.plan === promoPlan.code;
+  const showPromo = promoPlan?.promo != null && !onPromoPlan && !plan?.is_custom_price;
+  /** Продление доступно на платном тарифе: у пробного срока нет, энтерпрайз — по счёту */
+  const canRenew = plan != null && !plan.is_trial && !plan.is_custom_price;
+
   async function pay(code: string, promo?: string) {
     setBusy(true);
     setNote(null);
@@ -136,7 +148,7 @@ export function BillingBody() {
             )}
 
             <div className="row gap-8" style={{ flexWrap: 'wrap', marginTop: 28 }}>
-              {promoPlan?.promo && (
+              {showPromo && promoPlan?.promo ? (
                 <button
                   className="btn btn-primary"
                   disabled={busy}
@@ -144,7 +156,11 @@ export function BillingBody() {
                 >
                   {promoPlan.promo.cta_label || promoPlan.promo.label}
                 </button>
-              )}
+              ) : canRenew ? (
+                <button className="btn btn-primary" disabled={busy} onClick={() => pay(plan!.code)}>
+                  Продлить на месяц
+                </button>
+              ) : null}
               <Link href="/pricing" className="btn btn-outline">
                 Все тарифы
               </Link>
@@ -299,7 +315,7 @@ export function BillingBody() {
             </Link>
           </div>
 
-          {promoPlan?.promo && (
+          {showPromo && promoPlan?.promo && (
             <div
               className="card mt-24"
               style={{

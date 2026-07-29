@@ -18,7 +18,8 @@ export interface Plan {
     monthly: number | null;
     yearly: number | null;
     yearly_monthly: number | null;
-    discount_percent: number;
+    /** null у тарифов без годовой цены — «Пробный» и «Энтерпрайз» */
+    discount_percent: number | null;
   };
   is_trial: boolean;
   /** true только у trial — бессрочная лицензия, valid_until = null */
@@ -55,7 +56,12 @@ export interface Dashboard {
   valid_until: number | null;
   integrations_count: number;
   executions_this_month: number;
-  n8n_usage: { used: number; limit: number; is_limit_hit: boolean; period: string };
+  /**
+   * ⚠️ Читается из `platform.usage_counters`. Строки там нет, пока не было ни одного
+   * запуска, — тогда сервер отдаёт `limit: 0, period: null` **на любом тарифе**.
+   * Ноль здесь не значит «тариф без n8n»: настоящий лимит — в каталоге `GET /lk/plans`.
+   */
+  n8n_usage: { used: number; limit: number; is_limit_hit: boolean; period: string | null };
 }
 
 export interface ActivityPoint {
@@ -194,26 +200,31 @@ export interface EpfVersion {
 
 /**
  * Готовый сценарий n8n. Экран ЛК для воркфлоу в макете отсутствует — в дизайне
- * пункт меню «n8n-воркфлоу» вёл на публичную страницу n8n.html. Поля описаны
- * по контракту `GET /lk/workflows/catalog`; на живом сервере каталог пока пуст,
- * поэтому набор поддерживается терпимым к отсутствующим значениям.
+ * пункт меню «n8n-воркфлоу» вёл на публичную страницу n8n.html.
+ *
+ * ⚠️ Поля сверены с кодом сервера (`workflow_catalog.service.js`, прогон 2026-07-29),
+ * а не с документацией: сервер отдаёт `required_integrations` и `tags`, никаких
+ * `category`/`is_active` в ответе нет.
  */
 export interface WorkflowTemplate {
   template_id: string;
   name: string;
   description?: string | null;
-  category?: string | null;
-  requires?: string[] | null;
-  is_active?: boolean;
+  /** Коды интеграций, без которых сценарий не включить */
+  required_integrations?: string[] | null;
+  tags?: string[] | null;
 }
 
+/**
+ * ⚠️ Единственное место в API, где поле пришло в camelCase: сервер отдаёт
+ * `startedAt`, а не `started_at`. Так в `workflow_catalog.service.js`.
+ */
 export interface WorkflowExecution {
   execution_id: string;
-  workflow_id: string;
   workflow_name?: string | null;
   status: 'success' | 'error' | 'running' | string;
-  started_at: string;
-  finished_at?: string | null;
+  startedAt: string;
+  duration_ms?: number | null;
 }
 
 /** Строка истории платежей из `GET /lk/billing` */

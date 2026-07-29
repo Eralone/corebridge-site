@@ -1,10 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ApiError } from '@/lib/api/client';
-import { activateWorkflow, getDashboard, getWorkflowCatalog, getWorkflowExecutions } from '@/lib/api/lk';
-import type { Dashboard, WorkflowExecution, WorkflowTemplate } from '@/lib/contracts/lk';
+import {
+  activateWorkflow,
+  getDashboard,
+  getIntegrations,
+  getPlans,
+  getWorkflowCatalog,
+  getWorkflowExecutions,
+} from '@/lib/api/lk';
+import type { Dashboard, Integration, Plan, WorkflowExecution, WorkflowTemplate } from '@/lib/contracts/lk';
 import { timeAgo } from '@/components/lk/events';
 import { useUser } from '@/lib/user-context';
 
@@ -15,31 +22,75 @@ import { useUser } from '@/lib/user-context';
  * чтобы не выбиваться из системы.
  *
  * Источники: `GET /lk/workflows/catalog`, `GET /lk/workflows/executions`,
- * `POST /lk/workflows/activate`. Лимит запусков — из `GET /lk/dashboard`
- * (`n8n_usage`), отдельного счётчика операций на сервере пока нет.
+ * `POST /lk/workflows/activate`, `GET /lk/integrations`.
+ *
+ * ⚠️ Лимит запусков берём из каталога тарифов (`GET /lk/plans`), а **не** из
+ * `dashboard.n8n_usage.limit`. Проверено на проде 2026-07-29: `n8n_usage` читается
+ * из `platform.usage_counters`, а строка там появляется только после первого запуска.
+ * До него сервер отдаёт `limit: 0` на любом тарифе — включая оплаченный
+ * «Профессионал». Считать это признаком «тариф без n8n» нельзя.
  */
 export function WorkflowsBody() {
   // сервер отвечает 403 на activate для роли «только чтение» — не обещаем зря
   const canEdit = useUser()?.role !== 'user';
   const [catalog, setCatalog] = useState<WorkflowTemplate[] | null>(null);
   const [runs, setRuns] = useState<WorkflowExecution[] | null>(null);
-  const [usage, setUsage] = useState<Dashboard['n8n_usage'] | null>(null);
+  const [dash, setDash] = useState<Dashboard | null>(null);
+  const [plans, setPlans] = useState<Plan[] | null>(null);
+  const [integrations, setIntegrations] = useState<Integration[]>([]);
+  const [bind, setBind] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState<string | null>(null);
   const [note, setNote] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    Promise.all([getWorkflowCatalog(), getWorkflowExecutions(10), getDashboard()])
-      .then(([c, e, d]) => {
+    Promise.all([
+      getWorkflowCatalog(),
+      getWorkflowExecutions(),
+      getDashboard(),
+      getPlans(),
+      getIntegrations(),
+    ])
+      .then(([c, e, d, p, i]) => {
         setCatalog(c);
         setRuns(e);
-        setUsage(d.n8n_usage);
+        setDash(d);
+        setPlans(p.plans);
+        setIntegrations(i.filter((x) => !x.paused));
       })
       .catch(() => setFailed(true));
   }, []);
 
-  const limitHit = usage?.is_limit_hit === true;
-  const noPlan = usage != null && usage.limit === 0;
+  const usage = useMemo(() => {
+    if (!dash || !plans) return null;
+    const limit = plans.find((p) => p.code === dash.plan)?.limits.n8n_executions_month ?? 0;
+    const used = dash.n8n_usage?.used ?? 0;
+    return { used, limit, isHit: dash.n8n_usage?.is_limit_hit || (limit > 0 && used >= limit) };
+  }, [dash, plans]);
+
+  /** Какие интеграции годятся для сценария. Пустой `required_integrations` — любые */
+  const fits = (t: WorkflowTemplate) =>
+    t.required_integrations?.length
+      ? integrations.filter((i) => t.required_integrations!.includes(i.integration_id))
+      : integrations;
+
+  async function activate(t: WorkflowTemplate) {
+    const options = fits(t);
+    const integrationId = bind[t.template_id] ?? options[0]?.integration_id;
+    if (!integrationId) return;
+
+    setBusy(t.template_id);
+    setNote(null);
+    try {
+      await activateWorkflow(t.template_id, integrationId);
+      setNote(`Сценарий «${t.name}» включён.`);
+      setRuns(await getWorkflowExecutions());
+    } catch (e) {
+      setNote(activateError(e));
+    } finally {
+      setBusy(null);
+    }
+  }
 
   return (
     <>
@@ -61,43 +112,27 @@ export function WorkflowsBody() {
       </div>
 
       {/* Лимит тарифа: показываем всегда, чтобы включение не упиралось в молчаливый отказ */}
-      {usage && (
+      {usage && usage.limit > 0 && (
         <div className="chart-card mb-20">
           <div className="chart-head" style={{ marginBottom: 12 }}>
             <h3>Запуски в этом месяце</h3>
             <span className="text-muted" style={{ fontSize: 13 }}>
-              {noPlan
-                ? 'на пробном тарифе n8n недоступен'
-                : `${usage.used.toLocaleString('ru-RU')} из ${usage.limit.toLocaleString('ru-RU')}`}
+              {usage.used.toLocaleString('ru-RU')} из {usage.limit.toLocaleString('ru-RU')}
             </span>
           </div>
-          {!noPlan && (
+          <div style={{ height: 8, borderRadius: 4, background: 'var(--bg-alt)', overflow: 'hidden' }}>
             <div
               style={{
-                height: 8,
-                borderRadius: 4,
-                background: 'var(--bg-alt)',
-                overflow: 'hidden',
+                width: `${Math.min(100, (usage.used / usage.limit) * 100)}%`,
+                height: '100%',
+                background: usage.isHit ? 'var(--danger)' : 'var(--blue-500)',
               }}
-            >
-              <div
-                style={{
-                  width: `${Math.min(100, usage.limit ? (usage.used / usage.limit) * 100 : 0)}%`,
-                  height: '100%',
-                  background: limitHit ? 'var(--danger)' : 'var(--blue-500)',
-                }}
-              />
-            </div>
-          )}
-          {limitHit && (
+            />
+          </div>
+          {usage.isHit && (
             <p className="text-muted" style={{ fontSize: 13, marginBottom: 0, marginTop: 10 }}>
               Лимит запусков исчерпан — сценарии не выполняются до следующего месяца.{' '}
               <Link href="/billing">Сменить тариф</Link>
-            </p>
-          )}
-          {noPlan && (
-            <p className="text-muted" style={{ fontSize: 13, marginBottom: 0 }}>
-              Сценарии n8n входят в платные тарифы. <Link href="/billing">Посмотреть тарифы</Link>
             </p>
           )}
         </div>
@@ -118,55 +153,78 @@ export function WorkflowsBody() {
         </div>
       ) : (
         <div className="int-cards">
-          {catalog.map((t) => (
-            <article className="icard" key={t.template_id}>
-              <div className="icard-head">
-                <div>
-                  <h4>{t.name}</h4>
-                  <div className="id">{t.template_id}</div>
+          {catalog.map((t) => {
+            const options = fits(t);
+            const chosen = bind[t.template_id] ?? options[0]?.integration_id ?? '';
+            const blocked = blockReason(canEdit, integrations.length, options.length);
+
+            return (
+              <article className="icard" key={t.template_id}>
+                <div className="icard-head">
+                  <div>
+                    <h4>{t.name}</h4>
+                    <div className="id">{t.template_id}</div>
+                  </div>
                 </div>
-              </div>
-              {t.description && (
-                <p className="text-muted" style={{ fontSize: 13, margin: 0 }}>
-                  {t.description}
-                </p>
-              )}
-              {t.category && (
-                <div className="row gap-8">
-                  <span className="badge badge-neutral">{t.category}</span>
+                {t.description && (
+                  <p className="text-muted" style={{ fontSize: 13, margin: 0 }}>
+                    {t.description}
+                  </p>
+                )}
+                {t.tags && t.tags.length > 0 && (
+                  <div className="row gap-8">
+                    {t.tags.map((tag) => (
+                      <span className="badge badge-neutral" key={tag}>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                {/* Привязка обязательна: без integration_id сервер отвечает 400 */}
+                {options.length > 1 && (
+                  <div className="field" style={{ margin: 0 }}>
+                    <label htmlFor={`bind-${t.template_id}`}>Интеграция</label>
+                    <select
+                      id={`bind-${t.template_id}`}
+                      className="select"
+                      value={chosen}
+                      onChange={(ev) => setBind((b) => ({ ...b, [t.template_id]: ev.target.value }))}
+                    >
+                      {options.map((i) => (
+                        <option value={i.integration_id} key={i.integration_id}>
+                          {i.display_name || i.integration_id}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                <div className="icard-footer">
+                  <button
+                    className="btn btn-primary btn-sm"
+                    style={{ flex: 1 }}
+                    disabled={busy === t.template_id || blocked !== null}
+                    title={blocked ?? undefined}
+                    onClick={() => activate(t)}
+                  >
+                    {busy === t.template_id ? 'Включаем…' : 'Включить'}
+                  </button>
                 </div>
-              )}
-              <div className="icard-footer">
-                <button
-                  className="btn btn-primary btn-sm"
-                  style={{ flex: 1 }}
-                  disabled={busy === t.template_id || noPlan || !canEdit}
-                  title={canEdit ? undefined : 'Включать сценарии может владелец или менеджер'}
-                  onClick={async () => {
-                    setBusy(t.template_id);
-                    setNote(null);
-                    try {
-                      await activateWorkflow(t.template_id);
-                      setNote(`Сценарий «${t.name}» включён.`);
-                      setRuns(await getWorkflowExecutions(10));
-                    } catch (e) {
-                      setNote(
-                        e instanceof ApiError && e.code === 'NO_ACTIVE_SUBSCRIPTION'
-                          ? 'Сценарии n8n доступны на платных тарифах.'
-                          : e instanceof ApiError && e.status === 403
-                            ? 'Включать сценарии может владелец или менеджер.'
-                            : 'Не удалось включить сценарий. Попробуйте позже.',
-                      );
-                    } finally {
-                      setBusy(null);
-                    }
-                  }}
-                >
-                  {busy === t.template_id ? 'Включаем…' : 'Включить'}
-                </button>
-              </div>
-            </article>
-          ))}
+                {blocked && (
+                  <p className="text-muted" style={{ fontSize: 13, margin: 0 }}>
+                    {blocked}
+                    {integrations.length === 0 && (
+                      <>
+                        {' '}
+                        <Link href="/my-integrations">Подключить</Link>
+                      </>
+                    )}
+                  </p>
+                )}
+              </article>
+            );
+          })}
         </div>
       )}
 
@@ -185,15 +243,15 @@ export function WorkflowsBody() {
           </div>
         ) : (
           <div className="events-list">
-            {runs.map((r) => (
+            {runs.slice(0, 10).map((r) => (
               <div className="event" key={r.execution_id}>
                 <div className={`event-dot ${r.status === 'success' ? 'ok' : r.status === 'error' ? 'err' : 'info'}`}>
                   {r.status === 'success' ? '✓' : r.status === 'error' ? '✕' : '…'}
                 </div>
                 <div>
-                  <div className="event-text">{r.workflow_name || r.workflow_id}</div>
+                  <div className="event-text">{r.workflow_name || r.execution_id}</div>
                   <div className="event-time">
-                    {timeAgo(r.started_at)}
+                    {timeAgo(r.startedAt)}
                     {r.status === 'error' && ' · завершился ошибкой'}
                   </div>
                 </div>
@@ -204,4 +262,24 @@ export function WorkflowsBody() {
       </div>
     </>
   );
+}
+
+/** Почему кнопка не сработает — говорим до нажатия, а не после отказа сервера */
+function blockReason(canEdit: boolean, total: number, fitting: number): string | null {
+  if (!canEdit) return 'Включать сценарии может владелец или менеджер';
+  if (total === 0) return 'Сначала подключите интеграцию — сценарий работает поверх неё.';
+  if (fitting === 0) return 'Нет активной интеграции, которую требует этот сценарий.';
+  return null;
+}
+
+/** Коды сверены с `workflow_catalog.service.js`: NO_ACTIVE_SUBSCRIPTION здесь не бывает */
+function activateError(e: unknown): string {
+  if (!(e instanceof ApiError)) return 'Не удалось включить сценарий. Попробуйте позже.';
+  if (e.status === 403) return 'Включать сценарии может владелец или менеджер.';
+  if (e.code === 'MISSING_REQUIRED_INTEGRATION')
+    return 'Для этого сценария нужна интеграция, которой у вас пока нет.';
+  if (e.code === 'TEMPLATE_NOT_FOUND') return 'Сценарий больше не публикуется.';
+  if (e.code === 'N8N_CREATE_FAILED')
+    return 'n8n сейчас недоступен, сценарий не включён. Попробуйте позже.';
+  return 'Не удалось включить сценарий. Попробуйте позже.';
 }

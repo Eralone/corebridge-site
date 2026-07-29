@@ -139,10 +139,12 @@ T=07584704-9800-44c0-bc4e-30bbeb513007
 docker exec corebridge-postgres psql -U corebridge -d corebridge -q \
   -c "update platform.users set role='manager' where id='$U'"
 
-# тариф: trial | start | business | professional
+# тариф: trial | starter | business | professional  (⚠️ именно starter, не start)
+# у платного тарифа лицензия не бессрочная — иначе дашборд покажет «Бессрочно»
 docker exec corebridge-postgres psql -U corebridge -d corebridge -q \
   -c "update platform.tenants  set plan='professional' where id='$T';
-      update platform.licenses set plan='professional' where tenant_id='$T'"
+      update platform.licenses set plan='professional', is_trial=false,
+             valid_until=now()+interval '30 days' where tenant_id='$T'"
 
 # «без подписки»: погасить лицензию
 docker exec corebridge-postgres psql -U corebridge -d corebridge -q \
@@ -159,9 +161,14 @@ docker exec corebridge-postgres psql -U corebridge -d corebridge -q \
 docker exec corebridge-postgres psql -U corebridge -d corebridge -q \
   -c "update platform.users    set role='owner' where id='$U';
       update platform.tenants  set plan='trial' where id='$T';
-      update platform.licenses set plan='trial', is_active=true, invalidated_at=null
-       where tenant_id='$T'"
+      update platform.licenses set plan='trial', is_trial=true, valid_until=null,
+             is_active=true, invalidated_at=null where tenant_id='$T'"
 ```
+
+⚠️ **JWT в `licenses.jwt_token` при этом не перевыпускается.** `GET /lk/token/full` продолжит
+отдавать токен со старым планом (`"plan":"trial"` на «Профессионале»). Это артефакт правки
+в обход платёжного пути, а не баг: в жизни токен перевыпускается при оплате. Проверять
+по токену смену тарифа бессмысленно — смотреть `/lk/dashboard`.
 
 ### Что проверено прогоном (2026-07-29)
 
@@ -198,7 +205,26 @@ docker exec corebridge-postgres psql -U corebridge -d corebridge -q \
 → **Нашлось:** экран `/epf` показывал общее «Не удалось получить токен. Обновите страницу»,
 хотя это не сбой, а состояние аккаунта. Исправлено: «Активной лицензии нет… Оформите тариф».
 
-Состояние возвращено в исходное 2026-07-29: `owner` · `trial` · лицензия активна.
+**Платный тариф `professional`** (`valid_until` = +30 дней)
+
+| Путь | Поведение |
+|---|---|
+| `GET /lk/dashboard` | `plan: professional`, `days_left: 30`, лимиты тарифа подтянулись |
+| `GET /lk/billing` | `200`, история пуста — оплат не было |
+| `POST /lk/token/refresh` | `402 NO_ACTIVE_SUBSCRIPTION` — нужен подтверждённый платёж |
+| `GET /lk/token/full` | `200`, но в JWT остался `plan: trial` — см. предупреждение выше |
+| `GET /lk/workflows/catalog` | `200`, **всегда пусто** — шаблоны не смонтированы в контейнер (промт S12) |
+
+→ **Нашлось три вещи.** (1) `n8n_usage.limit` равен нулю на любом тарифе, пока не было
+ни одного запуска: он читается из `usage_counters`, а строка создаётся лениво. Сайт
+из-за этого писал оплатившему «на пробном тарифе n8n недоступен» — лимит теперь берётся
+из `GET /lk/plans`. (2) На тарифе «Профессионал» биллинг звал «Попробовать» тот же самый
+«Профессионал», дважды — а промо `once_per_tenant`, повторная оплата упёрлась бы
+в `PROMO_ALREADY_USED`. Теперь там «Продлить на месяц». (3) `POST /lk/workflows/activate`
+требует `integration_id`, а сайт его не слал — каждое нажатие «Включить» гарантированно
+возвращало `400`. Исправлено, интеграция выбирается в карточке.
+
+Состояние возвращено в исходное 2026-07-29: `owner` · `trial` · лицензия активна, бессрочная.
 
 ## 5. Что этот аккаунт уже помог найти
 

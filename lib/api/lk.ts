@@ -101,17 +101,52 @@ export const saveCredentials = (
 export const deleteIntegration = (id: string) =>
   api<{ ok: true }>(`/lk/integrations/${encodeURIComponent(id)}`, { method: 'DELETE' });
 
-/** Каталог готовых воркфлоу n8n. Пустой массив = шаблоны ещё не публиковались */
-export const getWorkflowCatalog = () => api<WorkflowTemplate[]>('/lk/workflows/catalog');
-
-export const getWorkflowExecutions = (limit = 20) =>
-  api<WorkflowExecution[]>(`/lk/workflows/executions?limit=${limit}`);
-
-export const activateWorkflow = (template_id: string) =>
-  api<{ workflow_id: string; status: string }>('/lk/workflows/activate', {
-    method: 'POST',
-    body: { template_id },
+/**
+ * Каталог готовых воркфлоу n8n. Пустой массив = шаблоны ещё не публиковались.
+ *
+ * ⚠️ Нормализуем ответ. Сервер отдаёт `tags` в том виде, в каком они лежат
+ * в JSON шаблона, — а там это объекты `{ name }`, а не строки. Плюс у части
+ * шаблонов нет ни `template_id`, ни человекочитаемого `name` (лежит шаблонная
+ * строка `{TENANT_ID}__{PROJECT_ID}__…`). Чинить это серверу — промт S12,
+ * но падать из-за формы данных экран не должен.
+ */
+export const getWorkflowCatalog = async (): Promise<WorkflowTemplate[]> => {
+  const raw = await api<unknown[]>('/lk/workflows/catalog');
+  return raw.map((item) => {
+    const t = item as Record<string, unknown>;
+    const tags = Array.isArray(t.tags)
+      ? t.tags
+          .map((x) => (typeof x === 'string' ? x : (x as { name?: string })?.name))
+          .filter((x): x is string => typeof x === 'string' && !x.startsWith('{'))
+      : [];
+    const id = String(t.template_id ?? '');
+    const name = String(t.name ?? '');
+    return {
+      template_id: id,
+      // шаблонная строка вместо названия — показываем идентификатор, он читается лучше
+      name: name && !name.includes('{') ? name : id,
+      description: typeof t.description === 'string' && t.description ? t.description : null,
+      required_integrations: Array.isArray(t.required_integrations)
+        ? (t.required_integrations as string[])
+        : [],
+      tags,
+    };
   });
+};
+
+/** ⚠️ Сервер игнорирует `limit` и отдаёт всё, что нашёл в n8n. Режем на своей стороне */
+export const getWorkflowExecutions = () =>
+  api<WorkflowExecution[]>('/lk/workflows/executions');
+
+/**
+ * ⚠️ `integration_id` обязателен: без него сервер отвечает `400 MISSING_FIELDS`.
+ * Воркфлоу привязывается к конкретной интеграции — она попадает в теги n8n.
+ */
+export const activateWorkflow = (template_id: string, integration_id: string) =>
+  api<{ workflow_id: string; name: string; active: boolean; webhook_url: string | null }>(
+    '/lk/workflows/activate',
+    { method: 'POST', body: { template_id, integration_id } },
+  );
 
 /** История платежей. Пустой массив — оплат ещё не было */
 export const getPayments = () => api<Payment[]>('/lk/billing');

@@ -104,10 +104,11 @@ export function DashboardBody() {
           title="Запусков n8n за месяц"
           value={data ? data.executions_this_month.toLocaleString('ru-RU') : null}
           icon={<path d="M3 12h4l3-8 4 16 3-8h4" />}
+          /* ⚠️ Лимит — из каталога тарифов, а не из `n8n_usage.limit`: тот берётся
+             из usage_counters и равен нулю, пока не было ни одного запуска, —
+             на любом тарифе, включая оплаченный (проверено на проде 2026-07-29) */
           note={
-            data && data.n8n_usage.limit > 0
-              ? `из ${data.n8n_usage.limit.toLocaleString('ru-RU')} по тарифу`
-              : 'на пробном тарифе n8n недоступен'
+            plan ? `из ${plan.limits.n8n_executions_month.toLocaleString('ru-RU')} по тарифу` : undefined
           }
         />
         <Kpi
@@ -233,7 +234,7 @@ export function DashboardBody() {
         <Quick
           href="/billing"
           title="Сменить тариф"
-          sub={promoLabel(plans) ?? 'Тарифы и оплата'}
+          sub={promoLabel(plans, data?.plan) ?? 'Тарифы и оплата'}
           icon={<path d="M5 16 3 8l5.5 4L12 5l3.5 7L21 8l-2 8H5z" />}
         />
       </div>
@@ -276,9 +277,14 @@ function planNote(data: Dashboard | null, plan: Plan | undefined): string | unde
   return `Осталось ${left} ${plural(left, 'день', 'дня', 'дней')}${limits ? ` · ${limits}` : ''}`;
 }
 
-function promoLabel(plans: Plan[] | null): string | undefined {
+/**
+ * Подпись плитки «Сменить тариф». Промо не рекламируем тому, кто уже на этом тарифе:
+ * акция `once_per_tenant`, повторная оплата упрётся в `PROMO_ALREADY_USED`.
+ */
+function promoLabel(plans: Plan[] | null, current: string | undefined): string | undefined {
   const withPromo = plans?.find((p) => p.promo);
-  return withPromo?.promo?.label;
+  if (!withPromo || withPromo.code === current) return undefined;
+  return withPromo.promo?.label;
 }
 
 function Kpi({
