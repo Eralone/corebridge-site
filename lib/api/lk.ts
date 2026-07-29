@@ -1,6 +1,6 @@
 import { api } from './client';
 import type {
-  Activity, AuditEntry, Dashboard, EpfConfig, EpfVersion, Integration, NotificationSettings, Payment, Plan, WorkflowExecution, WorkflowTemplate,
+  Activity, AuditEntry, Dashboard, EpfConfig, EpfVersion, Integration, NotificationSettings, Payment, Plan, TeamMember, WorkflowExecution, WorkflowTemplate,
   PrivacyRequest, PrivacyRequestType, Profile, Session, TwoFactorStatus, ContactSource,
 } from '@/lib/contracts/lk';
 
@@ -126,3 +126,57 @@ export const startPayment = (plan: string, period: 'monthly' | 'yearly', promo_c
     method: 'POST',
     body: { plan, period, ...(promo_code ? { promo_code } : {}) },
   });
+
+// ── Настройки ──────────────────────────────────────────────────────────────
+export const updateProfile = (body: Partial<{ name: string; phone: string }> & Partial<Profile['company']>) =>
+  api<Profile>('/lk/profile', { method: 'PATCH', body });
+
+export const changePassword = (current_password: string, new_password: string) =>
+  api<{ ok: true }>('/lk/profile/password', { method: 'POST', body: { current_password, new_password } });
+
+/** Завершить все сеансы, кроме текущего */
+export const logoutOtherSessions = () =>
+  api<{ revoked: number }>('/lk/sessions/logout-others', { method: 'POST' });
+
+export const revokeSession = (id: string) =>
+  api<{ ok: true }>(`/lk/sessions/${encodeURIComponent(id)}`, { method: 'DELETE' });
+
+/** Шаг 1: код уходит в Telegram. Шаг 2 — confirm */
+export const enable2fa = () => api<{ sent: true }>('/lk/2fa/enable', { method: 'POST' });
+
+export const confirm2fa = (code: string) =>
+  api<{ enabled: true; recovery_codes: string[] }>('/lk/2fa/confirm', { method: 'POST', body: { code } });
+
+export const disable2fa = (password: string) =>
+  api<{ enabled: false }>('/lk/2fa', { method: 'DELETE', body: { password } });
+
+export const saveNotificationSettings = (body: NotificationSettings) =>
+  api<NotificationSettings>('/lk/notifications/settings', { method: 'PUT', body });
+
+/** Ссылка на бота: человек открывает её, бот присылает nonce обратно */
+export const linkTelegram = () =>
+  api<{ deep_link: string; expires_in: number }>('/lk/notifications/telegram/link', { method: 'POST' });
+
+export const telegramStatus = () =>
+  api<{ linked: boolean; chat_id_masked: string | null }>('/lk/notifications/telegram/status');
+
+export const unlinkTelegram = () =>
+  api<{ ok: true }>('/lk/notifications/telegram', { method: 'DELETE' });
+
+export const getTeam = () =>
+  api<{ users: TeamMember[] }>('/lk/users');
+
+export const inviteUser = (email: string, role: 'manager' | 'user') =>
+  api<{ invite_id: string; email: string; invite_url?: string }>('/lk/users/invite', {
+    method: 'POST',
+    body: { email, role },
+  });
+
+export const changeUserRole = (id: string, role: 'owner' | 'manager' | 'user') =>
+  api<{ id: string; role: string }>(`/lk/users/${encodeURIComponent(id)}/role`, {
+    method: 'PATCH',
+    body: { role },
+  });
+
+export const removeUser = (id: string) =>
+  api<{ ok: true }>(`/lk/users/${encodeURIComponent(id)}`, { method: 'DELETE' });

@@ -227,3 +227,15 @@ export interface Payment {
   promo_code?: string | null;
   created_at: string;
 }
+
+/** Участник команды из `GET /lk/users` */
+export interface TeamMember {
+  id: string;
+  email: string;
+  name: string | null;
+  role: 'owner' | 'manager' | 'user';
+  auth_provider: string;
+  status: 'active' | 'invited' | string;
+  invitation_expires_at: string | null;
+  created_at: string;
+}

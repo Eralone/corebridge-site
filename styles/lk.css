@@ -811,3 +811,167 @@
 .pay-scroll {
   overflow-x: auto;
 }
+
+/* ══ Экран «Настройки» ═══════════════════════════════════════════════════
+   Стили из <style> в design-source/settings.html. Не перенесён .api-key:
+   ключей вида cb_* на сервере нет, доступ к API даёт JWT со страницы /epf.
+   Не перенесён .avatar-lg: загрузки аватара сервер не поддерживает. */
+.settings-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 32px;
+}
+@media (max-width: 1024px) {
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.set-side a {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: var(--text-muted);
+  font-size: 14px;
+  text-decoration: none;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+.set-side a:hover {
+  background: var(--bg-alt);
+  color: var(--text);
+  text-decoration: none;
+}
+.set-side a.active {
+  background: var(--navy-900);
+  color: #fff;
+  font-weight: 600;
+}
+.card + .card {
+  margin-top: 20px;
+}
+.card h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+.card .sub {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+}
+.form-row:last-child {
+  border: none;
+  padding-bottom: 0;
+}
+.form-row label {
+  font-weight: 600;
+  font-size: 14px;
+}
+.form-row .hint {
+  color: var(--text-faint);
+  font-size: 12px;
+  margin-top: 4px;
+}
+@media (max-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+.toggle {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  background: var(--border-strong);
+  border: none;
+  border-radius: 11px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+  padding: 0;
+}
+.toggle::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  transition: 0.15s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+.toggle.on {
+  background: var(--success);
+}
+.toggle.on::after {
+  left: 20px;
+}
+
+.sess-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.sess-row:last-child {
+  border: none;
+}
+.sess-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--bg-alt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.sess-row .info {
+  flex: 1;
+  font-size: 14px;
+  min-width: 0;
+}
+.sess-row .meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  word-break: break-word;
+}
+
+/* Матрица уведомлений. Колонки SMS нет вовсе — SMS на платформе не существует */
+.notif-matrix {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.notif-matrix th {
+  text-align: left;
+  padding: 10px 12px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+.notif-matrix td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.notif-matrix tr:last-child td {
+  border-bottom: none;
+}
+.notif-matrix th:not(:first-child),
+.notif-matrix td:not(:first-child) {
+  text-align: center;
+  width: 120px;
+}

@@ -1,10 +1,13 @@
+import type { Metadata } from 'next';
 import { LkShell } from '@/components/LkShell';
-import { StubBody } from '@/components/StubBody';
+import { SettingsBody } from './SettingsBody';
+
+export const metadata: Metadata = { title: 'Настройки — CoreBridge', robots: { index: false } };
 
 export default function Page() {
   return (
-    <LkShell active="settings" title="Настройки" subtitle="Профиль, компания, безопасность, уведомления">
-      <StubBody source="settings.html" stage="Э5" />
+    <LkShell active="settings" title="Настройки">
+      <SettingsBody />
     </LkShell>
   );
 }
