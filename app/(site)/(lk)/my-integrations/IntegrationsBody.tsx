@@ -12,6 +12,7 @@ import {
 } from '@/lib/api/lk';
 import type { Integration } from '@/lib/contracts/lk';
 import { adapterInfo } from '@/lib/adapters';
+import { useUser } from '@/lib/user-context';
 import { timeAgo } from '@/components/lk/events';
 import { Popup } from '@/components/Popup';
 
@@ -39,6 +40,9 @@ const STATUS: Record<string, { cls: string; label: string }> = {
 };
 
 export function IntegrationsBody() {
+  // Роль дублируем в интерфейсе: сервер всё равно ответит 403, но кнопка,
+  // которая гарантированно не сработает, — это ложное обещание
+  const canEdit = useUser()?.role !== 'user';
   const [items, setItems] = useState<Integration[] | null>(null);
   const [failed, setFailed] = useState(false);
   const [tab, setTab] = useState<string>('Все');
@@ -239,11 +243,12 @@ export function IntegrationsBody() {
                     className="btn btn-outline btn-sm"
                     style={{ flex: 1 }}
                     onClick={() => setCreds(i)}
-                    disabled={busyId === i.integration_id}
+                    disabled={busyId === i.integration_id || !canEdit}
+                    title={canEdit ? undefined : 'Доступно владельцу и менеджеру'}
                   >
                     {i.needs_reauth ? 'Обновить ключи' : 'Настроить'}
                   </button>
-                  {i.paused ? (
+                  {!canEdit ? null : i.paused ? (
                     <button
                       className="btn btn-outline btn-sm"
                       disabled={busyId === i.integration_id}

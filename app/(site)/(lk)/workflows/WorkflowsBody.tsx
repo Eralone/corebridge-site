@@ -6,6 +6,7 @@ import { ApiError } from '@/lib/api/client';
 import { activateWorkflow, getDashboard, getWorkflowCatalog, getWorkflowExecutions } from '@/lib/api/lk';
 import type { Dashboard, WorkflowExecution, WorkflowTemplate } from '@/lib/contracts/lk';
 import { timeAgo } from '@/components/lk/events';
+import { useUser } from '@/lib/user-context';
 
 /**
  * n8n-воркфлоу. **Макета нет вовсе:** в design-source пункт меню «n8n-воркфлоу»
@@ -18,6 +19,8 @@ import { timeAgo } from '@/components/lk/events';
  * (`n8n_usage`), отдельного счётчика операций на сервере пока нет.
  */
 export function WorkflowsBody() {
+  // сервер отвечает 403 на activate для роли «только чтение» — не обещаем зря
+  const canEdit = useUser()?.role !== 'user';
   const [catalog, setCatalog] = useState<WorkflowTemplate[] | null>(null);
   const [runs, setRuns] = useState<WorkflowExecution[] | null>(null);
   const [usage, setUsage] = useState<Dashboard['n8n_usage'] | null>(null);
@@ -137,7 +140,8 @@ export function WorkflowsBody() {
                 <button
                   className="btn btn-primary btn-sm"
                   style={{ flex: 1 }}
-                  disabled={busy === t.template_id || noPlan}
+                  disabled={busy === t.template_id || noPlan || !canEdit}
+                  title={canEdit ? undefined : 'Включать сценарии может владелец или менеджер'}
                   onClick={async () => {
                     setBusy(t.template_id);
                     setNote(null);
