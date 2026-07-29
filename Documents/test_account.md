@@ -126,7 +126,61 @@ curl -s -o /dev/null -w '%{http_code}\n' -H "Cookie: lk_session=<значени�
 
 ---
 
-## 4. Что этот аккаунт уже помог найти
+## 4. Прогон пользовательских путей: как переключать роль и тариф
+
+Аккаунт всё равно под удаление, поэтому его роль и тариф можно менять прямо в базе —
+это дешевле, чем заводить четыре аккаунта.
+
+```bash
+U=da149c7e-5ef2-4c10-9488-8e3f8dcc9589
+T=07584704-9800-44c0-bc4e-30bbeb513007
+
+# роль: owner | manager | user
+docker exec corebridge-postgres psql -U corebridge -d corebridge -q \
+  -c "update platform.users set role='manager' where id='$U'"
+
+# тариф: trial | start | business | professional
+docker exec corebridge-postgres psql -U corebridge -d corebridge -q \
+  -c "update platform.tenants  set plan='professional' where id='$T';
+      update platform.licenses set plan='professional' where tenant_id='$T'"
+
+# «без подписки»: погасить лицензию
+docker exec corebridge-postgres psql -U corebridge -d corebridge -q \
+  -c "update platform.licenses set is_active=false, invalidated_at=now() where tenant_id='$T'"
+```
+
+⚠️ **После смены роли обязательно перелогиниться.** Роль кэшируется в сессии Redis:
+`GET /lk/auth/session` продолжает отдавать старую, и проверки прав идут по ней.
+Новая сессия — новым `POST /lk/auth/login`, и `CB_SESSION` в инструментах тоже поменять.
+
+**Вернуть исходное состояние** (или просто перейти к чистке из раздела 3):
+
+```bash
+docker exec corebridge-postgres psql -U corebridge -d corebridge -q \
+  -c "update platform.users    set role='owner' where id='$U';
+      update platform.tenants  set plan='trial' where id='$T';
+      update platform.licenses set plan='trial', is_active=true, invalidated_at=null
+       where tenant_id='$T'"
+```
+
+### Что уже проверено под `manager`
+
+| Путь | Поведение | Верно? |
+|---|---|---|
+| `GET /lk/token/full` | `403 FORBIDDEN` | да |
+| Экран `/epf` | вместо токена — «Полный токен доступен только владельцу аккаунта» | да |
+| Настройки → Команда | форма приглашения скрыта | да |
+
+Роль возвращена на `owner` 2026-07-29.
+
+## 5. Что этот аккаунт уже помог найти
+
+**Роль кэшируется в сессии и не обновляется до перелогина.** Меняешь роль в базе —
+`GET /lk/profile` показывает новую (читает БД), а `GET /lk/auth/session` и все проверки
+прав продолжают работать по старой, пока живёт сессия (до суток). То есть понижение
+роли не отзывает полномочия сразу: разжалованный из владельцев сохраняет доступ
+к `GET /lk/token/full` до конца своей сессии. Для сайта это не чинится — решать серверу,
+если сочтём существенным.
 
 **Guard личного кабинета не пропускал внутрь даже с валидной сессией.** В `middleware.ts`
 адрес проверки собирался как `new URL('/lk/auth/session', req.url)`, а `req.url` внутри
