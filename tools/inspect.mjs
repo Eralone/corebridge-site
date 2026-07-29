@@ -7,10 +7,10 @@
  *   node tools/inspect.mjs pricing login     только эти
  *   node tools/inspect.mjs public            по области: none|lk|admin, main|admin
  *   node tools/inspect.mjs --no-click        без прокликивания
- *   node tools/inspect.mjs --no-mobile       только десктоп
+ *   node tools/inspect.mjs --no-mobile       только десктоп, без планшета и телефона
  *   node tools/inspect.mjs --design          снять заодно эталон из design-source
  *
- * Куда пишет: artifacts/<id>/desktop.png, mobile.png, clicks/*.png,
+ * Куда пишет: artifacts/<id>/desktop.png, tablet.png, mobile.png, clicks/*.png,
  *             artifacts/report.md, artifacts/report.json
  *
  * Закрытые экраны (auth: lk) без CB_SESSION показывают форму входа — это
@@ -187,16 +187,28 @@ async function inspectPage(browser, p) {
 
   await ctx.close();
 
+  /**
+   * Планшет и телефон. Горизонтальную прокрутку проверяем на обеих ширинах:
+   * это почти всегда блок, вылезший за экран, и на планшете он ловится не реже,
+   * чем на телефоне, — там ломаются сетки в три-четыре колонки.
+   */
   if (doMobile) {
-    const mctx = await newContext(browser, { viewport: VIEWPORTS.mobile, cookies: sessionCookies() });
-    const { page: mp } = await openWithDiagnostics(mctx, url);
-    await shoot(mp, join(dir, 'mobile.png'));
-    // горизонтальная прокрутка на телефоне — почти всегда вылезший за экран блок
-    record.horizontalOverflow = await mp
-      .evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1)
-      .catch(() => null);
-    record.shots.mobile = `${p.id}/mobile.png`;
-    await mctx.close();
+    record.overflow = {};
+    for (const name of ['tablet', 'mobile']) {
+      const vctx = await newContext(browser, {
+        viewport: VIEWPORTS[name],
+        cookies: sessionCookies(),
+      });
+      const { page: vp } = await openWithDiagnostics(vctx, url);
+      await shoot(vp, join(dir, `${name}.png`));
+      record.overflow[name] = await vp
+        .evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1)
+        .catch(() => null);
+      record.shots[name] = `${p.id}/${name}.png`;
+      await vctx.close();
+    }
+    // сохраняем прежнее имя поля: по нему отчёт печатает замечание
+    record.horizontalOverflow = record.overflow.mobile || record.overflow.tablet;
   }
 
   if (doDesign && p.design) {
@@ -230,7 +242,9 @@ function problems(r) {
   if (r.failedRequests.length) out.push(`упавших запросов: ${r.failedRequests.length}`);
   if (r.badResponses.length) out.push(`ответов 4xx/5xx: ${r.badResponses.length}`);
   if (r.links.broken.length) out.push(`битых ссылок: ${r.links.broken.length}`);
-  if (r.horizontalOverflow) out.push('горизонтальная прокрутка на мобильном');
+  if (r.overflow?.tablet && r.overflow?.mobile) out.push('горизонтальная прокрутка на планшете и телефоне');
+  else if (r.overflow?.mobile) out.push('горизонтальная прокрутка на телефоне');
+  else if (r.overflow?.tablet) out.push('горизонтальная прокрутка на планшете');
   const clickErrors = r.clicks.filter((c) => c.errors.length || c.outcome.startsWith('клик не прошёл'));
   if (clickErrors.length) out.push(`проблемных кликов: ${clickErrors.length}`);
   return out;
