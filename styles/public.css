@@ -199,6 +199,82 @@
 .p-crumbs a { color: inherit; text-decoration: none; }
 .p-crumbs a:hover { text-decoration: underline; }
 
+/* ── contacts.html ──────────────────────────────────────────────────────── */
+.c-hero { padding: 60px 24px 40px; text-align: center; }
+.c-hero h1 { font-size: 40px; margin-bottom: 12px; }
+.c-hero p { color: var(--text-muted); max-width: 520px; margin: 0 auto; font-size: 17px; }
+@media(max-width:640px){ .c-hero { padding: 40px 16px 28px; } .c-hero h1 { font-size: 28px; } }
+
+/* ⚠️ в эталоне было 1fr 1fr: слева четыре карточки и карта проезда уравновешивали
+   форму. Карта и две карточки убраны (офиса нет, Telegram для обращений нет),
+   и при равных колонках слева оставалась половина экрана пустоты.
+   Колонки перевешены в пользу формы — ради неё на страницу и приходят. */
+.contact-grid { max-width: 1200px; margin: 40px auto 80px; padding: 0 24px; display: grid; grid-template-columns: 0.8fr 1fr; gap: 40px; align-items: start; }
+@media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .contact-grid { padding: 0 16px; } }
+
+.contact-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 480px) { .contact-cards { grid-template-columns: 1fr; } }
+.c-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+.c-card .ic { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+.c-card h4 { margin: 0 0 4px; font-size: 15px; }
+.c-card .val { font-weight: 700; font-size: 16px; color: var(--navy-900); }
+.c-card .hint { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+/* ⚠️ .map и .pin из эталона не переносятся: карта показывала офис в Москве,
+   которого не существует. Правила удалены вместе с блоком. */
+
+.form-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; }
+.form-card h3 { margin: 0 0 6px; }
+.form-card .sub { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
+.form-card .field { margin-bottom: 14px; }
+@media(max-width:520px){ .form-card { padding: 22px; } }
+
+.req-strip { background: var(--bg-alt); padding: 40px 24px; }
+.req-strip .container { max-width: 1100px; margin: 0 auto; }
+.req-strip h2 { margin-bottom: 16px; font-size: 22px; }
+/* три поля вместо четырёх: банковские реквизиты на странице контактов не нужны
+   (решение Дмитрия), они остаются в оферте §11, где действительно требуются */
+.req-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; font-size: 13px; }
+@media (max-width: 900px){ .req-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 480px){ .req-grid { grid-template-columns: 1fr; } }
+.req-grid b { display: block; font-size: 13px; }
+.req-grid .lbl { color: var(--text-faint); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+
+
+/* ── for-business.html ──────────────────────────────────────────────────── */
+.b-hero { background: linear-gradient(135deg, var(--navy-900), var(--navy-700)); color: #fff; padding: 80px 24px; }
+.b-hero .container { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1200px; margin: 0 auto; }
+@media (max-width:900px){ .b-hero .container { grid-template-columns: 1fr; } }
+@media (max-width:640px){ .b-hero { padding: 48px 16px; } }
+.b-hero h1 { color: #fff; font-size: 46px; letter-spacing: -0.02em; margin-bottom: 20px; }
+@media (max-width:640px){ .b-hero h1 { font-size: 30px; } }
+.b-hero p { color: #C9D5F2; font-size: 18px; line-height: 1.6; margin-bottom: 24px; }
+
+.lead-form { background: #fff; padding: 32px; border-radius: 16px; color: var(--text); box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+.lead-form h3 { margin: 0 0 6px; }
+.lead-form .sub { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
+.lead-form .field { margin-bottom: 12px; }
+@media (max-width:520px){ .lead-form { padding: 22px; } }
+
+.segments { max-width: 1200px; margin: 80px auto; padding: 0 24px; }
+.segments h2 { text-align: center; font-size: 36px; margin-bottom: 40px; }
+@media (max-width:640px){ .segments { margin: 56px auto; padding: 0 16px; } .segments h2 { font-size: 26px; } }
+.seg-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+@media (max-width:900px){ .seg-grid { grid-template-columns: 1fr; } }
+.seg-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
+@media (max-width:520px){ .seg-card { padding: 22px; } }
+.seg-card .ic { width: 56px; height: 56px; border-radius: 14px; background: var(--blue-100); color: var(--blue-500); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.seg-card h3 { margin: 0 0 10px; font-size: 22px; }
+.seg-card .fit { color: var(--text-muted); margin-bottom: 16px; font-size: 14px; }
+.seg-card ul { list-style: none; padding: 0; margin: 0 0 16px; font-size: 14px; }
+.seg-card li { padding: 6px 0; display: flex; gap: 10px; align-items: flex-start; }
+.seg-card li::before { content: "→"; color: var(--orange-500); font-weight: 700; flex-shrink: 0; }
+
+/* ⚠️ Секции .cases и .services из эталона не переносятся вместе со своими стилями:
+   первая — отзывы от имени выдуманных людей, вторая — публичный прайс на услуги,
+   которого нет. Подробности — design_findings.md, БЛОКЕР 2. */
+
 /**
  * ── Шапка на узких экранах ────────────────────────────────────────────────
  * В эталоне мобильной шапки нет: пять пунктов меню и две кнопки стоят в строку
