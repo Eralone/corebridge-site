@@ -15,7 +15,10 @@ export function PublicFooter() {
               <span className="logo-glyph" />
               CoreBridge
             </Link>
-            <p className="text-muted mt-16" style={{ maxWidth: 300, fontSize: 13 }}>
+            {/* ⚠️ в эталоне здесь стоял class="text-muted" — это светлая тема,
+                на тёмном фоне подвала текст получался почти нечитаемым.
+                Цвет берём из палитры подвала (#C9D5F2, как у .site-footer). */}
+            <p className="mt-16" style={{ maxWidth: 300, fontSize: 13, color: '#A8BCE0' }}>
               No-code сервисная интеграция 1С с маркетплейсами, сайтами, CRM и сервисами.
             </p>
           </div>

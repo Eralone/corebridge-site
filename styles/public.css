@@ -146,6 +146,59 @@
 @media(max-width:640px){ .sec-title { font-size: 27px; } }
 .sec-lede { text-align: center; color: var(--text-muted); margin: 0 auto; }
 
+/* ── pricing.html ───────────────────────────────────────────────────────── */
+.p-hero { padding: 60px 0 20px; text-align: center; }
+.p-hero h1 { font-size: clamp(32px,4vw,44px); margin-bottom: 10px; letter-spacing: -0.02em; }
+.p-hero p { color: var(--text-muted); max-width: 540px; margin: 0 auto; font-size: 17px; }
+.toggle { display: inline-flex; background: var(--bg-alt); border: 1px solid var(--border); border-radius: 100px; padding: 4px; margin: 24px auto 0; }
+.toggle button { border: none; background: transparent; padding: 10px 22px; border-radius: 100px; font-weight: 600; font-size: 14px; cursor: pointer; color: var(--text-muted); font-family: inherit; }
+.toggle button.on { background: #fff; color: var(--navy-900); box-shadow: 0 2px 6px rgba(0,0,0,.06); }
+.toggle .save { font-size: 11px; color: var(--success); font-weight: 700; margin-left: 6px; }
+/* добавлено: на 390px две кнопки по 22px паддинга не влезали в строку */
+@media(max-width:420px){ .toggle button { padding: 10px 14px; font-size: 13px; } }
+
+.plans { padding: 40px 0 40px; }
+/* ⚠️ .plan-grid и .plan объявлены выше, в блоке лендинга: у pricing та же сетка
+   карточек, но своя раскладка колонок — переопределяем только её */
+.plans .plan-grid { grid-template-columns: repeat(5,1fr); }
+@media(max-width:1100px){ .plans .plan-grid { grid-template-columns: repeat(2,1fr); } }
+@media(max-width:600px){ .plans .plan-grid { grid-template-columns: 1fr; } }
+.plan.current { border-color: var(--success); background: linear-gradient(180deg,rgba(31,157,85,.04),#fff); }
+.plan .tag.t-pop { background: var(--orange-500); }
+.plan .tag.t-cur { background: var(--success); }
+.plan .old { text-decoration: line-through; color: var(--text-faint); font-size: 14px; margin-left: 6px; }
+.plan li.muted { color: var(--text-faint); }
+.plan li.muted::before { content: "·"; color: var(--text-faint); }
+.cur-chip { display: inline-block; padding: 10px; text-align: center; width: 100%; background: var(--bg-alt); border-radius: 10px; color: var(--success); font-weight: 700; font-size: 14px; }
+
+.comp { padding: 80px 0; background: var(--bg-alt); }
+.comp h2 { text-align: center; font-size: 32px; margin-bottom: 30px; }
+.comp-tbl { background: #fff; border-radius: var(--radius); overflow: auto; border: 1px solid var(--border); }
+/* ⚠️ в эталоне селектор был просто `table` — это перекрасило бы таблицы ЛК
+   и админки, поэтому здесь он ограничен своим блоком */
+.comp-tbl table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 720px; }
+.comp-tbl th, .comp-tbl td { padding: 14px 18px; text-align: center; border-bottom: 1px solid var(--border); }
+.comp-tbl th { background: var(--bg-alt); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted); }
+.comp-tbl td:first-child, .comp-tbl th:first-child { text-align: left; font-weight: 600; }
+.comp-tbl .check { color: var(--success); font-weight: 700; font-size: 16px; }
+.comp-tbl .dash { color: var(--text-faint); }
+
+.faq { padding: 80px 0; }
+.faq h2 { text-align: center; font-size: 32px; margin-bottom: 30px; }
+.faq-list { max-width: 720px; margin: 0 auto; }
+.faq-list details { background: #fff; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; padding: 18px 22px; }
+.faq-list summary { font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary::after { content: "+"; font-size: 22px; color: var(--orange-500); font-weight: 400; flex-shrink: 0; }
+.faq-list details[open] summary::after { content: "−"; }
+.faq-list details p { margin: 12px 0 0; color: var(--text-muted); line-height: 1.7; font-size: 14px; }
+@media(max-width:640px){ .comp h2, .faq h2 { font-size: 25px; } .comp, .faq { padding: 56px 0; } }
+
+/** Хлебные крошки над заголовком — есть на всех внутренних публичных страницах */
+.p-crumbs { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+.p-crumbs a { color: inherit; text-decoration: none; }
+.p-crumbs a:hover { text-decoration: underline; }
+
 /**
  * ── Шапка на узких экранах ────────────────────────────────────────────────
  * В эталоне мобильной шапки нет: пять пунктов меню и две кнопки стоят в строку
