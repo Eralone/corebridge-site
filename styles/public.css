@@ -275,6 +275,43 @@
    первая — отзывы от имени выдуманных людей, вторая — публичный прайс на услуги,
    которого нет. Подробности — design_findings.md, БЛОКЕР 2. */
 
+/* ── integrations.html ──────────────────────────────────────────────────── */
+.hero-s { padding: 60px 0 40px; background: linear-gradient(180deg,#fff,var(--bg-alt)); }
+.hero-s h1 { font-size: clamp(32px,4vw,48px); letter-spacing: -0.02em; margin-bottom: 14px; max-width: 720px; }
+.hero-s p { color: var(--text-muted); font-size: 18px; max-width: 620px; line-height: 1.6; }
+@media(max-width:640px){ .hero-s { padding: 36px 0 28px; } .hero-s h1 { font-size: clamp(26px,7vw,34px); } .hero-s p { font-size: 16px; } }
+.stat-strip { display: flex; gap: 30px; margin-top: 24px; flex-wrap: wrap; }
+.stat-strip .s b { font-size: 22px; font-weight: 800; color: var(--orange-500); font-family: var(--mono); }
+.stat-strip .s span { color: var(--text-muted); font-size: 13px; margin-left: 6px; }
+
+/* ⚠️ .filter-bar здесь своя — в admin.css класс с тем же именем описывает другую
+   панель. Публичные и админские стили в один документ не попадают, но имя
+   совпадает, поэтому оставляю пометку: правки не переносить между файлами. */
+.int-filter { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); padding: 16px 0; }
+.int-filter .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip-f { background: #fff; border: 1px solid var(--border); padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: var(--text); cursor: pointer; transition: all .15s; white-space: nowrap; font-family: inherit; }
+.chip-f:hover { border-color: var(--orange-500); }
+.chip-f.active { background: var(--navy-900); color: #fff; border-color: var(--navy-900); }
+/* добавлено: на телефоне десять чипов не должны рвать раскладку — прокручиваем ряд */
+@media(max-width:640px){
+  .int-filter .chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+}
+
+.cat-section { padding: 60px 0 20px; }
+.cat-section h2 { font-size: 28px; margin-bottom: 6px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.cat-section h2 .cnt { font-family: var(--mono); font-size: 14px; color: var(--text-faint); font-weight: 500; }
+.cat-section .sub { color: var(--text-muted); margin-bottom: 24px; }
+@media(max-width:640px){ .cat-section { padding: 36px 0 12px; } .cat-section h2 { font-size: 22px; } }
+.int-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+@media(max-width:960px){ .int-grid { grid-template-columns: repeat(2,1fr); } }
+@media(max-width:520px){ .int-grid { grid-template-columns: 1fr; } }
+/* ⚠️ в эталоне .int был <button> с cursor:pointer и открывал модалку подключения.
+   На публичной странице подключать нечего — карточка стала обычным блоком,
+   курсор и hover-подъём убраны, чтобы не выглядела нажимаемой. */
+.int { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; display: flex; gap: 14px; align-items: flex-start; text-align: left; }
+.int h4 { margin: 0 0 4px; font-size: 15px; }
+.int p { margin: 0; color: var(--text-muted); font-size: 12.5px; line-height: 1.5; }
+
 /**
  * ── Шапка на узких экранах ────────────────────────────────────────────────
  * В эталоне мобильной шапки нет: пять пунктов меню и две кнопки стоят в строку
