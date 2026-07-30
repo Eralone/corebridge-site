@@ -826,8 +826,15 @@
     grid-template-columns: 1fr;
   }
 }
-.set-side a {
+/* ⚠️ button добавлен вместе с заменой вкладок настроек: <a> без href
+   не фокусируется с клавиатуры. Оформление должно совпадать один в один. */
+.set-side a, .set-side button {
   display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: none;
+  font-family: inherit;
   padding: 10px 14px;
   border-radius: 8px;
   color: var(--text-muted);
@@ -836,12 +843,12 @@
   margin-bottom: 2px;
   cursor: pointer;
 }
-.set-side a:hover {
+.set-side a:hover, .set-side button:hover {
   background: var(--bg-alt);
   color: var(--text);
   text-decoration: none;
 }
-.set-side a.active {
+.set-side a.active, .set-side button.active {
   background: var(--navy-900);
   color: #fff;
   font-weight: 600;

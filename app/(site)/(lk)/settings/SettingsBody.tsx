@@ -101,11 +101,25 @@ export function SettingsBody() {
       )}
 
       <div className="settings-grid">
-        <nav className="set-side">
+        {/*
+          ⚠️ В эталоне вкладки были `<a>` без href. Такой элемент не получает
+          фокус, не нажимается с клавиатуры и не объявляется как интерактивный —
+          до половины настроек нельзя было добраться, не взяв мышь.
+          Заменено на кнопки с ролью вкладки; оформление совпадает с эталоном
+          (правило `.set-side a, .set-side button` в styles/lk.css).
+        */}
+        <nav className="set-side" role="tablist" aria-label="Разделы настроек">
           {TABS.map((t) => (
-            <a key={t.id} className={tab === t.id ? 'active' : undefined} onClick={() => setTab(t.id)}>
+            <button
+              key={t.id}
+              type="button"
+              role="tab"
+              aria-selected={tab === t.id}
+              className={tab === t.id ? 'active' : undefined}
+              onClick={() => setTab(t.id)}
+            >
               {t.label}
-            </a>
+            </button>
           ))}
         </nav>
 
