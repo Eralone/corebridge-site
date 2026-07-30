@@ -41,6 +41,17 @@ CB_SESSION=<значение> npm run inspect -- lk
 Две фазы, обе в `privacy_admin.service.js` внутри контейнера `corebridge-admin`
 (`/app/src/services/admin/privacy_admin.service.js`; на хосте этого файла нет).
 
+> ⚠️ **Проверено на живом запуске 2026-07-30: вторая фаза сейчас не отрабатывает.**
+> `purgeTenant` обезличивает автора записей журнала через `UPDATE platform.audit_log`,
+> а на таблице стоит триггер `audit_log_immutable`, запрещающий любые изменения.
+> Падает не всегда: только если у тенанта есть записи с `actor = 'lk_user:<id>'` —
+> у аккаунта без действий чистка проходит. Поэтому ночной cron всё это время
+> писал `OK {"checked":0}`. Разбор и три варианта решения — промт S15.
+>
+> До починки полностью вычистить тенанта можно только вручную: `purgeTenant`
+> упадёт, но строку тенанта удалить получится, а каскад уберёт пользователей,
+> лицензии и остальное. Записи журнала останутся — и это правильно.
+
 **Фаза 1 — `scheduleDeletion(tenantId, { reason, confirm_company_name }, adminId, adminEmail)`**
 
 - `platform.tenants.status` → `pending_deletion`, `purge_at = NOW() + 30 дней`;
@@ -74,10 +85,11 @@ CB_SESSION=<значение> npm run inspect -- lk
 ```bash
 T=07584704-9800-44c0-bc4e-30bbeb513007
 
-# Фаза 1 и 2 штатной механикой — заодно проверяем, что она работает
+# Фаза 1 и 2 штатной механикой. ⚠️ Фаза 2 сейчас упадёт на audit_log (см. врезку
+# выше и промт S15) — это ожидаемо, ручное удаление ниже доводит дело до конца
 docker exec corebridge-admin node -e "
 const s = require('/app/src/services/admin/privacy_admin.service');
-s.scheduleDeletion('$T', { reason: 'тестовый аккаунт QA', confirm_company_name: null }, null, 'qa@corebridge.ru')
+s.scheduleDeletion('$T', { reason: 'тестовый аккаунт QA', confirm_company_name: '$T' }, null, 'qa@corebridge.ru')
   .then(r => { console.log(JSON.stringify(r)); return s.purgeTenant('$T'); })
   .then(r => { console.log(JSON.stringify(r)); process.exit(0); })
   .catch(e => { console.error(e.message); process.exit(1); });
@@ -86,16 +98,24 @@ s.scheduleDeletion('$T', { reason: 'тестовый аккаунт QA', confirm
 # Надгробие и остатки — уже напрямую
 docker exec corebridge-postgres psql -U corebridge -d corebridge -v ON_ERROR_STOP=1 <<SQL
 BEGIN;
-DELETE FROM platform.audit_log        WHERE tenant_id = '$T';
+-- audit_log не трогаем: таблица неизменяема, а записи и должны остаться
 DELETE FROM platform.privacy_requests WHERE tenant_id = '$T';
+DELETE FROM platform.dead_letter_queue WHERE tenant_id = '$T';
 DELETE FROM platform.payments         WHERE tenant_id = '$T';
 DELETE FROM platform.tenants          WHERE id = '$T';
 COMMIT;
 SQL
 ```
 
-⚠️ `scheduleDeletion` требует подтверждения названием компании, если оно задано.
-У тестового тенанта `company_name` пустое, поэтому передаём `null`.
+⚠️ `scheduleDeletion` требует подтверждения. Если название компании задано —
+передаём его; **если названия нет, подтверждать нужно `id` тенанта**, а не `null`.
+Прежняя формулировка про `null` неверна: сервер отвечает `COMPANY_NAME_MISMATCH`.
+Выяснилось на живом запуске 2026-07-30.
+
+⚠️ **Из скрипта убран `DELETE FROM platform.audit_log`.** Он не выполнится:
+таблица защищена триггером `audit_log_immutable`, и вся транзакция откатывалась —
+включая удаление самой строки тенанта. Записи журнала должны оставаться:
+они обезличиваются, а не удаляются.
 
 **Проверка, что чисто.** До начала работ в базе было **ровно 4 тенанта**:
 
@@ -113,7 +133,8 @@ docker exec corebridge-postgres psql -U corebridge -d corebridge -c "
   SELECT count(*) FROM platform.tenants;                          -- ожидаем 4
   SELECT count(*) FROM platform.users WHERE email LIKE '%qa-e2%'; -- ожидаем 0
   SELECT count(*) FROM platform.licenses  WHERE tenant_id = '$T'; -- ожидаем 0
-  SELECT count(*) FROM platform.audit_log WHERE tenant_id = '$T'; -- ожидаем 0
+  -- журнал остаётся по замыслу: проверяем, что в нём нет личных данных
+  SELECT count(*) FROM platform.audit_log WHERE tenant_id = '$T' AND actor LIKE 'lk_user:%';
 "
 ```
 

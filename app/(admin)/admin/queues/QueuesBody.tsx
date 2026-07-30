@@ -1,9 +1,23 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { ApiError } from '@/lib/api/client';
 import { deleteDlq, getAdminDlq, getQueueStats, reprocessDlq } from '@/lib/api/admin';
 import type { AdminDlqEntry } from '@/lib/contracts/admin';
 import { Blocked, ts } from '@/components/admin/bits';
+
+/**
+ * Какие события переобработка вообще может починить.
+ *
+ * ⚠️ Найдено прогоном 2026-07-30. `reprocessEvent` на сервере считает, что любое
+ * событие в очереди — это вебхук, и шлёт его в n8n по адресу
+ * `/webhook/{tenant}/{event_type}`. Для `workspace_init_failed` такого вебхука
+ * нет и быть не может: это внутренний сбой создания рабочего пространства,
+ * а не входящее событие. Кнопка «Повторить» на нём возвращала 502 всегда.
+ * Показывать действие, которое гарантированно не сработает, — обман; пока
+ * сервер не научится (промт S14), такие события помечаем как неповторяемые.
+ */
+const NOT_REPLAYABLE = new Set(['workspace_init_failed']);
 
 type Stats = Awaited<ReturnType<typeof getQueueStats>>;
 
@@ -44,8 +58,12 @@ export function QueuesBody() {
       await reprocessDlq(e.id);
       setNote('Событие отправлено на повторную обработку.');
       load();
-    } catch {
-      setNote('Не удалось отправить событие заново.');
+    } catch (err) {
+      // сервер присылает причину отказа текстом — она полезнее общей фразы
+      const why = err instanceof ApiError && typeof err.details?.error === 'string'
+        ? String(err.details.error).slice(0, 160)
+        : null;
+      setNote(why ? `Переобработка не прошла: ${why}` : 'Не удалось отправить событие заново.');
     } finally {
       setBusy(null);
     }
@@ -194,7 +212,12 @@ export function QueuesBody() {
                     <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
                       <button
                         className="btn btn-outline btn-sm"
-                        disabled={busy === e.id}
+                        disabled={busy === e.id || NOT_REPLAYABLE.has(e.event_type ?? '')}
+                        title={
+                          NOT_REPLAYABLE.has(e.event_type ?? '')
+                            ? 'Это внутренний сбой, а не входящее событие — повторять нечего. Разбирать по причине ошибки.'
+                            : undefined
+                        }
                         onClick={() => retry(e)}
                       >
                         Повторить
@@ -254,7 +277,16 @@ export function QueuesBody() {
                 />
               </div>
               <div className="row gap-12" style={{ marginTop: 20 }}>
-                <button className="btn btn-primary btn-sm" disabled={busy === open.id} onClick={() => retry(open)}>
+                <button
+                  className="btn btn-primary btn-sm"
+                  disabled={busy === open.id || NOT_REPLAYABLE.has(open.event_type ?? '')}
+                  title={
+                    NOT_REPLAYABLE.has(open.event_type ?? '')
+                      ? 'Это внутренний сбой, а не входящее событие — повторять нечего.'
+                      : undefined
+                  }
+                  onClick={() => retry(open)}
+                >
                   Повторить
                 </button>
                 <button
