@@ -1,10 +1,10 @@
 import { LkShell } from '@/components/LkShell';
-import { StubBody } from '@/components/StubBody';
+import { SupportBody } from './SupportBody';
 
 export default function Page() {
   return (
-    <LkShell active="support" title="Поддержка" subtitle="">
-      <StubBody source="support.html" stage="Э6" />
+    <LkShell active="support" title="Поддержка" subtitle="Обращения по почте">
+      <SupportBody />
     </LkShell>
   );
 }
