@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ApiError } from '@/lib/api/client';
@@ -56,20 +56,39 @@ export function RegisterForm() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
+  const alertRef = useRef<HTMLDivElement>(null);
+  const agreeRef = useRef<HTMLInputElement>(null);
+
+  /**
+   * Кнопка внизу длинной формы, сообщение об ошибке — вверху. Если человек
+   * его не заметил, нажатие выглядит как «ничего не произошло». Поэтому
+   * подводим к сообщению и ставим курсор на то поле, из-за которого не пустили.
+   */
+  function reject(message: string, focus?: HTMLElement | null) {
+    setError(message);
+    requestAnimationFrame(() => {
+      alertRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      focus?.focus({ preventScroll: true });
+    });
+  }
+
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
 
     if (password !== repeat) {
-      setError('Пароли не совпадают.');
+      reject('Пароли не совпадают.');
       return;
     }
     if (password.length < 8) {
-      setError('Пароль должен быть не короче 8 символов.');
+      reject('Пароль должен быть не короче 8 символов.');
       return;
     }
     if (!agreed) {
-      setError('Чтобы продолжить, примите оферту и политику конфиденциальности.');
+      reject(
+        'Чтобы продолжить, примите оферту и политику конфиденциальности.',
+        agreeRef.current,
+      );
       return;
     }
 
@@ -80,7 +99,7 @@ export function RegisterForm() {
       router.push('/dashboard');
       router.refresh();
     } catch (err) {
-      setError(messageFor(err));
+      reject(messageFor(err));
     } finally {
       setBusy(false);
     }
@@ -93,7 +112,11 @@ export function RegisterForm() {
       <h1>Создать аккаунт</h1>
       <p className="sub">Начните использовать интеграции 1С за 2 минуты</p>
 
-      {error && <Alert>{error}</Alert>}
+      {error && (
+        <div ref={alertRef}>
+          <Alert>{error}</Alert>
+        </div>
+      )}
 
       <form onSubmit={onSubmit} autoComplete="on" noValidate>
         <TextField
@@ -136,7 +159,12 @@ export function RegisterForm() {
         />
 
         <label className="cb" style={{ margin: '14px 0 20px' }}>
-          <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
+          <input
+            ref={agreeRef}
+            type="checkbox"
+            checked={agreed}
+            onChange={(e) => setAgreed(e.target.checked)}
+          />
           <span>
             Я соглашаюсь с <Link href="/oferta" target="_blank">офертой</Link>,{' '}
             <Link href="/terms" target="_blank">условиями использования</Link> и{' '}

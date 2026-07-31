@@ -146,22 +146,30 @@ test.describe('Разводка субдоменов', () => {
     expect(res?.status()).toBe(404);
   });
 
+  /**
+   * Что здесь проверяется — именно **разводка**: субдомен уводит в админку,
+   * а не на публичный сайт. Саму оболочку без входа увидеть нельзя и не нужно:
+   * `AdminGuard` спрашивает `GET /admin/auth/me` из браузера и без сессии
+   * показывает форму входа (почему проверка не в middleware — в самом guard'е).
+   *
+   * ⚠️ Раньше здесь ждали сайдбар и `.app--admin` у анонима. Это поведение
+   * до появления входа в админку (коммит 7d62375): тесты остались, а экран
+   * изменился, и четыре проверки держались красными, ничего не охраняя.
+   * Оболочку под живой сессией смотрит `npm run inspect -- admin`.
+   */
   for (const path of ['/', '/users', '/integrations']) {
-    test(`админ-субдомен ${path} рендерит оболочку админки`, async ({ page }) => {
+    test(`админ-субдомен ${path} уводит в админку, а не на сайт`, async ({ page }) => {
       const res = await page.goto(ADMIN + path);
       expect(res?.status()).toBe(200);
-      await expect(page.locator('aside.sidebar')).toBeVisible();
-      await expect(page.locator('.admin-badge')).toBeVisible();
-      // app--admin отличает админскую сетку от кабинета
-      await expect(page.locator('.app--admin')).toHaveCount(1);
+
+      // без сессии — форма входа админки
+      await expect(page.locator('.adm-login')).toBeVisible();
+
+      // и ничего от публичного сайта: ни шапки, ни подвала
+      await expect(page.locator('header.site-header')).toHaveCount(0);
+      await expect(page.locator('.app--admin, aside.sidebar')).toHaveCount(0);
     });
   }
-
-  test('на админ-субдомене подсвечен нужный пункт меню', async ({ page }) => {
-    await page.goto(ADMIN + '/users');
-    await expect(page.locator('.sidebar-nav a.active')).toHaveAttribute('href', '/users');
-    await expect(page.locator('.sidebar-nav a.active')).toHaveCount(1);
-  });
 
   test('/admin/* на субдомене остаётся за API и middleware его не перехватывает', async ({ request }) => {
     // whitelist по IP: с сервера прилетит 403 от nginx, но не страница Next.js

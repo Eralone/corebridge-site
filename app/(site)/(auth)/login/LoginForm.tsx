@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ApiError } from '@/lib/api/client';
@@ -9,6 +9,7 @@ import { needsTwoFactor } from '@/lib/contracts/auth';
 import { AuthTabs, BackLink } from '@/components/auth/AuthSplit';
 import { Alert, PasswordField, TextField, YandexButton } from '@/components/auth/fields';
 import { TwoFactorStep, twoFactorMessage } from '@/components/auth/TwoFactorStep';
+import { consumeOAuthReturn } from '@/lib/auth/oauth-return';
 
 /**
  * Вход. Отличия от design-source/login.html — по сути механики, не вёрстки:
@@ -61,6 +62,16 @@ function messageForGuard(code: string): string | null {
   }
 }
 
+/**
+ * Куда безопасно вернуть человека после входа. Только путь внутри сайта:
+ * `//чужой.сайт` браузер считает абсолютным адресом, поэтому одной проверки
+ * на ведущий «/» мало.
+ */
+function safeNext(next: string | null): string | null {
+  if (!next || !next.startsWith('/') || next.startsWith('//')) return null;
+  return next;
+}
+
 export function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
@@ -78,9 +89,25 @@ export function LoginForm() {
   // вход по ссылке из письма
   const [magicSent, setMagicSent] = useState(false);
 
+  /**
+   * Возврат из Яндекс ID: аккаунт заведён и сессия жива, но cookie не доехала —
+   * `SameSite=Strict` не пускает её в переход с чужого сайта, и guard увёл сюда.
+   * Хватает одного перехода внутри сайта. Зачем и до каких пор — в
+   * lib/auth/oauth-return.ts.
+   */
+  const [returning, setReturning] = useState(false);
+  useEffect(() => {
+    const to = safeNext(next);
+    if (!to || !consumeOAuthReturn()) return;
+    setReturning(true);
+    // именно location.replace, а не router: нужен настоящий переход внутри
+    // сайта (router.push сессию не «оживит»), и незачем оставлять след в истории
+    window.location.replace(to);
+  }, [next]);
+
   /** Сервер после входа ведёт на /dashboard; ?next= возвращает туда, куда шли */
   function goIn() {
-    router.push(next && next.startsWith('/') ? next : '/dashboard');
+    router.push(safeNext(next) ?? '/dashboard');
     router.refresh();
   }
 
@@ -117,6 +144,17 @@ export function LoginForm() {
     } finally {
       setBusy(false);
     }
+  }
+
+  // ── Возврат от Яндекса: не показываем форму, чтобы не мигала ─────────────
+  if (returning) {
+    return (
+      <>
+        <BackLink href="/">← На главную</BackLink>
+        <h1>Завершаем вход…</h1>
+        <p className="sub">Ещё секунда — и вы в кабинете.</p>
+      </>
+    );
   }
 
   // ── Шаг 2: код из Telegram ───────────────────────────────────────────────
