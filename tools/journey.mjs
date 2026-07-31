@@ -13,6 +13,7 @@
  * письма на него отбиваются на SMTP и не засоряют ящик Дмитрия.
  */
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { launch, newContext } from './lib/shot.mjs';
 
 const SITE = 'https://corebridge.ru';
@@ -112,8 +113,18 @@ try {
   check('одноразовый токен на скачивание выдан', Boolean(grant.token), JSON.stringify(grant).slice(0, 80));
 
   const file = await fetch(`${SITE}${grant.download_url}`);
-  const bytes = (await file.arrayBuffer()).byteLength;
-  check('файл скачался', file.status === 200 && bytes > 0, `${file.status}, ${bytes} байт`);
+  const body = Buffer.from(await file.arrayBuffer());
+  check('файл скачался', file.status === 200 && body.length > 0, `${file.status}, ${body.length} байт`);
+
+  /**
+   * Клиент должен получить ровно ту сборку, что зарегистрирована. Проверяем
+   * содержимое, а не факт ответа 200: в июле на прод уехали 731-байтовые
+   * текстовые заглушки, и «скачивание работает» было правдой, а толку — ноль.
+   */
+  const got = createHash('sha256').update(body).digest('hex');
+  check('содержимое совпадает с зарегистрированной версией', got === grant.sha256,
+    `скачано ${got.slice(0, 16)}, в базе ${String(grant.sha256).slice(0, 16)}`);
+  check('это не заглушка, а настоящая сборка', body.length > 51200, `${body.length} байт`);
 
   const again = await fetch(`${SITE}${grant.download_url}`);
   check('повторное скачивание по тому же токену закрыто', again.status === 410, String(again.status));
