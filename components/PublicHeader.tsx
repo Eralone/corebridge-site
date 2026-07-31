@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { isSignedIn } from '@/lib/auth/session-probe';
 
 /**
  * Перенос window.renderPublicHeader из shell.js.
@@ -29,6 +30,24 @@ const ITEMS: { id: PublicNavId; label: string; href: string }[] = [
 export function PublicHeader({ active }: { active?: PublicNavId }) {
   const [open, setOpen] = useState(false);
 
+  /**
+   * ⚠️ В эталоне шапка гостевая и другой не бывает — «Войти» показывалось
+   * всем, включая вошедшего. Из-за этого с публичных страниц не было пути
+   * обратно в кабинет, и вместе с потерей cookie (см. lib/auth/session-probe.ts)
+   * это читалось как «вход не держится». Спрашиваем один раз на вкладку.
+   *
+   * `null` — ещё не знаем: до ответа показываем гостевой вид, он же и в макете,
+   * так что подмены на глазах не происходит.
+   */
+  const [signedIn, setSignedIn] = useState<boolean | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    isSignedIn().then((v) => !cancelled && setSignedIn(v));
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   // на Esc закрываем — иначе панель не убрать с клавиатуры
   useEffect(() => {
     if (!open) return;
@@ -54,12 +73,20 @@ export function PublicHeader({ active }: { active?: PublicNavId }) {
         </nav>
 
         <div className="row gap-12 header-auth">
-          <Link href="/login" className="btn btn-ghost">
-            Войти
-          </Link>
-          <Link href="/register" className="btn btn-primary">
-            Попробовать бесплатно
-          </Link>
+          {signedIn ? (
+            <Link href="/dashboard" className="btn btn-primary">
+              Личный кабинет
+            </Link>
+          ) : (
+            <>
+              <Link href="/login" className="btn btn-ghost">
+                Войти
+              </Link>
+              <Link href="/register" className="btn btn-primary">
+                Попробовать бесплатно
+              </Link>
+            </>
+          )}
         </div>
 
         <button
@@ -91,12 +118,20 @@ export function PublicHeader({ active }: { active?: PublicNavId }) {
             </Link>
           ))}
           <div className="nav-panel-auth">
-            <Link href="/login" className="btn btn-outline btn-block" onClick={() => setOpen(false)}>
-              Войти
-            </Link>
-            <Link href="/register" className="btn btn-primary btn-block" onClick={() => setOpen(false)}>
-              Попробовать бесплатно
-            </Link>
+            {signedIn ? (
+              <Link href="/dashboard" className="btn btn-primary btn-block" onClick={() => setOpen(false)}>
+                Личный кабинет
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" className="btn btn-outline btn-block" onClick={() => setOpen(false)}>
+                  Войти
+                </Link>
+                <Link href="/register" className="btn btn-primary btn-block" onClick={() => setOpen(false)}>
+                  Попробовать бесплатно
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

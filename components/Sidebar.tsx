@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useUser } from '@/lib/user-context';
 import { logout } from '@/lib/api/lk';
+import { forgetSessionState } from '@/lib/auth/session-probe';
 
 /**
  * Перенос window.renderSidebar из design-source/assets/shell.js.
@@ -110,6 +111,9 @@ export function Sidebar({ active }: { active?: ItemId }) {
           onClick={(e) => {
             e.preventDefault();
             void logout().finally(() => {
+              // шапка публичных страниц помнит ответ на вкладку — иначе после
+              // выхода она бы ещё показывала «Личный кабинет»
+              forgetSessionState();
               window.location.href = '/login';
             });
           }}

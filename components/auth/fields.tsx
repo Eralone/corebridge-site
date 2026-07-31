@@ -1,7 +1,6 @@
 'use client';
 
 import { useId, useState, type InputHTMLAttributes } from 'react';
-import { markOAuthStart } from '@/lib/auth/oauth-return';
 
 /** Поле пароля с глазом-переключателем. Разметка из login.html */
 export function PasswordField({
@@ -111,20 +110,10 @@ export function Alert({
   );
 }
 
-/**
- * Кнопка входа через Яндекс ID — вместо кнопки Google из макета.
- *
- * Осталась обычной ссылкой: без JS переход всё равно работает. Перед уходом
- * помечаем попытку — на возврате она нужна, чтобы починить потерянную сессию,
- * см. lib/auth/oauth-return.ts.
- */
+/** Кнопка входа через Яндекс ID — вместо кнопки Google из макета */
 export function YandexButton({ label }: { label: string }) {
   return (
-    <a
-      href="/lk/auth/yandex"
-      className="btn btn-outline btn-block oauth-btn"
-      onClick={() => markOAuthStart()}
-    >
+    <a href="/lk/auth/yandex" className="btn btn-outline btn-block oauth-btn">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <circle cx="12" cy="12" r="12" fill="#FC3F1D" />
         <path

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ApiError } from '@/lib/api/client';
 import { register } from '@/lib/api/auth';
+import { forgetSessionState } from '@/lib/auth/session-probe';
 import { AuthTabs, BackLink } from '@/components/auth/AuthSplit';
 import {
   Alert,
@@ -96,6 +97,7 @@ export function RegisterForm() {
     try {
       await register({ email: email.trim(), password, name: name.trim() || undefined });
       // cookie сервер поставил сам — идём в кабинет
+      forgetSessionState(); // шапка публичных страниц помнит ответ на вкладку
       router.push('/dashboard');
       router.refresh();
     } catch (err) {

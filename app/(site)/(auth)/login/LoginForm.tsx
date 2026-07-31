@@ -9,7 +9,7 @@ import { needsTwoFactor } from '@/lib/contracts/auth';
 import { AuthTabs, BackLink } from '@/components/auth/AuthSplit';
 import { Alert, PasswordField, TextField, YandexButton } from '@/components/auth/fields';
 import { TwoFactorStep, twoFactorMessage } from '@/components/auth/TwoFactorStep';
-import { consumeOAuthReturn } from '@/lib/auth/oauth-return';
+import { claimRecovery, forgetSessionState, hasLiveSession } from '@/lib/auth/session-probe';
 
 /**
  * Вход. Отличия от design-source/login.html — по сути механики, не вёрстки:
@@ -90,23 +90,34 @@ export function LoginForm() {
   const [magicSent, setMagicSent] = useState(false);
 
   /**
-   * Возврат из Яндекс ID: аккаунт заведён и сессия жива, но cookie не доехала —
-   * `SameSite=Strict` не пускает её в переход с чужого сайта, и guard увёл сюда.
-   * Хватает одного перехода внутри сайта. Зачем и до каких пор — в
-   * lib/auth/oauth-return.ts.
+   * Сюда попадают и те, у кого сессия на самом деле жива: cookie со
+   * `SameSite=Strict` не уходит в переходе с чужого сайта — из письма,
+   * из мессенджера, с oauth.yandex.ru, — и guard разворачивает человека
+   * на форму входа. Спрашиваем сервер напрямую и, если сессия есть,
+   * возвращаем туда, куда шли. Зачем и до каких пор — в lib/auth/session-probe.ts.
    */
   const [returning, setReturning] = useState(false);
   useEffect(() => {
-    const to = safeNext(next);
-    if (!to || !consumeOAuthReturn()) return;
-    setReturning(true);
-    // именно location.replace, а не router: нужен настоящий переход внутри
-    // сайта (router.push сессию не «оживит»), и незачем оставлять след в истории
-    window.location.replace(to);
-  }, [next]);
+    // с `?error=` guard отказал осознанно (тенант заблокирован, помечен
+    // на удаление) — там сессия жива, и возвращать внутрь нельзя
+    if (guardError) return;
+
+    let cancelled = false;
+    hasLiveSession().then((live) => {
+      if (cancelled || !live || !claimRecovery()) return;
+      setReturning(true);
+      // именно location.replace, а не router: нужен настоящий переход внутри
+      // сайта (router.push сессию не «оживит»), и незачем след в истории
+      window.location.replace(safeNext(next) ?? '/dashboard');
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [next, guardError]);
 
   /** Сервер после входа ведёт на /dashboard; ?next= возвращает туда, куда шли */
   function goIn() {
+    forgetSessionState(); // шапка публичных страниц помнит ответ на вкладку
     router.push(safeNext(next) ?? '/dashboard');
     router.refresh();
   }
