@@ -164,30 +164,29 @@ if (tenantId && tenantId.length === 36 && !keep) {
     const confirm = company || tenantId;
 
     /**
-     * ⚠️ Вторая фаза сейчас падает на сервере: `purgeTenant` обезличивает автора
-     * записей журнала через UPDATE, а таблица защищена триггером
-     * `audit_log_immutable`. Разбор — промт S15. Отказ ожидаем, поэтому не
-     * считаем его провалом прогона, но и не прячем: печатаем и идём дочищать
-     * вручную, иначе тестовый тенант остался бы на проде.
+     * Обе фазы штатной механикой. С 2026-07-31 они проходят целиком:
+     * сервер убрал бессмысленное обезличивание `actor` (uuid — не персональные
+     * данные) и вычистил настоящую утечку из `new_value` миграцией 027.
+     * Если тут снова упадёт — это регрессия, и прогон должен покраснеть.
      */
-    let purgeOk = true;
-    try {
-      execFileSync(
-        'docker',
-        [
-          'exec', 'corebridge-admin', 'node', '-e',
-          `const s=require('/app/src/services/admin/privacy_admin.service');` +
-            `s.scheduleDeletion('${tenantId}',{reason:'сквозной прогон',confirm_company_name:'${confirm}'},null,'qa@corebridge.ru')` +
-            `.then(()=>s.purgeTenant('${tenantId}')).then(()=>process.exit(0)).catch(e=>{console.error(e.message);process.exit(1)});`,
-        ],
-        { encoding: 'utf8', stdio: 'pipe' },
-      );
-    } catch (e) {
-      purgeOk = false;
-      const why = String(e.stderr || e.message).trim().split('\n').pop();
-      console.log(`  ! штатная чистка не отработала: ${why}`);
-      console.log('    это известный дефект сервера (промт S15) — дочищаем вручную');
-    }
+    execFileSync(
+      'docker',
+      [
+        'exec', 'corebridge-admin', 'node', '-e',
+        `const s=require('/app/src/services/admin/privacy_admin.service');` +
+          `s.scheduleDeletion('${tenantId}',{reason:'сквозной прогон',confirm_company_name:'${confirm}'},null,'qa@corebridge.ru')` +
+          `.then(()=>s.purgeTenant('${tenantId}')).then(()=>process.exit(0)).catch(e=>{console.error(e.message);process.exit(1)});`,
+      ],
+      { encoding: 'utf8', stdio: 'pipe' },
+    );
+
+    /**
+     * ⚠️ Очередь наполняется асинхронно: запись `workspace_init_failed` прилетает
+     * через несколько секунд после регистрации — то есть уже после чистки.
+     * Первые прогоны оставляли по осиротевшей записи каждый. Ждём и подчищаем
+     * всё, у чего тенанта больше нет, — заодно за прошлыми прогонами.
+     */
+    execFileSync('sleep', ['8']);
 
     // Строку тенанта удаляем сами: каскад уносит пользователей, лицензии,
     // интеграции и счётчики. Журнал не трогаем — он неизменяем и должен остаться.
@@ -197,6 +196,8 @@ if (tenantId && tenantId.length === 36 && !keep) {
         `delete from platform.payments where tenant_id='${tenantId}';` +
         `delete from platform.dead_letter_queue where tenant_id='${tenantId}';` +
         `delete from platform.tenants where id='${tenantId}';` +
+        `delete from platform.dead_letter_queue d where not exists ` +
+        `(select 1 from platform.tenants t where t.id = d.tenant_id);` +
         `commit;`,
     );
 
@@ -206,13 +207,16 @@ if (tenantId && tenantId.length === 36 && !keep) {
         `(select count(*) from platform.licenses where tenant_id='${tenantId}')`,
     );
     check('аккаунт прогона вычищен полностью', left === '0', `осталось записей: ${left}`);
-    // журнал остаётся намеренно — проверяем, что в нём не осталось личных данных
-    const personal = psql(
-      `select count(*) from platform.audit_log where tenant_id='${tenantId}' and actor like 'lk_user:%'`,
+    /**
+     * Журнал остаётся намеренно и должен быть анонимным: `lk_user:<uuid>` —
+     * псевдоним, а не персональные данные, а почта из `new_value` убрана
+     * сервером (миграция 027). Проверяем именно отсутствие ПДн.
+     */
+    const pii = psql(
+      `select count(*) from platform.audit_log where tenant_id='${tenantId}'` +
+        ` and new_value::text ~* '"(email|phone)"'`,
     );
-    if (!purgeOk && personal !== '0') {
-      console.log(`  ! в журнале осталось ${personal} записей с исходным автором — обезличит сервер после починки S15`);
-    }
+    check('в журнале не осталось персональных данных', pii === '0', `записей с ПДн: ${pii}`);
   } catch (e) {
     check('чистка выполнена', false, e.message.split('\n')[0]);
   }

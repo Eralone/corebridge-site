@@ -167,18 +167,35 @@ export const getAdminPayments = (params: {
 } = {}) => api<{ payments: AdminPayment[]; count: number }>(`/admin/payments${qs(params)}`);
 
 // ── Очереди ─────────────────────────────────────────────────────────────────
+/** ⚠️ Параметра `status` больше нет: колонки, по которой фильтровали, не существовало */
 export const getAdminDlq = (params: { tenant_id?: string; limit?: number; offset?: number } = {}) =>
   api<{ events: AdminDlqEntry[]; count: number }>(`/admin/dlq${qs(params)}`);
 
+/**
+ * Переиграть событие. `replay` говорит, каким способом сервер это сделал:
+ * `webhook` — доставил заново, `tenant_init` — переинициализировал рабочее
+ * пространство. Если переигрывать нечем — `409` с кодом `NOT_REPLAYABLE`,
+ * и это не сбой сервиса, а свойство события.
+ */
 export const reprocessDlq = (id: string) =>
-  api<unknown>(`/admin/dlq/${encodeURIComponent(id)}/reprocess`, { method: 'POST' });
+  api<{ success: true; replay: 'webhook' | 'tenant_init' }>(
+    `/admin/dlq/${encodeURIComponent(id)}/reprocess`,
+    { method: 'POST' },
+  );
 
 export const deleteDlq = (id: string) =>
   api<unknown>(`/admin/dlq/${encodeURIComponent(id)}/delete`, { method: 'POST' });
 
-/** ⚠️ Требует `tenant_id`: без него сервер отвечает 400. Разом по всем — нельзя */
+/**
+ * ⚠️ Требует `tenant_id`: без него сервер отвечает 400. Разом по всем — нельзя.
+ * `skipped_ids` — события, которые переиграть нечем; они отделены от `failed_ids`,
+ * иначе выглядели бы как повторяющийся сбой при каждом запуске.
+ */
 export const reprocessAllDlq = (tenant_id: string) =>
-  api<unknown>(`/admin/dlq/reprocess-all${qs({ tenant_id })}`, { method: 'POST' });
+  api<{ reprocessed_count: number; failed_ids: string[]; skipped_ids: string[] }>(
+    `/admin/dlq/reprocess-all${qs({ tenant_id })}`,
+    { method: 'POST' },
+  );
 
 export const getQueueStats = () =>
   api<{
