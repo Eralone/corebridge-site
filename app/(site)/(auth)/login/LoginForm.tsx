@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, type FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ApiError } from '@/lib/api/client';
@@ -9,7 +9,7 @@ import { needsTwoFactor } from '@/lib/contracts/auth';
 import { AuthTabs, BackLink } from '@/components/auth/AuthSplit';
 import { Alert, PasswordField, TextField, YandexButton } from '@/components/auth/fields';
 import { TwoFactorStep, twoFactorMessage } from '@/components/auth/TwoFactorStep';
-import { claimRecovery, forgetSessionState, hasLiveSession } from '@/lib/auth/session-probe';
+import { forgetSessionState } from '@/lib/auth/session-probe';
 
 /**
  * Вход. Отличия от design-source/login.html — по сути механики, не вёрстки:
@@ -89,32 +89,6 @@ export function LoginForm() {
   // вход по ссылке из письма
   const [magicSent, setMagicSent] = useState(false);
 
-  /**
-   * Сюда попадают и те, у кого сессия на самом деле жива: cookie со
-   * `SameSite=Strict` не уходит в переходе с чужого сайта — из письма,
-   * из мессенджера, с oauth.yandex.ru, — и guard разворачивает человека
-   * на форму входа. Спрашиваем сервер напрямую и, если сессия есть,
-   * возвращаем туда, куда шли. Зачем и до каких пор — в lib/auth/session-probe.ts.
-   */
-  const [returning, setReturning] = useState(false);
-  useEffect(() => {
-    // с `?error=` guard отказал осознанно (тенант заблокирован, помечен
-    // на удаление) — там сессия жива, и возвращать внутрь нельзя
-    if (guardError) return;
-
-    let cancelled = false;
-    hasLiveSession().then((live) => {
-      if (cancelled || !live || !claimRecovery()) return;
-      setReturning(true);
-      // именно location.replace, а не router: нужен настоящий переход внутри
-      // сайта (router.push сессию не «оживит»), и незачем след в истории
-      window.location.replace(safeNext(next) ?? '/dashboard');
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [next, guardError]);
-
   /** Сервер после входа ведёт на /dashboard; ?next= возвращает туда, куда шли */
   function goIn() {
     forgetSessionState(); // шапка публичных страниц помнит ответ на вкладку
@@ -155,17 +129,6 @@ export function LoginForm() {
     } finally {
       setBusy(false);
     }
-  }
-
-  // ── Возврат от Яндекса: не показываем форму, чтобы не мигала ─────────────
-  if (returning) {
-    return (
-      <>
-        <BackLink href="/">← На главную</BackLink>
-        <h1>Завершаем вход…</h1>
-        <p className="sub">Ещё секунда — и вы в кабинете.</p>
-      </>
-    );
   }
 
   // ── Шаг 2: код из Telegram ───────────────────────────────────────────────
