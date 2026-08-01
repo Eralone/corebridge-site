@@ -1,0 +1,45 @@
+<p>Механика находит новые проведённые счета в 1С и отправляет их в карточку сделки CRM. Направление — <strong>только 1С → CRM</strong>.</p>
+<p><strong>Изменения конфигурации 1С не требуются.</strong> Механика не встраивается в проведение документа, а периодически опрашивает базу за последнее окно времени.</p>
+<hr>
+<h3 id="шаг-1-настроить">Шаг 1. Настроить</h3>
+<p>Рабочий стол проекта → строка <strong>«Счета CRM»</strong> → <strong>⚙ Настройка</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/crm-invoices-setup.png" target="_blank" rel="noopener"><img src="/docs/images/crm-invoices-setup.png" alt="Настройка CRM: счета" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Настройка CRM: счета</figcaption></figure>
+<p>Ключевые параметры:</p>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Параметр</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Окно опроса (минут)</strong></td><td>За какой период назад искать новые документы. По умолчанию 5 минут</td></tr><tr><td><strong>Поведение при повторном проведении</strong></td><td><code>update</code> — обновить счёт в CRM, <code>new</code> — создать новый, <code>skip</code> — пропустить</td></tr></tbody></table></div>
+<p>Нажмите <strong>«Сохранить»</strong>.</p>
+<blockquote>
+<p>Окно опроса должно быть не меньше интервала запуска цикла, иначе документы, проведённые между запусками, будут пропущены.</p>
+</blockquote>
+<hr>
+<h3 id="шаг-2-журнал-счетов-crm">Шаг 2. Журнал счетов CRM</h3>
+<p>Рабочий стол → строка <strong>«Счета CRM»</strong> → <strong>▶ Рабочее место</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/crm-invoices-journal.png" target="_blank" rel="noopener"><img src="/docs/images/crm-invoices-journal.png" alt="Журнал счетов CRM" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Журнал счетов CRM</figcaption></figure>
+<h4 id="фильтры">Фильтры</h4>
+<p><strong>Статус</strong>, <strong>С</strong> / <strong>По</strong> (период), кнопка <strong>«🔄 Обновить»</strong>.</p>
+<h4 id="таблица">Таблица</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Колонка</th><th>Значение</th></tr></thead><tbody><tr><td><strong>Дата</strong></td><td>Дата документа</td></tr><tr><td><strong>Документ</strong></td><td>Документ-источник в 1С</td></tr><tr><td><strong>Тип</strong></td><td>Тип счёта</td></tr><tr><td><strong>Сумма / Валюта</strong></td><td>Сумма счёта</td></tr><tr><td><strong>Сделка CRM</strong></td><td>Идентификатор сделки, к которой привязан счёт</td></tr><tr><td><strong>Счёт CRM ID</strong></td><td>Идентификатор счёта на стороне CRM</td></tr><tr><td><strong>Статус</strong></td><td><code>✓ Выгружен</code> или ошибка</td></tr><tr><td><strong>Ошибка</strong></td><td>Текст ошибки</td></tr><tr><td><strong>Отправлен</strong></td><td>Время отправки</td></tr></tbody></table></div>
+<p><strong>Итоги внизу:</strong> Всего записей, Ошибок, Сумма.</p>
+<h4 id="кнопки">Кнопки</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Кнопка</th><th>Действие</th></tr></thead><tbody><tr><td><strong>↺ Повторить выгрузку</strong></td><td>Отправить счёт в CRM повторно</td></tr><tr><td><strong>📄 Открыть документ</strong></td><td>Открыть документ-источник в 1С</td></tr><tr><td><strong>✗ Закрыть</strong></td><td>Закрыть форму</td></tr></tbody></table></div>
+<hr>
+<h3 id="как-это-работает">Как это работает</h3>
+<ol>
+<li>Цикл запускается по расписанию (рекомендуется каждые 5 минут).</li>
+<li>Модуль ищет документы, проведённые за окно опроса.</li>
+<li>Проверяет по журналу, что документ ещё не выгружался (защита от дублей).</li>
+<li>Отправляет счёт в CRM.</li>
+<li>После подтверждения от CRM статус в журнале меняется на <strong><code>✓ Выгружен</code></strong>.</li>
+</ol>
+<hr>
+<h3 id="какие-документы-выгружаются">Какие документы выгружаются</h3>
+<p>Во всех конфигурациях — счёт на оплату. В КА 2 / ERP дополнительно может выгружаться счёт-фактура выданный, если это включено в настройке.</p>
+<hr>
+<h3 id="частые-проблемы">Частые проблемы</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Решение</th></tr></thead><tbody><tr><td>Журнал пустой</td><td>Нажмите <strong>«🔄 Обновить»</strong>; проверьте период <strong>С / По</strong>; убедитесь, что счета в 1С действительно проведены</td></tr><tr><td>Счета проводятся, но не выгружаются</td><td><strong>Окно опроса</strong> меньше интервала запуска цикла — увеличьте его</td></tr><tr><td>Счёт выгрузился дважды</td><td>Настройка «Поведение при повторном проведении» = <code>new</code>. Смените на <code>update</code> или <code>skip</code></td></tr><tr><td>Статус — ошибка</td><td>Прочитайте колонку <strong>«Ошибка»</strong>, устраните причину и нажмите <strong>«↺ Повторить выгрузку»</strong></td></tr><tr><td>Счёт выгружен, но не виден в CRM</td><td>Проверьте колонку <strong>«Сделка CRM»</strong> — счёт мог привязаться не к той сделке. Проверьте настройку сопоставления сделок</td></tr><tr><td>Статус долго остаётся не подтверждённым</td><td>Подтверждение приходит асинхронно. Нажмите <strong>«🔄 Обновить»</strong> через несколько минут</td></tr></tbody></table></div>
+<hr>
+<h3 id="смотрите-также">Смотрите также</h3>
+<ul>
+<li><a href="/docs/epf/podklyuchit-crm">Как подключить CRM</a></li>
+<li><a href="/docs/epf/sdelki">Сделки</a></li>
+<li><a href="/docs/epf/statusy">Статусы</a></li>
+</ul>

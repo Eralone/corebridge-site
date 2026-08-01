@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!--
+    Фавиконка. Тот же знак, что у логотипа в шапке (`.logo-glyph` в site.css):
+    квадрат с градиентом «navy → blue» и абстрактный мост — арка на трёх опорах.
+    В шапке он нарисован псевдоэлементами CSS, здесь пришлось повторить фигурами:
+    вкладке браузера нужен файл, а не правило стиля.
+  -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0A2463" />
+      <stop offset="1" stop-color="#3E92CC" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="17" fill="url(#g)" />
+  <g fill="#fff">
+    <rect x="15" y="17" width="34" height="4" rx="2" />
+    <rect x="15" y="27" width="4" height="20" rx="2" />
+    <rect x="30" y="27" width="4" height="20" rx="2" />
+    <rect x="45" y="27" width="4" height="20" rx="2" />
+  </g>
+</svg>

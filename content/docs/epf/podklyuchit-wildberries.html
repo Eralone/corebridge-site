@@ -1,0 +1,48 @@
+<p>Wildberries поддерживает <strong>8 механик</strong>. Три механики Ozon (резервы, ГТД, акции/Promo) для WB недоступны — соответствующие чекбоксы в мастере не показываются.</p>
+<p><strong>Время на подключение:</strong> 10–15 минут.</p>
+<hr>
+<h3 id="шаг-1-запустить-мастер">Шаг 1. Запустить мастер</h3>
+<p>Каталог проектов → <strong>«+ Добавить интеграцию»</strong>. Шаги 1–2 — см. <strong><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></strong>.</p>
+<hr>
+<h3 id="шаг-2-категория-и-сервис">Шаг 2. Категория и сервис</h3>
+<p><strong>Шаг 3А</strong> → категория <strong><code>marketplace</code> (Маркетплейсы)</strong>.
+<strong>Шаг 3Б</strong> → сервис <strong><code>wb</code></strong>.</p>
+<p>Схемы работы:</p>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Схема</th><th>Когда выбирать</th></tr></thead><tbody><tr><td><strong>FBS</strong></td><td>Товар на вашем складе, вы собираете и отгружаете заказы</td></tr><tr><td><strong>FBO/FBM</strong></td><td>Товар на складе Wildberries (поставки FBW)</td></tr></tbody></table></div>
+<p>Схемы взаимоисключающие по составу механик — при необходимости создайте два проекта.</p>
+<hr>
+<h3 id="шаг-3-механики">Шаг 3. Механики</h3>
+<figure class="doc-shot"><a href="/docs/images/master-step3v-mech-wb.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3v-mech-wb.png" alt="Шаг 3В: механики Wildberries" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3В: механики Wildberries</figcaption></figure>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Механика</th><th>Что делает</th><th>Инструкция</th></tr></thead><tbody><tr><td>Получение заказов FBS/FBO</td><td>Забирает заказы WB, создаёт документы в 1С</td><td><a href="/docs/epf/zakazy-i-otgruzka">Заказы и отгрузка</a></td></tr><tr><td>Подтверждение отгрузки</td><td>Документ отгрузки + уведомление WB</td><td><a href="/docs/epf/zakazy-i-otgruzka">Заказы и отгрузка</a></td></tr><tr><td>Выгрузка остатков</td><td>Отправляет остатки складов на WB</td><td><a href="/docs/epf/ostatki">Остатки</a></td></tr><tr><td>Синхронизация цен</td><td>Отправляет цены из 1С на WB</td><td><a href="/docs/epf/tseny">Цены</a></td></tr><tr><td>Финансовые отчёты МП</td><td>Загружает отчёты и отражает в 1С</td><td><a href="/docs/epf/finansovye-otchyoty">Финансовые отчёты</a></td></tr><tr><td>Маркировка «Честный знак»</td><td>Передаёт коды маркировки</td><td><a href="/docs/epf/markirovka-chestny-znak">Маркировка</a></td></tr><tr><td>Управление каталогом товаров</td><td>Сопоставление товаров 1С ↔ WB</td><td><a href="/docs/epf/katalog-i-sopostavlenie">Каталог и сопоставление</a></td></tr><tr><td>Печать этикеток</td><td>Этикетки заказов и грузовых мест</td><td><a href="/docs/epf/etiketki">Этикетки</a></td></tr></tbody></table></div>
+<h4 id="чего-у-wildberries-нет">Чего у Wildberries нет</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Механика</th><th>Причина</th></tr></thead><tbody><tr><td>Резервирование запасов</td><td>Только Ozon</td></tr><tr><td>Передача ГТД</td><td>Только Ozon</td></tr><tr><td>Участие в акциях / Promo</td><td>Только Ozon</td></tr></tbody></table></div>
+<p>Это не ограничение модуля — соответствующих сценариев нет в API Wildberries.</p>
+<hr>
+<h3 id="шаг-46-api-реквизиты-запуск">Шаг 4–6. API, реквизиты, запуск</h3>
+<p>Ничем не отличаются от Ozon:</p>
+<ul>
+<li><strong>Шаг 3Г</strong> — оставьте <strong>★ Рекомендуемые</strong>, частота <code>15min</code>.</li>
+<li><strong>Шаг 4</strong> — название («WB Розница»), контрагент, склад отгрузки, договор; организация обязательна только в КА 2 / ERP.</li>
+<li><strong>Шаг 5</strong> — <strong>«✓ Завершить и запустить»</strong>.</li>
+</ul>
+<p>Подробности с иллюстрациями — в разделах «Шаг 4–6» инструкции <a href="/docs/epf/podklyuchit-ozon">Как подключить Ozon</a>.</p>
+<hr>
+<h3 id="шаг-7-настроить-после-создания">Шаг 7. Настроить после создания</h3>
+<ol>
+<li><strong>Склады для остатков</strong> — строка «Остатки» → <strong>⚙ Настройка</strong> → <strong>✓ Выбрать все</strong> → <strong>Сохранить</strong>.</li>
+<li><strong>Сопоставить товары</strong> — строка «Каталог» → <strong>▶ Рабочее место</strong> → <strong>«Загрузить товары ↓»</strong> → <strong>«⚡ Автосопоставить»</strong>.</li>
+<li><strong>Тип цен</strong> — строка «Цены» → <strong>⚙ Настройка</strong> → выбрать тип цены → <strong>Сохранить</strong>.</li>
+<li><strong>Статусы заказов</strong> — строка «Заказы» → <strong>⚙ Настройка</strong> → отметить забираемые статусы.</li>
+</ol>
+<hr>
+<h3 id="особенности-wildberries">Особенности Wildberries</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Особенность</th><th>Комментарий</th></tr></thead><tbody><tr><td><strong>Статусы заказов</strong></td><td>WB использует собственную пару статусов (статус поставщика и статус WB). Модуль приводит их к единому виду в рабочем месте заказов</td></tr><tr><td><strong>Поставки FBW</strong></td><td>Работа с поставками на склад WB — в хабе «Заказы» и в механике поставок при схеме FBO/FBM</td></tr><tr><td><strong>Колонки ГТД / Страна / РНПТ</strong></td><td>В рабочем месте заказов не заполняются — эти данные WB не передаёт</td></tr></tbody></table></div>
+<hr>
+<h3 id="частые-проблемы">Частые проблемы</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Решение</th></tr></thead><tbody><tr><td>Нет чекбоксов резервов / ГТД / акций</td><td>Ожидаемо: они только для Ozon</td></tr><tr><td>Заказы не приходят</td><td>Статус проекта <code>Активен</code>; в настройке заказов отмечены нужные статусы; «▶ Запустить цикл сейчас»</td></tr><tr><td>Остатки не уходят</td><td>Не выбраны склады либо товары не сопоставлены</td></tr><tr><td>Цены не уходят</td><td>Не указан тип цен</td></tr></tbody></table></div>
+<hr>
+<h3 id="смотрите-также">Смотрите также</h3>
+<ul>
+<li><a href="/docs/epf/podklyuchit-ozon">Как подключить Ozon</a> — самый подробный сценарий</li>
+<li><a href="/docs/epf/podklyuchit-yandex-market">Как подключить Яндекс.Маркет</a></li>
+</ul>

@@ -1,0 +1,70 @@
+<p>Механика синхронизирует резервы Ozon с 1С: маркетплейс сообщает, сколько единиц зарезервировано под заказы, а модуль отражает это в учёте, чтобы зарезервированный товар не уходил в остатки повторно.</p>
+<p><strong>Доступна только для Ozon.</strong> У Wildberries и Яндекс.Маркета соответствующего API нет — чекбокс в мастере не показывается.</p>
+<p><strong>Не поддерживается в БП 3.0.</strong></p>
+<hr>
+<h3 id="шаг-1-включить-механику">Шаг 1. Включить механику</h3>
+<h4 id="при-создании-проекта">При создании проекта</h4>
+<p>Мастер, <strong>Шаг 3В</strong> → отметьте <strong>«Резервирование запасов (только Ozon)»</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/master-step3v-mech-ozon.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3v-mech-ozon.png" alt="Шаг 3В: механики Ozon" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3В: механики Ozon</figcaption></figure>
+<h4 id="в-существующем-проекте">В существующем проекте</h4>
+<p>Рабочий стол проекта → <strong>«Механики (Шаг 3В)»</strong> → отметить резервы → пройти мастер → <strong>«✓ Завершить и запустить»</strong>.</p>
+<hr>
+<h3 id="шаг-2-включить-передачу-резервов-в-кабинете-ozon">Шаг 2. Включить передачу резервов в кабинете Ozon</h3>
+<p>⚠️ <strong>Это обязательный шаг, без него данные не придут.</strong></p>
+<p>Резервы отдаются Ozon только если соответствующая опция включена в личном кабинете продавца. Модуль напоминает об этом прямо на форме настройки.</p>
+<p>Рабочий стол → строка <strong>«Резервы»</strong> → <strong>⚙ Настройка</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/reserve-setup.png" target="_blank" rel="noopener"><img src="/docs/images/reserve-setup.png" alt="Настройка резервов" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Настройка резервов</figcaption></figure>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Поле / кнопка</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Кабинет</strong></td><td>Проект, к которому относится настройка (заполняется автоматически)</td></tr><tr><td><strong>Загружать резервы без заказа</strong></td><td>Забирать ли резервы, не привязанные к конкретному заказу</td></tr><tr><td><strong>⚠ Важно: требуется настройка в ЛК Ozon</strong></td><td>Предупреждение о необходимости включить опцию на стороне Ozon</td></tr><tr><td><strong>Открыть настройки Ozon ↗</strong></td><td>Переход в личный кабинет Ozon</td></tr><tr><td><strong>Статус получения</strong></td><td>Результат последней синхронизации</td></tr><tr><td><strong>Документ РЗ в 1С</strong></td><td>Ссылка на документ резервирования, если он создан</td></tr><tr><td><strong>Открыть →</strong></td><td>Открыть этот документ</td></tr></tbody></table></div>
+<p>Задайте параметры и нажмите <strong>«Сохранить»</strong>.</p>
+<hr>
+<h3 id="шаг-3-сопоставить-товары">Шаг 3. Сопоставить товары</h3>
+<p>Резервы приходят по артикулам Ozon. Чтобы модуль понял, какой номенклатуре 1С они соответствуют, товары должны быть <strong>сопоставлены</strong>.</p>
+<p>Рабочий стол → <strong>«Каталог»</strong> → <strong>▶ Рабочее место</strong> → <strong>«Загрузить товары ↓»</strong> → <strong>«⚡ Автосопоставить»</strong>.</p>
+<p>Подробно — <a href="/docs/epf/katalog-i-sopostavlenie">Каталог и сопоставление</a>.</p>
+<p>Несопоставленный товар попадёт в журнал резервов с ошибкой — но её можно исправить прямо оттуда (см. Шаг 5).</p>
+<hr>
+<h3 id="шаг-4-монитор-резервов">Шаг 4. Монитор резервов</h3>
+<p>Рабочий стол → строка <strong>«Резервы»</strong> → <strong>▶ Рабочее место</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/reserve-monitor.png" target="_blank" rel="noopener"><img src="/docs/images/reserve-monitor.png" alt="Монитор резервов" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Монитор резервов</figcaption></figure>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Элемент</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Кабинет</strong></td><td>Проект</td></tr><tr><td><strong>Обновлено</strong></td><td>Время последней синхронизации</td></tr><tr><td><strong>Обновить ↺</strong></td><td>Запросить резервы с сервера</td></tr><tr><td><strong>Журнал резервов ▾</strong></td><td>Открыть журнал событий (см. Шаг 5)</td></tr><tr><td><strong>Документ РЗ</strong></td><td>Номер документа резервирования в 1С</td></tr><tr><td><strong>Открыть документ →</strong></td><td>Открыть документ</td></tr><tr><td><strong>Позиций / Ед. в резерве</strong></td><td>Сводные счётчики</td></tr><tr><td><strong>Поиск по артикулу / наименованию</strong></td><td>Фильтр по таблице</td></tr></tbody></table></div>
+<p><strong>Таблица:</strong> артикул Ozon, номенклатура 1С, единиц в резерве, время обновления, идентификатор номенклатуры.</p>
+<p><strong>Кнопки снизу:</strong> <strong>«✎ Изменить резерв»</strong>, <strong>«✗ Удалить резерв»</strong>.</p>
+<hr>
+<h3 id="шаг-5-журнал-резервов-и-разбор-ошибок">Шаг 5. Журнал резервов и разбор ошибок</h3>
+<p>Монитор → <strong>«Журнал резервов»</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/reserve-journal.png" target="_blank" rel="noopener"><img src="/docs/images/reserve-journal.png" alt="Журнал резервов" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Журнал резервов</figcaption></figure>
+<p><strong>Колонки:</strong> дата/время, кабинет, артикул Ozon, было, стало, изменение, причина, статус, ид, текст ошибки, признак ошибки.</p>
+<p><strong>Кнопки:</strong> <strong>«Обновить ↺»</strong>, <strong>«🗑 Очистить журнал»</strong>.</p>
+<p>Внизу — поле <strong>«ТекстОшибкиДетали»</strong> и две кнопки действий по выбранной строке:</p>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Кнопка</th><th>Когда использовать</th></tr></thead><tbody><tr><td><strong>Сопоставить товар →</strong></td><td>Строка с ошибкой «товар не сопоставлен» — открывает сопоставление</td></tr><tr><td><strong>Создать документ РЗ</strong></td><td>Строка с причиной <strong>«нет док. РЗ»</strong> — создаёт документ резервирования в 1С</td></tr></tbody></table></div>
+<h4 id="разбор-типовых-причин">Разбор типовых причин</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Причина в журнале</th><th>Что это значит</th><th>Что делать</th></tr></thead><tbody><tr><td><strong>«нет док. РЗ»</strong></td><td>Резерв получен, но в 1С ещё нет документа резервирования, в который его записать</td><td>Выделить строку → <strong>«Создать документ РЗ»</strong></td></tr><tr><td>Ошибка сопоставления</td><td>Артикул Ozon не связан с номенклатурой 1С</td><td>Выделить строку → <strong>«Сопоставить товар →»</strong></td></tr><tr><td>Пустой журнал</td><td>Резервы не приходят</td><td>См. раздел «Частые проблемы»</td></tr></tbody></table></div>
+<figure class="doc-shot"><a href="/docs/images/reserve-create-doc.png" target="_blank" rel="noopener"><img src="/docs/images/reserve-create-doc.png" alt="Создание документа резервирования из журнала" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Создание документа резервирования из журнала</figcaption></figure>
+<p>Кнопка <strong>«Создать документ РЗ»</strong> активна только для строк с причиной «нет док. РЗ» — для остальных строк она не нужна.</p>
+<hr>
+<h3 id="шаг-6-синхронизация-резервов-с-экрана-товаров">Шаг 6. Синхронизация резервов с экрана товаров</h3>
+<p>Резервы также участвуют в общей синхронизации хаба «Товары».</p>
+<p>Рабочий стол → <strong>«Остатки»</strong> или <strong>«Цены»</strong> → <strong>▶ Рабочее место</strong> → экран <strong>«Управление товарами 1С»</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/goods1c-sync.png" target="_blank" rel="noopener"><img src="/docs/images/goods1c-sync.png" alt="Управление товарами 1С" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Управление товарами 1С</figcaption></figure>
+<p>Кнопка <strong>«Синхронизировать резервы ↑»</strong> отправляет данные резервов. В таблице есть колонки <strong>«Рез. 1С»</strong>, <strong>«Рез. МП»</strong> и <strong>«Δ рез»</strong> — по ним видно расхождения между резервом в 1С и на маркетплейсе.</p>
+<hr>
+<h3 id="как-резервы-влияют-на-остатки">Как резервы влияют на остатки</h3>
+<p>В настройке остатков есть флажок <strong>«Вычитать резервы из остатков»</strong> (включён по умолчанию).</p>
+<figure class="doc-shot"><a href="/docs/images/stock-setup.png" target="_blank" rel="noopener"><img src="/docs/images/stock-setup.png" alt="Настройка остатков" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Настройка остатков</figcaption></figure>
+<p>Когда он включён, на маркетплейс уходит остаток <strong>за вычетом резерва</strong> — это защищает от продажи товара, который уже зарезервирован под другой заказ.</p>
+<hr>
+<h3 id="различия-по-конфигурациям-1с">Различия по конфигурациям 1С</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Конфигурация</th><th>Поддержка резервов</th></tr></thead><tbody><tr><td><strong>УТ 11</strong></td><td>✅ Поддерживается. Резерв ведётся через заказ и регистр резервов товаров</td></tr><tr><td><strong>УНФ</strong></td><td>✅ Поддерживается через регистр резервов запасов</td></tr><tr><td><strong>КА 2 / ERP</strong></td><td>✅ Поддерживается через регистр запасов компании. Организация в документе обязательна</td></tr><tr><td><strong>БП 3.0</strong></td><td>⛔ <strong>Не поддерживается.</strong> Механика недоступна</td></tr></tbody></table></div>
+<blockquote>
+<p>В УТ 11 редакции 11.5 отдельного документа «Резервирование запасов» в типовой поставке нет — резерв ведётся через заказ. Кнопка «Создать документ РЗ» создаёт документ той структуры, которая доступна в вашей конфигурации.</p>
+</blockquote>
+<hr>
+<h3 id="частые-проблемы">Частые проблемы</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Решение</th></tr></thead><tbody><tr><td>Механики нет на Шаге 3В</td><td>Проверьте сервис — резервы только у Ozon. В БП 3.0 недоступны в любом случае</td></tr><tr><td>Монитор пустой, журнал пустой</td><td>1) Не включена передача резервов в ЛК Ozon — кнопка <strong>«Открыть настройки Ozon ↗»</strong> на форме настройки. 2) Нажмите <strong>«Обновить ↺»</strong> в мониторе</td></tr><tr><td>В журнале строки с причиной «нет док. РЗ»</td><td>Выделите строку → <strong>«Создать документ РЗ»</strong></td></tr><tr><td>В журнале ошибка сопоставления</td><td>Выделите строку → <strong>«Сопоставить товар →»</strong>, либо выполните автосопоставление в каталоге</td></tr><tr><td>Резервы есть, но остатки уходят полные</td><td>Включите флажок <strong>«Вычитать резервы из остатков»</strong> в настройке остатков</td></tr><tr><td>Колонка «Δ рез» показывает расхождение</td><td>Нажмите <strong>«Синхронизировать резервы ↑»</strong> на экране «Управление товарами 1С»</td></tr><tr><td>Журнал переполнен старыми записями</td><td><strong>«🗑 Очистить журнал»</strong></td></tr></tbody></table></div>
+<hr>
+<h3 id="смотрите-также">Смотрите также</h3>
+<ul>
+<li><a href="/docs/epf/katalog-i-sopostavlenie">Каталог и сопоставление</a> — обязательное условие работы резервов</li>
+<li><a href="/docs/epf/ostatki">Остатки</a> — как резервы вычитаются из выгружаемых остатков</li>
+<li><a href="/docs/epf/podklyuchit-ozon">Как подключить Ozon</a></li>
+</ul>

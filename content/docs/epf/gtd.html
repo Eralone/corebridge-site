@@ -1,0 +1,45 @@
+<p>Механика передаёт номера таможенных деклараций (ГТД) по импортным товарам в заказы Ozon.</p>
+<p><strong>Доступна только для Ozon.</strong> Как и маркировка, механика <strong>хуковая</strong> — собственного расписания у неё нет, она срабатывает при обработке заказа.</p>
+<hr>
+<h3 id="шаг-1-включить-механику">Шаг 1. Включить механику</h3>
+<p><strong>Шаг 3В</strong> мастера → отметить <strong>«Передача ГТД (только Ozon)»</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/master-step3v-mech-ozon.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3v-mech-ozon.png" alt="Шаг 3В: механики Ozon" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3В: механики Ozon</figcaption></figure>
+<p>В существующем проекте: рабочий стол → <strong>«Механики (Шаг 3В)»</strong> → отметить → пройти мастер до конца.</p>
+<hr>
+<h3 id="шаг-2-настроить">Шаг 2. Настроить</h3>
+<p>Рабочий стол → строка <strong>«ГТД»</strong> → <strong>⚙ Настройка</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/gtd-setup.png" target="_blank" rel="noopener"><img src="/docs/images/gtd-setup.png" alt="Настройка ГТД" loading="lazy" decoding="async" width="1920" height="945"></a><figcaption>Настройка ГТД</figcaption></figure>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Поле / кнопка</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>НазваниеКабинета</strong></td><td>Выбор кабинета Ozon из выпадающего списка. Если активных кабинетов нет, показывается <code>Нет активных кабинетов Ozon</code></td></tr><tr><td><strong>Отключить отправку ГТД для Ozon</strong></td><td>Временно приостановить передачу, не отключая механику</td></tr><tr><td><strong>Текущий режим</strong></td><td>Текущее состояние передачи</td></tr><tr><td><strong>Статус</strong></td><td>Результат последней операции</td></tr><tr><td><strong>Рабочее место FBS ↗</strong></td><td>Переход в рабочее место заказов</td></tr></tbody></table></div>
+<p>Нажмите <strong>«Сохранить»</strong>.</p>
+<blockquote>
+<p>Если в поле кабинета написано <code>Нет активных кабинетов Ozon</code> — значит в проекте нет активной интеграции Ozon. Проверьте статус проекта в каталоге.</p>
+</blockquote>
+<hr>
+<h3 id="шаг-3-заполнить-гтд-по-заказу">Шаг 3. Заполнить ГТД по заказу</h3>
+<p>Рабочий стол → <strong>«Заказы»</strong> → <strong>▶ Рабочее место</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/orders-workplace.png" target="_blank" rel="noopener"><img src="/docs/images/orders-workplace.png" alt="Рабочее место заказов: колонки ГТД, Страна, РНПТ" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Рабочее место заказов: колонки ГТД, Страна, РНПТ</figcaption></figure>
+<p>В таблице заказов три связанные колонки:</p>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Колонка</th><th>Значение</th></tr></thead><tbody><tr><td><strong>ГТД</strong></td><td>Номер таможенной декларации</td></tr><tr><td><strong>Страна</strong></td><td>Страна происхождения товара</td></tr><tr><td><strong>РНПТ</strong></td><td>Регистрационный номер партии товара</td></tr></tbody></table></div>
+<p>Если по заказу требуются эти данные, в колонках отображается <strong><code>⚠ требуется</code></strong>.</p>
+<p>Чтобы заполнить: выделите заказ → кнопка <strong>«📄 Указать ГТД»</strong> в панели «Действия с заказом».</p>
+<figure class="doc-shot"><a href="/docs/images/shipment-workplace.png" target="_blank" rel="noopener"><img src="/docs/images/shipment-workplace.png" alt="Панель действий с заказом" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Панель действий с заказом</figcaption></figure>
+<hr>
+<h3 id="как-это-работает">Как это работает</h3>
+<ol>
+<li>Механика заказов получает заказ с Ozon.</li>
+<li>Если товар импортный и требует таможенных данных, в колонках ГТД / Страна / РНПТ появляется <code>⚠ требуется</code>.</li>
+<li>Вы заполняете данные кнопкой «Указать ГТД».</li>
+<li>Модуль передаёт номер декларации на Ozon и сохраняет его в 1С.</li>
+</ol>
+<hr>
+<h3 id="различия-по-конфигурациям-1с">Различия по конфигурациям 1С</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Конфигурация</th><th>Учёт ГТД</th></tr></thead><tbody><tr><td><strong>УТ 11</strong></td><td>Реквизит документа, заполняется вручную через модуль</td></tr><tr><td><strong>УНФ</strong></td><td>Реквизит документа, заполняется вручную через модуль</td></tr><tr><td><strong>КА 2 / ERP</strong></td><td>Встроенный учёт таможенных деклараций — данные берутся из учётной системы</td></tr><tr><td><strong>БП 3.0</strong></td><td>⚠️ Ограниченная поддержка</td></tr></tbody></table></div>
+<hr>
+<h3 id="частые-проблемы">Частые проблемы</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Решение</th></tr></thead><tbody><tr><td>Механики нет на Шаге 3В</td><td>ГТД доступна только для Ozon. Проверьте сервис проекта</td></tr><tr><td><code>Нет активных кабинетов Ozon</code> в настройке</td><td>Проект не активен или не является Ozon-проектом. Проверьте статус в каталоге проектов</td></tr><tr><td>Кнопка «Указать ГТД» неактивна</td><td>Механика ГТД не подключена к проекту, либо не выделен заказ</td></tr><tr><td>Колонки ГТД / Страна / РНПТ пустые у всех заказов</td><td>По этим заказам таможенные данные не требуются — это нормально для товаров российского производства</td></tr><tr><td>Данные заполнили, но <code>⚠ требуется</code> остаётся</td><td>Нажмите <strong>«↺ Обновить заказы»</strong></td></tr><tr><td>Передачу нужно временно остановить</td><td>Настройка → флажок <strong>«Отключить отправку ГТД для Ozon»</strong> → <strong>Сохранить</strong></td></tr></tbody></table></div>
+<hr>
+<h3 id="смотрите-также">Смотрите также</h3>
+<ul>
+<li><a href="/docs/epf/zakazy-i-otgruzka">Заказы и отгрузка</a></li>
+<li><a href="/docs/epf/podklyuchit-ozon">Как подключить Ozon</a></li>
+</ul>

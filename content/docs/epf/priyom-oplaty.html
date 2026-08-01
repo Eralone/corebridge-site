@@ -1,0 +1,53 @@
+<p>Инструкция для платёжных сервисов: <strong>ЮKassa, СБП, Тинькофф, Сбер</strong>. Механика получает события об оплатах и возвратах и создаёт по ним документы в 1С.</p>
+<hr>
+<h3 id="шаг-1-запустить-мастер">Шаг 1. Запустить мастер</h3>
+<p>Каталог проектов → <strong>«+ Добавить интеграцию»</strong>. Шаги 1–2 — см. <strong><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></strong>.</p>
+<p><strong>Шаг 3А</strong> → категория <strong><code>services_payment</code> (Оплата)</strong>.
+<strong>Шаг 3Б</strong> → сервис: <code>yukassa</code>, <code>sbp</code>, <code>tinkoff</code> или <code>sber</code>.</p>
+<hr>
+<h3 id="шаг-2-механики">Шаг 2. Механики</h3>
+<figure class="doc-shot"><a href="/docs/images/master-step3v-mech-payment.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3v-mech-payment.png" alt="Шаг 3В: механика оплаты" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3В: механика оплаты</figcaption></figure>
+<p>Механика одна — <strong>«Обработка оплаты»</strong>. Она отмечена по умолчанию.</p>
+<p><strong>Шаг 3Г</strong> — <strong>★ Рекомендуемые</strong>. <strong>Шаг 4</strong> — реквизиты. <strong>Шаг 5</strong> — <strong>«✓ Завершить и запустить»</strong>.</p>
+<hr>
+<h3 id="шаг-3-настроить-обработку-оплаты">Шаг 3. Настроить обработку оплаты</h3>
+<p>Рабочий стол проекта → строка <strong>«Оплата»</strong> → <strong>⚙ Настройка</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/payment-setup.png" target="_blank" rel="noopener"><img src="/docs/images/payment-setup.png" alt="Настройка оплаты" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Настройка оплаты</figcaption></figure>
+<h4 id="поведение-при-обработке">Поведение при обработке</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Параметр</th><th>Значения</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Автопроведение при оплате</strong></td><td><code>Да</code> / <code>Нет</code></td><td>Проводить созданный документ сразу</td></tr><tr><td><strong>Создавать документ при возврате</strong></td><td><code>Да</code> / <code>Нет</code></td><td>Формировать документ по возврату средств</td></tr><tr><td><strong>Привязывать к заказу (по order_id)</strong></td><td><code>Да</code> / <code>Нет</code></td><td>Связывать оплату с заказом</td></tr><tr><td><strong>Создавать контрагента по данным плательщика</strong></td><td><code>Да</code> / <code>Нет</code></td><td>Заводить нового контрагента, если он не найден</td></tr><tr><td><strong>Проверять дубли (по payment_id шлюза)</strong></td><td><code>Да</code> / <code>Нет</code></td><td>Защита от повторной обработки одного платежа. <strong>Оставьте <code>Да</code></strong></td></tr><tr><td><strong>Уведомлять в Telegram при оплате</strong></td><td><code>Да</code> / <code>Нет</code></td><td>Требует подключённой механики <a href="/docs/epf/uvedomleniya-i-socseti">уведомлений</a></td></tr></tbody></table></div>
+<h4 id="заказ-для-проведения-взаиморасчёты">Заказ для проведения (взаиморасчёты)</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Поле</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Режим заказа</strong></td><td>Как искать заказ под оплату</td></tr><tr><td><strong>Проект-источник заказов</strong></td><td>Проект, в котором лежат заказы (например маркетплейс-проект)</td></tr><tr><td><strong>Номенклатура по умолчанию (GUID)</strong></td><td>Позиция-заглушка, если состав оплаты не детализирован</td></tr></tbody></table></div>
+<p>Кнопки: <strong>«Сохранить»</strong>, <strong>«Отмена»</strong>, <strong>«Тест подключения»</strong>, <strong>«Открыть журнал»</strong>.</p>
+<hr>
+<h3 id="шаг-4-журнал-оплат">Шаг 4. Журнал оплат</h3>
+<p>Рабочий стол → строка <strong>«Оплата»</strong> → <strong>▶ Рабочее место</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/payment-journal.png" target="_blank" rel="noopener"><img src="/docs/images/payment-journal.png" alt="Журнал оплат" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Журнал оплат</figcaption></figure>
+<h4 id="фильтры">Фильтры</h4>
+<p><strong>Шлюз</strong>, <strong>Тип события</strong>, кнопки <strong>«Применить»</strong> / <strong>«Сбросить»</strong>.</p>
+<h4 id="таблица-платежи">Таблица «Платежи»</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Колонка</th><th>Значение</th></tr></thead><tbody><tr><td><strong>Время</strong></td><td>Время события</td></tr><tr><td><strong>Payment ID</strong></td><td>Идентификатор платежа в шлюзе</td></tr><tr><td><strong>Сумма / Вал.</strong></td><td>Сумма и валюта</td></tr><tr><td><strong>Тип</strong></td><td><code>payment_received</code>, возврат и т. д.</td></tr><tr><td><strong>Шлюз</strong></td><td><code>yukassa</code>, <code>sbp</code>, <code>tinkoff</code>, <code>sber</code></td></tr><tr><td><strong>Документ 1С</strong></td><td>Ссылка на созданный документ</td></tr><tr><td><strong>Статус</strong></td><td><code>success</code> или ошибка</td></tr></tbody></table></div>
+<p><strong>Итоги:</strong> «Итого принято, ₽» и «Записей».</p>
+<h4 id="кнопки">Кнопки</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Кнопка</th><th>Действие</th></tr></thead><tbody><tr><td><strong>Открыть детали</strong></td><td>Карточка платежа</td></tr><tr><td><strong>Сопоставить товары</strong></td><td>Связать позиции платежа с номенклатурой 1С</td></tr><tr><td><strong>Повторить обработку</strong></td><td>Обработать платёж заново</td></tr><tr><td><strong>Обновить ↺</strong></td><td>Перечитать журнал</td></tr><tr><td><strong>Настройка оплаты</strong></td><td>Открыть форму настройки</td></tr></tbody></table></div>
+<hr>
+<h3 id="какие-документы-создаются">Какие документы создаются</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Конфигурация</th><th>Поступление оплаты</th><th>Возврат</th></tr></thead><tbody><tr><td><strong>УТ 11</strong></td><td>Приходный кассовый ордер</td><td>Расходный кассовый ордер</td></tr><tr><td><strong>УНФ</strong></td><td>Приходный кассовый ордер</td><td>Расходный кассовый ордер</td></tr><tr><td><strong>КА 2 / ERP</strong></td><td>Приходный кассовый ордер (организация обязательна)</td><td>Расходный кассовый ордер</td></tr><tr><td><strong>БП 3.0</strong></td><td>⚠️ <strong>Поступление на расчётный счёт</strong></td><td>⚠️ <strong>Списание с расчётного счёта</strong></td></tr></tbody></table></div>
+<hr>
+<h3 id="как-это-работает">Как это работает</h3>
+<ol>
+<li>Платёжный шлюз сообщает платформе об оплате или возврате.</li>
+<li>Платформа проверяет событие и кладёт его в очередь проекта.</li>
+<li>Модуль забирает событие при очередном опросе.</li>
+<li>Проверяет дубли по <code>payment_id</code>, находит заказ (если включена привязка) и создаёт документ.</li>
+<li>Результат виден в журнале оплат.</li>
+</ol>
+<hr>
+<h3 id="частые-проблемы">Частые проблемы</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Решение</th></tr></thead><tbody><tr><td>Журнал пустой</td><td>Нажмите <strong>«Обновить ↺»</strong>; сбросьте фильтры кнопкой <strong>«Сбросить»</strong>; проверьте статус проекта (<code>Активен</code>) и нажмите <strong>«▶ Запустить цикл сейчас»</strong></td></tr><tr><td>Платёж пришёл, документ не создан</td><td>Проверьте реквизиты Шага 4 мастера: контрагент, касса/счёт; в КА 2 / ERP — организацию. Затем <strong>«Повторить обработку»</strong></td></tr><tr><td>Документ создан, но не проведён</td><td>Снят параметр <strong>«Автопроведение при оплате»</strong>, либо базе не хватает реквизитов — проведите вручную</td></tr><tr><td>Один платёж обработан дважды</td><td>Включите <strong>«Проверять дубли (по payment_id шлюза)»</strong></td></tr><tr><td>Оплата не привязывается к заказу</td><td>Проверьте <strong>«Привязывать к заказу (по order_id)»</strong> и поле <strong>«Проект-источник заказов»</strong></td></tr><tr><td>Не создаётся контрагент по плательщику</td><td>Включите <strong>«Создавать контрагента по данным плательщика»</strong></td></tr><tr><td>В БП создан банковский документ вместо кассового</td><td>Ожидаемо — в БП 3.0 используются банковские документы</td></tr><tr><td>Нет уведомления в Telegram</td><td>Механика <a href="/docs/epf/uvedomleniya-i-socseti">уведомлений</a> не подключена отдельным проектом</td></tr></tbody></table></div>
+<hr>
+<h3 id="смотрите-также">Смотрите также</h3>
+<ul>
+<li><a href="/docs/epf/uvedomleniya-i-socseti">Уведомления и соцсети</a></li>
+<li><a href="/docs/epf/zakazy-i-otgruzka">Заказы и отгрузка</a></li>
+<li><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></li>
+</ul>

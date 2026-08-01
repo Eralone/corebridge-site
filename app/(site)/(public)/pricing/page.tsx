@@ -5,9 +5,10 @@ import { PublicFooter } from '@/components/PublicFooter';
 import { PricingBody } from './PricingBody';
 
 export const metadata: Metadata = {
-  title: 'Тарифы — CoreBridge',
+  title: 'Тарифы на интеграцию 1С с маркетплейсами и CRM — CoreBridge',
   description:
-    'Пробный тариф без карты, платные — от 990 ₽ в месяц. Сравнение лимитов, годовая оплата со скидкой и ответы на частые вопросы.',
+    'Сколько стоит интеграция 1С: пробный тариф без карты, платные — от 990 ₽ в месяц. ' +
+    'Лимиты по интеграциям и операциям, годовая оплата со скидкой, ответы на частые вопросы.',
   alternates: { canonical: 'https://corebridge.ru/pricing' },
 };
 

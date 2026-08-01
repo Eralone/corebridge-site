@@ -1,0 +1,86 @@
+<blockquote>
+<p>Базовый сценарий, общий для <strong>всех</strong> интеграций: маркетплейсы, сайты, CRM, доставка, оплата, CDP, уведомления, аналитика, «Иное».
+Все тематические инструкции ссылаются на этот документ и описывают только свои отличия.</p>
+</blockquote>
+<p>Мастер состоит из <strong>5 шагов</strong>. Шаг 3 разбит на четыре подшага: <strong>А</strong> (категория), <strong>Б</strong> (сервис и схемы работы), <strong>В</strong> (механики), <strong>Г</strong> (API-запросы и частота).</p>
+<p>Каждый проход мастера создаёт <strong>один проект</strong> — одну связку «сервис × набор механик × реквизиты 1С». Проектов может быть сколько угодно.</p>
+<hr>
+<h3 id="как-открыть-мастер">Как открыть мастер</h3>
+<p>На главной форме (<strong>CoreBridge. Каталог проектов</strong>) нажмите <strong>«+ Добавить интеграцию»</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/catalog-projects.png" target="_blank" rel="noopener"><img src="/docs/images/catalog-projects.png" alt="Каталог проектов" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Каталог проектов</figcaption></figure>
+<p>Каталог проектов — стартовая точка. Здесь видно состояние соединения (сервер, JWT, срок действия), список активных механик по всем проектам и лента последних событий.</p>
+<hr>
+<h3 id="шаг-1-подключение-к-платформе">Шаг 1 — Подключение к платформе</h3>
+<figure class="doc-shot"><a href="/docs/images/master-step1-connect.png" target="_blank" rel="noopener"><img src="/docs/images/master-step1-connect.png" alt="Шаг 1: подключение к платформе" loading="lazy" decoding="async" width="1920" height="945"></a><figcaption>Шаг 1: подключение к платформе</figcaption></figure>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Поле</th><th>Что вводить</th></tr></thead><tbody><tr><td><strong>URL сервера</strong> *</td><td><code>https://api.corebridge.ru</code> — подставляется автоматически, менять не нужно</td></tr><tr><td><strong>JWT-токен</strong> *</td><td>Токен из Личного кабинета на corebridge.ru — <a href="/docs#token-4">где его взять</a></td></tr><tr><td><strong>Проверить подключение</strong></td><td>Кнопка запускает проверку: доступность сервера и валидность токена</td></tr><tr><td><strong>Статус</strong></td><td>При успехе — <code>✓ Подключение успешно</code></td></tr></tbody></table></div>
+<p><strong>Кнопка «Далее →» работает только после успешной проверки.</strong> Если статус пустой или с ошибкой — проверьте, что из сети 1С открыт исходящий HTTPS на <code>api.corebridge.ru</code> (порт 443), и что токен скопирован целиком.</p>
+<blockquote>
+<p>Подключение и токен задаются <strong>один раз на пользователя</strong>, а не на каждый проект. Второй и последующий проекты подхватят их автоматически.</p>
+</blockquote>
+<hr>
+<h3 id="шаг-2-конфигурация-1с">Шаг 2 — Конфигурация 1С</h3>
+<figure class="doc-shot"><a href="/docs/images/master-step2-config.png" target="_blank" rel="noopener"><img src="/docs/images/master-step2-config.png" alt="Шаг 2: конфигурация 1С" loading="lazy" decoding="async" width="1920" height="945"></a><figcaption>Шаг 2: конфигурация 1С</figcaption></figure>
+<p>Модуль сам определяет конфигурацию и подставляет её код (<code>ut11</code>, <code>unf</code>, <code>ka</code>, <code>bp</code>). Версия платформы и версия конфигурации заполняются автоматически.</p>
+<p>Обычно на этом шаге ничего делать не нужно — просто <strong>«Далее →»</strong>.</p>
+<hr>
+<h3 id="шаг-3а-категория">Шаг 3А — Категория</h3>
+<figure class="doc-shot"><a href="/docs/images/master-step3a-category.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3a-category.png" alt="Шаг 3А: выбор категории" loading="lazy" decoding="async" width="1920" height="945"></a><figcaption>Шаг 3А: выбор категории</figcaption></figure>
+<p>Выберите категорию интеграции:</p>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Категория</th><th>Что подключаем</th><th>Инструкция</th></tr></thead><tbody><tr><td><code>marketplace</code> — Маркетплейсы</td><td>Ozon, Wildberries, Яндекс.Маркет</td><td><a href="/docs/epf/podklyuchit-ozon">Ozon</a>, <a href="/docs/epf/podklyuchit-wildberries">WB</a>, <a href="/docs/epf/podklyuchit-yandex-market">ЯМ</a></td></tr><tr><td><code>sites</code> — Сайты</td><td>Битрикс, WordPress, OpenCart, Tilda, InSales, Ecwid, REST</td><td><a href="/docs/epf/podklyuchit-internet-magazin">Интернет-магазин</a></td></tr><tr><td><code>crm</code> — CRM</td><td>Битрикс24, AmoCRM, Мегаплан, СБИС, Neaktor</td><td><a href="/docs/epf/podklyuchit-crm">CRM</a></td></tr><tr><td><code>services_delivery</code> — Доставка</td><td>СДЭК, Почта России, ЯМ Доставка</td><td><a href="/docs/epf/dostavka">Доставка</a></td></tr><tr><td><code>services_payment</code> — Оплата</td><td>ЮKassa, СБП, Тинькофф, Сбер</td><td><a href="/docs/epf/priyom-oplaty">Приём оплаты</a></td></tr><tr><td><code>marketing</code> — CDP / рассылки</td><td>MindBox, SendPulse, Unisender, DashaMail, МойСклад</td><td><a href="/docs/epf/cdp-i-rassylki">CDP и рассылки</a></td></tr><tr><td><code>social</code> — Уведомления</td><td>Telegram, VK, WhatsApp, Max, Одноклассники, Viber</td><td><a href="/docs/epf/uvedomleniya-i-socseti">Уведомления</a></td></tr><tr><td><code>analytics</code> — Аналитика</td><td>Google Sheets, Power BI, Roistat, МойСклад</td><td><a href="/docs/epf/analitika">Аналитика</a></td></tr><tr><td><code>other</code> — Иное</td><td>Произвольный сервис без готовой механики</td><td><a href="/docs/epf/proizvolnaya-integratsiya">Произвольная интеграция</a></td></tr></tbody></table></div>
+<hr>
+<h3 id="шаг-3б-сервис-и-схема-работы">Шаг 3Б — Сервис и схема работы</h3>
+<figure class="doc-shot"><a href="/docs/images/master-step3b-service-ozon.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3b-service-ozon.png" alt="Шаг 3Б: сервис и схемы работы" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3Б: сервис и схемы работы</figcaption></figure>
+<p>Выберите конкретный сервис. Для маркетплейсов дополнительно появляется блок <strong>«Схемы работы (можно несколько)»</strong>:</p>
+<ul>
+<li><strong>FBS</strong> — отгрузка со своего склада (заказы). Включена по умолчанию.</li>
+<li><strong>FBO/FBM</strong> — товар на складе маркетплейса (поставки).</li>
+<li><strong>realFBS Standard</strong> — своя доставка, ручные статусы (только Ozon).</li>
+</ul>
+<p><strong>Схема определяет состав механик на следующем шаге.</strong> Например, при схеме FBS механика поставок FBM скрыта — она относится к FBO/FBM. Если нужны обе схемы, создайте <strong>два проекта</strong>.</p>
+<hr>
+<h3 id="шаг-3в-механики">Шаг 3В — Механики</h3>
+<figure class="doc-shot"><a href="/docs/images/master-step3v-mech-ozon.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3v-mech-ozon.png" alt="Шаг 3В: механики Ozon" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3В: механики Ozon</figcaption></figure>
+<p>Отметьте нужные механики. Внизу — строка состояния: <code>Категория: … Сервис: … Выбрано: N / M</code>.</p>
+<p>Набор механик зависит от категории и сервиса. Полные списки — в тематических инструкциях. Пример выше — Ozon, все 11 доступных механик при схеме FBS.</p>
+<blockquote>
+<p>Некоторые механики площадко-специфичны: <strong>Резервы</strong>, <strong>ГТД</strong> и <strong>Акции/Promo</strong> доступны только для Ozon. Для Wildberries и Яндекс.Маркета эти чекбоксы не показываются.</p>
+</blockquote>
+<hr>
+<h3 id="шаг-3г-api-запросы-и-частота-опроса">Шаг 3Г — API-запросы и частота опроса</h3>
+<figure class="doc-shot"><a href="/docs/images/master-step3g-api.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3g-api.png" alt="Шаг 3Г: API-запросы и частота" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3Г: API-запросы и частота</figcaption></figure>
+<p>Таблица всех API-вызовов, которые будет делать проект. Колонки: включён/выключен, категория, код API, что делает, тип (<code>pull</code> / <code>push</code> / <code>triggered</code> / <code>manual</code>), частота, расход операций в месяц, к какой механике относится, признак «рекомендуемый».</p>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Элемент</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Частота опроса событий</strong></td><td>Общий интервал получения событий. По умолчанию <code>15min</code></td></tr><tr><td><strong>✓ Выбрать все / □ Снять все</strong></td><td>Массовое включение/выключение строк</td></tr><tr><td><strong>★ Рекомендуемые</strong></td><td>Вернуть набор к рекомендованному (безопасный дефолт)</td></tr><tr><td><strong>⟳ Пересчитать</strong></td><td>Пересчитать прогноз расхода после правок</td></tr><tr><td><strong>Прогноз потребления тарифа</strong></td><td>Итоговая оценка «операций/мес» по выбранному набору</td></tr></tbody></table></div>
+<p>Для первого запуска оставьте набор <strong>★ Рекомендуемые</strong> и частоту <code>15min</code> — этого достаточно. Тонкую настройку частот делайте позже, когда увидите фактический расход.</p>
+<blockquote>
+<p>Строки с типом <code>triggered</code> и <code>manual</code> не расходуют операции постоянно: они срабатывают по событию в 1С или по нажатию кнопки.</p>
+</blockquote>
+<hr>
+<h3 id="шаг-4-реквизиты-интеграции">Шаг 4 — Реквизиты интеграции</h3>
+<figure class="doc-shot"><a href="/docs/images/master-step4-refs.png" target="_blank" rel="noopener"><img src="/docs/images/master-step4-refs.png" alt="Шаг 4: реквизиты интеграции" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 4: реквизиты интеграции</figcaption></figure>
+<p>Экран делится на блоки:</p>
+<p><strong>Идентификация</strong> — категория и сервис (только для чтения, выбраны на Шаге 3).</p>
+<p><strong>Реквизиты учёта в 1С:</strong></p>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Поле</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Название интеграции</strong></td><td>Отображаемое имя проекта, например «Ozon Основной»</td></tr><tr><td><strong>Контрагент</strong></td><td>Контрагент, на которого создаются документы</td></tr><tr><td><strong>Склад отгрузки</strong></td><td>Склад-источник для отгрузок</td></tr><tr><td><strong>Организация</strong></td><td>Организация документа. <strong>Обязательна в КА 2 / ERP</strong></td></tr><tr><td><strong>Договор</strong></td><td>Договор контрагента (если ведётся)</td></tr><tr><td><strong>Комментарий</strong></td><td>Произвольная пометка</td></tr><tr><td><strong>integration_id</strong></td><td>Идентификатор проекта, присваивается платформой (<code>MP_108</code>, <code>CRM_001</code>, …). Только для чтения</td></tr></tbody></table></div>
+<p><strong>Общие параметры сервиса</strong> — например «Проверять остатки перед созданием заказа», «Добавлять комментарий с данными заказа в документ».</p>
+<p><strong>Настройки выбранных механик</strong> — по блоку на каждую отмеченную механику: подтверждение отгрузки, выгрузка остатков, синхронизация цен, каталог товаров, финансовый отчёт, маркировка и т. д. Здесь задаются только ключевые параметры; полная настройка каждой механики — на её отдельной форме после создания проекта.</p>
+<blockquote>
+<p>Кнопка <strong>«🔧 Тестовые UUID»</strong> заполняет реквизиты 1С тестовыми идентификаторами. Она предназначена для проверки работоспособности, <strong>не для боевого проекта</strong> — в рабочем проекте выбирайте реальные контрагента, склад и организацию.</p>
+</blockquote>
+<p><strong>Про <code>integration_id</code>:</strong> идентификатор не переиспользуется. Если проект удалить и создать заново, новый проект получит новый номер — это нормально.</p>
+<hr>
+<h3 id="шаг-5-готово-к-запуску">Шаг 5 — Готово к запуску</h3>
+<figure class="doc-shot"><a href="/docs/images/master-step5-launch.png" target="_blank" rel="noopener"><img src="/docs/images/master-step5-launch.png" alt="Шаг 5: готово к запуску" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 5: готово к запуску</figcaption></figure>
+<p>Итоговая сводка: сервер, конфигурация, выбранные параметры.</p>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Элемент</th><th>Что делает</th></tr></thead><tbody><tr><td><strong>Запустить фоновые задания сразу после закрытия мастера</strong></td><td>Флажок. Включён — проект стартует сразу; снят — проект создастся в остановленном состоянии</td></tr><tr><td><strong>✓ Завершить и запустить</strong></td><td>Создаёт проект и открывает его рабочий стол</td></tr><tr><td><strong>← Назад</strong></td><td>Вернуться и поправить любой шаг</td></tr></tbody></table></div>
+<p>После нажатия «✓ Завершить и запустить» открывается вкладка <strong>CoreBridge. Рабочий стол проекта</strong> — см. <a href="/docs/epf/katalog-proektov">Каталог проектов и рабочий стол</a>.</p>
+<hr>
+<h3 id="что-делать-если-что-то-пошло-не-так">Что делать, если что-то пошло не так</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Причина и решение</th></tr></thead><tbody><tr><td>«Далее →» на Шаге 1 не срабатывает</td><td>Не пройдена проверка подключения. Нажмите «Проверить подключение», дождитесь <code>✓ Подключение успешно</code></td></tr><tr><td>Статус подключения пустой</td><td>Сервер недоступен из сети 1С либо истёк JWT. Проверьте исходящий HTTPS на <code>api.corebridge.ru:443</code> и срок действия токена в ЛК</td></tr><tr><td>На Шаге 3В нет нужной механики</td><td>Механика не поддерживается выбранным сервисом или скрыта выбранной схемой работы (например, FBM при схеме FBS). Вернитесь на Шаг 3Б</td></tr><tr><td>На Шаге 3В нет FBM/поставок</td><td>Ожидаемо при схеме FBS. Создайте отдельный проект со схемой FBO/FBM</td></tr><tr><td>Прогноз операций слишком большой</td><td>Шаг 3Г → <strong>★ Рекомендуемые</strong>, затем увеличьте интервалы у самых частых строк и нажмите <strong>⟳ Пересчитать</strong></td></tr><tr><td>После завершения не открылся рабочий стол</td><td>Откройте каталог проектов, выберите строку проекта и нажмите <strong>«📂 Открыть проект»</strong></td></tr></tbody></table></div>
+<hr>
+<h3 id="изменить-уже-созданный-проект">Изменить уже созданный проект</h3>
+<p>Возвращаться в мастер для правок не нужно — на рабочем столе проекта есть три кнопки, открывающие соответствующие шаги:</p>
+<ul>
+<li><strong>Подключение (Шаг 1)</strong> — сервер и токен;</li>
+<li><strong>Механики (Шаг 3В)</strong> — добавить или отключить механики;</li>
+<li><strong>Реквизиты (Шаг 4)</strong> — контрагент, склад, организация, параметры механик.</li>
+</ul>

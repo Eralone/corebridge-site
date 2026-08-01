@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3005",
-    "build": "next build",
+    "build": "node tools/build-docs.mjs && next build",
     "start": "next start -p 3005",
     "lint": "next lint",
     "test": "vitest run",
@@ -13,7 +13,9 @@
     "test:all": "npm run test && npm run test:e2e",
     "design": "node tools/design-server.mjs",
     "inspect": "node tools/inspect.mjs",
-    "compare": "node tools/compare.mjs"
+    "compare": "node tools/compare.mjs",
+    "docs": "node tools/build-docs.mjs",
+    "seo": "node tools/seo-audit.mjs"
   },
   "dependencies": {
     "next": "14.2.35",
@@ -32,6 +34,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.35",
     "jsdom": "^25.0.1",
+    "marked": "^18.0.7",
     "msw": "^2.7.0",
     "pixelmatch": "^6.0.0",
     "pngjs": "^7.0.0",

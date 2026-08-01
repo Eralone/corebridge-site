@@ -61,6 +61,30 @@
       "note": "Расхождение намеренное: убран поиск по документации (искать нечем), справочник API заменён на фактические маршруты."
     },
     {
+      "id": "docs-epf",
+      "path": "/docs/epf",
+      "host": "main",
+      "auth": "none",
+      "ported": false,
+      "note": "Оглавление инструкций по .epf. Эталона нет: страниц инструкций в дизайне не было, раздел собран из markdown команды модуля (tools/build-docs.mjs)."
+    },
+    {
+      "id": "docs-epf-master",
+      "path": "/docs/epf/master-podklyucheniya",
+      "host": "main",
+      "auth": "none",
+      "ported": false,
+      "note": "Самая длинная инструкция раздела — 14 скриншотов и широкие таблицы. На ней и проверяем вёрстку статьи."
+    },
+    {
+      "id": "docs-epf-install",
+      "path": "/docs/epf/ustanovka-bp30",
+      "host": "main",
+      "auth": "none",
+      "ported": false,
+      "note": "Инструкция установки: таблицы различий по конфигурациям, без картинок."
+    },
+    {
       "id": "integrations",
       "path": "/integrations",
       "host": "main",

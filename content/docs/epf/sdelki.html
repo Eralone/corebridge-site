@@ -1,0 +1,30 @@
+<p>Механика переносит сделки CRM в 1С: по каждой сделке создаётся документ заказа. Опрос идёт по расписанию.</p>
+<hr>
+<h3 id="шаг-1-настроить">Шаг 1. Настроить</h3>
+<p>Рабочий стол проекта → строка <strong>«Сделки CRM»</strong> → <strong>⚙ Настройка</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/crm-deals-setup.png" target="_blank" rel="noopener"><img src="/docs/images/crm-deals-setup.png" alt="Настройка CRM: сделки" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Настройка CRM: сделки</figcaption></figure>
+<p>Здесь задаётся, какие сделки забирать и какой документ по ним создавать. Проверьте соединение кнопкой на форме и нажмите <strong>«Сохранить»</strong>.</p>
+<hr>
+<h3 id="шаг-2-рабочее-место-сделки-crm">Шаг 2. Рабочее место «Сделки CRM»</h3>
+<p>Рабочий стол → строка <strong>«Сделки CRM»</strong> → <strong>▶ Рабочее место</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/crm-deals-workplace.png" target="_blank" rel="noopener"><img src="/docs/images/crm-deals-workplace.png" alt="Рабочее место сделок CRM" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Рабочее место сделок CRM</figcaption></figure>
+<h4 id="верхняя-панель">Верхняя панель</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Элемент</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Интеграция</strong></td><td>ID проекта (например <code>CRM_001</code>)</td></tr><tr><td><strong>Статус цикла</strong></td><td>Результат последнего обмена, например <code>HTTP 200 · принято 4 · приземлено 4</code></td></tr><tr><td><strong>Следующий опрос</strong></td><td>Время следующего запуска по расписанию</td></tr><tr><td><strong>🔄 Синхронизировать сейчас</strong></td><td>Запустить обмен немедленно</td></tr><tr><td><strong>📋 Открыть деталь</strong></td><td>Карточка выбранной сделки</td></tr><tr><td><strong>✉ Повторить ACK</strong></td><td>Повторно подтвердить обработку события</td></tr><tr><td><strong>Показать</strong></td><td>Фильтр (<code>all</code> и др.)</td></tr><tr><td><strong>Период</strong></td><td>Фильтр по дате (<code>today</code> и др.)</td></tr><tr><td><strong>↺ Обновить таблицу</strong></td><td>Перечитать таблицу</td></tr></tbody></table></div>
+<p><strong>Строка «Статус цикла» — главный индикатор.</strong> <code>принято N · приземлено N</code> означает, что все полученные события успешно превратились в документы. Если «приземлено» меньше «принято» — часть сделок не обработалась, смотрите колонку «Статус синхр.».</p>
+<h4 id="таблица">Таблица</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Колонка</th><th>Значение</th></tr></thead><tbody><tr><td><strong>ID события</strong></td><td>Идентификатор события платформы</td></tr><tr><td><strong>#</strong></td><td>Порядковый номер</td></tr><tr><td><strong>ID сделки CRM</strong></td><td>Идентификатор сделки в CRM</td></tr><tr><td><strong>Название сделки</strong></td><td>Заголовок сделки</td></tr><tr><td><strong>Стадия CRM</strong></td><td><code>new</code>, <code>processing</code>, <code>delivered</code>, <code>cancelled</code></td></tr><tr><td><strong>Документ 1С</strong></td><td>Ссылка на созданный документ</td></tr><tr><td><strong>Статус синхр.</strong></td><td><code>✓ OK</code> или ошибка</td></tr><tr><td><strong>Обновлено</strong></td><td>Время обработки</td></tr></tbody></table></div>
+<p><strong>Итоги внизу:</strong> Итого, Успешно, Ожидают, Ошибки.</p>
+<p>Кнопка <strong>«Настройка сделок»</strong> открывает форму настройки.</p>
+<hr>
+<h3 id="какие-документы-создаются">Какие документы создаются</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Конфигурация</th><th>Документ по сделке</th></tr></thead><tbody><tr><td><strong>УТ 11</strong></td><td>Заказ клиента</td></tr><tr><td><strong>УНФ</strong></td><td>Заказ клиента</td></tr><tr><td><strong>КА 2 / ERP</strong></td><td>Заказ клиента (организация обязательна, партнёр берётся из контрагента)</td></tr><tr><td><strong>БП 3.0</strong></td><td>⚠️ <strong>Счёт на оплату</strong> — заказа клиента в БП нет</td></tr></tbody></table></div>
+<hr>
+<h3 id="частые-проблемы">Частые проблемы</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Решение</th></tr></thead><tbody><tr><td>Таблица пустая</td><td>Нажмите <strong>«🔄 Синхронизировать сейчас»</strong>, затем <strong>«↺ Обновить таблицу»</strong>. Проверьте фильтр «Период» — по умолчанию <code>today</code></td></tr><tr><td>«принято N · приземлено 0»</td><td>События приходят, но документы не создаются. Проверьте реквизиты Шага 4 мастера: контрагент, склад, договор; в КА 2 / ERP — организацию</td></tr><tr><td>В колонке «Статус синхр.» ошибка</td><td>Откройте <strong>«📋 Открыть деталь»</strong> — там текст ошибки по конкретной сделке</td></tr><tr><td>Документ создан не на того контрагента</td><td>Настройте поиск дублей и контрагента по умолчанию в <a href="/docs/epf/kontragenty">Контрагентах</a></td></tr><tr><td>Событие обработано, но CRM его повторяет</td><td>Нажмите <strong>«✉ Повторить ACK»</strong> — подтверждение обработки не дошло до сервера</td></tr><tr><td>Обмен идёт слишком редко</td><td>Уменьшите интервал в настройке</td></tr></tbody></table></div>
+<hr>
+<h3 id="смотрите-также">Смотрите также</h3>
+<ul>
+<li><a href="/docs/epf/podklyuchit-crm">Как подключить CRM</a></li>
+<li><a href="/docs/epf/kontragenty">Контрагенты</a></li>
+<li><a href="/docs/epf/statusy">Статусы</a></li>
+</ul>

@@ -1,0 +1,53 @@
+<p>Инструкция для <strong>СДЭК, Почты России и ЯМ Доставки</strong>. Механика создаёт заявки на доставку по документам отгрузки 1С и отслеживает трек-номера.</p>
+<hr>
+<h3 id="шаг-1-запустить-мастер">Шаг 1. Запустить мастер</h3>
+<p>Каталог проектов → <strong>«+ Добавить интеграцию»</strong>. Шаги 1–2 — см. <strong><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></strong>.</p>
+<p><strong>Шаг 3А</strong> → категория <strong><code>services_delivery</code> (Доставка)</strong>.
+<strong>Шаг 3Б</strong> → сервис: <code>cdek</code>, <code>pochta</code> или <code>ym_delivery</code>.</p>
+<hr>
+<h3 id="шаг-2-механики">Шаг 2. Механики</h3>
+<figure class="doc-shot"><a href="/docs/images/master-step3v-mech-delivery.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3v-mech-delivery.png" alt="Шаг 3В: механики доставки" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3В: механики доставки</figcaption></figure>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Механика</th><th>Что делает</th></tr></thead><tbody><tr><td><strong>Заявка на доставку</strong></td><td>Создаёт заявки в службе доставки и отслеживает статусы</td></tr><tr><td><strong>Печать этикеток</strong></td><td>Печать этикеток отправлений — см. <a href="/docs/epf/etiketki">Этикетки</a></td></tr></tbody></table></div>
+<p><strong>Шаг 3Г</strong> — оставьте <strong>★ Рекомендуемые</strong>. <strong>Шаг 4</strong> — реквизиты. <strong>Шаг 5</strong> — <strong>«✓ Завершить и запустить»</strong>.</p>
+<hr>
+<h3 id="шаг-3-настроить-доставку">Шаг 3. Настроить доставку</h3>
+<p>Рабочий стол проекта → строка <strong>«Доставка»</strong> → <strong>⚙ Настройка</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/delivery-setup.png" target="_blank" rel="noopener"><img src="/docs/images/delivery-setup.png" alt="Настройка доставки" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Настройка доставки</figcaption></figure>
+<h4 id="проверка">Проверка</h4>
+<p>Поле <strong>«Сервис»</strong> и кнопка <strong>«Тест подключения»</strong> — начните с неё.</p>
+<h4 id="режим-создания-заявок">Режим создания заявок</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Параметр</th><th>Значения</th><th>Комментарий</th></tr></thead><tbody><tr><td><strong>Создавать заявку при отгрузке</strong></td><td><code>Да</code> / <code>Нет</code></td><td>Основной переключатель</td></tr><tr><td><strong>Режим создания</strong></td><td><code>auto</code> / <code>confirm</code> / <code>manual</code></td><td><code>auto</code> — заявка создаётся сразу; <code>confirm</code> — с подтверждением в диалоге; <code>manual</code> — только по кнопке</td></tr></tbody></table></div>
+<h4 id="отправитель">Отправитель</h4>
+<p>Город отправления, код города (для СДЭК), адрес отправления, индекс, контактное лицо, телефон отправителя, склад отгрузки.</p>
+<h4 id="параметры-сервиса">Параметры сервиса</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Параметр</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Код тарифа</strong></td><td>Тариф службы доставки</td></tr><tr><td><strong>Тип упаковки</strong></td><td>Вид упаковки</td></tr><tr><td><strong>Страховать груз</strong></td><td><code>Да</code> / <code>Нет</code></td></tr><tr><td><strong>Формат этикетки</strong></td><td>Например <code>A6</code></td></tr><tr><td><strong>Хрупкий груз</strong></td><td><code>Да</code> / <code>Нет</code></td></tr><tr><td><strong>Дней хранения в ПВЗ</strong></td><td>Срок хранения в пункте выдачи</td></tr></tbody></table></div>
+<h4 id="опции-механики">Опции механики</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Параметр</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Записывать трек-номер в документ</strong></td><td>Сохранять трек в документе 1С</td></tr><tr><td><strong>Реквизит для трек-номера</strong></td><td>Имя реквизита, например <code>ТрекНомер</code></td></tr><tr><td><strong>Обновлять статусы трекинга</strong></td><td>Периодически подтягивать статус отправления</td></tr><tr><td><strong>Интервал обновления (мин)</strong></td><td>По умолчанию 60</td></tr><tr><td><strong>Автопечать этикетки</strong></td><td>Печатать этикетку сразу после создания заявки</td></tr></tbody></table></div>
+<p>Нажмите <strong>«Сохранить»</strong>.</p>
+<hr>
+<h3 id="шаг-4-рабочее-место-доставка">Шаг 4. Рабочее место «Доставка»</h3>
+<p>Рабочий стол → строка <strong>«Доставка»</strong> → <strong>▶ Рабочее место</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/delivery-workplace.png" target="_blank" rel="noopener"><img src="/docs/images/delivery-workplace.png" alt="Рабочее место доставки" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Рабочее место доставки</figcaption></figure>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Элемент</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Сервис доставки</strong></td><td>Проект</td></tr><tr><td><strong>Фильтр → Статус</strong> + <strong>Применить</strong> / <strong>Сбросить</strong></td><td>Фильтр по статусу отправления</td></tr><tr><td><strong>Создать заявку</strong></td><td>Создать заявку вручную</td></tr><tr><td><strong>Отменить заявку</strong></td><td>Отменить выбранную заявку</td></tr><tr><td><strong>Отследить</strong></td><td>Запросить актуальный статус по трек-номеру</td></tr><tr><td><strong>Обновить ↺</strong></td><td>Перечитать таблицу</td></tr><tr><td><strong>Настройка доставки</strong></td><td>Открыть форму настройки</td></tr></tbody></table></div>
+<p><strong>Таблица «Отправления»:</strong> ID заявки, трек-номер, сервис, статус, получатель, город, стоимость, время обновления.</p>
+<hr>
+<h3 id="как-это-работает">Как это работает</h3>
+<ol>
+<li>В 1С проводится документ отгрузки.</li>
+<li>В зависимости от режима создания заявка формируется автоматически, с подтверждением или ждёт ручного запуска.</li>
+<li>Служба доставки возвращает трек-номер — он записывается в документ, если включена соответствующая опция.</li>
+<li>По интервалу обновления модуль подтягивает статусы отправлений.</li>
+</ol>
+<hr>
+<h3 id="различия-по-конфигурациям-1с">Различия по конфигурациям 1С</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Конфигурация</th><th>Документ-источник отгрузки</th><th>Данные получателя</th></tr></thead><tbody><tr><td><strong>УТ 11</strong></td><td>Документ реализации</td><td>Из контрагента</td></tr><tr><td><strong>УНФ</strong></td><td>Расходная накладная</td><td>Из контрагента</td></tr><tr><td><strong>КА 2 / ERP</strong></td><td>Реализация товаров и услуг</td><td>⚠️ Из <strong>партнёра</strong>. Организация обязательна</td></tr><tr><td><strong>БП 3.0</strong></td><td>Реализация товаров и услуг</td><td>Из контрагента. Склад в настройке недоступен</td></tr></tbody></table></div>
+<hr>
+<h3 id="частые-проблемы">Частые проблемы</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Решение</th></tr></thead><tbody><tr><td>«Тест подключения» не проходит</td><td>Проверьте, что интеграция со службой доставки настроена в Личном кабинете платформы</td></tr><tr><td>Заявки не создаются автоматически</td><td><strong>«Создавать заявку при отгрузке»</strong> = <code>Нет</code>, либо режим <code>manual</code>. Проверьте настройку</td></tr><tr><td>Заявка создалась, трек-номер не попал в документ</td><td>Не включена опция <strong>«Записывать трек-номер в документ»</strong> или неверно указано имя реквизита</td></tr><tr><td>Статусы отправлений не обновляются</td><td>Не включено <strong>«Обновлять статусы трекинга»</strong>. Либо нажмите <strong>«Отследить»</strong> вручную</td></tr><tr><td>Таблица отправлений пустая</td><td>Нажмите <strong>«Обновить ↺»</strong>; проверьте фильтр по статусу — сбросьте его кнопкой <strong>«Сбросить»</strong></td></tr><tr><td>Не заполняется адрес получателя</td><td>В КА 2 / ERP данные берутся из партнёра — проверьте карточку партнёра</td></tr><tr><td>Не печатается этикетка</td><td>Механика этикеток не подключена или не настроен принтер — см. <a href="/docs/epf/etiketki">Этикетки</a></td></tr></tbody></table></div>
+<hr>
+<h3 id="смотрите-также">Смотрите также</h3>
+<ul>
+<li><a href="/docs/epf/etiketki">Этикетки</a></li>
+<li><a href="/docs/epf/zakazy-i-otgruzka">Заказы и отгрузка</a></li>
+<li><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></li>
+</ul>

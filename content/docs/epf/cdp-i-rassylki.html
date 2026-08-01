@@ -1,0 +1,61 @@
+<p>Инструкция для <strong>MindBox, SendPulse, Unisender, DashaMail, МойСклад</strong>. Механика выгружает контакты и события покупателей в платформу клиентских данных или сервис рассылок.</p>
+<p>Работает в двух режимах одновременно:</p>
+<ul>
+<li><strong>событийный</strong> — отправка при наступлении события (заказ создан, оплата получена, отгрузка, отмена…);</li>
+<li><strong>плановый</strong> — синхронизация базы контактов по расписанию.</li>
+</ul>
+<hr>
+<h3 id="шаг-1-запустить-мастер">Шаг 1. Запустить мастер</h3>
+<p>Каталог проектов → <strong>«+ Добавить интеграцию»</strong>. Шаги 1–2 — см. <strong><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></strong>.</p>
+<p><strong>Шаг 3А</strong> → категория <strong><code>marketing</code> (CDP / рассылки)</strong>.
+<strong>Шаг 3Б</strong> → сервис: <code>mindbox</code>, <code>sendpulse</code>, <code>unisender</code>, <code>dashamail</code> или <code>moisklad</code>.</p>
+<hr>
+<h3 id="шаг-2-механики">Шаг 2. Механики</h3>
+<figure class="doc-shot"><a href="/docs/images/master-step3v-mech-cdp.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3v-mech-cdp.png" alt="Шаг 3В: механики CDP" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3В: механики CDP</figcaption></figure>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Механика</th><th>Обязательность</th><th>Что даёт</th></tr></thead><tbody><tr><td><strong>CDP / рассылки</strong></td><td>Основная</td><td>Контакты и события покупателей</td></tr><tr><td><strong>Остатки</strong></td><td>Опционально</td><td>Сегментация по наличию товара</td></tr><tr><td><strong>Цены</strong></td><td>Опционально</td><td>Триггеры «снижение цены»</td></tr><tr><td><strong>Каталог товаров</strong></td><td>Опционально</td><td>Карточки товаров в письмах</td></tr></tbody></table></div>
+<p><strong>Шаг 3Г</strong> — <strong>★ Рекомендуемые</strong>. <strong>Шаг 4</strong> — реквизиты. <strong>Шаг 5</strong> — <strong>«✓ Завершить и запустить»</strong>.</p>
+<hr>
+<h3 id="шаг-3-настроить-маркетинг">Шаг 3. Настроить маркетинг</h3>
+<p>Рабочий стол проекта → строка <strong>«Маркетинг/CDP»</strong> → <strong>⚙ Настройка</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/cdp-setup.png" target="_blank" rel="noopener"><img src="/docs/images/cdp-setup.png" alt="Настройка маркетинга" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Настройка маркетинга</figcaption></figure>
+<h4 id="данные-для-передачи-профиль-контакта">Данные для передачи (профиль контакта)</h4>
+<p>Отметьте, какие поля контрагента выгружать: Email, телефон, ФИО / наименование, дата рождения, пол, город, ИНН, теги (из групп контрагентов), история заказов, суммы покупок (RFM).</p>
+<h4 id="триггерные-события-событийный-режим">Триггерные события (событийный режим)</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Событие</th><th>Код</th></tr></thead><tbody><tr><td>Создание заказа</td><td><code>order_created</code></td></tr><tr><td>Факт оплаты</td><td><code>payment_received</code></td></tr><tr><td>Отгрузка заказа</td><td><code>order_shipped</code></td></tr><tr><td>Отмена заказа</td><td><code>order_cancelled</code></td></tr><tr><td>Выставлен счёт</td><td><code>invoice_created</code></td></tr><tr><td>Смена стадии CRM</td><td><code>deal_stage_changed</code></td></tr></tbody></table></div>
+<h4 id="плановая-синхронизация-цикл">Плановая синхронизация (цикл)</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Параметр</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Выполнять плановую синхронизацию</strong></td><td>Включить регулярную выгрузку контактов</td></tr><tr><td><strong>Время запуска</strong></td><td>Время суток</td></tr><tr><td><strong>Режим</strong></td><td><code>full</code> (вся база) или <code>delta</code> (только изменения)</td></tr><tr><td><strong>Период дельты (дней)</strong></td><td>Глубина для режима <code>delta</code></td></tr><tr><td><strong>Глубина истории (мес.)</strong></td><td>За какой период выгружать историю заказов</td></tr></tbody></table></div>
+<h4 id="бонусная-программа-только-mindbox">Бонусная программа (только MindBox)</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Параметр</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Применять бонусы CDP при создании заказа</strong></td><td>Учитывать бонусный баланс</td></tr><tr><td><strong>Реквизит для суммы бонусов</strong></td><td>Куда записать сумму</td></tr><tr><td><strong>Таймаут запроса баланса (сек)</strong></td><td>Ограничение времени запроса</td></tr></tbody></table></div>
+<p>Кнопки: <strong>«💾 Сохранить»</strong>, <strong>«✗ Отмена»</strong>, <strong>«🔄 Тест подключения»</strong>.</p>
+<hr>
+<h3 id="шаг-4-рабочее-место-синхронизация-контактов">Шаг 4. Рабочее место «Синхронизация контактов»</h3>
+<p>Рабочий стол → строка <strong>«Маркетинг/CDP»</strong> → <strong>▶ Рабочее место</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/cdp-contacts.png" target="_blank" rel="noopener"><img src="/docs/images/cdp-contacts.png" alt="Синхронизация контактов" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Синхронизация контактов</figcaption></figure>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Элемент</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Последний цикл / Передано</strong></td><td>Итоги последнего запуска</td></tr><tr><td><strong>▶ Запустить цикл сейчас</strong></td><td>Полная синхронизация немедленно</td></tr><tr><td><strong>📤 Выгрузить выбранных</strong></td><td>Отправить только отмеченные контакты</td></tr><tr><td><strong>🔄 Обновить</strong></td><td>Перечитать таблицу</td></tr><tr><td><strong>Режим</strong></td><td><code>full</code> / <code>delta</code></td></tr><tr><td><strong>Период дельты (дней)</strong></td><td>Глубина дельты</td></tr></tbody></table></div>
+<p><strong>Фильтр контрагентов:</strong> группа, тип, email, активность.</p>
+<p><strong>Статистика:</strong> «СтатВсего» (всего контактов), «СтатEmail» (с заполненным email), «СтатСЗаказами» (с историей заказов).</p>
+<p><strong>Таблица:</strong> №, контрагент, email, количество заказов, статус.</p>
+<p><strong>Постраничный вывод:</strong> строка «Показано: 200 из 506», кнопки <strong>«◀ Пред.»</strong> / <strong>«След. ▶»</strong> и выбор страницы.</p>
+<blockquote>
+<p><strong>Обратите внимание на «СтатEmail».</strong> Если он равен нулю, выгружать в сервис рассылок нечего — сначала заполните email в карточках контрагентов 1С.</p>
+</blockquote>
+<hr>
+<h3 id="шаг-5-дополнительные-механики">Шаг 5. Дополнительные механики</h3>
+<p>При подключённых опциональных механиках доступны отдельные экраны:</p>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Экран</th><th>Что показывает</th></tr></thead><tbody><tr><td><figure class="doc-shot"><a href="/docs/images/cdp-catalog.png" target="_blank" rel="noopener"><img src="/docs/images/cdp-catalog.png" alt="CDP: каталог" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>CDP: каталог</figcaption></figure>
+</td><td>Выгрузка каталога товаров в CDP</td></tr><tr><td><figure class="doc-shot"><a href="/docs/images/cdp-stock.png" target="_blank" rel="noopener"><img src="/docs/images/cdp-stock.png" alt="CDP: остатки" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>CDP: остатки</figcaption></figure>
+</td><td>Выгрузка остатков для сегментации</td></tr><tr><td><figure class="doc-shot"><a href="/docs/images/cdp-prices.png" target="_blank" rel="noopener"><img src="/docs/images/cdp-prices.png" alt="CDP: цены" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>CDP: цены</figcaption></figure>
+</td><td>Выгрузка цен для ценовых триггеров</td></tr></tbody></table></div>
+<hr>
+<h3 id="различия-по-конфигурациям-1с">Различия по конфигурациям 1С</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Конфигурация</th><th>Источник контактов</th></tr></thead><tbody><tr><td><strong>УТ 11</strong></td><td>Контрагенты</td></tr><tr><td><strong>УНФ</strong></td><td>Контрагенты</td></tr><tr><td><strong>КА 2 / ERP</strong></td><td>⚠️ <strong>Партнёры</strong>; email берётся через основного контрагента. Организация обязательна</td></tr><tr><td><strong>БП 3.0</strong></td><td>Контрагенты</td></tr></tbody></table></div>
+<hr>
+<h3 id="частые-проблемы">Частые проблемы</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Решение</th></tr></thead><tbody><tr><td>«СтатEmail» = 0</td><td>В карточках контрагентов 1С не заполнен email — выгружать нечего</td></tr><tr><td>В таблице контрагенты «(без наименования)»</td><td>Записи без заполненного наименования. Проверьте карточки в 1С</td></tr><tr><td>Контакты не уходят</td><td>Нажмите <strong>«▶ Запустить цикл сейчас»</strong>; проверьте <strong>«Тест подключения»</strong> в настройке</td></tr><tr><td>Выгружается вся база каждый раз</td><td>Режим <code>full</code>. Переключите на <code>delta</code> и задайте период дельты</td></tr><tr><td>Триггерные события не приходят в CDP</td><td>Соответствующее событие не отмечено в блоке «Триггерные события». Также нужны работающие механики-источники (заказы, оплата)</td></tr><tr><td>Бонусы не применяются</td><td>Бонусная программа поддерживается только MindBox</td></tr><tr><td>Не работает выгрузка остатков / цен / каталога</td><td>Соответствующая опциональная механика не подключена на Шаге 3В</td></tr><tr><td>В КА 2 не находятся контакты</td><td>Источник — партнёры; проверьте, что у партнёра указан основной контрагент с email</td></tr></tbody></table></div>
+<hr>
+<h3 id="смотрите-также">Смотрите также</h3>
+<ul>
+<li><a href="/docs/epf/uvedomleniya-i-socseti">Уведомления и соцсети</a></li>
+<li><a href="/docs/epf/analitika">Аналитика</a></li>
+<li><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></li>
+</ul>

@@ -1,0 +1,60 @@
+<p>Инструкция для <strong>Telegram, VK, WhatsApp, Max, Одноклассников, Viber</strong>. Механика рассылает уведомления о событиях платформы: новый заказ, оплата, отгрузка, ошибка интеграции и т. д.</p>
+<p>Механика <strong>хуковая</strong>: уведомления отправляют другие механики, когда у них происходит событие.</p>
+<hr>
+<h3 id="шаг-1-запустить-мастер">Шаг 1. Запустить мастер</h3>
+<p>Каталог проектов → <strong>«+ Добавить интеграцию»</strong>. Шаги 1–2 — см. <strong><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></strong>.</p>
+<p><strong>Шаг 3А</strong> → категория <strong><code>social</code> (Уведомления)</strong>.
+<strong>Шаг 3Б</strong> → канал: <code>telegram</code>, <code>vk</code>, <code>whatsapp</code>, <code>max</code>, <code>ok</code> или <code>viber</code>.</p>
+<hr>
+<h3 id="шаг-2-механики">Шаг 2. Механики</h3>
+<figure class="doc-shot"><a href="/docs/images/master-step3v-mech-notify.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3v-mech-notify.png" alt="Шаг 3В: механика уведомлений" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3В: механика уведомлений</figcaption></figure>
+<p>Механика одна — <strong>«Уведомления»</strong>.</p>
+<p><strong>Шаг 3Г</strong> — <strong>★ Рекомендуемые</strong>. <strong>Шаг 4</strong> — название проекта. <strong>Шаг 5</strong> — <strong>«✓ Завершить и запустить»</strong>.</p>
+<hr>
+<h3 id="шаг-3-настроить-уведомления">Шаг 3. Настроить уведомления</h3>
+<p>Рабочий стол проекта → строка <strong>«Уведомления»</strong> → <strong>⚙ Настройка</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/notify-setup.png" target="_blank" rel="noopener"><img src="/docs/images/notify-setup.png" alt="Настройка уведомлений" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Настройка уведомлений</figcaption></figure>
+<h4 id="верхний-блок">Верхний блок</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Элемент</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Настроить уведомления</strong></td><td>Главный флажок</td></tr><tr><td><strong>СчётОтправленоСегодня / СчётОшибокСегодня / СчётВОчереди</strong></td><td>Счётчики за сутки</td></tr><tr><td><strong>Монитор ▶</strong></td><td>Переход в монитор уведомлений</td></tr><tr><td><strong>СтатусФормы</strong></td><td>Результат последней операции</td></tr></tbody></table></div>
+<h4 id="каналы-уведомлений">Каналы уведомлений</h4>
+<p>Таблица подключённых каналов: ID, тип, название, статус.</p>
+<p>Справа — кнопки добавления канала: <strong>Telegram</strong>, <strong>VK</strong>, <strong>WhatsApp</strong>, <strong>Max</strong>, <strong>OK</strong>, <strong>Viber</strong>, <strong>Иное</strong>.</p>
+<p>Нажмите кнопку нужного канала, чтобы завести его и указать параметры (получателя, чат, номер — зависит от канала).</p>
+<blockquote>
+<p>В одном проекте можно завести <strong>несколько каналов</strong> — например Telegram для менеджеров и WhatsApp для клиентов.</p>
+</blockquote>
+<h4 id="матрица-события-каналы">Матрица «события × каналы»</h4>
+<p>Таблицы по группам событий:</p>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Группа</th><th>События</th></tr></thead><tbody><tr><td><strong>МП — Маркетплейсы</strong></td><td>Заказы, отгрузки, ошибки интеграции маркетплейсов</td></tr><tr><td><strong>Сайт — интернет-магазины</strong></td><td>События сайтов</td></tr><tr><td>прочие группы</td><td>CRM, сервисы, аналитика</td></tr></tbody></table></div>
+<p>В каждой строке события — колонки <strong>Канал 1</strong>, <strong>Канал 2</strong>, <strong>Канал 3</strong>. Отмечая пересечение, вы указываете, какое событие в какой канал уходит и с какой важностью.</p>
+<p>Так одно событие можно направить сразу в несколько каналов, а разные события — разным адресатам.</p>
+<hr>
+<h3 id="шаг-4-монитор-уведомлений">Шаг 4. Монитор уведомлений</h3>
+<p>Рабочий стол → строка <strong>«Уведомления»</strong> → <strong>▶ Рабочее место</strong>. Либо кнопка <strong>«Монитор ▶»</strong> на форме настройки.</p>
+<figure class="doc-shot"><a href="/docs/images/notify-monitor.png" target="_blank" rel="noopener"><img src="/docs/images/notify-monitor.png" alt="Монитор уведомлений" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Монитор уведомлений</figcaption></figure>
+<h4 id="счётчики-за-сегодня">Счётчики «За сегодня»</h4>
+<p><strong>Отправлено</strong>, <strong>Успешно</strong>, <strong>Ошибок</strong>, <strong>В очереди</strong>.</p>
+<h4 id="таблица">Таблица</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Колонка</th><th>Значение</th></tr></thead><tbody><tr><td><strong>Время</strong></td><td>Время отправки</td></tr><tr><td><strong>Канал</strong></td><td><code>telegram</code>, <code>whatsapp</code>, <code>vk</code>, …</td></tr><tr><td><strong>Событие</strong></td><td><code>notify_order_created</code>, <code>notify_order_shipped</code>, <code>notify_payment_received</code>, …</td></tr><tr><td><strong>Адресат</strong></td><td>Получатель</td></tr><tr><td><strong>Статус</strong></td><td><code>sent</code> или ошибка</td></tr></tbody></table></div>
+<h4 id="кнопки">Кнопки</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Кнопка</th><th>Действие</th></tr></thead><tbody><tr><td><strong>↺ Обновить</strong></td><td>Перечитать данные</td></tr><tr><td><strong>Тест канала</strong></td><td>Отправить тестовое сообщение — проверить, что канал работает</td></tr></tbody></table></div>
+<p><strong>Начинайте настройку с кнопки «Тест канала».</strong> Если тестовое сообщение не дошло — разбираться с боевыми уведомлениями бессмысленно.</p>
+<hr>
+<h3 id="как-это-работает">Как это работает</h3>
+<ol>
+<li>В одной из механик платформы происходит событие (пришёл заказ, поступила оплата, случилась ошибка).</li>
+<li>Механика уведомлений проверяет матрицу «события × каналы».</li>
+<li>Если для события задан канал — формируется сообщение и отправляется.</li>
+<li>Результат виден в мониторе.</li>
+</ol>
+<p>Дополнительно механика периодически разбирает очередь отложенных сообщений (например накопленных в тихие часы) и повторяет неудачные отправки.</p>
+<hr>
+<h3 id="частые-проблемы">Частые проблемы</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Решение</th></tr></thead><tbody><tr><td>Уведомления не приходят</td><td>1) Нажмите <strong>«Тест канала»</strong>. 2) Проверьте главный флажок <strong>«Настроить уведомления»</strong>. 3) Проверьте, отмечено ли событие в матрице</td></tr><tr><td>Тест канала не проходит</td><td>Канал не настроен или отозван доступ на стороне мессенджера. Пересоздайте канал кнопкой соответствующего мессенджера</td></tr><tr><td>Таблица каналов пустая</td><td>Каналы не заведены. Нажмите кнопку нужного мессенджера справа от таблицы</td></tr><tr><td>Приходят не все события</td><td>Нужное событие не отмечено в матрице «события × каналы»</td></tr><tr><td>Счётчик «В очереди» растёт</td><td>Сообщения накапливаются — канал недоступен либо действуют ограничения на частоту. Проверьте статус канала</td></tr><tr><td>Счётчик «Ошибок» больше нуля</td><td>Смотрите колонку «Статус» в таблице монитора</td></tr><tr><td>Нужны разные адресаты для разных событий</td><td>Заведите несколько каналов и распределите события по колонкам «Канал 1/2/3»</td></tr></tbody></table></div>
+<hr>
+<h3 id="смотрите-также">Смотрите также</h3>
+<ul>
+<li><a href="/docs/epf/priyom-oplaty">Приём оплаты</a> — умеет уведомлять в Telegram при оплате</li>
+<li><a href="/docs/epf/cdp-i-rassylki">CDP и рассылки</a></li>
+<li><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></li>
+</ul>

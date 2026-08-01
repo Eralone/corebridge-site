@@ -1,12 +1,38 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
+/**
+ * Общие метаданные. Заголовок и описание страницы задают сами, здесь — то,
+ * что одинаково везде: карточка для соцсетей и правила для роботов.
+ *
+ * `openGraph` без него ссылка на сайт в Telegram, ВКонтакте и мессенджерах
+ * выглядит голой строкой: клиент подставляет под превью первое попавшееся
+ * изображение страницы. Картинку рисует `tools/make-og.mjs` — теми же шрифтом
+ * и цветами, что и сайт.
+ *
+ * `googleBot: max-snippet/max-image-preview` — разрешение показывать длинный
+ * сниппет и крупное превью. По умолчанию поисковик осторожничает и режет.
+ */
 export const metadata: Metadata = {
-  title: 'CoreBridge — no-code сервисная интеграция 1С',
+  title: 'Интеграция 1С с маркетплейсами, CRM и сайтами — CoreBridge',
   description:
-    'CoreBridge — no-code сервисная интеграция 1С с маркетплейсами, сайтами, CRM, ' +
-    'доставкой, оплатой и аналитикой. Один файл, 33 сервиса, без программистов.',
+    'Интеграция 1С с Ozon, Wildberries, Яндекс.Маркетом, Битрикс24, СДЭК и ещё 30 сервисами. ' +
+    'Один файл .epf для УТ 11, УНФ, КА 2 / ERP и Бухгалтерии 3.0 — без программистов.',
   metadataBase: new URL('https://corebridge.ru'),
+  applicationName: 'CoreBridge',
+  openGraph: {
+    type: 'website',
+    siteName: 'CoreBridge',
+    locale: 'ru_RU',
+    url: 'https://corebridge.ru',
+    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'CoreBridge — интеграция 1С' }],
+  },
+  twitter: { card: 'summary_large_image', images: ['/og.png'] },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' },
+  },
 };
 
 /**

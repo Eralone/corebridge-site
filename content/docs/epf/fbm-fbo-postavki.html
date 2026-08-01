@@ -1,0 +1,55 @@
+<p>Механика ведёт поставки товара на склад маркетплейса: формирование поставки, упаковка по грузовым местам, отгрузка.</p>
+<p><strong>Механика доступна только при схеме работы FBO/FBM.</strong> При схеме FBS она скрыта в мастере — это не ошибка, а разделение сценариев.</p>
+<hr>
+<h3 id="шаг-1-создать-проект-со-схемой-fbofbm">Шаг 1. Создать проект со схемой FBO/FBM</h3>
+<p>В мастере на <strong>Шаге 3Б</strong> отметьте схему <strong>«FBO/FBM — товар на складе маркетплейса (поставки)»</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/master-step3b-service-ozon.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3b-service-ozon.png" alt="Шаг 3Б: схемы работы" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3Б: схемы работы</figcaption></figure>
+<blockquote>
+<p>Схемы FBS и FBO/FBM взаимоисключающие по составу механик. Если вы уже работаете по FBS и хотите добавить поставки — <strong>создайте второй проект</strong> на тот же кабинет, выбрав схему FBO/FBM.</p>
+</blockquote>
+<p>На <strong>Шаге 3В</strong> появится чекбокс механики поставок.</p>
+<hr>
+<h3 id="шаг-2-настроить-механику">Шаг 2. Настроить механику</h3>
+<p>Рабочий стол проекта → строка <strong>«FBM»</strong> → <strong>⚙ Настройка</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/fbm-setup.png" target="_blank" rel="noopener"><img src="/docs/images/fbm-setup.png" alt="Настройка FBM" loading="lazy" decoding="async" width="1920" height="945"></a><figcaption>Настройка FBM</figcaption></figure>
+<p>Здесь задаются параметры формирования поставок: склад-источник, режим создания документов, правила упаковки. Состав полей зависит от площадки и конфигурации 1С.</p>
+<p>Нажмите <strong>«Сохранить»</strong>.</p>
+<hr>
+<h3 id="шаг-3-рабочее-место-поставок">Шаг 3. Рабочее место поставок</h3>
+<p>Рабочий стол → строка <strong>«FBM»</strong> → <strong>▶ Рабочее место</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/fbm-workplace.png" target="_blank" rel="noopener"><img src="/docs/images/fbm-workplace.png" alt="Управление поставками FBM" loading="lazy" decoding="async" width="1920" height="945"></a><figcaption>Управление поставками FBM</figcaption></figure>
+<h4 id="фильтр">Фильтр</h4>
+<p>Поле <strong>«Кабинет»</strong> и кнопки-фильтры по стадиям:</p>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Фильтр</th><th>Что показывает</th></tr></thead><tbody><tr><td><strong>Все</strong></td><td>Все поставки</td></tr><tr><td><strong>Новые</strong></td><td>Только что созданные</td></tr><tr><td><strong>Упаковать</strong></td><td>Готовые к упаковке</td></tr><tr><td><strong>К отгрузке</strong></td><td>Упакованные, ожидающие отгрузки</td></tr><tr><td><strong>Архив</strong></td><td>Завершённые</td></tr></tbody></table></div>
+<h4 id="таблица-поставок">Таблица поставок</h4>
+<p>ID поставки, склад маркетплейса, дата, статус, количество мест, ссылка на документ 1С.</p>
+<h4 id="кнопки">Кнопки</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Кнопка</th><th>Действие</th></tr></thead><tbody><tr><td><strong>+ Новая поставка</strong></td><td>Создать поставку</td></tr><tr><td><strong>Открыть</strong></td><td>Открыть выбранную поставку</td></tr><tr><td><strong>Упаковка →</strong></td><td>Перейти к упаковке по грузовым местам</td></tr><tr><td><strong>✓ Отгрузить</strong></td><td>Подтвердить отгрузку поставки</td></tr><tr><td><strong>↺ Обновить</strong></td><td>Перечитать список</td></tr><tr><td><strong>Упаковка поставки</strong></td><td>Открыть экран упаковки</td></tr></tbody></table></div>
+<hr>
+<h3 id="типовой-цикл-работы">Типовой цикл работы</h3>
+<ol>
+<li><strong>+ Новая поставка</strong> — создать поставку, выбрать склад маркетплейса и товары.</li>
+<li><strong>Упаковка →</strong> — распределить товар по грузовым местам (коробам, паллетам).</li>
+<li>Напечатать этикетки грузовых мест — см. <a href="/docs/epf/etiketki">Этикетки</a>.</li>
+<li><strong>✓ Отгрузить</strong> — подтвердить отгрузку; модуль сообщает площадке и создаёт документ отгрузки в 1С.</li>
+<li>Поставка уходит в фильтр <strong>«Архив»</strong>.</li>
+</ol>
+<hr>
+<h3 id="поставки-из-рабочего-места-заказы">Поставки из рабочего места «Заказы»</h3>
+<p>Часть площадко-специфичных действий доступна прямо из хаба «Заказы»:</p>
+<figure class="doc-shot"><a href="/docs/images/shipment-workplace.png" target="_blank" rel="noopener"><img src="/docs/images/shipment-workplace.png" alt="Панель действий с заказом" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Панель действий с заказом</figcaption></figure>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Кнопка</th><th>Площадка</th></tr></thead><tbody><tr><td><strong>📦 Поставки FBO</strong></td><td>Ozon</td></tr><tr><td><strong>📦 Поставка WB</strong></td><td>Wildberries</td></tr><tr><td><strong>Отгрузки ЯМ</strong></td><td>Яндекс.Маркет</td></tr></tbody></table></div>
+<hr>
+<h3 id="различия-по-конфигурациям-1с">Различия по конфигурациям 1С</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Конфигурация</th><th>Особенности</th></tr></thead><tbody><tr><td><strong>УТ 11</strong></td><td>Полная поддержка, включая <strong>ордерную схему склада</strong> (расходный ордер)</td></tr><tr><td><strong>УНФ</strong></td><td>Поддерживается. Ордерная схема — нет</td></tr><tr><td><strong>КА 2 / ERP</strong></td><td>Поддерживается, организация обязательна. Ордерная схема — нет</td></tr><tr><td><strong>БП 3.0</strong></td><td>Поддерживается ограниченно — складского учёта в полном объёме нет</td></tr></tbody></table></div>
+<p>Ордерная схема включается флажком <strong>«На складе включена ордерная схема»</strong> в <a href="/docs/epf/zakazy-i-otgruzka">настройке отгрузки</a>.</p>
+<hr>
+<h3 id="частые-проблемы">Частые проблемы</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Решение</th></tr></thead><tbody><tr><td>Механики нет на Шаге 3В</td><td>Выбрана схема FBS. Вернитесь на Шаг 3Б и отметьте FBO/FBM, либо создайте отдельный проект</td></tr><tr><td>Таблица поставок пустая</td><td>Нажмите <strong>«↺ Обновить»</strong>; проверьте фильтр (по умолчанию может стоять не «Все»); убедитесь, что поставки созданы</td></tr><tr><td>Не создаётся поставка</td><td>Проверьте реквизиты Шага 4 мастера: склад отгрузки, контрагент; в КА 2 / ERP — организацию</td></tr><tr><td>Товар не попадает в поставку</td><td>Товар не сопоставлен. См. <a href="/docs/epf/katalog-i-sopostavlenie">Каталог и сопоставление</a></td></tr><tr><td>Не печатаются этикетки грузовых мест</td><td>Механика этикеток не подключена либо не настроен принтер. См. <a href="/docs/epf/etiketki">Этикетки</a></td></tr><tr><td>Нужны обе схемы (FBS и FBO)</td><td>Создайте два проекта на один кабинет</td></tr></tbody></table></div>
+<hr>
+<h3 id="смотрите-также">Смотрите также</h3>
+<ul>
+<li><a href="/docs/epf/zakazy-i-otgruzka">Заказы и отгрузка</a></li>
+<li><a href="/docs/epf/etiketki">Этикетки</a></li>
+<li><a href="/docs/epf/katalog-i-sopostavlenie">Каталог и сопоставление</a></li>
+</ul>

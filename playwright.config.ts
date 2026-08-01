@@ -21,7 +21,18 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 2 : 4,
+  /**
+   * ⚠️ Два воркера, а не четыре. Набор идёт по живому проду, а nginx держит
+   * на сайте `per_ip` 30 r/s с запасом 100 (`deploy/nginx/corebridge.ru.conf`).
+   * Одна страница тянет 10–20 запросов, и четыре воркера регулярно выбирали
+   * лимит: прогон краснел в случайных местах — то `/register`, то `/pricing`,
+   * то чужой тест про субдомены, — и каждый раз это была страница nginx
+   * «429 Too Many Requests», а не поломка. Разбор — в BACKLOG, раздел
+   * про документацию.
+   *
+   * Цена — полторы минуты: 1.8 мин против 2.5 мин. Зелёный прогон того стоит.
+   */
+  workers: 2,
   reporter: [['list'], ['html', { outputFolder: 'artifacts/playwright-report', open: 'never' }]],
   outputDir: 'artifacts/playwright',
   timeout: 45_000,

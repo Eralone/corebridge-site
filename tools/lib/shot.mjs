@@ -109,7 +109,11 @@ export async function openWithDiagnostics(ctx, url, { waitFor = 'networkidle' } 
     diag.failedRequests.push({ url: r.url(), error: err });
   });
   page.on('response', (r) => {
-    if (r.status() >= 400) diag.badResponses.push({ url: r.url(), status: r.status() });
+    if (r.status() < 400) return;
+    // Шапка публичных страниц спрашивает, вошёл ли человек (lib/auth/session-probe.ts).
+    // У гостя ответ 401 — это и есть ответ «не вошёл», а не поломка страницы.
+    if (r.status() === 401 && r.url().endsWith('/lk/auth/session')) return;
+    diag.badResponses.push({ url: r.url(), status: r.status() });
   });
   page.on('dialog', (d) => void d.dismiss().catch(() => {}));
 

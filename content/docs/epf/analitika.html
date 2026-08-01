@@ -1,0 +1,65 @@
+<p>Инструкция для <strong>Google Sheets, Power BI, Roistat, МойСклад</strong>. Механика выгружает наборы данных 1С во внешнюю систему аналитики по расписанию (по умолчанию — ежедневно в 06:00).</p>
+<p>Направление — <strong>только 1С → система аналитики</strong>.</p>
+<hr>
+<h3 id="шаг-1-запустить-мастер">Шаг 1. Запустить мастер</h3>
+<p>Каталог проектов → <strong>«+ Добавить интеграцию»</strong>. Шаги 1–2 — см. <strong><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></strong>.</p>
+<p><strong>Шаг 3А</strong> → категория <strong><code>analytics</code> (Аналитика)</strong>.
+<strong>Шаг 3Б</strong> → сервис: <code>google_sheets</code>, <code>powerbi</code>, <code>roistat</code> или <code>moysklad</code>.</p>
+<hr>
+<h3 id="шаг-2-механики">Шаг 2. Механики</h3>
+<figure class="doc-shot"><a href="/docs/images/master-step3v-mech-analytics.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3v-mech-analytics.png" alt="Шаг 3В: механика аналитики" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3В: механика аналитики</figcaption></figure>
+<p>Механика одна — <strong>«Аналитика»</strong>.</p>
+<p><strong>Шаг 3Г</strong> — <strong>★ Рекомендуемые</strong>. <strong>Шаг 4</strong> — название проекта. <strong>Шаг 5</strong> — <strong>«✓ Завершить и запустить»</strong>.</p>
+<hr>
+<h3 id="шаг-3-настроить-выгрузку">Шаг 3. Настроить выгрузку</h3>
+<p>Рабочий стол проекта → строка <strong>«Аналитика»</strong> → <strong>⚙ Настройка</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/analytics-setup.png" target="_blank" rel="noopener"><img src="/docs/images/analytics-setup.png" alt="Настройка аналитики" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Настройка аналитики</figcaption></figure>
+<h4 id="расписание-и-поведение">Расписание и поведение</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Параметр</th><th>Значение по умолчанию</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Время запуска ЦиклАналитики</strong></td><td><code>06:00</code></td><td>Когда запускается плановая выгрузка</td></tr><tr><td><strong>Режим (full / delta)</strong></td><td><code>delta</code></td><td>Вся история или только изменения</td></tr><tr><td><strong>Период delta (дней)</strong></td><td><code>30</code></td><td>Глубина для режима <code>delta</code></td></tr><tr><td><strong>Размер чанка (строк)</strong></td><td><code>5 000</code></td><td>На сколько строк дробится большая выгрузка</td></tr><tr><td><strong>Уведомлять об успешной выгрузке</strong></td><td><code>Да</code></td><td>Требует механики <a href="/docs/epf/uvedomleniya-i-socseti">уведомлений</a></td></tr><tr><td><strong>Уведомлять об ошибках</strong></td><td><code>Да</code></td><td>То же</td></tr></tbody></table></div>
+<h4 id="параметры-сервиса">Параметры сервиса</h4>
+<p>На форме есть блок под каждый поддерживаемый сервис — заполняйте только свой.</p>
+<p><strong>Google Sheets:</strong></p>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Поле</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>ID таблицы (Spreadsheet ID)</strong></td><td>Идентификатор Google-таблицы</td></tr><tr><td><strong>Лист: Продажи / Остатки / Заказы МП / Оплаты</strong></td><td>Имена листов под каждый набор данных</td></tr><tr><td><strong>Добавлять строку заголовков</strong></td><td><code>Да</code> / <code>Нет</code></td></tr><tr><td><strong>Очищать лист перед выгрузкой (full mode)</strong></td><td><code>Да</code> / <code>Нет</code></td></tr></tbody></table></div>
+<p><strong>Power BI:</strong> Dataset ID, Workspace ID, режим (<code>push</code> / <code>streaming</code>), размер батча.</p>
+<p><strong>Roistat:</strong> Project ID, передавать продажи (<code>sales</code>), передавать заказы МП (<code>orders_mp</code>), передавать UTM-метки из комментариев.</p>
+<p><strong>МойСклад:</strong> направление (<code>push</code> / <code>pull</code>), синхронизировать товары / остатки / цены.</p>
+<p><strong>Иное (произвольный endpoint):</strong> URL endpoint (POST), заголовки (JSON), сжимать payload (gzip).</p>
+<p>Кнопки: <strong>«Сохранить»</strong>, <strong>«Отмена»</strong>, <strong>«Тест подключения»</strong>.</p>
+<hr>
+<h3 id="шаг-4-рабочее-место-аналитика">Шаг 4. Рабочее место «Аналитика»</h3>
+<p>Рабочий стол → строка <strong>«Аналитика»</strong> → <strong>▶ Рабочее место</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/analytics-workplace.png" target="_blank" rel="noopener"><img src="/docs/images/analytics-workplace.png" alt="Рабочее место аналитики" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Рабочее место аналитики</figcaption></figure>
+<h4 id="фильтр">Фильтр</h4>
+<p>Поля <strong>С</strong> / <strong>По</strong> и <strong>Набор</strong> — период и набор данных для отображения истории.</p>
+<h4 id="ручной-запуск">Ручной запуск</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Элемент</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Набор данных</strong></td><td>Какой набор выгрузить</td></tr><tr><td><strong>Полная выгрузка (full)</strong></td><td>Выгрузить всё, а не дельту</td></tr><tr><td><strong>Запустить выгрузку</strong></td><td>Выгрузить выбранный набор</td></tr><tr><td><strong>Запустить все</strong></td><td>Выгрузить все наборы подряд</td></tr></tbody></table></div>
+<h4 id="текущий-статус">Текущий статус</h4>
+<p><strong>Цикл аналитики</strong> (<code>Ожидание</code> / выполняется), <strong>Последний запуск</strong>, <strong>Строк выгружено</strong>.</p>
+<p>Кнопки <strong>«Обновить»</strong> и <strong>«Повторить»</strong>, поле <strong>«Статус»</strong>.</p>
+<h4 id="история-выгрузок">История выгрузок</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Колонка</th><th>Значение</th></tr></thead><tbody><tr><td><strong>Время</strong></td><td>Время выгрузки</td></tr><tr><td><strong>Набор данных</strong></td><td><code>sales</code>, <code>stock</code>, <code>orders_mp</code>, <code>payments</code></td></tr><tr><td><strong>Режим</strong></td><td><code>full</code> / <code>delta</code></td></tr><tr><td><strong>Строк</strong></td><td>Сколько строк выгружено</td></tr><tr><td><strong>Чанков</strong></td><td>На сколько частей разбито</td></tr><tr><td><strong>Длит., с</strong></td><td>Длительность</td></tr><tr><td><strong>Статус</strong></td><td><code>success</code> или ошибка</td></tr><tr><td><strong>Ошибка</strong></td><td>Текст ошибки</td></tr></tbody></table></div>
+<p>Блок <strong>«Детали ошибки»</strong> и итоги: «Записей», «Успешно», «Ошибок».</p>
+<hr>
+<h3 id="наборы-данных">Наборы данных</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Набор</th><th>Что выгружает</th></tr></thead><tbody><tr><td><code>sales</code></td><td>Продажи</td></tr><tr><td><code>stock</code></td><td>Остатки</td></tr><tr><td><code>orders_mp</code></td><td>Заказы маркетплейсов</td></tr><tr><td><code>payments</code></td><td>Оплаты</td></tr></tbody></table></div>
+<hr>
+<h3 id="различия-по-конфигурациям-1с">Различия по конфигурациям 1С</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Конфигурация</th><th>Особенности</th></tr></thead><tbody><tr><td><strong>УТ 11</strong></td><td>Все наборы данных</td></tr><tr><td><strong>УНФ</strong></td><td>Все наборы данных</td></tr><tr><td><strong>КА 2 / ERP</strong></td><td>Все наборы. ⚠️ Все запросы фильтруются по организации проекта</td></tr><tr><td><strong>БП 3.0</strong></td><td>⛔ Набор <strong><code>stock</code> недоступен</strong>. Остальные наборы работают; продажи выгружаются без складской детализации</td></tr></tbody></table></div>
+<hr>
+<h3 id="проверка-после-настройки">Проверка после настройки</h3>
+<ol>
+<li><strong>«Тест подключения»</strong> в настройке.</li>
+<li>Рабочее место → выбрать <strong>Набор данных</strong> → <strong>«Запустить выгрузку»</strong>.</li>
+<li>В истории должна появиться строка со статусом <strong><code>success</code></strong> и ненулевым количеством строк.</li>
+<li>Проверить, что данные дошли до целевой системы (лист Google Sheets, датасет Power BI и т. д.).</li>
+</ol>
+<hr>
+<h3 id="частые-проблемы">Частые проблемы</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Решение</th></tr></thead><tbody><tr><td>История выгрузок пустая</td><td>Нажмите <strong>«Обновить»</strong>; проверьте фильтр <strong>С / По</strong> — по умолчанию показывается ограниченный период</td></tr><tr><td>Выгрузка со статусом ошибки</td><td>Откройте блок <strong>«Детали ошибки»</strong>; проверьте <strong>«Тест подключения»</strong> и параметры сервиса</td></tr><tr><td>Строк выгружено = 0</td><td>В выбранном периоде нет данных. Попробуйте <strong>«Полная выгрузка (full)»</strong></td></tr><tr><td>Набор <code>stock</code> не выгружается</td><td>В БП 3.0 он недоступен. В других конфигурациях проверьте настройку складов</td></tr><tr><td>Выгрузка идёт очень долго</td><td>Уменьшите <strong>«Размер чанка (строк)»</strong> либо сократите <strong>«Период delta (дней)»</strong></td></tr><tr><td>Данные в Google Sheets дублируются</td><td>Включите <strong>«Очищать лист перед выгрузкой (full mode)»</strong></td></tr><tr><td>Не приходят уведомления о результате</td><td>Механика <a href="/docs/epf/uvedomleniya-i-socseti">уведомлений</a> не подключена отдельным проектом</td></tr><tr><td>Нужна выгрузка чаще раза в сутки</td><td>Измените <strong>«Время запуска ЦиклАналитики»</strong> или запускайте вручную кнопкой <strong>«Запустить все»</strong></td></tr></tbody></table></div>
+<hr>
+<h3 id="смотрите-также">Смотрите также</h3>
+<ul>
+<li><a href="/docs/epf/uvedomleniya-i-socseti">Уведомления и соцсети</a></li>
+<li><a href="/docs/epf/cdp-i-rassylki">CDP и рассылки</a></li>
+<li><a href="/docs/epf/proizvolnaya-integratsiya">Произвольная интеграция «Иное»</a> — если нужного сервиса аналитики нет в списке</li>
+</ul>

@@ -1,0 +1,64 @@
+<p>Одна инструкция для всех поддерживаемых сайтов: <strong>1С-Битрикс, WordPress, OpenCart, InSales, Ecwid, Tilda, свой сайт (REST API)</strong>.</p>
+<p>Сценарий подключения одинаков для всех — различается только состав механик у Tilda.</p>
+<hr>
+<h3 id="шаг-1-запустить-мастер">Шаг 1. Запустить мастер</h3>
+<p>Каталог проектов → <strong>«+ Добавить интеграцию»</strong>. Шаги 1–2 — см. <strong><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></strong>.</p>
+<hr>
+<h3 id="шаг-2-категория-и-сервис">Шаг 2. Категория и сервис</h3>
+<p><strong>Шаг 3А</strong> → категория <strong><code>sites</code> (Сайты)</strong>.</p>
+<p><strong>Шаг 3Б</strong> → сервис:</p>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Сервис</th><th>Код</th></tr></thead><tbody><tr><td>1С-Битрикс</td><td><code>bitrix</code></td></tr><tr><td>WordPress</td><td><code>wordpress</code></td></tr><tr><td>OpenCart</td><td><code>opencart</code></td></tr><tr><td>InSales</td><td><code>insales</code></td></tr><tr><td>Ecwid</td><td><code>ecwid</code></td></tr><tr><td>Tilda</td><td><code>tilda</code></td></tr><tr><td>Свой сайт (REST API)</td><td><code>rest</code></td></tr></tbody></table></div>
+<hr>
+<h3 id="шаг-3-механики">Шаг 3. Механики</h3>
+<figure class="doc-shot"><a href="/docs/images/master-step3v-mech-site.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3v-mech-site.png" alt="Шаг 3В: механики для сайта" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3В: механики для сайта</figcaption></figure>
+<h4 id="для-битрикс-wordpress-opencart-insales-ecwid-rest">Для Битрикс, WordPress, OpenCart, InSales, Ecwid, REST</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Механика</th><th>Что делает</th><th>Инструкция</th></tr></thead><tbody><tr><td>Получение заказов</td><td>Забирает заказы с сайта, создаёт документы в 1С</td><td><a href="/docs/epf/zakazy-i-otgruzka">Заказы и отгрузка</a></td></tr><tr><td>Подтверждение отгрузки</td><td>Документ отгрузки + статус на сайте</td><td><a href="/docs/epf/zakazy-i-otgruzka">Заказы и отгрузка</a></td></tr><tr><td>Выгрузка остатков</td><td>Отправляет остатки складов на сайт</td><td><a href="/docs/epf/ostatki">Остатки</a></td></tr><tr><td>Синхронизация цен</td><td>Отправляет цены из 1С на сайт</td><td><a href="/docs/epf/tseny">Цены</a></td></tr><tr><td>Управление каталогом товаров</td><td>Сопоставление товаров 1С ↔ сайт</td><td><a href="/docs/epf/katalog-i-sopostavlenie">Каталог и сопоставление</a></td></tr><tr><td>Печать этикеток</td><td>Этикетки заказов</td><td><a href="/docs/epf/etiketki">Этикетки</a></td></tr><tr><td>Маркировка «Честный знак» <em>(опционально)</em></td><td>Передача кодов маркировки</td><td><a href="/docs/epf/markirovka-chestny-znak">Маркировка</a></td></tr></tbody></table></div>
+<h4 id="для-tilda-сокращённый-набор">Для Tilda — сокращённый набор</h4>
+<figure class="doc-shot"><a href="/docs/images/master-step3v-mech-tilda.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3v-mech-tilda.png" alt="Шаг 3В: механики Tilda" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3В: механики Tilda</figcaption></figure>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Механика</th><th>Доступна</th></tr></thead><tbody><tr><td>Получение заказов</td><td>✅</td></tr><tr><td>Подтверждение отгрузки</td><td>✅</td></tr><tr><td>Печать этикеток</td><td>✅</td></tr><tr><td>Остатки, Цены, Каталог</td><td>⛔</td></tr></tbody></table></div>
+<p>Tilda — конструктор лендингов без полноценного каталога товаров, поэтому синхронизация остатков, цен и каталога для неё не предусмотрена.</p>
+<h4 id="чего-нет-у-всех-сайтов">Чего нет у всех сайтов</h4>
+<p>Резервы, ГТД, акции/Promo, FBM-поставки, финансовые отчёты МП — это механики маркетплейсов.</p>
+<hr>
+<h3 id="шаг-46-api-реквизиты-запуск">Шаг 4–6. API, реквизиты, запуск</h3>
+<ul>
+<li><strong>Шаг 3Г</strong> — оставьте <strong>★ Рекомендуемые</strong>, частота <code>15min</code>.</li>
+<li><strong>Шаг 4</strong> — название («Сайт Розница»), контрагент, склад отгрузки, договор; организация обязательна только в КА 2 / ERP.</li>
+<li><strong>Шаг 5</strong> — <strong>«✓ Завершить и запустить»</strong>.</li>
+</ul>
+<p>Иллюстрации шагов — в <a href="/docs/epf/master-podklyucheniya">Мастере подключения</a>.</p>
+<hr>
+<h3 id="шаг-7-настроить-после-создания">Шаг 7. Настроить после создания</h3>
+<p>Порядок тот же, что для маркетплейсов:</p>
+<ol>
+<li><strong>Выбрать склады</strong> — «Остатки» → <strong>⚙ Настройка</strong> → <strong>✓ Выбрать все</strong> → <strong>Сохранить</strong>.</li>
+<li><strong>Сопоставить товары</strong> — «Каталог» → <strong>▶ Рабочее место</strong> → <strong>«Загрузить товары ↓»</strong> → <strong>«⚡ Автосопоставить»</strong>.</li>
+<li><strong>Указать тип цены</strong> — «Цены» → <strong>⚙ Настройка</strong> → <strong>Сохранить</strong>.</li>
+<li><strong>Проверить статусы заказов</strong> — «Заказы» → <strong>⚙ Настройка</strong>.</li>
+</ol>
+<p>Для Tilda нужны только шаги 4 (статусы заказов) и, при необходимости, настройка этикеток.</p>
+<hr>
+<h3 id="шаг-8-проверить-работу">Шаг 8. Проверить работу</h3>
+<ol>
+<li>Рабочий стол → <strong>«▶ Запустить цикл сейчас»</strong>.</li>
+<li>«Заказы» → <strong>▶ Рабочее место</strong> → <strong>«📥 Получить заказы»</strong>.</li>
+</ol>
+<figure class="doc-shot"><a href="/docs/images/orders-workplace.png" target="_blank" rel="noopener"><img src="/docs/images/orders-workplace.png" alt="Рабочее место заказов" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Рабочее место заказов</figcaption></figure>
+<p>В колонке <strong>«Источник»</strong> будет ваш сайт, в колонке <strong>«Документ 1С»</strong> — ссылка на созданный документ.</p>
+<ol start="3">
+<li>Каталог проектов → лента <strong>«Последние события»</strong>: строки <code>Заказ … → документ 1С</code>.</li>
+</ol>
+<hr>
+<h3 id="различия-по-конфигурациям-1с">Различия по конфигурациям 1С</h3>
+<p>Полностью совпадают с маркетплейсами — см. <a href="/docs/epf/zakazy-i-otgruzka#какие-документы-создаются">Заказы и отгрузка → Какие документы создаются</a>.</p>
+<p>Ключевое: в <strong>БП 3.0</strong> вместо заказа клиента создаётся счёт на оплату; в <strong>КА 2 / ERP</strong> обязательна организация.</p>
+<hr>
+<h3 id="частые-проблемы">Частые проблемы</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Решение</th></tr></thead><tbody><tr><td>Заказы с сайта не приходят</td><td>1) Статус проекта <code>Активен</code>. 2) В настройке заказов отмечены нужные статусы. 3) <strong>«▶ Запустить цикл сейчас»</strong></td></tr><tr><td>Остатки не уходят на сайт</td><td>Не выбраны склады либо товары не сопоставлены</td></tr><tr><td>Цены не уходят</td><td>Не указан тип цен</td></tr><tr><td>У Tilda нет механик остатков и цен</td><td>Ожидаемо — см. таблицу выше</td></tr><tr><td>Статусы заказов сайта не совпадают с 1С</td><td>Модуль приводит статусы разных площадок к единому виду. Проверьте, какие статусы отмечены в настройке заказов</td></tr><tr><td>Товары на сайте есть, в каталоге модуля нет</td><td>Нажмите <strong>«Загрузить товары ↓»</strong> в рабочем месте каталога</td></tr></tbody></table></div>
+<hr>
+<h3 id="смотрите-также">Смотрите также</h3>
+<ul>
+<li><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></li>
+<li><a href="/docs/epf/katalog-i-sopostavlenie">Каталог и сопоставление</a></li>
+<li><a href="/docs/epf/zakazy-i-otgruzka">Заказы и отгрузка</a></li>
+</ul>

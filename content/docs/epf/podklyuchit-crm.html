@@ -1,0 +1,54 @@
+<p>Одна инструкция для всех поддерживаемых CRM: <strong>Битрикс24, AmoCRM, Мегаплан, СБИС CRM, Neaktor</strong>. Сценарий подключения у всех одинаковый.</p>
+<p>CRM-интеграция состоит из четырёх независимых механик — включать можно любые.</p>
+<hr>
+<h3 id="шаг-1-запустить-мастер">Шаг 1. Запустить мастер</h3>
+<p>Каталог проектов → <strong>«+ Добавить интеграцию»</strong>. Шаги 1–2 — см. <strong><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></strong>.</p>
+<hr>
+<h3 id="шаг-2-категория-и-сервис">Шаг 2. Категория и сервис</h3>
+<p><strong>Шаг 3А</strong> → категория <strong><code>crm</code> (CRM)</strong>.</p>
+<p><strong>Шаг 3Б</strong> → сервис: <code>bitrix24</code>, <code>amocrm</code>, <code>megaplan</code>, <code>sbis</code> или <code>neaktor</code>.</p>
+<hr>
+<h3 id="шаг-3-механики">Шаг 3. Механики</h3>
+<figure class="doc-shot"><a href="/docs/images/master-step3v-mech-crm.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3v-mech-crm.png" alt="Шаг 3В: механики CRM" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3В: механики CRM</figcaption></figure>
+<p>По умолчанию отмечены три механики из пяти (<code>Выбрано: 3 / 5</code>).</p>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Механика</th><th>Направление</th><th>Что делает</th><th>Инструкция</th></tr></thead><tbody><tr><td><strong>Получение заказов FBS/FBO</strong></td><td>CRM → 1С</td><td>Создаёт документы по сделкам</td><td><a href="/docs/epf/zakazy-i-otgruzka">Заказы и отгрузка</a></td></tr><tr><td><strong>Синхронизация контрагентов</strong></td><td>↔ двустороннее</td><td>Контакты и компании CRM ↔ контрагенты 1С</td><td><a href="/docs/epf/kontragenty">Контрагенты</a></td></tr><tr><td><strong>Сделки и воронки продаж</strong></td><td>↔ двустороннее</td><td>Сделки CRM → документы 1С</td><td><a href="/docs/epf/sdelki">Сделки</a></td></tr><tr><td><strong>Выгрузка счетов из 1С в CRM</strong></td><td>1С → CRM</td><td>Счета из 1С попадают в карточку сделки</td><td><a href="/docs/epf/scheta">Счета</a></td></tr><tr><td><strong>Передача статусов документов в CRM</strong></td><td>1С → CRM</td><td>Проведение документа двигает стадию сделки</td><td><a href="/docs/epf/statusy">Статусы</a></td></tr></tbody></table></div>
+<p><strong>Что включать на старте:</strong> оставьте набор по умолчанию (контрагенты + сделки + заказы). Счета и статусы добавляйте, когда базовый обмен заработает — их проще отлаживать по одному.</p>
+<hr>
+<h3 id="шаг-46-api-реквизиты-запуск">Шаг 4–6. API, реквизиты, запуск</h3>
+<ul>
+<li><strong>Шаг 3Г</strong> — оставьте <strong>★ Рекомендуемые</strong>.</li>
+<li><strong>Шаг 4</strong> — название («Битрикс24 Продажи»), контрагент по умолчанию, договор; организация обязательна только в КА 2 / ERP.</li>
+<li><strong>Шаг 5</strong> — <strong>«✓ Завершить и запустить»</strong>.</li>
+</ul>
+<hr>
+<h3 id="шаг-5-проверить-подключение-к-crm">Шаг 5. Проверить подключение к CRM</h3>
+<p>Рабочий стол проекта → любая строка CRM-механики → <strong>⚙ Настройка</strong> → кнопка <strong>«Проверить соединение»</strong> (или <strong>«🔄 Тест подключения»</strong>).</p>
+<figure class="doc-shot"><a href="/docs/images/crm-contractors-setup.png" target="_blank" rel="noopener"><img src="/docs/images/crm-contractors-setup.png" alt="Настройка CRM: контрагенты" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Настройка CRM: контрагенты</figcaption></figure>
+<p>Сверху каждой формы настройки CRM есть поле <strong>«Название подключения»</strong> и кнопка проверки — она общая точка входа для диагностики.</p>
+<hr>
+<h3 id="шаг-6-настроить-механики">Шаг 6. Настроить механики</h3>
+<p>Каждая механика настраивается отдельно. Порядок рекомендуемый:</p>
+<ol>
+<li><strong><a href="/docs/epf/kontragenty">Контрагенты</a></strong> — сначала, чтобы сделки было к кому привязывать.</li>
+<li><strong><a href="/docs/epf/sdelki">Сделки</a></strong> — основной поток CRM → 1С.</li>
+<li><strong><a href="/docs/epf/scheta">Счета</a></strong> — выгрузка счетов из 1С обратно в CRM.</li>
+<li><strong><a href="/docs/epf/statusy">Статусы</a></strong> — синхронизация стадий воронки.</li>
+</ol>
+<hr>
+<h3 id="как-это-работает">Как это работает</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Механика</th><th>Триггер</th></tr></thead><tbody><tr><td>Контрагенты</td><td>Опрос по расписанию (по умолчанию каждые 5 минут)</td></tr><tr><td>Сделки</td><td>Опрос по расписанию</td></tr><tr><td>Счета</td><td>Опрос новых проведённых документов в 1С по окну времени</td></tr><tr><td>Статусы</td><td>Срабатывает при проведении документа в 1С</td></tr></tbody></table></div>
+<hr>
+<h3 id="различия-по-конфигурациям-1с">Различия по конфигурациям 1С</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Конфигурация</th><th>Особенности</th></tr></thead><tbody><tr><td><strong>УТ 11</strong></td><td>Полная поддержка</td></tr><tr><td><strong>УНФ</strong></td><td>Полная поддержка. Отмена заказа определяется по признаку отмены пользователем</td></tr><tr><td><strong>КА 2 / ERP</strong></td><td>⚠️ Организация обязательна. Контрагент ищется и создаётся <strong>через партнёра</strong></td></tr><tr><td><strong>БП 3.0</strong></td><td>⚠️ Нет заказа клиента — подтверждение заказа отражается счётом на оплату. Отдельного события отмены заказа нет, используйте «Произвольный статус»</td></tr></tbody></table></div>
+<hr>
+<h3 id="частые-проблемы">Частые проблемы</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Решение</th></tr></thead><tbody><tr><td>«Проверить соединение» не проходит</td><td>Проверьте, что интеграция с CRM настроена и активна в Личном кабинете платформы</td></tr><tr><td>Данные из CRM не приходят</td><td>Статус проекта <code>Активен</code>; нажмите <strong>«▶ Запустить цикл сейчас»</strong>, затем <strong>«Синхронизировать сейчас»</strong> на форме механики</td></tr><tr><td>Сделка создаёт документ не на того контрагента</td><td>Настройте поиск дублей в <a href="/docs/epf/kontragenty">Контрагентах</a> и укажите контрагента по умолчанию</td></tr><tr><td>В КА 2 контрагент не находится</td><td>Поиск идёт через партнёра — проверьте, что у контрагента есть связанный партнёр</td></tr><tr><td>Документы не создаются</td><td>Проверьте реквизиты Шага 4; в КА 2 / ERP — организацию</td></tr></tbody></table></div>
+<hr>
+<h3 id="смотрите-также">Смотрите также</h3>
+<ul>
+<li><a href="/docs/epf/kontragenty">Контрагенты</a></li>
+<li><a href="/docs/epf/sdelki">Сделки</a></li>
+<li><a href="/docs/epf/scheta">Счета</a></li>
+<li><a href="/docs/epf/statusy">Статусы</a></li>
+<li><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></li>
+</ul>

@@ -1,0 +1,77 @@
+<p>Две механики, работающие в паре:</p>
+<ul>
+<li><strong>Получение заказов FBS/FBO</strong> — забирает заказы с площадки и создаёт документы в 1С;</li>
+<li><strong>Подтверждение отгрузки</strong> — создаёт документ отгрузки и сообщает площадке об отправке.</li>
+</ul>
+<p>Обе входят в <strong>хаб «Заказы»</strong> — у них общее рабочее место <strong>CoreBridge. Заказы</strong>. К этому же хабу относятся механики ГТД и этикеток.</p>
+<hr>
+<h3 id="шаг-1-настроить-получение-заказов">Шаг 1. Настроить получение заказов</h3>
+<p>Рабочий стол проекта → строка <strong>«Заказы»</strong> → <strong>⚙ Настройка</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/orders-setup.png" target="_blank" rel="noopener"><img src="/docs/images/orders-setup.png" alt="Настройка получения заказов FBS/FBO" loading="lazy" decoding="async" width="1920" height="945"></a><figcaption>Настройка получения заказов FBS/FBO</figcaption></figure>
+<h4 id="схема-работы">Схема работы</h4>
+<p>Поле <strong>«Схема»</strong> — <code>FBS</code>, <code>FBO</code> или <code>realFBS</code>. Задаётся на Шаге 3Б мастера и здесь отображается.</p>
+<h4 id="какие-статусы-заказов-забирать">Какие статусы заказов забирать</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Статус</th><th>Код</th><th>По умолчанию</th></tr></thead><tbody><tr><td>Ожидает упаковки</td><td><code>awaiting_packaging</code></td><td>✅ включён</td></tr><tr><td>Ожидает отгрузки</td><td><code>awaiting_deliver</code></td><td>✅ включён</td></tr><tr><td>Передано в доставку</td><td><code>delivering</code></td><td>☐</td></tr><tr><td>Доставлено</td><td><code>delivered</code></td><td>☐</td></tr><tr><td>Отменено</td><td><code>cancelled</code></td><td>☐</td></tr><tr><td>Не принято</td><td><code>not_accepted</code></td><td>☐</td></tr></tbody></table></div>
+<p>Кнопки <strong>«✓ Выбрать все»</strong> и <strong>«□ Снять все»</strong>.</p>
+<blockquote>
+<p><strong>Отмеченные здесь статусы определяют, какие заказы вообще попадут в 1С.</strong> Если заказ есть на площадке, но не появился в модуле — первым делом проверьте этот список.</p>
+</blockquote>
+<p>Для полного отслеживания жизненного цикла (включая отмены и доставки) отметьте все статусы. Для минимальной нагрузки оставьте только два первых.</p>
+<h4 id="параметры-создания-документов-1с">Параметры создания документов 1С</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Поле</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Префикс номера</strong></td><td>Префикс, добавляемый к номеру создаваемого документа</td></tr><tr><td><strong>Авто-проведение при создании</strong></td><td>Проводить документ сразу. Включено по умолчанию</td></tr></tbody></table></div>
+<p>Нажмите <strong>«Сохранить»</strong>.</p>
+<hr>
+<h3 id="шаг-2-настроить-отгрузку">Шаг 2. Настроить отгрузку</h3>
+<p>Рабочий стол → строка <strong>«Отгрузка»</strong> → <strong>⚙ Настройка</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/shipment-setup.png" target="_blank" rel="noopener"><img src="/docs/images/shipment-setup.png" alt="Настройка отгрузки" loading="lazy" decoding="async" width="1920" height="945"></a><figcaption>Настройка отгрузки</figcaption></figure>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Блок</th><th>Параметр</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Режим создания документа</strong></td><td>Время создания сводного документа</td><td>Время суток для формирования сводного документа отгрузки</td></tr><tr><td><strong>Контроль отгрузки (FBS-сканер)</strong></td><td>Проверять отгрузку FBS сканером</td><td>Требовать сканирование при сборке. Включено по умолчанию</td></tr><tr><td></td><td>Формат штрихкода грузового места</td><td><code>Авто</code> или конкретный формат</td></tr><tr><td><strong>Ордерная схема</strong></td><td>На складе включена ордерная схема</td><td>Отметьте, если склад работает по ордерной схеме. Доступно в УТ 11</td></tr></tbody></table></div>
+<p>Нажмите <strong>«Сохранить»</strong>.</p>
+<hr>
+<h3 id="шаг-3-рабочее-место-заказы">Шаг 3. Рабочее место «Заказы»</h3>
+<p>Рабочий стол → строка <strong>«Заказы»</strong> (или «Отгрузка») → <strong>▶ Рабочее место</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/orders-workplace.png" target="_blank" rel="noopener"><img src="/docs/images/orders-workplace.png" alt="Рабочее место заказов" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Рабочее место заказов</figcaption></figure>
+<h4 id="верхняя-панель">Верхняя панель</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Кнопка / поле</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>↺ Обновить заказы</strong></td><td>Перечитать таблицу из базы</td></tr><tr><td><strong>📥 Получить заказы</strong></td><td>Запросить новые заказы с площадки <strong>сейчас</strong></td></tr><tr><td><strong>🗑 Очистить журнал</strong></td><td>Очистить накопленные записи</td></tr><tr><td><strong>ВремяОбновления</strong></td><td>Время последнего получения</td></tr><tr><td><strong>КоличествоНовых</strong></td><td>Сколько новых заказов пришло</td></tr><tr><td><strong>Статус</strong> + <strong>Применить ↺</strong></td><td>Фильтр таблицы по статусу</td></tr></tbody></table></div>
+<h4 id="таблица-заказов">Таблица заказов</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Колонка</th><th>Значение</th></tr></thead><tbody><tr><td><strong>№ заказа МП</strong></td><td>Номер заказа на площадке</td></tr><tr><td><strong>Дата</strong></td><td>Дата заказа</td></tr><tr><td><strong>Источник</strong></td><td>Площадка (OZON, WB, ЯМ, сайт)</td></tr><tr><td><strong>Схема</strong></td><td>FBS / FBO / realFBS</td></tr><tr><td><strong>Покупатель</strong></td><td>Имя покупателя</td></tr><tr><td><strong>Товаров / Сумма</strong></td><td>Количество позиций и сумма</td></tr><tr><td><strong>Статус</strong></td><td><code>new</code>, <code>processing</code>, <code>shipped</code>, <code>delivered</code>, <code>cancelled</code></td></tr><tr><td><strong>КИЗ</strong></td><td>Количество кодов маркировки</td></tr><tr><td><strong>ГТД / Страна / РНПТ</strong></td><td>Данные таможенной декларации (<code>⚠ требуется</code>, если нужны, но не заполнены)</td></tr><tr><td><strong>Документ 1С</strong></td><td>Ссылка на созданный документ</td></tr></tbody></table></div>
+<p>Ниже — блок <strong>«Состав выбранного заказа»</strong>: товар, <code>offer_id</code>, количество, цена, сумма.</p>
+<p>Внизу — панель <strong>«Сообщения»</strong> с диагностикой (<code>Опрос заказов выполнен</code>, данные покупателя и т. п.).</p>
+<hr>
+<h3 id="шаг-4-действия-с-заказом">Шаг 4. Действия с заказом</h3>
+<p>Выделите заказ — станет доступна панель <strong>«Действия с заказом»</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/shipment-workplace.png" target="_blank" rel="noopener"><img src="/docs/images/shipment-workplace.png" alt="Панель действий с заказом" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Панель действий с заказом</figcaption></figure>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Кнопка</th><th>Что делает</th></tr></thead><tbody><tr><td><strong>Открыть в 1С</strong></td><td>Открыть созданный документ</td></tr><tr><td><strong>🔄 Синхр. отгрузки</strong></td><td>Подтянуть отгрузки по заказу с сервера</td></tr><tr><td><strong>🗑 Удалить заказ</strong></td><td>Удалить запись заказа из модуля</td></tr><tr><td><strong>👤 Данные покупателя</strong></td><td>Показать данные получателя</td></tr><tr><td><strong>↩ Возвраты</strong></td><td>Открыть <a href="/docs/epf/vozvraty">рабочее место возвратов</a></td></tr><tr><td><strong>🏷 Этикетка</strong></td><td>Печать <a href="/docs/epf/etiketki">этикетки</a> заказа</td></tr><tr><td><strong>📄 Указать ГТД</strong></td><td>Заполнить <a href="/docs/epf/gtd">номер таможенной декларации</a></td></tr><tr><td><strong>🏷 Марки (КИЗ)</strong></td><td>Открыть <a href="/docs/epf/markirovka-chestny-znak">коды маркировки</a> заказа</td></tr><tr><td><strong>📄 Акт</strong></td><td>Акт приёма-передачи (Ozon)</td></tr><tr><td><strong>✂ Разделить</strong></td><td>Разделить заказ на отправления (Ozon)</td></tr><tr><td><strong>📦 Поставки FBO</strong></td><td><a href="/docs/epf/fbm-fbo-postavki">Поставки FBO</a> (Ozon)</td></tr><tr><td><strong>📦 Поставка WB</strong></td><td>Поставки FBW (Wildberries)</td></tr></tbody></table></div>
+<p>Часть кнопок недоступна, если механика не подключена к проекту или неприменима к площадке. Например «Указать ГТД» и «Марки (КИЗ)» активны только при включённых соответствующих механиках, а «Поставка WB» — только для Wildberries.</p>
+<hr>
+<h3 id="шаг-5-смена-статуса-и-отгрузка">Шаг 5. Смена статуса и отгрузка</h3>
+<p>Блок <strong>«Смена статуса (выберите заказы → статус → отправьте)»</strong>:</p>
+<ol>
+<li>Выделите один или несколько заказов в таблице.</li>
+<li>Выберите <strong>Целевой статус</strong> — например <code>Отгружен</code>.</li>
+<li>Нажмите <strong>«💾 Сохранить и отправить»</strong>.</li>
+</ol>
+<p>Модуль создаёт документ отгрузки в 1С и сообщает площадке о смене статуса.</p>
+<p>Кнопка <strong>«🔄 Синхр. отгрузки»</strong> подтягивает информацию об отгрузках. Если отгрузок нет, появится сообщение вида <strong>«Синхронизация выполнена (новых отгрузок нет / заказ не найден)»</strong> — это не ошибка, а штатный результат.</p>
+<hr>
+<h3 id="как-это-работает">Как это работает</h3>
+<ol>
+<li>По расписанию (частота опроса с Шага 3Г мастера, по умолчанию 15 минут) модуль запрашивает заказы в отмеченных статусах.</li>
+<li>По каждому новому заказу создаётся документ в 1С; при включённом авто-проведении — сразу проводится.</li>
+<li>Если подключены маркировка и ГТД, они отрабатывают в этот же момент.</li>
+<li>При смене статуса на «Отгружен» создаётся документ отгрузки и площадка получает уведомление.</li>
+</ol>
+<hr>
+<h3 id="какие-документы-создаются">Какие документы создаются</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Конфигурация</th><th>Заказ</th><th>Отгрузка</th></tr></thead><tbody><tr><td><strong>УТ 11</strong></td><td>Заказ клиента</td><td>Документ реализации</td></tr><tr><td><strong>УНФ</strong></td><td>Заказ клиента</td><td>Расходная накладная</td></tr><tr><td><strong>КА 2 / ERP</strong></td><td>Заказ клиента (организация обязательна)</td><td>Реализация товаров и услуг</td></tr><tr><td><strong>БП 3.0</strong></td><td>⚠️ <strong>Счёт на оплату</strong> (заказа клиента в БП нет)</td><td>Реализация товаров и услуг</td></tr></tbody></table></div>
+<hr>
+<h3 id="частые-проблемы">Частые проблемы</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Решение</th></tr></thead><tbody><tr><td>Заказы не приходят</td><td>1) Статус проекта <code>Активен</code>. 2) В настройке заказов отмечены нужные статусы. 3) <strong>«▶ Запустить цикл сейчас»</strong> на рабочем столе, затем <strong>«📥 Получить заказы»</strong></td></tr><tr><td>Заказ есть на площадке, но не в 1С</td><td>Его статус не отмечен в настройке. Отметьте и нажмите «📥 Получить заказы»</td></tr><tr><td>Заказ пришёл, но документ 1С не создан</td><td>Проверьте реквизиты Шага 4 мастера: контрагент, склад, договор. В КА 2 / ERP — обязательна организация</td></tr><tr><td>Документ создан, но не проведён</td><td>Снят флажок «Авто-проведение при создании». Либо проведению мешают учётные ограничения базы — проведите вручную</td></tr><tr><td>Колонка ГТД показывает <code>⚠ требуется</code></td><td>Заказ требует таможенных данных. Выделите его → <strong>«Указать ГТД»</strong>. См. <a href="/docs/epf/gtd">ГТД</a></td></tr><tr><td>Кнопки «Этикетка» / «Марки (КИЗ)» неактивны</td><td>Соответствующая механика не подключена. Рабочий стол → <strong>«Механики (Шаг 3В)»</strong></td></tr><tr><td>«Синхр. отгрузки» пишет «новых отгрузок нет»</td><td>Штатное сообщение — отгрузок по заказу пока не было</td></tr><tr><td>Таблица не обновляется при возврате на вкладку</td><td>Нажмите <strong>«↺ Обновить заказы»</strong> — формы 1С не перечитывают данные автоматически</td></tr></tbody></table></div>
+<hr>
+<h3 id="смотрите-также">Смотрите также</h3>
+<ul>
+<li><a href="/docs/epf/vozvraty">Возвраты</a></li>
+<li><a href="/docs/epf/etiketki">Этикетки</a></li>
+<li><a href="/docs/epf/gtd">ГТД</a></li>
+<li><a href="/docs/epf/markirovka-chestny-znak">Маркировка «Честный знак»</a></li>
+<li><a href="/docs/epf/fbm-fbo-postavki">FBM/FBO поставки</a></li>
+</ul>

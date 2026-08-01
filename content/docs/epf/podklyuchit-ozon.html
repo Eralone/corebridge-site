@@ -1,0 +1,83 @@
+<p>Ozon — самая полная интеграция платформы: доступны <strong>все 11 механик</strong> при схеме FBS, плюс поставки FBM при схеме FBO/FBM. Три механики есть <strong>только у Ozon</strong>: резервы, ГТД и акции/Promo.</p>
+<p><strong>Время на подключение:</strong> 10–15 минут.</p>
+<hr>
+<h3 id="шаг-1-запустить-мастер">Шаг 1. Запустить мастер</h3>
+<p>Каталог проектов → <strong>«+ Добавить интеграцию»</strong>.</p>
+<p>Шаги 1 и 2 (подключение к платформе и определение конфигурации) описаны в общей инструкции — <strong><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></strong>.</p>
+<hr>
+<h3 id="шаг-2-категория-и-сервис">Шаг 2. Категория и сервис</h3>
+<p><strong>Шаг 3А</strong> → категория <strong><code>marketplace</code> (Маркетплейсы)</strong>.</p>
+<p><strong>Шаг 3Б</strong> → сервис <strong><code>ozon</code></strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/master-step3b-service-ozon.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3b-service-ozon.png" alt="Шаг 3Б: сервис Ozon и схемы работы" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3Б: сервис Ozon и схемы работы</figcaption></figure>
+<p>Выберите <strong>схему работы</strong>:</p>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Схема</th><th>Когда выбирать</th><th>Что даёт</th></tr></thead><tbody><tr><td><strong>FBS</strong> — отгрузка со своего склада</td><td>Товар лежит у вас, вы собираете и отгружаете заказы</td><td>Заказы, отгрузка, остатки, цены, каталог, маркировка, ГТД, резервы, этикетки, акции, финансы</td></tr><tr><td><strong>FBO/FBM</strong> — товар на складе маркетплейса</td><td>Вы возите товар на склад Ozon партиями</td><td>Механика поставок FBM</td></tr><tr><td><strong>realFBS Standard</strong></td><td>Своя доставка, статусы проставляются вручную</td><td>Ручное управление статусами заказа</td></tr></tbody></table></div>
+<blockquote>
+<p><strong>Схемы взаимоисключающие по составу механик.</strong> При FBS чекбокс поставок FBM скрыт. Если нужны обе схемы — создайте <strong>два проекта</strong> на один кабинет Ozon.</p>
+</blockquote>
+<hr>
+<h3 id="шаг-3-выбрать-механики">Шаг 3. Выбрать механики</h3>
+<p><strong>Шаг 3В</strong> — для Ozon доступно 11 механик, все отмечены по умолчанию.</p>
+<figure class="doc-shot"><a href="/docs/images/master-step3v-mech-ozon.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3v-mech-ozon.png" alt="Шаг 3В: механики Ozon" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3В: механики Ozon</figcaption></figure>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>№ на экране</th><th>Механика</th><th>Что делает</th><th>Подробная инструкция</th></tr></thead><tbody><tr><td>1</td><td>Получение заказов FBS/FBO</td><td>Забирает заказы с Ozon и создаёт документы в 1С</td><td><a href="/docs/epf/zakazy-i-otgruzka">Заказы и отгрузка</a></td></tr><tr><td>2</td><td>Подтверждение отгрузки</td><td>Создаёт документ отгрузки и сообщает Ozon об отправке</td><td><a href="/docs/epf/zakazy-i-otgruzka">Заказы и отгрузка</a></td></tr><tr><td>3</td><td>Выгрузка остатков</td><td>Отправляет остатки складов 1С на Ozon</td><td><a href="/docs/epf/ostatki">Остатки</a></td></tr><tr><td>4</td><td>Синхронизация цен</td><td>Отправляет цены из 1С на Ozon</td><td><a href="/docs/epf/tseny">Цены</a></td></tr><tr><td>6</td><td>Финансовые отчёты МП</td><td>Загружает отчёты Ozon и отражает их в 1С</td><td><a href="/docs/epf/finansovye-otchyoty">Финансовые отчёты</a></td></tr><tr><td>7</td><td>Маркировка «Честный знак»</td><td>Передаёт коды маркировки в заказы</td><td><a href="/docs/epf/markirovka-chestny-znak">Маркировка</a></td></tr><tr><td>8</td><td>Резервирование запасов <em>(только Ozon)</em></td><td>Синхронизирует резервы Ozon с 1С</td><td><a href="/docs/epf/rezervy">Резервы</a></td></tr><tr><td>9</td><td>Передача ГТД <em>(только Ozon)</em></td><td>Передаёт номера таможенных деклараций</td><td><a href="/docs/epf/gtd">ГТД</a></td></tr><tr><td>10</td><td>Управление каталогом товаров</td><td>Сопоставляет товары 1С и карточки Ozon</td><td><a href="/docs/epf/katalog-i-sopostavlenie">Каталог и сопоставление</a></td></tr><tr><td>11</td><td>Печать этикеток FBS/FBM</td><td>Печать этикеток заказов и грузовых мест</td><td><a href="/docs/epf/etiketki">Этикетки</a></td></tr><tr><td>12</td><td>Участие в акциях / Promo <em>(только Ozon)</em></td><td>Подключение товаров к акциям Ozon</td><td><a href="/docs/epf/aktsii-promo">Акции / Promo</a></td></tr></tbody></table></div>
+<blockquote>
+<p>Номер <strong>5 (поставки FBM/FBO)</strong> в списке отсутствует — он появляется только при схеме FBO/FBM на Шаге 3Б. См. <a href="/docs/epf/fbm-fbo-postavki">FBM/FBO поставки</a>.</p>
+</blockquote>
+<p><strong>Что включать на старте:</strong> оставьте набор по умолчанию либо снимите механики, которыми точно не будете пользоваться (акции, ГТД, резервы). Добавить их можно потом кнопкой «Механики (Шаг 3В)» на рабочем столе проекта.</p>
+<hr>
+<h3 id="шаг-4-api-запросы-и-частота">Шаг 4. API-запросы и частота</h3>
+<p><strong>Шаг 3Г</strong> — оставьте набор <strong>★ Рекомендуемые</strong> и частоту опроса <code>15min</code>.</p>
+<figure class="doc-shot"><a href="/docs/images/master-step3g-api.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3g-api.png" alt="Шаг 3Г: API-запросы и частота" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3Г: API-запросы и частота</figcaption></figure>
+<p>Обратите внимание на <strong>«Прогноз потребления тарифа»</strong> внизу: он показывает оценку операций в месяц по выбранному набору. Самые «дорогие» строки — выгрузка остатков (<code>stock.upload</code>, каждые 5 минут) и опрос заказов (<code>orders.fbs_list</code>). Если прогноз превышает ваш тариф — увеличьте интервалы этих строк и нажмите <strong>⟳ Пересчитать</strong>.</p>
+<hr>
+<h3 id="шаг-5-реквизиты-интеграции">Шаг 5. Реквизиты интеграции</h3>
+<p><strong>Шаг 4</strong> — заполните реквизиты учёта в 1С.</p>
+<figure class="doc-shot"><a href="/docs/images/master-step4-refs.png" target="_blank" rel="noopener"><img src="/docs/images/master-step4-refs.png" alt="Шаг 4: реквизиты интеграции" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 4: реквизиты интеграции</figcaption></figure>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Поле</th><th>Что указать для Ozon</th></tr></thead><tbody><tr><td><strong>Название интеграции</strong></td><td>Например «Ozon Основной» — так проект будет виден в каталоге</td></tr><tr><td><strong>Контрагент</strong></td><td>Контрагент, на которого создаются документы по заказам Ozon</td></tr><tr><td><strong>Склад отгрузки</strong></td><td>Склад, с которого отгружаются FBS-заказы</td></tr><tr><td><strong>Организация</strong></td><td>Обязательна только в КА 2 / ERP</td></tr><tr><td><strong>Договор</strong></td><td>Если ведётся учёт по договорам</td></tr></tbody></table></div>
+<p>Ниже — блоки <strong>«Общие параметры сервиса»</strong> и <strong>«Настройки выбранных механик»</strong>: по одному блоку на каждую отмеченную механику. Здесь достаточно оставить значения по умолчанию — детальная настройка делается позже на формах механик.</p>
+<hr>
+<h3 id="шаг-6-запуск">Шаг 6. Запуск</h3>
+<p><strong>Шаг 5</strong> → флажок <strong>«Запустить фоновые задания сразу после закрытия мастера»</strong> → <strong>«✓ Завершить и запустить»</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/master-step5-launch.png" target="_blank" rel="noopener"><img src="/docs/images/master-step5-launch.png" alt="Шаг 5: готово к запуску" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 5: готово к запуску</figcaption></figure>
+<p>Откроется рабочий стол проекта.</p>
+<figure class="doc-shot"><a href="/docs/images/project-desktop.png" target="_blank" rel="noopener"><img src="/docs/images/project-desktop.png" alt="Рабочий стол проекта Ozon" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Рабочий стол проекта Ozon</figcaption></figure>
+<p>Проверьте: <strong>Статус = <code>Активен</code></strong>, в таблице «Подключённые механики» перечислены выбранные механики.</p>
+<hr>
+<h3 id="шаг-7-что-настроить-сразу-после-создания">Шаг 7. Что настроить сразу после создания</h3>
+<p>Порядок важен: без него данные не пойдут.</p>
+<h4 id="71-выбрать-склады-для-остатков-обязательно">7.1. Выбрать склады для остатков (обязательно)</h4>
+<p>Рабочий стол → строка <strong>«Остатки»</strong> → <strong>⚙ Настройка</strong> → <strong>✓ Выбрать все</strong> (или отметить нужные) → <strong>Сохранить</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/stock-setup.png" target="_blank" rel="noopener"><img src="/docs/images/stock-setup.png" alt="Настройка остатков: выбор складов" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Настройка остатков: выбор складов</figcaption></figure>
+<p>Без выбранных складов остатки не выгружаются и экран «Управление товарами 1С» будет пустым. Подробно — <a href="/docs/epf/ostatki">Остатки</a>.</p>
+<h4 id="72-сопоставить-товары-обязательно">7.2. Сопоставить товары (обязательно)</h4>
+<p>Рабочий стол → строка <strong>«Каталог»</strong> → <strong>▶ Рабочее место</strong> → <strong>«Загрузить товары ↓»</strong> → <strong>«⚡ Автосопоставить»</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/catalog-items.png" target="_blank" rel="noopener"><img src="/docs/images/catalog-items.png" alt="Загруженный каталог Ozon" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Загруженный каталог Ozon</figcaption></figure>
+<p>Остатки, цены и резервы синхронизируются <strong>только по сопоставленным товарам</strong>. Подробно — <a href="/docs/epf/katalog-i-sopostavlenie">Каталог и сопоставление</a>.</p>
+<h4 id="73-указать-тип-цен">7.3. Указать тип цен</h4>
+<p>Рабочий стол → строка <strong>«Цены»</strong> → <strong>⚙ Настройка</strong> → выбрать <strong>ТипЦены</strong> → <strong>Сохранить</strong>. Подробно — <a href="/docs/epf/tseny">Цены</a>.</p>
+<h4 id="74-проверить-статусы-заказов">7.4. Проверить статусы заказов</h4>
+<p>Рабочий стол → строка <strong>«Заказы»</strong> → <strong>⚙ Настройка</strong> → отметить, какие статусы забирать. По умолчанию — «Ожидает упаковки» и «Ожидает отгрузки».</p>
+<figure class="doc-shot"><a href="/docs/images/orders-setup.png" target="_blank" rel="noopener"><img src="/docs/images/orders-setup.png" alt="Настройка получения заказов" loading="lazy" decoding="async" width="1920" height="945"></a><figcaption>Настройка получения заказов</figcaption></figure>
+<hr>
+<h3 id="шаг-8-проверить-что-всё-работает">Шаг 8. Проверить, что всё работает</h3>
+<ol>
+<li>Рабочий стол → <strong>«▶ Запустить цикл сейчас»</strong>.</li>
+<li>Строка <strong>«Заказы»</strong> → <strong>▶ Рабочее место</strong> → <strong>«📥 Получить заказы»</strong>.</li>
+</ol>
+<figure class="doc-shot"><a href="/docs/images/orders-workplace.png" target="_blank" rel="noopener"><img src="/docs/images/orders-workplace.png" alt="Рабочее место заказов" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Рабочее место заказов</figcaption></figure>
+<p>В таблице должны появиться заказы с колонками: № заказа МП, дата, источник (OZON), схема (FBS / FBO / realFBS), покупатель, товаров, сумма, статус, КИЗ, ГТД, страна, РНПТ и ссылка на созданный документ 1С.</p>
+<ol start="3">
+<li>Вернитесь в <strong>каталог проектов</strong> — в ленте «Последние события» должны быть строки вида <code>Заказ … → документ 1С</code>.</li>
+</ol>
+<hr>
+<h3 id="особенности-ozon">Особенности Ozon</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Особенность</th><th>Комментарий</th></tr></thead><tbody><tr><td><strong>Резервы</strong></td><td>Только Ozon. Требуется включение соответствующей настройки в личном кабинете Ozon — см. <a href="/docs/epf/rezervy">Резервы</a></td></tr><tr><td><strong>ГТД и РНПТ</strong></td><td>Только Ozon. Колонки «ГТД», «Страна», «РНПТ» видны в рабочем месте заказов</td></tr><tr><td><strong>Акции / Promo</strong></td><td>Только Ozon. Товары подключаются к акциям вручную из рабочего места — см. <a href="/docs/epf/aktsii-promo">Акции / Promo</a></td></tr><tr><td><strong>realFBS</strong></td><td>Отдельная схема со своей доставкой и ручными статусами</td></tr><tr><td><strong>Возвраты</strong></td><td>Доступны из хаба «Заказы» — см. <a href="/docs/epf/vozvraty">Возвраты</a></td></tr></tbody></table></div>
+<hr>
+<h3 id="частые-проблемы">Частые проблемы</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Решение</th></tr></thead><tbody><tr><td>Заказы не приходят</td><td>Проверьте: статус проекта <code>Активен</code>; в настройке заказов отмечены нужные статусы; нажмите «▶ Запустить цикл сейчас» и затем «📥 Получить заказы»</td></tr><tr><td>Остатки не уходят на Ozon</td><td>Не выбраны склады в настройке остатков, либо товары не сопоставлены</td></tr><tr><td>Цены не уходят</td><td>Не указан тип цен в настройке цен</td></tr><tr><td>В экране «Управление товарами 1С» пусто</td><td>Не выбраны склады (см. 7.1)</td></tr><tr><td>Нет чекбокса FBM на Шаге 3В</td><td>Ожидаемо при схеме FBS. Нужен отдельный проект со схемой FBO/FBM</td></tr><tr><td>Нет механик резервов/ГТД/акций</td><td>Проверьте, что выбран сервис <code>ozon</code> — у WB и ЯМ этих механик нет</td></tr></tbody></table></div>
+<hr>
+<h3 id="смотрите-также">Смотрите также</h3>
+<ul>
+<li><a href="/docs/epf/podklyuchit-wildberries">Как подключить Wildberries</a></li>
+<li><a href="/docs/epf/podklyuchit-yandex-market">Как подключить Яндекс.Маркет</a></li>
+<li><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></li>
+</ul>

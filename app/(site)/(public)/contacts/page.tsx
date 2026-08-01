@@ -4,9 +4,10 @@ import { PublicFooter } from '@/components/PublicFooter';
 import { ContactsBody } from './ContactsBody';
 
 export const metadata: Metadata = {
-  // ⚠️ в эталоне описание обещало «офис в Москве, Telegram» — ни того, ни другого нет
+  // ⚠️ в эталоне описание обещало «офис в Москве, Telegram» — ни того, ни другого нет.
+  // Телефона тоже не обещаем: обращения только по email (решение Дмитрия 2026-08-01)
   title: 'Контакты CoreBridge — связаться с командой',
-  description: 'Контакты CoreBridge: телефон, email, форма обращения. Реквизиты Исполнителя.',
+  description: 'Контакты CoreBridge: email, форма обращения. Реквизиты Исполнителя.',
   alternates: { canonical: 'https://corebridge.ru/contacts' },
 };
 

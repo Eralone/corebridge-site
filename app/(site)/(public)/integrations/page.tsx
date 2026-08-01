@@ -4,9 +4,10 @@ import { PublicFooter } from '@/components/PublicFooter';
 import { IntegrationsCatalog } from './IntegrationsCatalog';
 
 export const metadata: Metadata = {
-  title: 'Интеграции — CoreBridge',
+  title: 'Интеграции 1С: маркетплейсы, CRM, доставка — CoreBridge',
   description:
-    '33 сервиса в 8 категориях: маркетплейсы, сайты, CRM, доставка, оплата, маркетинг, мессенджеры и аналитика. Подключаются галочкой в файле .epf.',
+    'Каталог интеграций 1С: Ozon, Wildberries, Яндекс.Маркет, Битрикс24, AmoCRM, СДЭК, ЮKassa, ' +
+    'Telegram, МойСклад, Google Sheets — что умеет каждая.',
   alternates: { canonical: 'https://corebridge.ru/integrations' },
 };
 

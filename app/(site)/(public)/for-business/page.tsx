@@ -4,9 +4,10 @@ import { PublicFooter } from '@/components/PublicFooter';
 import { ForBusinessBody } from './ForBusinessBody';
 
 export const metadata: Metadata = {
-  title: 'Для бизнеса — CoreBridge',
+  title: 'Интеграция 1С для бизнеса и интеграторов — CoreBridge',
   description:
-    'Корпоративные интеграции 1С: ритейл, оптовая торговля, производство, ИТ-интеграторы. Установка на своём сервере, заявка на внедрение.',
+    'Корпоративная интеграция 1С с маркетплейсами и CRM: ритейл, оптовая торговля, производство, ' +
+    'ИТ-интеграторы. Установка на своём сервере, сопровождение, заявка на внедрение.',
   alternates: { canonical: 'https://corebridge.ru/for-business' },
 };
 

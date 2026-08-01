@@ -1,0 +1,45 @@
+<p>Механика позволяет посмотреть акции кабинета Ozon, увидеть товары-кандидаты с рекомендованной ценой и подключить выбранные позиции к акции — не выходя из 1С.</p>
+<p><strong>Доступна только для Ozon.</strong> Механика <strong>не создаёт документов 1С</strong> и не обращается к Ozon напрямую — всё идёт через сервер платформы.</p>
+<hr>
+<h3 id="шаг-1-включить-механику">Шаг 1. Включить механику</h3>
+<p><strong>Шаг 3В</strong> мастера → отметить <strong>«Участие в акциях / Promo (только Ozon)»</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/master-step3v-mech-ozon.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3v-mech-ozon.png" alt="Шаг 3В: механики Ozon" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3В: механики Ozon</figcaption></figure>
+<p>В существующем проекте: рабочий стол → <strong>«Механики (Шаг 3В)»</strong>.</p>
+<hr>
+<h3 id="шаг-2-настройка">Шаг 2. Настройка</h3>
+<p>Рабочий стол проекта → строка <strong>«Акции / Promo»</strong> → <strong>⚙ Настройка</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/promo-setup.png" target="_blank" rel="noopener"><img src="/docs/images/promo-setup.png" alt="Настройка акций" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Настройка акций</figcaption></figure>
+<p>Настройка минимальна — механика работает в ручном режиме, основное происходит в рабочем месте.</p>
+<hr>
+<h3 id="шаг-3-рабочее-место-акции">Шаг 3. Рабочее место «Акции»</h3>
+<p>Рабочий стол → строка <strong>«Акции / Promo»</strong> → <strong>▶ Рабочее место</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/promo-workplace.png" target="_blank" rel="noopener"><img src="/docs/images/promo-workplace.png" alt="Рабочее место акций" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Рабочее место акций</figcaption></figure>
+<p>При открытии таблица пуста, а в поле <strong>«ТекстИнфо»</strong> написано: <strong>«Нажмите &quot;↺ Обновить акции&quot; для загрузки списка»</strong>.</p>
+<p>Это сделано намеренно: форма не делает сетевой запрос при открытии, чтобы не подвешивать сеанс. Загрузка запускается кнопкой.</p>
+<h4 id="верхняя-таблица-акции">Верхняя таблица — акции</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Элемент</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Кабинет</strong></td><td>Проект</td></tr><tr><td><strong>Обновлено</strong></td><td>Время последней загрузки</td></tr><tr><td><strong>↺ Обновить акции</strong></td><td>Загрузить список акций кабинета</td></tr><tr><td><strong>ТекстИнфо</strong></td><td>Подсказка и статус</td></tr></tbody></table></div>
+<p><strong>Колонки:</strong> ID акции, название, тип, начало, окончание, количество товаров.</p>
+<h4 id="нижняя-таблица-товары-кандидаты">Нижняя таблица — товары-кандидаты</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Кнопка</th><th>Действие</th></tr></thead><tbody><tr><td><strong>📋 Кандидаты выбранной акции</strong></td><td>Загрузить товары, которые можно подключить к выделенной акции</td></tr><tr><td><strong>✅ Подключить отмеченные товары</strong></td><td>Отправить выбранные позиции на подключение</td></tr></tbody></table></div>
+<p><strong>Колонки:</strong> отметка, артикул Ozon, <code>product_id</code>, текущая цена, цена 1С, акционная цена, максимальная акционная цена.</p>
+<p>Колонка <strong>«Цена 1С»</strong> показывает вашу цену рядом с акционной — по ней сразу видно, насколько глубока скидка и не уходите ли вы в минус.</p>
+<hr>
+<h3 id="типовой-сценарий">Типовой сценарий</h3>
+<ol>
+<li>Открыть рабочее место → <strong>«↺ Обновить акции»</strong>.</li>
+<li>Выделить нужную акцию в верхней таблице.</li>
+<li>Нажать <strong>«📋 Кандидаты выбранной акции»</strong> — загрузятся товары с рекомендованными ценами.</li>
+<li>Сравнить <strong>«Цена 1С»</strong> и <strong>«Акц. цена»</strong>, отметить подходящие позиции.</li>
+<li>Нажать <strong>«✅ Подключить отмеченные товары»</strong>.</li>
+<li>Результат подключения приходит с сервера асинхронно — обновите таблицу через некоторое время.</li>
+</ol>
+<hr>
+<h3 id="частые-проблемы">Частые проблемы</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Решение</th></tr></thead><tbody><tr><td>Механики нет на Шаге 3В</td><td>Акции доступны только для Ozon. Проверьте сервис проекта</td></tr><tr><td>Таблица акций пустая, в «ТекстИнфо» — подсказка</td><td>Это штатное состояние при открытии. Нажмите <strong>«↺ Обновить акции»</strong></td></tr><tr><td>После «Обновить акции» список пуст</td><td>В кабинете Ozon нет активных акций, доступных продавцу</td></tr><tr><td>Кандидаты не загружаются</td><td>Не выделена акция в верхней таблице</td></tr><tr><td>Результат подключения не виден</td><td>Он приходит асинхронно. Подождите и нажмите <strong>«↺ Обновить акции»</strong></td></tr><tr><td>«Цена 1С» пустая</td><td>Товар не сопоставлен с номенклатурой 1С. См. <a href="/docs/epf/katalog-i-sopostavlenie">Каталог и сопоставление</a></td></tr></tbody></table></div>
+<hr>
+<h3 id="смотрите-также">Смотрите также</h3>
+<ul>
+<li><a href="/docs/epf/tseny">Цены</a></li>
+<li><a href="/docs/epf/katalog-i-sopostavlenie">Каталог и сопоставление</a></li>
+<li><a href="/docs/epf/podklyuchit-ozon">Как подключить Ozon</a></li>
+</ul>

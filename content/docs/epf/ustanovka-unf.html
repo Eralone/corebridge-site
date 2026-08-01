@@ -1,0 +1,56 @@
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Параметр</th><th>Значение</th></tr></thead><tbody><tr><td>Файл модуля</td><td><code>unified_unf.epf</code></td></tr><tr><td>Конфигурация</td><td>1С:Управление нашей фирмой (УНФ)</td></tr><tr><td>Сервер платформы</td><td><code>https://api.corebridge.ru</code></td></tr><tr><td>Платформа 1С</td><td>8.3.14 и выше (рекомендуется 8.3.22+)</td></tr><tr><td>Режим работы</td><td>Управляемое приложение: тонкий, толстый или веб-клиент</td></tr><tr><td>Сетевые требования</td><td>Только исходящий HTTPS на <code>api.corebridge.ru:443</code></td></tr><tr><td>Прямые вызовы API маркетплейсов</td><td>Нет — весь обмен идёт через сервер платформы</td></tr></tbody></table></div>
+<p>CoreBridge EPF — единая внешняя обработка. Один файл содержит все механики платформы; нужные включаются в мастере при создании проекта.</p>
+<hr>
+<h3 id="1-что-нужно-до-начала">1. Что нужно до начала</h3>
+<ol>
+<li>Аккаунт на <strong>corebridge.ru</strong> с активной лицензией.</li>
+<li><strong>JWT-токен</strong> из Личного кабинета — <a href="/docs#token">как его получить</a>.</li>
+<li>Права администратора в 1С (для установки через «Дополнительные отчёты и обработки»).</li>
+<li>Открытый исходящий HTTPS до <code>api.corebridge.ru:443</code>.</li>
+</ol>
+<blockquote>
+<p>Модуль не открывает входящих портов. На сервер уходят только JSON-события по настроенным механикам.</p>
+</blockquote>
+<hr>
+<h3 id="2-получение-файла">2. Получение файла</h3>
+<blockquote>
+<p>Тот же путь по шагам, со скриншотами каждого экрана кабинета: <strong><a href="/docs#token">Первичная настройка</a></strong>.</p>
+</blockquote>
+<ol>
+<li>Личный кабинет на <strong>corebridge.ru</strong> → <strong>«Файл .epf и JWT-токен»</strong>.</li>
+<li>Конфигурация — <strong>1С:УНФ</strong>.</li>
+<li>Скопируйте <strong>JWT-токен</strong>.</li>
+<li>Скачайте <strong><code>unified_unf.epf</code></strong>.</li>
+</ol>
+<hr>
+<h3 id="3-установка">3. Установка</h3>
+<h4 id="вариант-а-через-дополнительные-отчёты-и-обработки-рекомендуется">Вариант А — через «Дополнительные отчёты и обработки» (рекомендуется)</h4>
+<ol>
+<li><strong>Компания</strong> → <strong>Администрирование</strong> → <strong>Печатные формы, отчёты и обработки</strong> → <strong>Дополнительные отчёты и обработки</strong>.</li>
+<li><strong>Добавить из файла…</strong> → <strong>Продолжить</strong> → <code>unified_unf.epf</code>.</li>
+<li>Укажите раздел размещения (например <strong>Продажи</strong>).</li>
+<li><strong>Записать и закрыть</strong>.</li>
+</ol>
+<h4 id="вариант-б-открыть-файл-напрямую">Вариант Б — открыть файл напрямую</h4>
+<p><strong>Файл</strong> → <strong>Открыть</strong> → <code>unified_unf.epf</code>. Подходит для разовой проверки.</p>
+<hr>
+<h3 id="4-первый-запуск">4. Первый запуск</h3>
+<p>Откроется вкладка <strong>CoreBridge. Каталог проектов</strong> → <strong>«+ Добавить интеграцию»</strong>.</p>
+<p>Полный разбор шагов — <strong><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></strong>.</p>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Шаг</th><th>Что делаете</th></tr></thead><tbody><tr><td>1. Подключение</td><td>URL + JWT → <strong>Проверить подключение</strong></td></tr><tr><td>2. Конфигурация 1С</td><td>Определяется автоматически как <code>unf</code></td></tr><tr><td>3А–3Г</td><td>Категория → сервис и схема → механики → API и частота</td></tr><tr><td>4. Реквизиты</td><td>Название, контрагент, склад, договор</td></tr><tr><td>5. Запуск</td><td><strong>✓ Завершить и запустить</strong></td></tr></tbody></table></div>
+<hr>
+<h3 id="5-особенности-унф">5. Особенности УНФ</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Что</th><th>Как в УНФ</th></tr></thead><tbody><tr><td><strong>Организация в документах</strong></td><td>Не обязательна</td></tr><tr><td><strong><a href="/docs/epf/ostatki">Склады</a></strong></td><td>Полноценный складской учёт, доступен выбор нескольких складов</td></tr><tr><td><strong><a href="/docs/epf/zakazy-i-otgruzka">Заказы</a></strong></td><td>Создаётся документ заказа клиента</td></tr><tr><td><strong><a href="/docs/epf/zakazy-i-otgruzka">Отгрузка</a></strong></td><td>Создаётся расходная накладная</td></tr><tr><td><strong>Оплата</strong></td><td>Кассовые ордера (приходный / расходный)</td></tr><tr><td><strong><a href="/docs/epf/rezervy">Резервирование</a></strong></td><td>Поддерживается через регистр резервов запасов</td></tr><tr><td><strong><a href="/docs/epf/markirovka-chestny-znak">Маркировка «Честный знак»</a></strong></td><td>Поддерживается; структура табличной части кодов маркировки отличается от УТ 11 — заполняется автоматически</td></tr><tr><td><strong><a href="/docs/epf/finansovye-otchyoty">Финансовые отчёты МП</a></strong></td><td>Базовая схема отражения (отчёт комиссионера). Расширенные схемы недоступны</td></tr><tr><td><strong><a href="/docs/epf/fbm-fbo-postavki">FBM/FBO</a></strong></td><td>Поддерживается. Ордерная схема склада — <strong>не поддерживается</strong></td></tr><tr><td><strong>Справочник партнёров</strong></td><td>Отсутствует, работа ведётся напрямую с контрагентами</td></tr><tr><td><strong><a href="/docs/epf/tseny">Типы цен</a></strong></td><td>Список подгружается кнопкой на форме настройки цен</td></tr></tbody></table></div>
+<hr>
+<h3 id="6-автообновление-модуля">6. Автообновление модуля</h3>
+<p>Раз в сутки модуль проверяет наличие новой версии <code>unified_unf.epf</code> на сервере платформы. При наличии обновления предлагает обновиться прямо из интерфейса 1С.</p>
+<hr>
+<h3 id="7-диагностика">7. Диагностика</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Что проверить</th></tr></thead><tbody><tr><td>На Шаге 1 статус подключения пустой</td><td>Доступность <code>api.corebridge.ru:443</code>, прокси/файрвол, срок действия JWT</td></tr><tr><td>Проект создан, но данных нет</td><td>Статус проекта = <code>Активен</code>; нажать <strong>«▶ Запустить цикл сейчас»</strong></td></tr><tr><td>Пустая таблица в рабочем месте</td><td>Нажать <strong>«Обновить»</strong> на самой форме</td></tr><tr><td>Остатки не выгружаются</td><td>В <strong>⚙ Настройка</strong> механики «Остатки» не выбраны склады → <strong>✓ Выбрать все</strong> → <strong>Сохранить</strong></td></tr><tr><td>Товары не синхронизируются</td><td>Не выполнено сопоставление номенклатуры — см. <a href="/docs/epf/katalog-i-sopostavlenie">Каталог и сопоставление</a></td></tr><tr><td>Нет расширенных схем финансового отчёта</td><td>Ожидаемо: в УНФ доступна только базовая схема</td></tr><tr><td>Не работает ордерная схема FBM</td><td>Ожидаемо: ордерная схема доступна только в УТ 11</td></tr></tbody></table></div>
+<hr>
+<h3 id="8-дальше">8. Дальше</h3>
+<ul>
+<li><strong><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></strong></li>
+<li><strong><a href="/docs/epf/katalog-proektov">Каталог проектов и рабочий стол</a></strong></li>
+<li><strong><a href="/docs/epf">Все инструкции</a></strong></li>
+</ul>

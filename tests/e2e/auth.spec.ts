@@ -110,8 +110,18 @@ test.describe('Регистрация', () => {
 
 test.describe('Восстановление пароля', () => {
   test('ответ одинаков для любого адреса — перебор не работает', async ({ page }) => {
+    /**
+     * ⚠️ Адрес уникальный на каждый прогон. С фиксированным
+     * (`nobody-here@example.com`) тест сам себя блокировал: сервер ограничивает
+     * запросы сброса **по адресу**, а не по IP — другой адрес с того же IP
+     * получает 202 сразу же, а исчерпанный отвечает 429 и через 16 минут.
+     * Проявилось при частых прогонах набора 2026-08-01; для сути проверки
+     * подходит любой несуществующий адрес.
+     */
+    const nobody = `nobody-${Date.now().toString(36)}@example.com`;
+
     await page.goto('/forgot-password');
-    await page.getByRole('textbox', { name: 'Email' }).fill('nobody-here@example.com');
+    await page.getByRole('textbox', { name: 'Email' }).fill(nobody);
     await page.getByRole('button', { name: 'Отправить инструкции' }).click();
     await expect(page.getByRole('heading', { name: 'Проверьте почту' })).toBeVisible();
     await expect(page.getByText(/Если такой аккаунт у нас есть/)).toBeVisible();

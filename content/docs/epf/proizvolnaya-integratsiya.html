@@ -1,0 +1,74 @@
+<p>Механика для случая, когда <strong>нужного сервиса нет в списке готовых интеграций</strong>. Вы сами конструируете набор полей, а модуль отправляет их на платформу в едином формате. Дальше данные попадают в ваш персональный воркфлоу n8n, где вы настраиваете отправку в любой внешний сервис.</p>
+<p>Направление — <strong>только 1С → внешний сервис</strong>.</p>
+<hr>
+<h3 id="когда-это-нужно">Когда это нужно</h3>
+<ul>
+<li>Внешний сервис, для которого нет готового адаптера.</li>
+<li>Собственная система учёта, ERP партнёра, отраслевой сервис.</li>
+<li>Нестандартный формат обмена под конкретного контрагента.</li>
+</ul>
+<p>Если ваш сервис есть в <a href="/docs/epf#поддерживаемые-сервисы">списке адаптеров</a> — используйте готовую механику, она проще.</p>
+<hr>
+<h3 id="шаг-1-запустить-мастер">Шаг 1. Запустить мастер</h3>
+<p>Каталог проектов → <strong>«+ Добавить интеграцию»</strong>. Шаги 1–2 — см. <strong><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></strong>.</p>
+<p><strong>Шаг 3А</strong> → категория <strong><code>other</code> (Иное)</strong>.
+<strong>Шаг 3Б</strong> → сервис <strong><code>custom</code> (Произвольная интеграция)</strong>.</p>
+<hr>
+<h3 id="шаг-2-механики">Шаг 2. Механики</h3>
+<figure class="doc-shot"><a href="/docs/images/master-step3v-mech-other.png" target="_blank" rel="noopener"><img src="/docs/images/master-step3v-mech-other.png" alt="Шаг 3В: категория «Иное»" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Шаг 3В: категория «Иное»</figcaption></figure>
+<p>Чекбоксов механик здесь <strong>нет</strong> — строка состояния показывает <code>Категория: Иное  Сервис: custom  Выбрано: 0 / 0</code>. Это нормально: механика подставляется автоматически. Просто нажмите <strong>«Далее →»</strong>.</p>
+<p><strong>Шаг 3Г</strong> — <strong>★ Рекомендуемые</strong>. <strong>Шаг 4</strong> — название проекта. <strong>Шаг 5</strong> — <strong>«✓ Завершить и запустить»</strong>.</p>
+<hr>
+<h3 id="шаг-3-собрать-схему-полей">Шаг 3. Собрать схему полей</h3>
+<p>Рабочий стол проекта → строка <strong>«Иное»</strong> → <strong>⚙ Настройка</strong>. Откроется <strong>CoreBridge. Произвольная интеграция</strong>.</p>
+<figure class="doc-shot"><a href="/docs/images/other-schema.png" target="_blank" rel="noopener"><img src="/docs/images/other-schema.png" alt="Конструктор схемы полей" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Конструктор схемы полей</figcaption></figure>
+<h4 id="общие-параметры">Общие параметры</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Параметр</th><th>Значения</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Триггер</strong></td><td><code>manual</code> / <code>document</code> / <code>cycle</code></td><td>Когда отправлять: вручную, по документу, по расписанию</td></tr><tr><td><strong>Интервал цикла, мин</strong></td><td>число</td><td>Период для триггера <code>cycle</code>. По умолчанию 30</td></tr><tr><td><strong>Пропускать пустые поля</strong></td><td><code>Да</code> / <code>Нет</code></td><td>Не включать в отправку поля без значения</td></tr></tbody></table></div>
+<h4 id="быстрый-старт-демо-схема">Быстрый старт: «Демо-схема»</h4>
+<p>Кнопка <strong>«Демо-схема»</strong> заполняет таблицу примером под выбранную вкладку. Самый быстрый способ понять формат — нажать её и посмотреть результат.</p>
+<h4 id="добавление-поля-вручную">Добавление поля вручную</h4>
+<p>Блок <strong>«Добавить поле»</strong>:</p>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Поле</th><th>Назначение</th></tr></thead><tbody><tr><td><strong>Имя поля</strong></td><td>Как поле будет называться в отправляемых данных, например <code>order_number</code></td></tr><tr><td><strong>Источник</strong></td><td>Откуда брать значение (см. таблицу ниже)</td></tr><tr><td><strong>Значение/ключ</strong></td><td>Константа или ключ источника</td></tr><tr><td><strong>Обяз.</strong></td><td>Обязательное ли поле</td></tr><tr><td><strong>По умолчанию</strong></td><td>Значение, если источник недоступен</td></tr></tbody></table></div>
+<p>Нажмите <strong>«+ Добавить поле»</strong> — строка появится в таблице.</p>
+<h4 id="типы-источников">Типы источников</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Источник</th><th>Что даёт</th><th>Требует контекст документа</th></tr></thead><tbody><tr><td><code>custom_requisite</code></td><td>Константа, которую вы задаёте в поле «Значение/ключ»</td><td>Нет</td></tr><tr><td><code>system_field</code></td><td>Системное значение: <code>current_date</code>, идентификатор интеграции, конфигурация</td><td>Нет</td></tr><tr><td><code>doc_field</code></td><td>Реквизит документа</td><td>Да</td></tr><tr><td><code>contractor_field</code></td><td>Реквизит контрагента</td><td>Да</td></tr><tr><td><code>nomenclature_list</code></td><td>Список номенклатуры документа</td><td>Да</td></tr><tr><td><code>warehouse_field</code></td><td>Реквизит склада</td><td>Да</td></tr><tr><td><code>contract_field</code></td><td>Реквизит договора</td><td>Да</td></tr></tbody></table></div>
+<blockquote>
+<p>Источники, требующие контекста документа, при триггерах <code>manual</code> и <code>cycle</code> подставят значение из колонки «По умолчанию» и выдадут предупреждение — отправка при этом не сорвётся.</p>
+</blockquote>
+<h4 id="таблица-схемы">Таблица схемы</h4>
+<p>Собранные поля: имя поля, источник, значение/ключ, обяз., по умолчанию. Лишнюю строку удаляет кнопка <strong>«Удалить поле»</strong>.</p>
+<hr>
+<h3 id="шаг-4-проверить-и-отправить">Шаг 4. Проверить и отправить</h3>
+<figure class="doc-shot"><a href="/docs/images/other-sent.png" target="_blank" rel="noopener"><img src="/docs/images/other-sent.png" alt="Результат отправки" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Результат отправки</figcaption></figure>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Кнопка</th><th>Действие</th></tr></thead><tbody><tr><td><strong>Предпросмотр JSON</strong></td><td>Показать, что именно уйдёт на платформу — поле <strong>«ПревьюJSON»</strong></td></tr><tr><td><strong>Сохранить</strong></td><td>Сохранить схему</td></tr><tr><td><strong>Отправить (тест)</strong></td><td>Отправить пробное сообщение прямо сейчас</td></tr><tr><td><strong>Журнал</strong></td><td>Открыть журнал отправок</td></tr></tbody></table></div>
+<h4 id="блок-результат-статус">Блок «Результат / статус»</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Поле</th><th>Что показывает</th></tr></thead><tbody><tr><td><strong>Статус</strong></td><td>Состояние схемы, например <code>Демо-схема: 4 полей (вкладка «marketplace»)</code></td></tr><tr><td><strong>РезультатОтправки</strong></td><td>Итог отправки: <code>✓ Отправлено. event_id=evt_cst_…</code> либо текст ошибки</td></tr></tbody></table></div>
+<p>Успешная отправка возвращает <strong><code>event_id</code></strong>, начинающийся с <code>evt_cst_</code> — по нему запись можно найти в журнале.</p>
+<p><strong>Рекомендуемый порядок:</strong> соберите схему → <strong>«Предпросмотр JSON»</strong> → <strong>«Сохранить»</strong> → <strong>«Отправить (тест)»</strong> → проверьте <code>РезультатОтправки</code>.</p>
+<hr>
+<h3 id="шаг-5-журнал-иное">Шаг 5. Журнал «Иное»</h3>
+<p>Рабочий стол → строка <strong>«Иное»</strong> → <strong>▶ Рабочее место</strong>. Либо кнопка <strong>«Журнал»</strong> на форме настройки.</p>
+<figure class="doc-shot"><a href="/docs/images/other-journal.png" target="_blank" rel="noopener"><img src="/docs/images/other-journal.png" alt="Журнал «Иное»" loading="lazy" decoding="async" width="1904" height="1005"></a><figcaption>Журнал «Иное»</figcaption></figure>
+<h4 id="фильтры">Фильтры</h4>
+<p>Поля <strong>С</strong> / <strong>По</strong>, <strong>Статус (ok/warn/error/empty)</strong>, кнопка <strong>«Обновить»</strong>.</p>
+<h4 id="таблица">Таблица</h4>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Колонка</th><th>Значение</th></tr></thead><tbody><tr><td><strong>Время</strong></td><td>Время отправки</td></tr><tr><td><strong>Вкладка</strong></td><td>Группа сервиса: <code>marketplace</code>, <code>site</code>, <code>crm</code>, <code>services</code>, <code>social</code>, <code>analytics</code></td></tr><tr><td><strong>Триггер</strong></td><td><code>manual</code> / <code>document</code> / <code>cycle</code></td></tr><tr><td><strong>Документ</strong></td><td>Документ-источник, если отправка шла по документу</td></tr><tr><td><strong>event_id</strong></td><td>Идентификатор события, <code>evt_cst_…</code></td></tr><tr><td><strong>Статус</strong></td><td><code>ok</code>, <code>warn</code>, <code>error</code>, <code>empty</code></td></tr><tr><td><strong>Код</strong></td><td>Код ошибки</td></tr><tr><td><strong>Сообщение</strong></td><td>Текст сообщения</td></tr></tbody></table></div>
+<p>Внизу — блок <strong>«Детали»</strong> и итоги: «Записей», «Успешно», «Ошибок».</p>
+<hr>
+<h3 id="что-происходит-с-данными-дальше">Что происходит с данными дальше</h3>
+<ol>
+<li>Модуль собирает поля по вашей схеме.</li>
+<li>Отправляет их на платформу в фиксированном конверте: идентификатор интеграции, вкладка, триггер, версия схемы и блок данных с вашими полями.</li>
+<li>Платформа проверяет конверт (но <strong>не</strong> структуру ваших полей — она произвольная) и передаёт данные в ваш персональный воркфлоу n8n.</li>
+<li>В воркфлоу вы настраиваете преобразование и отправку в целевой сервис.</li>
+</ol>
+<p>То есть в 1С вы решаете <strong>что</strong> отправлять, а в n8n — <strong>куда и в каком виде</strong>.</p>
+<hr>
+<h3 id="частые-проблемы">Частые проблемы</h3>
+<div class="api-tbl-wrap"><table class="api-tbl"><thead><tr><th>Симптом</th><th>Решение</th></tr></thead><tbody><tr><td>На Шаге 3В нет чекбоксов механик</td><td>Ожидаемо для категории «Иное» — механика подставляется автоматически. Нажмите «Далее →»</td></tr><tr><td>Ошибка «недопустимая вкладка (tab_key)»</td><td>Вкладка не выбрана или указана неверно. Допустимые значения: <code>marketplace</code>, <code>site</code>, <code>crm</code>, <code>services</code>, <code>social</code>, <code>analytics</code>. Проще всего нажать <strong>«Демо-схема»</strong> — она подставит корректную вкладку</td></tr><tr><td>Ошибка о пустых данных</td><td>В схеме нет ни одного поля со значением. Добавьте хотя бы одно поле с источником <code>custom_requisite</code></td></tr><tr><td>Ошибка о превышении размера</td><td>Отправляемые данные слишком велики. Сократите число полей или объём списка номенклатуры</td></tr><tr><td>Ошибка о превышении частоты</td><td>Слишком много отправок подряд. Увеличьте <strong>«Интервал цикла, мин»</strong></td></tr><tr><td>Поля документа приходят пустыми</td><td>Триггер <code>manual</code> или <code>cycle</code> — контекста документа нет. Используйте триггер <code>document</code> либо задайте значения в колонке «По умолчанию»</td></tr><tr><td>Схема не сохраняется</td><td>Нажмите <strong>«Сохранить»</strong> до <strong>«Отправить (тест)»</strong></td></tr><tr><td>Журнал пустой</td><td>Нажмите <strong>«Обновить»</strong>; проверьте период <strong>С / По</strong></td></tr><tr><td>Отправка прошла, но в сервисе ничего нет</td><td>Данные дошли до платформы (есть <code>event_id</code>). Дальше смотрите ваш воркфлоу n8n — маппинг в целевой API настраивается там</td></tr></tbody></table></div>
+<hr>
+<h3 id="смотрите-также">Смотрите также</h3>
+<ul>
+<li><a href="/docs/epf/master-podklyucheniya">Мастер подключения</a></li>
+<li><a href="/docs/epf/analitika">Аналитика</a> — там тоже есть режим произвольного endpoint</li>
+</ul>

@@ -105,6 +105,24 @@ const RULES = {
   ],
 };
 
+/**
+ * Телефон из реквизитов — в оферте и условиях. Правило общее, но `count` у
+ * каждой страницы свой, поэтому лежит отдельно и подмешивается по месту.
+ *
+ * Решение Дмитрия 2026-08-01: обращения принимаются только по email.
+ * Личный номер с публичных страниц убираем целиком — вместе с подписью
+ * «Телефон», иначе останется пустая строка реквизитов.
+ *
+ * Идентифицируемость Исполнителя это не задевает: наименование, ИНН, ОГРНИП
+ * и email на месте, а обязательного требования публиковать телефон нет.
+ */
+const PHONE_OUT = {
+  why: 'Телефон с публичных страниц убран: обращения только по email (решение Дмитрия 2026-08-01)',
+  from: /\s*<span class="legal-req-label">Телефон<\/span>\s*<span class="legal-req-value">\s*<a href="tel:[^"]*">[^<]*<\/a>\s*<\/span>/,
+  to: '',
+  count: 1,
+};
+
 /** Правки внутри таблицы «Тарифы и лицензии» — отдельно, там разметка */
 const TERMS_TABLE = [
   {
@@ -159,9 +177,9 @@ function apply(name, html, rules) {
 }
 
 const PAGES = {
-  oferta: [...RULES.common, ...OFERTA],
+  oferta: [...RULES.common, ...OFERTA, PHONE_OUT],
   privacy: [...RULES.common, ...RULES.privacy],
-  terms: [...RULES.common, ...RULES.terms, ...TERMS_TABLE],
+  terms: [...RULES.common, ...RULES.terms, ...TERMS_TABLE, PHONE_OUT],
 };
 
 mkdirSync(OUT, { recursive: true });

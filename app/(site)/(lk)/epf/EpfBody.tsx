@@ -20,11 +20,12 @@ import type { EpfConfig, EpfVersion } from '@/lib/contracts/lk';
  *   перевыпуск разрешён только при подтверждённой оплате.
  */
 
-const CONFIGS: { code: EpfConfig; name: string; full: string }[] = [
-  { code: 'ut11', name: '1С:УТ', full: 'Управление торговлей 11' },
-  { code: 'unf', name: '1С:УНФ', full: 'Управление нашей фирмой' },
-  { code: 'ka', name: '1С:КА', full: 'Комплексная автоматизация' },
-  { code: 'bp', name: '1С:БП', full: 'Бухгалтерия предприятия 3.0' },
+/** `doc` — страница установки под эту конфигурацию в разделе /docs/epf */
+const CONFIGS: { code: EpfConfig; name: string; full: string; doc: string }[] = [
+  { code: 'ut11', name: '1С:УТ', full: 'Управление торговлей 11', doc: 'ustanovka-ut11' },
+  { code: 'unf', name: '1С:УНФ', full: 'Управление нашей фирмой', doc: 'ustanovka-unf' },
+  { code: 'ka', name: '1С:КА', full: 'Комплексная автоматизация', doc: 'ustanovka-ka-erp' },
+  { code: 'bp', name: '1С:БП', full: 'Бухгалтерия предприятия 3.0', doc: 'ustanovka-bp30' },
 ];
 
 export function EpfBody() {
@@ -112,7 +113,8 @@ export function EpfBody() {
               1. Выбираете конфигурацию 1С. 2. Копируете JWT-токен. 3. Скачиваете .epf.
               4. Открываете файл в 1С, вставляете токен и выбираете сервис. 5. Запускаете обмен.
               {/* в макете здесь обещали инструкцию в PDF — сервер её не отдаёт */}{' '}
-              Пошаговое описание — в <Link href="/docs">документации</Link>.
+              Пошаговое описание — в <Link href="/docs#token">документации</Link>,
+              настройка механик — в <Link href="/docs/epf">инструкциях по модулю</Link>.
             </p>
           </div>
         </div>
@@ -138,7 +140,7 @@ export function EpfBody() {
             >
               <div className="cfg-name">{c.name}</div>
               <div className="cfg-full">{c.full}</div>
-              <div className="cfg-v">{v ? `v${v.version} · ${size(v.file_size)}` : 'сборки пока нет'}</div>
+              <div className="cfg-v">{v ? `${ver(v.version)} · ${size(v.file_size)}` : 'сборки пока нет'}</div>
             </button>
           );
         })}
@@ -248,9 +250,12 @@ export function EpfBody() {
               </svg>
             </div>
             <div style={{ flex: 1 }}>
-              <span>{downloading ? 'Готовим файл…' : `CoreBridge_${config.toUpperCase()}_v${active.version}.epf`}</span>
+              <span>{downloading ? 'Готовим файл…' : `CoreBridge_${config.toUpperCase()}_${ver(active.version)}.epf`}</span>
               <div className="meta">
-                Для {cfg.full} · {size(active.file_size)}
+                {/* было «Для {cfg.full}» — предлог требует родительного падежа,
+                    а названия конфигураций лежат в именительном: «Для Управление
+                    торговлей 11». Предлог убран, падеж больше ни при чём */}
+                {cfg.full} · {size(active.file_size)}
               </div>
             </div>
           </button>
@@ -267,7 +272,9 @@ export function EpfBody() {
             </div>
           </button>
         )}
-        <Link href="/docs" className="btn btn-outline">
+        {/* инструкция под выбранную конфигурацию, а не общее оглавление:
+            установка в БП 3.0 и в УТ 11 отличается и меню, и ограничениями */}
+        <Link href={`/docs/epf/${cfg.doc}`} className="btn btn-outline">
           Инструкция по установке
         </Link>
       </div>
@@ -280,7 +287,7 @@ export function EpfBody() {
             <div className="version">
               <span>Предыдущая версия</span>
               <code>
-                v{previous.version} · {date(previous.released_at)}
+                {ver(previous.version)} · {date(previous.released_at)}
               </code>
             </div>
           )}
@@ -288,7 +295,7 @@ export function EpfBody() {
             <div className="version">
               <span>Текущая</span>
               <code>
-                v{active.version} · {date(active.released_at)}
+                {ver(active.version)} · {date(active.released_at)}
               </code>
             </div>
           )}
@@ -301,6 +308,16 @@ export function EpfBody() {
       )}
     </>
   );
+}
+
+/**
+ * ⚠️ Сервер отдаёт версию уже с буквой: `"version": "v1.0.0"`. Страница
+ * подставляла свою `v` перед ней, и на экране выходило «vv1.0.0», а файл
+ * скачивался как `CoreBridge_UT11_vv1.0.0.epf`. Нормализуем в одном месте:
+ * ставим ровно одну `v`, откуда бы её ни принесли.
+ */
+function ver(version: string): string {
+  return `v${version.replace(/^v/i, '')}`;
 }
 
 /** bigint из Postgres приезжает строкой — приводим явно, иначе NaN */
