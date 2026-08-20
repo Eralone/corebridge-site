@@ -44,6 +44,7 @@ case "${1:-collect}" in
     ;;
 
   digest)
+    shift
     python3 digest.py "$@" >>"$LOG" 2>&1 || log "digest: ошибка"
     ;;
 

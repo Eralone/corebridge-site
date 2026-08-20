@@ -34,6 +34,27 @@ def arrow(delta: int | None) -> str:
     return f" ({delta:+d}%)"
 
 
+def stale_reminder() -> str:
+    """Напоминание, если разбора давно не было.
+
+    Прогонов модели по расписанию нет — их запускает человек в сессии
+    командой /mkt-*. Данные копятся сами, но без разбора они так и останутся
+    файлами. Одна строка в сводке лучше, чем молчание на две недели.
+    """
+    reports = sorted((m.ROOT / "reports").glob("20*.md"))
+    if not reports:
+        return "\n⚠️ Разбора не было ни разу. В сессии: /mkt-daily"
+    last = reports[-1]
+    try:
+        stamp = date.fromisoformat(last.name[:10])
+    except ValueError:
+        return ""
+    days = (date.today() - stamp).days
+    if days >= 3:
+        return f"\n⚠️ Последний разбор {stamp:%d.%m}, {days} дн. назад. В сессии: /mkt-daily"
+    return ""
+
+
 def day_digest(d: date) -> str:
     data = load_day(d)
     if not data:
@@ -105,7 +126,7 @@ def main() -> None:
     args = ap.parse_args()
 
     d = date.fromisoformat(args.day)
-    text = week_digest(d) if args.week else day_digest(d)
+    text = (week_digest(d) if args.week else day_digest(d)) + stale_reminder()
     print(text)
     if not args.dry_run:
         m.telegram(text, silent=True)
