@@ -62,7 +62,18 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
         <link rel="stylesheet" href="/assets/site.css" />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        {/*
+          Свой счётчик посещений: 1,5 КБ, свой origin, без внешних сервисов.
+          Стоит в конце <body> и с defer — рендер он не задерживает, а при
+          отказе просто ничего не считает (см. public/assets/mkt.js).
+          Внешнюю аналитику не подключаем сознательно: CSP из nginx разрешает
+          скрипты только со своего origin, и счётчик Метрики молча не работал бы
+          — ровно так, как это уже было со шрифтами Google.
+        */}
+        <script src="/assets/mkt.js" defer />
+      </body>
     </html>
   );
 }

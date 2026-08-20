@@ -1,0 +1,85 @@
+{
+  "date": "2026-08-15",
+  "generated_at": "2026-08-20T18:46:18",
+  "traffic": {
+    "visits": 3,
+    "pageviews": 15,
+    "norm_visits_median_4w": 8,
+    "delta_pct": -62,
+    "sources": [
+      {
+        "source": "direct",
+        "visitors": 3
+      }
+    ],
+    "landing_pages": [
+      {
+        "page": "/",
+        "visitors": 3
+      },
+      {
+        "page": "/register",
+        "visitors": 2
+      },
+      {
+        "page": "/pricing",
+        "visitors": 2
+      },
+      {
+        "page": "/login",
+        "visitors": 2
+      },
+      {
+        "page": "/integrations",
+        "visitors": 2
+      },
+      {
+        "page": "/for-business",
+        "visitors": 2
+      },
+      {
+        "page": "/docs",
+        "visitors": 2
+      }
+    ]
+  },
+  "funnel": {
+    "visits": 3,
+    "signups": 0,
+    "contact_requests": 0,
+    "payments": 0,
+    "visit_to_signup_pct": 0.0
+  },
+  "errors": [
+    {
+      "status": 404,
+      "n": 4759,
+      "urls": "/login,/.env,/.env.local,/.env.production,/.env.development,/.env.dev,/.env.staging,/.env.test,/.env.example,/.env.backup,/.envrc,/.aws/config,/.aws/credentials,/config.json,/config.yaml,/config.yml,/config.ini,/configuration.json,/configuration.yaml,/settings.json,/settings.py,/settings.php,/settings.ini,/application.properties,/application.yml,/application.yaml,/secrets.yml,/secrets.yaml,/secrets.json,/credentials.json,/credentials.ini,/database.yml,/database.yaml,/database.json,/database.config,/app.config,/web.config,/.env~,/.env.bak,/.env.old,/.env.save,/.env.orig,/.env.dist,/config.php~,/config.php.bak,/config.php.old,/config.php.save,/config.php.orig,/config.php.swp,/config.php.swo,/.git/config,/.git/HEAD,/.git/index,/.git/logs/HEAD,/.svn/entries,/.svn/wc.db,/.gitignore,/.gitattributes,/.gitlab-ci.yml,/error.log,/access.log,/debug.log,/laravel.log,/app.log,/storage/logs/laravel.log,/php_error.log,/php_errors.log,/docker-compose.yml,/docker-compose.yaml,/.dockerignore,/kubernetes/secrets.yaml,/k8s/secrets.yaml,/terraform.tfstate,/terraform.tfstate.backup,/ansible.cfg,/.kube/config,/package.json,/package-lock.json,/yarn.lock,/composer.json,/composer.lock,/Pipfile,/Pipfile.lock,/Gemfile,/Gemfile.lock,/build.gradle,/global.asax,/global.asa,/id_rsa,/id_rsa.pub,/id_dsa,/id_ecdsa,/id_ed25519,/private.key,/server.key,/ssl.key,/cert.pem,/server.crt,/fullchain.pem,/.htpasswd,/.htaccess,/authorized_keys,/known_hosts,/sftp-config.json,/winscp.ini,/.ftpconfig,/.remote-sync.json,/google-services.json,/Info.plist,/firebase.json,/.firebaserc,/README.md,/INSTALL.md,/CHANGELOG.md,/LICENSE,/.git/,/.svn/,/.hg/,/.hg/store/data/,/.bzr/,/CVS/,/.github/,/logs/,/log/,/tmp/,/temp/,//admin,//administrator,//adminpanel,//admin/login,//admin.php,//api/,//api/v1/,//api/v2/,//api/docs,//swagger,//swagger-ui.html,//openapi.json,//graphql,//graphiql,//actuator,//actuator/env,//actuator/configprops,//actuator/heapdump,//phpinfo.php,//info.php,//phpmyadmin,//pma,//debug,//console,//_debug,//server-status,/group_vars/,/host_vars/,/.idea/,/.vscode/,/.vs/,/nbproject/,/.well-known/,/test/,/tests/,/dev/,/staging/,/old/,/beta/,/demo/,//login,//signin,//register,//forgot-password,//wp-admin,//wp-login.php,//wp-config.php,//adminer.php,//myadmin/,//mysql/,/index.php~,/index.php.bak,/index.php.old,/dump.sql,/database.sql,/db.sql,/mysql.sql,/backup.sql,/.DS_Store,/Thumbs.db,/config.php,/wp-config.php,/terraform.tfvars,/ansible/vault.yml,/test_smtp.py,/readme.md,/docs/setup.md,/.vscode/settings.json,/appsettings.json,/.env.php,/.env.sample.php,/.env.local.php,/.env.production.php,/config.dev.php,/config.env,/twilio/.env.php,/config/.env.php,/sendgrid/.env.php,/.env.php.bak,/.env.php-bak,/.env.php-backup,/.env.php.backup,/test/.env.php,/.env.example.php,/app_dev.php/_profiler/.env,/var/.env.local.php,/app/.env,/backend/.env,/core/.env,/laravel/.env,/.env.prod,/phpinfo.php,/phpinfo/,/test,/dev/.env,/server/.env,/info/,/staging/.env,/deploy.sh,/source/.env,/framework/.env,/ikiwiki/.env,/config.inc.php,/system/.env,/wp-config.php.backup,/.env.sample,/app_dev.php/_profiler/open?file=app/config/parameters.yml,/wp-content/mysql.sql,/.env.dev.local,/php-info.php,/.env.stage,/info.php.bak,/phpinfo.php.bak,/env/.env,/src/.env,/.env_copy,/config/app.php,/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/env.example,/web/.env,/phpinfo.php3,/env,/.bashrc,/develop/.env.staging,/packages/plugin-qiankun/examples/master/.env,/users/config.env,/app/.env.staging,/live/.env.staging,/beta/.env.production,/.env.local.dist,/live/.env.production,/lara/.env,/Admin/.env,/server/.env.local,/.EnV,/config/env/aws_credentials.env,/laravel/public/.env,/server/.env.bak,/develop/.env.production,/crm/.env.local,/.env.base-locale,/beta/.env.local,/backend/.env.dev,/kyc/.env.production,/.env.container,/stg/.env.bak,/remote/.env,/App/.env,/old/.env.dist,/Production/.env,/backup/.env.production,/storage/.env.staging,/node/config.env,/dev/.env.staging,/old/.env.staging,/laravel/.env.dev,/.env.base-distante,/backup/.env.bak,/staging/.env.staging,/apis/.env.staging,/apis/.env.production,/client/.env.production,/info/.env.dev,/Public/.env,/tests/test-become/.env,/Web/.env,/office/.env,/sendinblue.env,/usr/.env,/storage/.env.production,/Staging/.env,/bot/.env.local,/old/.env.local,/cms/.env.production,/product/.env.local,/.cpanel/caches/config/.env,/service/.env.bak,/Site/.env,/help/.env,/production/.env.local,/public/.env.dev,/cms/.env.bak,/lms/.env.dev,/cms/.env.dev,/FRONT/.env,/client/.env.staging,/modules/.env,/config/settings.env,/stg/.env.dist,/web/.env.dist,/test/.env.local,/backup/.env.staging,/user/.env.bak,/web/.env.dev,/users/.env.local,/src/.env.bak,/config/.env.staging,/cron/.env.staging,/demo/.env.dev,/client/.env.local,/Media/.env,/test/.env.dev,/old/.env.dev,/lms/.env.bak,/app/.env.dev,/Dev/.env,/test/.env.staging,/test/.env.production,/staging.env,/production/.env.dist,/prod/.env.production,/.env.,/boot/.env,/api1/.env,/V2/.env,/Demo/.env,/beta/.env.dist,/marketing/config.env,/global/health,/config,/wp-admin/install.php?step=1,/dispatch.asp,/,/boaform/admin/formLogin?username=ec8&psd=ec8,/wp-login.php,/wp-content/plugins/hellopress/wp_filemanager.php,/this_is_a_new_hello_world.php,/wp-admin/setup-config.php,/god.php,/hehe.php,/dragonshell.php,/x.php,/r.php,/xml.php,/sd.php,/themes.php,/wps.php,//002.php,/wp-content/plugins/admin.php,/track.php,/admin-footer.php,/bscclapb.php,//ss.php,/init.php,/1wvekeybd9it2di2vyipgr6Cdefault.php,/xwx1.php,/inputs.php,/0x.php,/ssjpxze.php,/xrp.php,/ioxi-o.php,/wp-the.php,/inso.php,/f.php,//403.php,/82.php,/re.php,/m.php,/wp-access.php,/wpls.php,//fffm.php,/file.php,/pn.php,/k.php,/docs.php,/norn.php,/panel.php,//drykl.php,/about.php,/jga.php,/ws85.php,/wp-home.php,//zaza.php,/fffm.php,//w.php,/ww1.php,/sc.php,/echkm.php,/wyzer3.php,/25.php,//ws77.php,/xxw.php,/kq1.php,/stdin.php,/4PJcpMFsD8B.php,/wp-trackback.php,/indo.php,/wp.php,/wp-admin/includes/about.php,/xr.php,/Zoo.php,/explorer/index_.php,//buy.php,/public/vx.php,/admin-header.php,/about/function.php,/crgio.php,/z60.php,/erty.php,/elp.php,//BDKR28WP.php,/wp-admin/js/index.php,/shiny.php,/hp2.php,/ors32envu.php,/plugins.php,/modules/mod_simplefileuploadv1.3/elements/i8hqok6nr.php,//un.php,/oxse.php,/coffee.php,/bootstrap.php,/wp-content/themes/about.php,/a3ampzmbipnkpxeqhqpsanCdefault.php,/wp-admin/options-privacy.php,//login.php,/ws.php,/term.php,/mgrr.php,/v.php,/wp-mail.php,//aa1.php,//byp.php,/motu.php,/amp.php,/wp-admin/network/plugins.php,/css/index.php,/100.php,/.well-known/index.php,//1.php,//erty.php,/classwithtostring.php,/mcp,/mcp/,/sse,/.well-known/acme-challenge/__resolve-check,/SDK/webLanguage,//aa.php,//av.php,/media.php,/images.php,/admin.php,/222.php,/mac.php,/ops.php,/8.php,/biufile.php,/coffexium.php,/1.php,/classwithtostring.php?p=,/wp-ws68.php?p=,/yj09.php,/scxy.php,/3PJcpMFsD8B.php,/BDKR28WP.php,/1xmomo.php,/blurbs.php,/bajah.php,/domvf.php,/fpwch.php,/sf.php,/xx.php,/geoserver/wfs?service=WFS&version=2.0.0&request=GetPropertyValue&typeNames=sf:a,/public/css.php,/wp-includes/block-supports/,/wp-content/admin.php,/gelay.php,/wp-admin/images/admin.php,/adminfuns.php,/wp-admin/css/,/wp-admin/css/colors/index.php,/f35.php,/wp-includes/js/,/wp-admin/css/colors/,/alfa.php,/lock360.php,/flower.php,/13.php,/cc.php,/gecko-new.php,/wp-content.php.php,/01.php,/lv.php,/new.php,/chosen.php,/info.php,/wp-includes/html-api/,/wp-includes/ID3/index.php,/wp-admin/network/index.php,/wp-admin/js/,/403.php,/wp-includes/images/,/wp-content/cache/,/gecko.php,/wp-includes/,/aa.php,/zxz.php,/www.php,/wicked.php,/HLA-dd.php,/wp-content/upgrade/index.php,/cah.php,/wp-includes/js/tinymce/plugins/compat3x/css/,/system_log.php,/wp-includes/pomo/,/wp-admin/user/index.php,/abc.php,/akcc.php,/wk/index.php,/wp-content/x/index.php,/wp-content/index.php,/as.php,/wp-content/themes/admin.php,/wp-config-sample.php,/.well-known/acme-challenge/index.php,/wp-includes/blocks/shortcode/index.php,/wp-includes/images/smilies/,/cgi-bin/index.php,/an.php,/wp-admin/images/,/404.php,/wp-content/uploads/goods.php,/wp-includes/ID3/,/wso.php,/index/function.php,/edit.php,/wp-includes/rest-api/,/wp-content/themes/twentytwenty/404.php,/wp-good.php,/wp-admin/js/widgets/,/wp-admin/css/colors/midnight/,/tes.php,/files/index.php,/wp-content/uploads/index.php,/images/images/about.php,/ms-edit.php,/rip.php,/wp-content/uploads/,/xmlrpc.php,/moon.php,/cache.php,/wp-includes/block-bindings/,/vendor/,/wp-content/themes/,/wp-includes/images/smilies/about.php,/wp-includes/js/crop/,/o.php,/bb.php,/wp-admin/maint/admin.php,/wp-admin/network/,/wp-includes/IXR/index.php,/xmrlpc.php,/epinyins.php,/wp-admin/css/index.php,/wp-includes/php-compat/,/wp-includes/style-engine/index.php,/wp-admin/css/colors/coffee/index.php,/function/function.php,/wp-includes/style-engine/autoload_classmap.php,/wp-includes/SimplePie/admin.php,/ok.php,/item.php,/developmentserver/metadatauploader,/_fragment,/app_dev.php/_fragment,/ano.php,/h.php,/k.php?p=,/dex.php,/jriuaaol.php,/puc.php,/wp-admin/css/colors/modern/,/hypo.php,//wp-includes/assets/,/wp-admin/css/colors/sunrise/,//wp-includes/l10n/,//wp-includes/js/jquery/,//wp-content/admin.php,//adminfuns.php,/goods.php,/adminner.php,/en-de,/g4t_d73u99u0rz,/hello.world?%ADd+allow_url_include%3d1+%ADd+auto_prepend_file%3dphp://input,/index.php?%25ADd+allow_url_include%3D1+%25ADd+auto_prepend_file%3Dphp://input,/test.hello?%25ADd+allow_url_include%3D1+%25ADd+auto_prepend_file%3Dphp://input,/index.php?-d+allow_url_include%3don+-d+auto_prepend_file%3dphp%3a//input,/vendor/phpunit/phpunit/Util/PHP/eval-stdin.php,/vendor/phpunit/src/Util/PHP/eval-stdin.php,/vendor/phpunit/Util/PHP/eval-stdin.php,/vendor/phpunit/phpunit/LICENSE/eval-stdin.php,/vendor/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/phpunit/phpunit/Util/PHP/eval-stdin.php,/phpunit/src/Util/PHP/eval-stdin.php,/phpunit/Util/PHP/eval-stdin.php,/lib/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/lib/phpunit/phpunit/Util/PHP/eval-stdin.php,/lib/phpunit/src/Util/PHP/eval-stdin.php,/lib/phpunit/Util/PHP/eval-stdin.php,/lib/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/laravel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/www/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/ws/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/yii/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/zend/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/ws/ec/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/V2/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/tests/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/test/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/testing/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/demo/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/cms/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/crm/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/backup/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/blog/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/workspace/drupal/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/panel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/public/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/apps/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/app/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/index.php?s=/index/\\x5Cthink\\x5Capp/invokefunction&function=call_user_func_arra,/public/index.php?s=/index/\\x5Cthink\\x5Capp/invokefunction&function=call_user_fu,/index.php?lang=../../../../../../../../usr/local/lib/php/pearcmd&+config-create,/index.php?lang=../../../../../../../../tmp/index1,/containers/json,/en,/de,/de-de,/favicon,/en/passenger-ferries,/h5s60s_b8pohdfx21,/login.rsp,/3b5zum7cui40t,/pexbgirc836zpz,/.npmrc,/.git-credentials,/actuator/env,/boaform/adminformLogout//boaform/admin/formPing6,//abcd.php,//cgi-bin/index.php,//wp-includes/css/dist/,/wp-content/themes/index.php,/wp-blog.php,/wp-includes/blocks/details/,/wp-includes/blocks/audi/,/.well-known/about.php,/wp-includes/ID3/about.php,/wp-includes/Text/,/hudson,/lm13.php,/lala.php,/0x0x.php,/file32.php,/111.php,/nfile.php,/class19.php,/file21.php,/tor.php,/031.php,/an7.php,/tx38.php,/plss3.php,/file4.php,/wsd.php,/bless.php,/inde.php,/new4.php,/100.kb.php,/hook.php,/mini.php,/ws34.php,/v3.php,/class20.php,/aaa.php,/file3.php,/x7.php,/ilex.php,/ton.php,/file15.php,/CLA.php,/xxxx.php,/a2.php,/xxx.php,/asas.php,/doti.php,/wto.php,/haa.php,/shell.php,/he.php,/777.php,/file8.php,/bless3.php,/vee.php,/fileas.php,/fs.php,/file30.php,/ws45.php,/wb.php,/acp.php,/sko.php,/file1.php,/v1.php,/p.php,/file17.php,/class.php,/file5.php,/33.php,/ws36.php,/555.php,/wcas.php,/000.php,/ws33.php,/ava.php,/akk.php,/cccc.php,/file88.php,/mds.php,/error.php,/card.php,/ffile.php,/ws38.php,/file9.php,/666.php,/wfile.php,/ppp.php,/mlex.php,/wp-configs.php,/a.php,/tox.php,/size.php,/444.php,/v4.php,/ws37.php,/333.php,/yellow.php,/xeqdlun.php,/menu.php,/class9.php,/12.php,/1aa.php,/bless11.php,/gmo.php,/bless5.php,/f6.php,/klex.php,/file18.php,/v2.php,/030.php,/mail.php,/file2.php,/racs3.php,/cfile.php,/wp-is.php,/geck.php,/lol.php,/bolt.php,/alpa.php,/class629.php,/build.php,/n.php,/2.php,/moon3.php,/pp.php,/finny.php"
+    },
+    {
+      "status": 429,
+      "n": 367,
+      "urls": "//admin/login,//wp-login.php,//wp-config.php,//adminer.php,//myadmin/,//mysql/,/index.php~,/index.php.bak,/index.php.old,/dump.sql,/database.sql,/db.sql,/mysql.sql,/backup.sql,/.DS_Store,/Thumbs.db,/config.php,/wp-config.php,/terraform.tfvars,/ansible/vault.yml,/test_smtp.py,/readme.md,/docs/setup.md,/.vscode/settings.json,/appsettings.json,/.env.php,/.env.sample.php,/.env.local.php,/.env.production.php,/config.dev.php,/config.env,/twilio/.env.php,/config/.env.php,/sendgrid/.env.php,/.env.php.bak,/.env.php-bak,/.env.php-backup,/.env.php.backup,/test/.env.php,/.env.example.php,/app_dev.php/_profiler/.env,/var/.env.local.php,/app/.env,/backend/.env,/core/.env,/laravel/.env,/.env.prod,/beta/,/demo/,//login,//signin,//register,//forgot-password,//wp-admin"
+    },
+    {
+      "status": 400,
+      "n": 25,
+      "urls": "/cgi-bin/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/bin/sh,/,/cgi-bin/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32,/version,/v1"
+    },
+    {
+      "status": 499,
+      "n": 1,
+      "urls": "/cms/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php"
+    },
+    {
+      "status": 405,
+      "n": 1,
+      "urls": "/?%ADd+allow_url_include%3d1+%ADd+auto_prepend_file%3dphp://input"
+    }
+  ],
+  "crawlers": {},
+  "notes": [
+    "визит = уникальный visitor_id за сутки, робот отсечён по UA и по загрузке site.css",
+    "регистрации, заявки и оплаты взяты из platform.*, а не из событий сайта"
+  ]
+}

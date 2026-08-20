@@ -1,0 +1,97 @@
+{
+  "date": "2026-08-16",
+  "generated_at": "2026-08-20T18:46:19",
+  "traffic": {
+    "visits": 5,
+    "pageviews": 33,
+    "norm_visits_median_4w": 5,
+    "delta_pct": 0,
+    "sources": [
+      {
+        "source": "direct",
+        "visitors": 5
+      }
+    ],
+    "landing_pages": [
+      {
+        "page": "/",
+        "visitors": 5
+      },
+      {
+        "page": "/register",
+        "visitors": 4
+      },
+      {
+        "page": "/pricing",
+        "visitors": 4
+      },
+      {
+        "page": "/login",
+        "visitors": 4
+      },
+      {
+        "page": "/integrations",
+        "visitors": 4
+      },
+      {
+        "page": "/for-business",
+        "visitors": 4
+      },
+      {
+        "page": "/docs",
+        "visitors": 4
+      },
+      {
+        "page": "/support",
+        "visitors": 1
+      },
+      {
+        "page": "/oferta",
+        "visitors": 1
+      },
+      {
+        "page": "/contacts",
+        "visitors": 1
+      }
+    ]
+  },
+  "funnel": {
+    "visits": 5,
+    "signups": 0,
+    "contact_requests": 0,
+    "payments": 0,
+    "visit_to_signup_pct": 0.0
+  },
+  "errors": [
+    {
+      "status": 404,
+      "n": 5387,
+      "urls": "/wp-admin/install.php?step=1,/ecp/Current/exporttool/microsoft.exchange.ediscovery.exporttool.application,/.env,/.env.local,/.env.production,/.env.development,/.env.dev,/.env.staging,/.env.test,/.env.example,/.env.backup,/.envrc,/.aws/config,/.aws/credentials,/config.json,/config.yaml,/config.yml,/config.ini,/configuration.json,/configuration.yaml,/settings.json,/settings.py,/settings.php,/settings.ini,/application.properties,/application.yml,/application.yaml,/secrets.yml,/secrets.yaml,/secrets.json,/credentials.json,/credentials.ini,/database.yml,/database.yaml,/database.json,/database.config,/app.config,/web.config,/.env~,/.env.bak,/.env.old,/.env.save,/.env.orig,/.env.dist,/config.php~,/config.php.bak,/config.php.old,/config.php.save,/config.php.orig,/config.php.swp,/config.php.swo,/.git/config,/.git/HEAD,/.git/index,/.git/logs/HEAD,/.svn/entries,/.svn/wc.db,/.gitignore,/.gitattributes,/.gitlab-ci.yml,/error.log,/access.log,/debug.log,/laravel.log,/app.log,/storage/logs/laravel.log,/php_error.log,/php_errors.log,/docker-compose.yml,/docker-compose.yaml,/.dockerignore,/kubernetes/secrets.yaml,/k8s/secrets.yaml,/terraform.tfstate,/terraform.tfstate.backup,/ansible.cfg,/.kube/config,/package.json,/package-lock.json,/yarn.lock,/composer.json,/composer.lock,/Pipfile,/Pipfile.lock,/Gemfile,/Gemfile.lock,/build.gradle,/global.asax,/global.asa,/id_rsa,/id_rsa.pub,/id_dsa,/id_ecdsa,/id_ed25519,/private.key,/server.key,/ssl.key,/cert.pem,/server.crt,/fullchain.pem,/.htpasswd,/.htaccess,/authorized_keys,/known_hosts,/sftp-config.json,/winscp.ini,/.ftpconfig,/.remote-sync.json,/google-services.json,/Info.plist,/firebase.json,/.firebaserc,/README.md,/INSTALL.md,/CHANGELOG.md,/LICENSE,/index.php~,/index.php.bak,/index.php.old,/dump.sql,/database.sql,/db.sql,/mysql.sql,/backup.sql,/.DS_Store,/Thumbs.db,/config.php,/wp-config.php,/terraform.tfvars,/ansible/vault.yml,/test_smtp.py,/readme.md,/docs/setup.md,/.vscode/settings.json,/appsettings.json,/.env.php,/.env.sample.php,/.env.local.php,/.env.production.php,/config.dev.php,/config.env,/twilio/.env.php,/config/.env.php,/sendgrid/.env.php,/.env.php.bak,/.env.php-bak,/.env.php-backup,/.env.php.backup,/test/.env.php,/.env.example.php,/app_dev.php/_profiler/.env,/var/.env.local.php,/app/.env,/backend/.env,/.env.prod,/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/.git/,/.svn/,/.hg/,/.hg/store/data/,/.bzr/,/CVS/,/.github/,/logs/,/log/,/tmp/,/temp/,//admin,//administrator,//adminpanel,//admin/login,//admin.php,//api/,//api/v1/,//api/v2/,//api/docs,//swagger,//swagger-ui.html,//openapi.json,//graphql,//graphiql,//actuator,//actuator/env,//actuator/configprops,//actuator/heapdump,//phpinfo.php,//info.php,//phpmyadmin,//pma,//debug,//console,//_debug,//server-status,/group_vars/,/host_vars/,/.idea/,/.vscode/,/.vs/,/nbproject/,/.well-known/,/test/,/tests/,/dev/,/staging/,/old/,/beta/,/demo/,//login,//signin,//register,//forgot-password,//wp-admin,//wp-login.php,//wp-config.php,//adminer.php,//myadmin/,//mysql/,/core/.env,/laravel/.env,/SDK/webLanguage,/wp-content/plugins/hellopress/wp_filemanager.php,/this_is_a_new_hello_world.php,/4PJcpMFsD8B.php,/3PJcpMFsD8B.php,/ano.php,/xx.php,//av.php,/media.php,/images.php,/admin.php,/mac.php,/ops.php,/coffexium.php,/coffee.php,/classwithtostring.php?p=,/BDKR28WP.php,/h.php,/sf.php,/k.php?p=,/82.php,/dex.php,/jriuaaol.php,/puc.php,/inso.php,/wp-admin/css/colors/modern/,/hypo.php,//wp-includes/assets/,/wp-admin/css/colors/sunrise/,//wp-includes/l10n/,/wp-content/uploads/,//wp-includes/js/jquery/,//wp-content/admin.php,//adminfuns.php,/goods.php,/adminner.php,//cgi-bin/index.php,//wp-includes/css/dist/,//abcd.php,/wp-content/themes/index.php,/wp-includes/Text/,/wp-blog.php,/chosen.php?,/about.php?,/inputs.php?,/w.php,//aa.php,/1.php,/GponForm/diag_Form?images/,/wp-content/languages/index.php,/cgi-bin/index.php,//shell.php,/wp-content/themes/about.php,/favicon.php,/8xyz.php,/wp-admin/user-new.php,//install.php,//wp-admin/maint/index.php,/dropdown.php,//gdn.php,/system_log.php,/gettest.php,/shell20211028.php,/byp.php,//an.php,/b.php,/404.php,/wp-includes/pomo/index.php,/fetch.php,/wp-config-sample.php,/a2.php,//index/function.php,/rip.php,//doc.php,/o.php,/bgymj.php,//f.php,/ws.php,/wp-content/themes/twentytwenty/404.php,//system.php,/chosen.php,/wp-admin/install.php,/an.php,/ma.php,//h.php,/wp-includes/Text/wp-login.php,//wp-content/about.php,/wp-content/languages/plugins/index.php,//wp-content/plugins/index.php,/system.php,/wp-content/admin.php,/class-t.api.php,/asd.php,/wp-includes/Requests/about.php,//wp-includes/assets/index.php,/k.php,//geck.php,//lala.php,/menu.php,//alfa.php,//dropdown.php,/v2.php,/jmfi2.php,//function/function.php,//w.php,/wp-includes/css/about.php,//flower2.php,/wp-admin/css/colors/blue/file.php,/wp-login.php,/wp-content/themes/sky-pro/js.php,/wp-content/index.php,/ze.php,//elp.php,//wp-includes/Text/Diff/index.php,/ph33w.php,/x.php,/plugins/function.php,/lp6.php,/wp-includes/customize/index.php,/d12.php,//x.php,/bk.php,/phpinfo.php,//wp-admin/user/index.php,/f.php,/index/function.php,/wp-admin/maint/index.php,//z.php,/z.php,//wp-content/themes/seotheme/mar.php,//about/function.php,/file.php,/wp-content/uploads/index.php,//wp-content/languages/index.php,/elp.php,/p.php,/function/function.php,//rip.php,/cache.php,/ahax.php,//admin/function.php,/tt.php,//wp-includes/css/index.php,/css/index.php,/wp-conf.php,//wp-content/themes/about.php,//wp-content/themes/hideo/network.php,/hey.php,/m.php,/install.php,/web.php,/wp-admin/css/index.php,//content.php,/adminfuns.php,/wp-admin/css/wp-login.php,/wp-content/plugins/index.php,/la.php,/a1.php,/403.php,//wp-includes/ID3/index.php,//wp-includes/admin.php,/errw.php,//css/index.php,/wp.php,/themes.php,/environment.php,//404.php,//wp-includes/Text/wp-login.php,/cs.php,/wp-includes/ID3/index.php,/wp-content/themes/seotheme/mar.php,/domains.php,/wp-includes/Text/Diff/index.php,/wp-includes/assets/index.php,/radio.php,//wp-admin/maint/wp-login.php,/ak.php,/.well-known/index.php,//wp-content/uploads/index.php,//403.php,/wp-includes/PHPMailer/index.php,//wso.php,/wp-cron.php,/autoload_classmap.php,//inputs.php,//wp-includes/css/about.php,/.well-known/wp-login.php,//zwso.php,/bolt.php,/chosen/function.php,//autoload_classmap.php,/gdn.php,/wp-includes/admin.php,/lala.php,//bnn_.php,/222.php,/8.php,/biufile.php,/wp-ws68.php?p=,/yj09.php,/scxy.php,/1xmomo.php,/blurbs.php,/bajah.php,/domvf.php,/fpwch.php,/wp-includes/blocks/details/,/wp-includes/blocks/audi/,/.well-known/about.php,/wp-includes/ID3/about.php,/ReportServer,/mcp,/mcp/,/sse,/hello.world?%ADd+allow_url_include%3d1+%ADd+auto_prepend_file%3dphp://input,/index.php?%25ADd+allow_url_include%3D1+%25ADd+auto_prepend_file%3Dphp://input,/test.hello?%25ADd+allow_url_include%3D1+%25ADd+auto_prepend_file%3Dphp://input,/index.php?-d+allow_url_include%3don+-d+auto_prepend_file%3dphp%3a//input,/vendor/phpunit/phpunit/Util/PHP/eval-stdin.php,/vendor/phpunit/src/Util/PHP/eval-stdin.php,/vendor/phpunit/Util/PHP/eval-stdin.php,/vendor/phpunit/phpunit/LICENSE/eval-stdin.php,/vendor/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/phpunit/phpunit/Util/PHP/eval-stdin.php,/phpunit/src/Util/PHP/eval-stdin.php,/phpunit/Util/PHP/eval-stdin.php,/lib/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/lib/phpunit/phpunit/Util/PHP/eval-stdin.php,/lib/phpunit/src/Util/PHP/eval-stdin.php,/lib/phpunit/Util/PHP/eval-stdin.php,/lib/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/laravel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/www/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/ws/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/yii/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/zend/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/ws/ec/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/V2/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/tests/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/test/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/testing/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/demo/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/webui/,/geoserver/web/,/rick.php,/,/onvif/device_service,/public/css.php,/classwithtostring.php,/wp-includes/block-supports/,/gelay.php,/wp-admin/images/admin.php,/wp-admin/css/,/about.php,/wp-admin/css/colors/index.php,/f35.php,/wp-includes/js/,/inputs.php,/wp-admin/css/colors/,/alfa.php,/lock360.php,/flower.php,/13.php,/cc.php,/gecko-new.php,/wp-content.php.php,/01.php,/lv.php,/new.php,/info.php,/wp-includes/html-api/,/wp-admin/network/index.php,/wp-admin/js/,/wp-includes/images/,/wp-content/cache/,/gecko.php,/wp-includes/,/aa.php,/0x.php,/zxz.php,/www.php,/wicked.php,/HLA-dd.php,/wp-content/upgrade/index.php,/cah.php,/wp-includes/js/tinymce/plugins/compat3x/css/,/wp-includes/pomo/,/wp-admin/user/index.php,/ioxi-o.php,/abc.php,/akcc.php,/wk/index.php,/wp-content/x/index.php,/as.php,/wp-content/themes/admin.php,/.well-known/acme-challenge/index.php,/wp-includes/blocks/shortcode/index.php,/wp-includes/images/smilies/,/wp-admin/images/,/wp-content/uploads/goods.php,/wp-includes/ID3/,/wso.php,/edit.php,/wp-includes/rest-api/,/wp-good.php,/wp-admin/js/widgets/,/wp-admin/css/colors/midnight/,/tes.php,/files/index.php,/images/images/about.php,/ms-edit.php,/xmlrpc.php,/moon.php,/wp-includes/block-bindings/,/vendor/,/wp-content/themes/,/wp-includes/images/smilies/about.php,/wp-includes/js/crop/,/wp-mail.php,/bb.php,/wp-admin/maint/admin.php,/wp-admin/network/,/wp-includes/IXR/index.php,/xmrlpc.php,/epinyins.php,/wp-includes/php-compat/,/wp-includes/style-engine/index.php,/wp-admin/css/colors/coffee/index.php,/wp-includes/style-engine/autoload_classmap.php,/wp-includes/SimplePie/admin.php,/ok.php,/item.php,/developmentserver/metadatauploader,/dispatch.asp,/_next/on-demand-entries-ping,/cms/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/crm/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/backup/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/blog/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/workspace/drupal/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/panel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/public/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/apps/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/app/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/index.php?s=/index/\\x5Cthink\\x5Capp/invokefunction&function=call_user_func_arra,/public/index.php?s=/index/\\x5Cthink\\x5Capp/invokefunction&function=call_user_fu,/index.php?lang=../../../../../../../../usr/local/lib/php/pearcmd&+config-create,/index.php?lang=../../../../../../../../tmp/index1,/containers/json,/goform/formJsonAjaxReq,/cgi-bin/luci/;stok=/locale,/ws61.php,/rum.php,/gjm.php,/new4.php,/wp-act.php,/grsiuk.php,//koiy.php,/fff.php,/pouhg.php,/moon3.php,/opts.php,/zwq13.php,/Okxob.php,/file59.php,/eauu.php,/dsd.php,/c4.php,/an7.php,/bsg-management/php.php,/byp8.php,/plugins.php,/100.kb.php,/mamzi.php,//ms.php,/gfile.php,/public/wp-blog.php,/cu.php,/X57.php,/forbidals.php,//edit.php,/kj.php,/bes.php,/ws60.php,/olfclass.php,/wpver.php,//thui.php,/tmpls.php,/nzv.php,/error1.php,/155.php,/fasx.php,/zxin.php,/pass4.php,/wp-conflg.php,/G-in.php,/xxx.php,/un.php,/autogooey.php,/sty.php,/wio.php,/1061.php,/gec.php,/scx.php7,/wp-admin/sc.php,/wp5.php,/app.php,//wp-includes/js/tinymce/themes/inlite,/cxc.php,/alfa-rex.php7,/0.php,/dom.php,/wp9.php,/ws59.php,/Ov-Simple1.php,/wp-admin/css/bolt.php,/vx.php,/ah25.php,/xqq.php,/06.php,/166.php,/snq.php,/wp-access.php,/nw.php,/ws62.php,/public/vx.php,/loxi-o.php,/sdsa.php,/wp-freya.php,/fleen.php,/e.php,/hello.php,/brc.php,/file52.php,/sxdfrt.php,/path.php,/wpo.php,/a1vx.php,/ty.php,/vgtyu.php,/mans.php,/co.php,/btx25.php,/avim.php,/myfile.php,/xmy.php,/xda.php,/zz.php,/xa.php,/f6.php,/mcs.php,/xleet.php,/fr/ms.php,/gool.php,/maxro.php,/wdf.php,/ff1.php,/guk.php,/wp-the.php,/sbhu.php,/zc-318.php,/ccou.php,/txets.php,/fun.php,/jq.php,//sys.php,/pp.php,/wqqs.php,/clasa99.php,/666.php,/thui.php,/agg.php,/erty.php,/mini.php,/sid3.php,/ms.php,/wsws.php,/motu.php,/66.php,/g.php,/x7.php,/god.php,/ebahvhhh.php,/koiy.php,/iko.php,/raw.php,/05.php,/public/hi.php,/get.php,/rpk.php,/mga.php,/fs.php,/wp-tem.php,/sadd.php,/ex.php,/tax.php,/X7x.php,/ocxla.php,/post.php,/nhr.php,/ws79.php,/rtx.php,/end.php,/ae.php,/spip.php?action=porte_plume_previsu,/images/transparentpix.gif,/version,/v1,/actuator/health,/web/login,/home,/_next/data,/xo0wcls4g73d4ok2i,/en,/goform/set_prohibiting,/cbs/Logon.do,/diag_index.html,/error/cookies-required.html,/global/common/404.html,/boaform/admin/formLogin?username=admin&psd=admin,/uk,/aaa9,/aab9,/storage/.env,/config/.env,/.env.testing,/public/.env,/g8sca5b0sdgan2m1h,/wiki,/login,/de,/bsmxqf021"
+    },
+    {
+      "status": 429,
+      "n": 244,
+      "urls": "//admin/login,/core/.env,/laravel/.env,/index.php~,/index.php.bak,/index.php.old,/dump.sql,/database.sql,/db.sql,/mysql.sql,/backup.sql,/.DS_Store,/Thumbs.db,/config.php,/wp-config.php,/terraform.tfvars,/ansible/vault.yml,/test_smtp.py,/readme.md,/docs/setup.md,/.vscode/settings.json,/appsettings.json,/.env.php,/.env.sample.php,/.env.local.php,/.env.production.php,/config.dev.php,/config.env,/twilio/.env.php,/config/.env.php,/sendgrid/.env.php,/.env.php.bak,/.env.php-bak,/.env.php-backup,/.env.php.backup,/test/.env.php,/.env.example.php,/app_dev.php/_profiler/.env,/var/.env.local.php,/backend/.env,/.env.prod,/app/.env,/README.md,/INSTALL.md,/CHANGELOG.md,/LICENSE,/test/,/tests/,/dev/,/staging/,/old/,/beta/,/demo/,//login,//signin,//register,//forgot-password,//wp-admin,//wp-login.php,//wp-config.php,//adminer.php,//myadmin/,//mysql/,/.well-known/"
+    },
+    {
+      "status": 400,
+      "n": 28,
+      "urls": "/,/cgi-bin/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/bin/sh,/version,/v1,/..%2F..%2F..%2F..%2F..%2F..%2Fetc%2Fpasswd,/cgi-bin/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32"
+    },
+    {
+      "status": 405,
+      "n": 2,
+      "urls": "/"
+    },
+    {
+      "status": 499,
+      "n": 1,
+      "urls": "/privacy?_rsc=ntcjv"
+    }
+  ],
+  "crawlers": {},
+  "notes": [
+    "визит = уникальный visitor_id за сутки, робот отсечён по UA и по загрузке site.css",
+    "регистрации, заявки и оплаты взяты из platform.*, а не из событий сайта"
+  ]
+}

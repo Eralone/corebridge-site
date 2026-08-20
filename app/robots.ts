@@ -24,6 +24,7 @@ export default function robots(): MetadataRoute.Robots {
         '/lk/',
         '/admin',
         '/api/',
+        '/m/',
       ],
     },
     sitemap: 'https://corebridge.ru/sitemap.xml',

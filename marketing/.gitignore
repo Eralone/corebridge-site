@@ -1,0 +1,15 @@
+.env
+logs/
+__pycache__/
+*.pyc
+
+# Сырые события: своя база и файлы счётчика. В git не едут — их место
+# на сервере, а в репозитории остаются суточные срезы data/*.json,
+# по которым и считается вся история.
+data/events.db
+data/events.db-journal
+data/tracker/
+data/watchdog_state.json
+
+# Исходный архив каркаса — распакован, в git не нужен
+corebridge-marketing.tar.gz
