@@ -184,7 +184,10 @@ def classify_source(referrer: str, utm_source: str | None) -> str:
         return utm_source.lower()
     if not referrer or referrer == "-":
         return "direct"
-    host = referrer.split("//", 1)[-1].split("/", 1)[0].lower().removeprefix("www.")
+    # порт отбрасываем: реферер вида http://corebridge.ru:80/ иначе не опознаётся
+    # как свой и попадает в непрямые источники, завышая главную метрику
+    host = referrer.split("//", 1)[-1].split("/", 1)[0].lower()
+    host = host.split(":", 1)[0].removeprefix("www.")
     if host.endswith("corebridge.ru"):
         return "internal"
     for engine, name in (

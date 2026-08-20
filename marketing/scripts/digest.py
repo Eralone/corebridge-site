@@ -88,26 +88,44 @@ def day_digest(d: date) -> str:
     return "\n".join(lines)
 
 
-def month_progress() -> str:
-    """Где мы относительно цели: 200 посещений в месяц к концу Q3, дальше 1000.
+# Цели по переходам в месяц: (последний день периода, прямые, непрямые).
+# Заданы Дмитрием 2026-08-20, см. CLAUDE.md раздел 3. Даты — конец квартала.
+GOALS = [
+    (date(2026, 9, 30), 300, 50),
+    (date(2026, 12, 31), 1000, 200),
+]
 
-    Считаются обе цифры — все визиты и непрямые. Главная вторая: цель, которую
-    можно выполнить, не приведя ни одного человека, метрикой не является
-    (CLAUDE.md, раздел 3).
+
+def month_progress() -> str:
+    """Где мы относительно цели месяца.
+
+    Прямые и непрямые считаются раздельно: прямые растут сами и работу
+    не показывают, смотреть надо на непрямые (CLAUDE.md, раздел 3).
     """
-    start = date.today().replace(day=1).isoformat()
+    today = date.today()
+    start = today.replace(day=1).isoformat()
     conn = m.db()
-    total = conn.execute(
-        "SELECT count(DISTINCT visitor_id || day) c FROM events "
-        "WHERE day >= ? AND is_bot = 0 AND event = 'pageview'", (start,)
-    ).fetchone()["c"]
-    indirect = conn.execute(
-        "SELECT count(DISTINCT visitor_id || day) c FROM events "
-        "WHERE day >= ? AND is_bot = 0 AND event = 'pageview' "
-        "AND source NOT IN ('direct', 'internal')", (start,)
-    ).fetchone()["c"]
-    goal = 200 if date.today() <= date(2026, 9, 30) else 1000
-    return f"\nс начала месяца: {total} визитов, из них непрямых {indirect} из {goal}"
+
+    def count(extra: str = "") -> int:
+        return conn.execute(
+            "SELECT count(DISTINCT visitor_id || day) c FROM events "
+            "WHERE day >= ? AND is_bot = 0 AND event = 'pageview' " + extra, (start,)
+        ).fetchone()["c"]
+
+    direct = count("AND source IN ('direct', 'internal')")
+    indirect = count("AND source NOT IN ('direct', 'internal')")
+
+    goal = next((g for g in GOALS if today <= g[0]), GOALS[-1])
+    _, goal_direct, goal_indirect = goal
+
+    # доля прошедшего месяца — чтобы «12 из 50» читалось как «отстаём» или «идём
+    # с опережением», а не как загадка в начале месяца
+    import calendar
+    share = today.day / calendar.monthrange(today.year, today.month)[1]
+    pace = "с опережением" if indirect >= goal_indirect * share else "отстаём"
+
+    return (f"\nс начала месяца: прямых {direct} из {goal_direct}, "
+            f"<b>непрямых {indirect} из {goal_indirect}</b> — {pace}")
 
 
 def week_digest(end: date) -> str:
