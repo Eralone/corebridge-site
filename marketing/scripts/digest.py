@@ -88,6 +88,28 @@ def day_digest(d: date) -> str:
     return "\n".join(lines)
 
 
+def month_progress() -> str:
+    """Где мы относительно цели: 200 посещений в месяц к концу Q3, дальше 1000.
+
+    Считаются обе цифры — все визиты и непрямые. Главная вторая: цель, которую
+    можно выполнить, не приведя ни одного человека, метрикой не является
+    (CLAUDE.md, раздел 3).
+    """
+    start = date.today().replace(day=1).isoformat()
+    conn = m.db()
+    total = conn.execute(
+        "SELECT count(DISTINCT visitor_id || day) c FROM events "
+        "WHERE day >= ? AND is_bot = 0 AND event = 'pageview'", (start,)
+    ).fetchone()["c"]
+    indirect = conn.execute(
+        "SELECT count(DISTINCT visitor_id || day) c FROM events "
+        "WHERE day >= ? AND is_bot = 0 AND event = 'pageview' "
+        "AND source NOT IN ('direct', 'internal')", (start,)
+    ).fetchone()["c"]
+    goal = 200 if date.today() <= date(2026, 9, 30) else 1000
+    return f"\nс начала месяца: {total} визитов, из них непрямых {indirect} из {goal}"
+
+
 def week_digest(end: date) -> str:
     days = [end - timedelta(days=i) for i in range(7)]
     cur = [load_day(d) for d in days]
@@ -126,7 +148,8 @@ def main() -> None:
     args = ap.parse_args()
 
     d = date.fromisoformat(args.day)
-    text = (week_digest(d) if args.week else day_digest(d)) + stale_reminder()
+    text = ((week_digest(d) if args.week else day_digest(d))
+            + month_progress() + stale_reminder())
     print(text)
     if not args.dry_run:
         m.telegram(text, silent=True)

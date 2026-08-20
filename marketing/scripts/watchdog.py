@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import socket
 import ssl
@@ -121,14 +122,18 @@ def check_leads(state: dict) -> list[str]:
     """Новая заявка, регистрация или оплата. Ради этого всё и затевалось —
     сообщение должно прийти в течение 15 минут, а не в утренней сводке."""
     msgs = []
-    # ⚠️ Персональные данные заявки (имя, email, телефон) в Telegram не уходят.
-    # Мессенджер — третья сторона и зарубежный сервис; отправлять туда ПДн
-    # клиента ради удобства нельзя. В сообщении только номер обращения, откуда
-    # оно и суть вопроса, остальное — в админке по этому номеру.
+    # Контакты из заявки уходят в Telegram — решение Дмитрия от 2026-08-20:
+    # заявку надо обработать быстро, а лезть за адресом в админку с телефона
+    # неудобно. Он оператор данных, решение его.
+    #
+    # ⚠️ Из этого следует ограничение для всего остального: ПДн есть только
+    # в этом сообщении. В отчёты, в `data/*.json`, в git и в события они
+    # не попадают — там по-прежнему только номер обращения.
     checks = [
         ("last_contact_id", "заявка с формы",
          "SELECT id::text, created_at::text, ref, coalesce(source,'—') source, "
-         "left(message, 200) message FROM platform.contact_requests "
+         "name, email, coalesce(phone,'—') phone, "
+         "left(message, 400) message FROM platform.contact_requests "
          "ORDER BY created_at DESC LIMIT 1"),
         ("last_user_id", "регистрация",
          "SELECT id::text, created_at::text FROM platform.users "
@@ -153,8 +158,12 @@ def check_leads(state: dict) -> list[str]:
         state[key] = row["id"]
         detail = ""
         if label == "заявка с формы":
-            detail = (f"\nобращение {row.get('ref')}, откуда: {row.get('source')}"
-                      f"\n{row.get('message', '')}".rstrip())
+            detail = (
+                f"\n{html.escape(row.get('name') or '')} · "
+                f"{html.escape(row.get('email') or '')} · {html.escape(row.get('phone') or '')}"
+                f"\nобращение {row.get('ref')}, откуда: {row.get('source')}"
+                f"\n\n{html.escape(row.get('message') or '')}"
+            ).rstrip()
         if label == "оплата":
             detail = f"\nтариф {row.get('plan')}, сумма {row.get('amount')}"
         msgs.append(f"🟢 Новое: {label} ({row['created_at'][:16]}){detail}")
