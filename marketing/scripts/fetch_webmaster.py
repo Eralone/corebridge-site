@@ -28,10 +28,19 @@ import mktlib as m
 API = "https://api.webmaster.yandex.net/v4"
 
 
+class NotLoadedYet(Exception):
+    """Сайт добавлен, но Яндекс ещё не собрал по нему данные.
+
+    Это не ошибка настройки, а нормальное состояние первых дней после
+    добавления. Отделено от прочих отказов, чтобы ежедневный прогон писал
+    «данных пока нет» и шёл дальше, а не падал каждое утро с 404.
+    """
+
+
 def call(path: str, params: dict | None = None) -> dict:
     token = m.ENV.get("YA_WEBMASTER_TOKEN")
     if not token:
-        sys.exit("в .env нет YA_WEBMASTER_TOKEN — см. reports/bootstrap.md, шаг 3")
+        sys.exit("в .env нет YA_WEBMASTER_TOKEN — см. reports/bootstrap.md")
     url = f"{API}{path}"
     if params:
         url += "?" + urllib.parse.urlencode(params, doseq=True)
@@ -40,7 +49,10 @@ def call(path: str, params: dict | None = None) -> dict:
         with urllib.request.urlopen(req, timeout=30) as r:
             return json.load(r)
     except urllib.error.HTTPError as e:
-        sys.exit(f"Вебмастер {e.code}: {e.read().decode('utf-8', 'replace')[:400]}")
+        body = e.read().decode("utf-8", "replace")
+        if "HOST_NOT_LOADED" in body:
+            raise NotLoadedYet from None
+        sys.exit(f"Вебмастер {e.code}: {body[:400]}")
 
 
 def setup() -> None:
@@ -74,18 +86,23 @@ def main() -> None:
 
     # Запросы: показы, клики, позиция. TOTAL_SHOWS — сортировка по показам,
     # потому что кликов у нас пока может не быть вовсе.
-    queries = call(f"{base}/search-queries/popular", {
-        **common,
-        "order_by": "TOTAL_SHOWS",
-        "query_indicator": ["TOTAL_SHOWS", "TOTAL_CLICKS", "AVG_SHOW_POSITION",
-                            "AVG_CLICK_POSITION"],
-        "limit": 500,
-    })
+    try:
+        queries = call(f"{base}/search-queries/popular", {
+            **common,
+            "order_by": "TOTAL_SHOWS",
+            "query_indicator": ["TOTAL_SHOWS", "TOTAL_CLICKS", "AVG_SHOW_POSITION",
+                                "AVG_CLICK_POSITION"],
+            "limit": 500,
+        })
+    except NotLoadedYet:
+        print("Вебмастер: сайт добавлен, данные ещё не загружены — "
+              "обычно это занимает несколько дней после подтверждения прав")
+        return
 
     # Страницы в поиске: сколько наших страниц Яндекс реально держит в индексе
     try:
         indexing = call(f"{base}/search-urls/in-search/history", common)
-    except SystemExit:
+    except (SystemExit, NotLoadedYet):
         indexing = {}
 
     payload = {
