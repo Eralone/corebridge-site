@@ -1,74 +1,27 @@
 {
   "date": "2026-08-18",
-  "generated_at": "2026-08-20T20:21:09",
+  "generated_at": "2026-08-24T04:24:44",
   "traffic": {
-    "visits": 5,
-    "pageviews": 45,
-    "norm_visits_median_4w": 5,
-    "delta_pct": 0,
+    "visits": 2,
+    "pageviews": 2,
+    "norm_visits_median_4w": 3,
+    "delta_pct": -33,
     "sources": [
       {
         "source": "direct",
-        "visitors": 5
+        "visitors": 2
       }
     ],
+    "tracker_visits": 0,
     "landing_pages": [
       {
         "page": "/",
-        "visitors": 5
-      },
-      {
-        "page": "/register",
-        "visitors": 3
-      },
-      {
-        "page": "/pricing",
-        "visitors": 3
-      },
-      {
-        "page": "/login",
-        "visitors": 3
-      },
-      {
-        "page": "/integrations",
-        "visitors": 3
-      },
-      {
-        "page": "/for-business",
-        "visitors": 3
-      },
-      {
-        "page": "/docs",
-        "visitors": 3
-      },
-      {
-        "page": "/terms",
-        "visitors": 1
-      },
-      {
-        "page": "/support",
-        "visitors": 1
-      },
-      {
-        "page": "/privacy",
-        "visitors": 1
-      },
-      {
-        "page": "/oferta",
-        "visitors": 1
-      },
-      {
-        "page": "/forgot-password",
-        "visitors": 1
-      },
-      {
-        "page": "/contacts",
-        "visitors": 1
+        "visitors": 2
       }
     ]
   },
   "funnel": {
-    "visits": 5,
+    "visits": 2,
     "signups": 0,
     "contact_requests": 0,
     "payments": 0,
@@ -108,7 +61,9 @@
   ],
   "crawlers": {},
   "notes": [
-    "визит = уникальный visitor_id за сутки, робот отсечён по UA и по загрузке site.css",
+    "визит = уникальный visitor_id за сутки по логам nginx",
+    "робот отсекается по UA, по загрузке site.css и по поведению (mark_bots)",
+    "tracker_visits — те же визиты глазами своего счётчика, для сверки, не для сложения",
     "регистрации, заявки и оплаты взяты из platform.*, а не из событий сайта"
   ]
 }

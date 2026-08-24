@@ -109,7 +109,8 @@ def month_progress() -> str:
     def count(extra: str = "") -> int:
         return conn.execute(
             "SELECT count(DISTINCT visitor_id || day) c FROM events "
-            "WHERE day >= ? AND is_bot = 0 AND event = 'pageview' " + extra, (start,)
+            "WHERE day >= ? AND is_bot = 0 AND event = 'pageview' AND origin = 'nginx' "
+            + extra, (start,)
         ).fetchone()["c"]
 
     direct = count("AND source IN ('direct', 'internal')")

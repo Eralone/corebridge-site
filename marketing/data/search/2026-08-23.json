@@ -1,0 +1,58 @@
+{
+  "date_from": "2026-07-27",
+  "date_to": "2026-08-23",
+  "queries": [
+    {
+      "query_id": "a435bab6edc0c71b",
+      "query_text": "corebridge",
+      "indicators": {
+        "TOTAL_SHOWS": 7.0,
+        "TOTAL_CLICKS": 2.0,
+        "AVG_SHOW_POSITION": 1.8571428571428572,
+        "AVG_CLICK_POSITION": 2.0
+      }
+    },
+    {
+      "query_id": "e8e8f90621bacb4f",
+      "query_text": "no code 1с corebridge",
+      "indicators": {
+        "TOTAL_SHOWS": 3.0,
+        "TOTAL_CLICKS": 1.0,
+        "AVG_SHOW_POSITION": 2.0,
+        "AVG_CLICK_POSITION": 2.0
+      }
+    },
+    {
+      "query_id": "72b799ee62528a8a",
+      "query_text": "corebridge ru",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 1.0,
+        "AVG_SHOW_POSITION": 1.5,
+        "AVG_CLICK_POSITION": 1.0
+      }
+    },
+    {
+      "query_id": "d10a27aa5c9a4816",
+      "query_text": "как загрузить epf файл в 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "50540d300733f0a7",
+      "query_text": "дмитрий королев битрикс",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 6.0,
+        "AVG_CLICK_POSITION": null
+      }
+    }
+  ],
+  "queries_count": 5,
+  "in_search_history": []
+}

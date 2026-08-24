@@ -1,86 +1,27 @@
 {
   "date": "2026-08-17",
-  "generated_at": "2026-08-20T20:21:08",
+  "generated_at": "2026-08-24T04:24:43",
   "traffic": {
-    "visits": 10,
-    "pageviews": 148,
-    "norm_visits_median_4w": 4,
-    "delta_pct": 150,
+    "visits": 1,
+    "pageviews": 1,
+    "norm_visits_median_4w": 3,
+    "delta_pct": -67,
     "sources": [
       {
         "source": "direct",
-        "visitors": 10
-      },
-      {
-        "source": "yandex-search",
         "visitors": 1
       }
     ],
+    "tracker_visits": 0,
     "landing_pages": [
       {
         "page": "/",
-        "visitors": 10
-      },
-      {
-        "page": "/pricing",
-        "visitors": 9
-      },
-      {
-        "page": "/integrations",
-        "visitors": 9
-      },
-      {
-        "page": "/for-business",
-        "visitors": 9
-      },
-      {
-        "page": "/docs",
-        "visitors": 9
-      },
-      {
-        "page": "/register",
-        "visitors": 6
-      },
-      {
-        "page": "/privacy",
-        "visitors": 6
-      },
-      {
-        "page": "/login",
-        "visitors": 6
-      },
-      {
-        "page": "/terms",
-        "visitors": 5
-      },
-      {
-        "page": "/oferta",
-        "visitors": 5
-      },
-      {
-        "page": "/contacts",
-        "visitors": 5
-      },
-      {
-        "page": "/static/staticfiles.json",
-        "visitors": 3
-      },
-      {
-        "page": "/packs/manifest.json",
-        "visitors": 3
-      },
-      {
-        "page": "/ngsw.json",
-        "visitors": 3
-      },
-      {
-        "page": "/n8n",
-        "visitors": 3
+        "visitors": 1
       }
     ]
   },
   "funnel": {
-    "visits": 10,
+    "visits": 1,
     "signups": 0,
     "contact_requests": 0,
     "payments": 0,
@@ -110,7 +51,9 @@
   ],
   "crawlers": {},
   "notes": [
-    "визит = уникальный visitor_id за сутки, робот отсечён по UA и по загрузке site.css",
+    "визит = уникальный visitor_id за сутки по логам nginx",
+    "робот отсекается по UA, по загрузке site.css и по поведению (mark_bots)",
+    "tracker_visits — те же визиты глазами своего счётчика, для сверки, не для сложения",
     "регистрации, заявки и оплаты взяты из platform.*, а не из событий сайта"
   ]
 }

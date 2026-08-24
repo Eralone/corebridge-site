@@ -1,66 +1,31 @@
 {
   "date": "2026-08-19",
-  "generated_at": "2026-08-20T20:21:10",
+  "generated_at": "2026-08-24T04:24:45",
   "traffic": {
-    "visits": 11,
-    "pageviews": 51,
-    "norm_visits_median_4w": 6,
-    "delta_pct": 83,
+    "visits": 4,
+    "pageviews": 4,
+    "norm_visits_median_4w": 3,
+    "delta_pct": 33,
     "sources": [
       {
         "source": "direct",
-        "visitors": 10
+        "visitors": 3
       },
       {
         "source": "gw-riskweb-prod.intnet.podeli.ru",
         "visitors": 1
       }
     ],
+    "tracker_visits": 0,
     "landing_pages": [
       {
         "page": "/",
-        "visitors": 11
-      },
-      {
-        "page": "/register",
-        "visitors": 6
-      },
-      {
-        "page": "/pricing",
-        "visitors": 6
-      },
-      {
-        "page": "/docs",
-        "visitors": 6
-      },
-      {
-        "page": "/login",
-        "visitors": 5
-      },
-      {
-        "page": "/integrations",
-        "visitors": 5
-      },
-      {
-        "page": "/for-business",
-        "visitors": 5
-      },
-      {
-        "page": "/terms",
-        "visitors": 1
-      },
-      {
-        "page": "/privacy",
-        "visitors": 1
-      },
-      {
-        "page": "/contacts",
-        "visitors": 1
+        "visitors": 4
       }
     ]
   },
   "funnel": {
-    "visits": 11,
+    "visits": 4,
     "signups": 0,
     "contact_requests": 0,
     "payments": 0,
@@ -100,7 +65,9 @@
   ],
   "crawlers": {},
   "notes": [
-    "визит = уникальный visitor_id за сутки, робот отсечён по UA и по загрузке site.css",
+    "визит = уникальный visitor_id за сутки по логам nginx",
+    "робот отсекается по UA, по загрузке site.css и по поведению (mark_bots)",
+    "tracker_visits — те же визиты глазами своего счётчика, для сверки, не для сложения",
     "регистрации, заявки и оплаты взяты из platform.*, а не из событий сайта"
   ]
 }

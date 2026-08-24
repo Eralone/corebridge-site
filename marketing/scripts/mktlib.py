@@ -101,14 +101,18 @@ LOG_RE = re.compile(
 
 BOT_RE = re.compile(
     r"bot|crawl|spider|slurp|zgrab|masscan|curl|wget|python-requests|go-http|"
-    r"headless|monitoring|uptime|scanner|facebookexternalhit|preview|fetch",
+    r"headless|monitoring|uptime|scanner|facebookexternalhit|preview|fetch|"
+    # Googlebot ходит под этим мобильным UA без слова bot — узнаётся по модели
+    r"Nexus 5X Build/MMB29P|libredtail",
     re.I,
 )
 
 ASSET_RE = re.compile(r"\.(css|js|mjs|woff2?|ttf|png|jpe?g|svg|ico|webp|map|xml|txt)$", re.I)
 
-# Пути, принадлежащие не сайту: API кабинета, API типа 1, выдача файлов, админка.
-NOT_SITE_RE = re.compile(r"^/(lk|api|cdn|admin|internal|_next/(static|image))/")
+# Пути, принадлежащие не сайту: API кабинета, API типа 1, выдача файлов, админка
+# и приём событий своего счётчика (`/m/e` — он же попадал в просмотры страниц
+# и добавлял по визиту на каждый просмотр).
+NOT_SITE_RE = re.compile(r"^/(lk|api|cdn|admin|internal|m|_next/(static|image))/")
 
 
 def read_nginx(days: int = 2) -> list[dict]:
@@ -147,14 +151,103 @@ def is_site_request(row: dict) -> bool:
 
 
 def is_human(row: dict) -> bool:
-    """Живой браузер, а не робот.
-
-    Признак «UA похож на браузер» слабый: Googlebot ходит под мобильным Chrome.
-    Поэтому в суточном срезе визит засчитывается только тем IP, которые
-    догрузили `assets/site.css` — робот за стилями не ходит. Здесь остаётся
-    грубый фильтр по UA, он нужен для отсечения сканеров.
-    """
+    """Грубый фильтр по UA. Сам по себе ничего не доказывает — см. mark_bots."""
     return not row["is_bot"] and row["ua"].startswith("Mozilla/")
+
+
+# ── Отсев роботов по поведению ──────────────────────────────────────────────
+#
+# Проверено 2026-08-24 на своих же данных: ни UA, ни загрузка site.css,
+# ни даже исполнение JavaScript роботa не выдают.
+#
+#   · Googlebot ходит под UA мобильного Chrome и грузит стили;
+#   · безголовый Chrome выполняет наш счётчик и присылает события —
+#     семь страниц с одной секундой на всё и окном ровно 1280x720;
+#   · счётчик поймал «iPhone» с окном 1920x1080, чего не бывает.
+#
+# Поэтому решает поведение, а не представление. Человек читает страницу
+# десятки секунд; робот обходит сайт за секунды. Границы ниже подобраны
+# по своим данным, а не взяты из общих соображений.
+
+BOT_MIN_PAGES = 5          # меньше — не о чем судить
+BOT_MAX_SEC_PER_PAGE = 8   # быстрее человек читать не может
+BOT_PAGES_PER_DAY = 12     # столько страниц за сутки у нас открывает только обход
+
+
+# Пути, которые запрашивают только сканеры уязвимостей. Один такой запрос
+# выдаёт посетителя целиком: человек не набирает /vendor/ignition/execute-solution.
+PROBE_LIKE = (
+    "/wp-%", "/.env%", "/vendor/%", "/.git%", "/admin.php%", "/phpmyadmin%",
+    "/xmlrpc.php%", "/cgi-bin/%", "/actuator%", "/_ignition%", "/config.json%",
+    "/telescope%", "/.aws%", "/server-status%", "/SDK/%", "/%.php",
+)
+
+
+def mark_bots(conn) -> int:
+    """Переставляет is_bot=1 тем, чьё поведение машинное. Возвращает число строк.
+
+    ⚠️ Осознанный размен: настоящий человек, залпом открывший 12 страниц
+    документации, будет посчитан роботом. При нынешнем объёме это одна потеря
+    в месяц, а обратная ошибка — десятки роботов в метрике каждый день, и она
+    хуже: по ней принимаются решения.
+    """
+    conn.execute(
+        """
+        WITH sessions AS (
+            SELECT visitor_id, day,
+                   count(DISTINCT url) pages,
+                   (julianday(max(ts)) - julianday(min(ts))) * 86400 span
+            FROM events
+            WHERE is_bot = 0 AND event = 'pageview'
+            GROUP BY 1, 2
+        )
+        UPDATE events SET is_bot = 1
+        WHERE (visitor_id, day) IN (
+            SELECT visitor_id, day FROM sessions
+            WHERE pages >= :pages_day
+               OR (pages >= :min_pages AND span / (pages - 1) < :sec_per_page)
+        )
+        """,
+        {"pages_day": BOT_PAGES_PER_DAY, "min_pages": BOT_MIN_PAGES,
+         "sec_per_page": BOT_MAX_SEC_PER_PAGE},
+    )
+    # Сканеры уязвимостей: помечаем посетителя целиком, а не отдельный запрос —
+    # тот же адрес заодно открывает главную, и она попадала в визиты.
+    conn.execute(
+        "UPDATE events SET is_bot = 1 WHERE is_bot = 0 AND visitor_id IN ("
+        "  SELECT DISTINCT visitor_id FROM events WHERE "
+        + " OR ".join("url LIKE ?" for _ in PROBE_LIKE) + ")",
+        PROBE_LIKE,
+    )
+    changed = conn.total_changes
+
+    # Безголовый браузер не хранит cookie: он выполняет наш счётчик, но на каждой
+    # странице получает новый visitor_id. Поэтому правило по числу страниц его
+    # не видит — у него везде «одна страница». Выдаёт его залп: несколько
+    # разных visitor_id с одинаковыми UA и окном в пределах пяти минут.
+    conn.execute(
+        """UPDATE events SET is_bot = 1
+           WHERE origin = 'tracker' AND is_bot = 0
+             AND (json_extract(meta,'$.ua'), json_extract(meta,'$.screen'),
+                  substr(ts, 1, 15)) IN (
+                 SELECT json_extract(meta,'$.ua'), json_extract(meta,'$.screen'),
+                        substr(ts, 1, 15)
+                 FROM events WHERE origin = 'tracker'
+                 GROUP BY 1, 2, 3
+                 HAVING count(DISTINCT visitor_id) >= 3)"""
+    )
+
+    # Невозможное окно: телефон с шириной от 1200 точек. Это подделка UA,
+    # и видна она только в событиях своего счётчика.
+    conn.execute(
+        """UPDATE events SET is_bot = 1
+           WHERE origin = 'tracker' AND is_bot = 0
+             AND json_extract(meta, '$.ua') LIKE '%Mobile%'
+             AND CAST(substr(json_extract(meta, '$.screen'), 1,
+                      instr(json_extract(meta, '$.screen'), 'x') - 1) AS INTEGER) >= 1200"""
+    )
+    conn.commit()
+    return changed
 
 
 # ── Своя база событий ───────────────────────────────────────────────────────

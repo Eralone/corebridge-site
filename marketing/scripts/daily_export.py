@@ -26,7 +26,8 @@ def visits_for(conn, day: str) -> int:
     """Визит = уникальный visitor_id за сутки. Не «просмотр»: при нашем объёме
     важно число людей, а просмотры считаются отдельно."""
     return q(conn, "SELECT count(DISTINCT visitor_id) c FROM events "
-                   "WHERE day=? AND is_bot=0 AND event='pageview'", day)[0]["c"]
+                   "WHERE day=? AND is_bot=0 AND event='pageview' AND origin='nginx'",
+             day)[0]["c"]
 
 
 def build(day: date) -> dict:
@@ -34,17 +35,18 @@ def build(day: date) -> dict:
     conn = m.db()
 
     pageviews = q(conn, "SELECT count(*) c FROM events WHERE day=? AND is_bot=0 "
-                        "AND event='pageview' AND status<400", d)[0]["c"]
+                        "AND event='pageview' AND status<400 AND origin='nginx'", d)[0]["c"]
     visits = visits_for(conn, d)
 
     sources = q(conn, """SELECT source, count(DISTINCT visitor_id) visitors
                          FROM events WHERE day=? AND is_bot=0 AND source<>'internal'
+                           AND origin='nginx'
                          GROUP BY 1 ORDER BY 2 DESC""", d)
 
     landings = q(conn, """SELECT substr(url, 1, instr(url||'?','?')-1) page,
                                  count(DISTINCT visitor_id) visitors
                           FROM events WHERE day=? AND is_bot=0 AND event='pageview'
-                                AND status<400
+                                AND status<400 AND origin='nginx' 
                           GROUP BY 1 ORDER BY 2 DESC LIMIT 15""", d)
 
     errors = q(conn, """SELECT status, count(*) n,
@@ -61,6 +63,12 @@ def build(day: date) -> dict:
         for name in ("googlebot", "yandexbot", "bingbot", "gptbot", "claudebot", "ahrefs"):
             if name in ua:
                 crawl[name] = crawl.get(name, 0) + row["n"]
+
+    # Свой счётчик считается отдельно, а не вместе с логами: один человек виден
+    # обоим источникам, и объединение засчитало бы его дважды. Здесь эта цифра
+    # нужна как признак качества — сколько визитов исполнили JavaScript.
+    tracked = q(conn, "SELECT count(DISTINCT visitor_id) c FROM events "
+                      "WHERE day=? AND is_bot=0 AND origin='tracker'", d)[0]["c"]
 
     # ── продуктовые события: источник правды — БД, а не наш трекер ──────────
     def one(sql: str, default=0):
@@ -94,6 +102,7 @@ def build(day: date) -> dict:
             "norm_visits_median_4w": norm,
             "delta_pct": delta,
             "sources": sources,
+            "tracker_visits": tracked,
             "landing_pages": landings,
         },
         "funnel": {
@@ -106,7 +115,9 @@ def build(day: date) -> dict:
         "errors": errors,
         "crawlers": crawl,
         "notes": [
-            "визит = уникальный visitor_id за сутки, робот отсечён по UA и по загрузке site.css",
+            "визит = уникальный visitor_id за сутки по логам nginx",
+            "робот отсекается по UA, по загрузке site.css и по поведению (mark_bots)",
+            "tracker_visits — те же визиты глазами своего счётчика, для сверки, не для сложения",
             "регистрации, заявки и оплаты взяты из platform.*, а не из событий сайта",
         ],
     }

@@ -78,6 +78,7 @@ def main() -> None:
                 if "UNIQUE" not in str(e):
                     raise
 
+    m.mark_bots(conn)
     conn.commit()
     print(f"счётчик: добавлено {added}, битых строк {skipped}")
 

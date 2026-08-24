@@ -1,54 +1,55 @@
 {
   "date": "2026-08-14",
-  "generated_at": "2026-08-20T20:21:07",
+  "generated_at": "2026-08-24T04:24:41",
   "traffic": {
-    "visits": 8,
-    "pageviews": 39,
-    "norm_visits_median_4w": 5,
-    "delta_pct": 60,
+    "visits": 4,
+    "pageviews": 11,
+    "norm_visits_median_4w": 2,
+    "delta_pct": 100,
     "sources": [
       {
         "source": "direct",
-        "visitors": 7
+        "visitors": 3
       },
       {
         "source": "bing-search",
         "visitors": 1
       }
     ],
+    "tracker_visits": 0,
     "landing_pages": [
       {
         "page": "/",
-        "visitors": 8
+        "visitors": 4
       },
       {
         "page": "/register",
-        "visitors": 5
+        "visitors": 1
       },
       {
         "page": "/pricing",
-        "visitors": 5
+        "visitors": 1
       },
       {
         "page": "/login",
-        "visitors": 5
+        "visitors": 1
       },
       {
         "page": "/integrations",
-        "visitors": 5
+        "visitors": 1
       },
       {
         "page": "/for-business",
-        "visitors": 5
+        "visitors": 1
       },
       {
         "page": "/docs",
-        "visitors": 5
+        "visitors": 1
       }
     ]
   },
   "funnel": {
-    "visits": 8,
+    "visits": 4,
     "signups": 0,
     "contact_requests": 0,
     "payments": 0,
@@ -83,7 +84,9 @@
   ],
   "crawlers": {},
   "notes": [
-    "визит = уникальный visitor_id за сутки, робот отсечён по UA и по загрузке site.css",
+    "визит = уникальный visitor_id за сутки по логам nginx",
+    "робот отсекается по UA, по загрузке site.css и по поведению (mark_bots)",
+    "tracker_visits — те же визиты глазами своего счётчика, для сверки, не для сложения",
     "регистрации, заявки и оплаты взяты из platform.*, а не из событий сайта"
   ]
 }

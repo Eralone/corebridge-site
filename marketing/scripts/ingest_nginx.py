@@ -5,9 +5,11 @@
 пропадает безвозвратно. Повторный запуск безопасен — строки развёрнуты
 в `dedupe_key`, а он UNIQUE.
 
-Визитом считается запрос к странице сайта от живого браузера. Робот отсекается
-дважды: по UA и по тому, догрузил ли этот IP `assets/site.css` в тот же день.
-Второе надёжнее — Googlebot ходит под мобильным Chrome, но за стилями не идёт.
+Визитом считается запрос к странице сайта от живого человека. Робота отсекают
+три проверки подряд, и каждая следующая ловит то, что пропустила предыдущая:
+UA, загрузка `assets/site.css`, поведение (`mktlib.mark_bots`). Третья решающая —
+проверено 24.08 на своих данных: Googlebot ходит под мобильным Chrome и грузит
+стили, а безголовый Chrome выполняет даже наш JavaScript.
 
     ./ingest_nginx.py            # последние 2 суток
     ./ingest_nginx.py --days 14  # всё, что осталось в ротации
@@ -108,6 +110,9 @@ def main() -> None:
                ORDER BY e2.ts LIMIT 1)
            WHERE first_touch IS NULL"""
     )
+    # отсев роботов по поведению — после вставки, на всей накопленной истории
+    m.mark_bots(conn)
+
     conn.execute(
         "INSERT OR REPLACE INTO ingest_state VALUES ('last_ingest', ?, ?)",
         (datetime.now(timezone.utc).isoformat(), datetime.now(timezone.utc).isoformat()),
