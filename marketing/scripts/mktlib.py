@@ -174,8 +174,17 @@ BOT_MAX_SEC_PER_PAGE = 8   # быстрее человек читать не м�
 BOT_PAGES_PER_DAY = 12     # столько страниц за сутки у нас открывает только обход
 
 
-# Пути, которые запрашивают только сканеры уязвимостей. Один такой запрос
-# выдаёт посетителя целиком: человек не набирает /vendor/ignition/execute-solution.
+# Пути, которые запрашивают только сканеры уязвимостей.
+PROBE_RE = re.compile(
+    r"(^/\.)|wp-|/vendor/|\.git|phpmyadmin|xmlrpc|cgi-bin|actuator|ignition|"
+    r"/debug|/graphql|administrator|/config\.json|credentials|\.php$|"
+    r"/telescope|/server-status|not_exist|/SDK/",
+    re.I,
+)
+
+
+# Те же пути в виде шаблонов LIKE для SQL. Один такой запрос выдаёт посетителя
+# целиком: человек не набирает /vendor/ignition/execute-solution.
 PROBE_LIKE = (
     "/wp-%", "/.env%", "/vendor/%", "/.git%", "/admin.php%", "/phpmyadmin%",
     "/xmlrpc.php%", "/cgi-bin/%", "/actuator%", "/_ignition%", "/config.json%",

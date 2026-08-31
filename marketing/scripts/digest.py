@@ -41,14 +41,14 @@ def stale_reminder() -> str:
     командой /mkt-*. Данные копятся сами, но без разбора они так и останутся
     файлами. Одна строка в сводке лучше, чем молчание на две недели.
     """
-    reports = sorted((m.ROOT / "reports").glob("20*.md"))
+    reports = list((m.ROOT / "reports").glob("*.md"))
     if not reports:
         return "\n⚠️ Разбора не было ни разу. В сессии: /mkt-daily"
-    last = reports[-1]
-    try:
-        stamp = date.fromisoformat(last.name[:10])
-    except ValueError:
-        return ""
+
+    # Дата берётся из времени файла, а не из имени: недельные отчёты называются
+    # 2026-W35-weekly.md, и разбор имени на них молча падал — напоминание
+    # переставало приходить именно тогда, когда отчёты начинали появляться.
+    stamp = date.fromtimestamp(max(p.stat().st_mtime for p in reports))
     days = (date.today() - stamp).days
     if days >= 3:
         return f"\n⚠️ Последний разбор {stamp:%d.%m}, {days} дн. назад. В сессии: /mkt-daily"

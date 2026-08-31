@@ -109,9 +109,21 @@ def check_errors(rows: list[dict]) -> list[str]:
         return [f"🔴 {len(fives)} ответов 5xx за час: {paths}"]
 
     # 404 интересны только со ссылки с нашего же сайта — это битая ссылка,
-    # которую мы сами и поставили. Сканеры круглосуточно щупают /.env, /wp-admin
-    # и /_app; они тоже приходят под UA браузера, и по UA их не отличить.
-    lost = [r for r in recent if r["status"] == 404 and "corebridge.ru" in r["referrer"]]
+    # которую мы сами и поставили.
+    #
+    # ⚠️ Одного «в реферере наш домен» мало, проверено за неделю 25–31.08:
+    # правило дало семь тревог, и все ложные. Сканеры подставляют в Referer
+    # тот же адрес, который запрашивают, — и /wp-login.php выглядит переходом
+    # с нашего сайта. Настоящую битую ссылку отличают два признака: реферер
+    # ведёт на ДРУГУЮ страницу, и запрошенный путь не похож на щуп сканера.
+    def broken_link(r: dict) -> bool:
+        if r["status"] != 404 or "corebridge.ru" not in r["referrer"]:
+            return False
+        if m.PROBE_RE.search(r["path"]):
+            return False
+        return r["referrer"].split("://", 1)[-1].split("/", 1)[-1] != r["path"].lstrip("/")
+
+    lost = [r for r in recent if broken_link(r)]
     if len(lost) >= 3:
         paths = ", ".join(sorted({r["path"][:60] for r in lost})[:5])
         return [f"⚠️ {len(lost)} переходов по битым ссылкам с самого сайта за час: {paths}"]

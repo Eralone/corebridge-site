@@ -1,0 +1,33 @@
+{
+  "date_from": "2026-08-18",
+  "date_to": "2026-08-24",
+  "queries": [
+    {
+      "query_id": "d24947d22719f256",
+      "query_text": "jwt 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 21.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "50540d300733f0a7",
+      "query_text": "дмитрий королев битрикс",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 6.0,
+        "AVG_CLICK_POSITION": null
+      }
+    }
+  ],
+  "queries_count": 2,
+  "in_search_history": [
+    {
+      "date": "2026-08-23T10:00:07.817+03:00",
+      "value": 6
+    }
+  ]
+}

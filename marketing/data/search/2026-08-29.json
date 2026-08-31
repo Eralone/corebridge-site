@@ -1,0 +1,625 @@
+{
+  "date_from": "2026-08-23",
+  "date_to": "2026-08-29",
+  "queries": [
+    {
+      "query_id": "d97acd82342dc982",
+      "query_text": "как в 1с разделить отгрузки по fbo и fbs",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.5,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "f2f7c3cfdaf9c30c",
+      "query_text": "управление заказами ям",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "0732a63b8c1abb43",
+      "query_text": "код на 1с8 получение новых заказов из wb",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "20ce4e3d73ef05ce",
+      "query_text": "1с сбп выставление счетов юкасса",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.5,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "3c7cda819e1819db",
+      "query_text": "где в унф дополнительные отчеты и обработки",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "58bcb7ef9ef88036",
+      "query_text": "упд 1096 7.7 +комплексная +epf",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 39.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "5cbf2288e812fd10",
+      "query_text": "выгрузка в гугл таблицы из 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 7.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "793d46ebf3da85f8",
+      "query_text": "внешнюю обработка или модуль для сдэк для ут 11",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.5,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "88743600a009caf0",
+      "query_text": "n8n отправка статуса заказов из 1с телеграмм",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "90af7b9deffcb3c5",
+      "query_text": "настройки в 1с ут чтобы отмечать статус документа",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "9420aeaf79eff58c",
+      "query_text": "cdp-s3 настройка механики",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 8.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "9475ab4d2ec8599d",
+      "query_text": "заказать интернет сайт цены netriks",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 6.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "953103a9ff87292a",
+      "query_text": "как провести отгрузку в 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 16.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "9596222c53cb7699",
+      "query_text": "как выгрузить счет на оплату из 1с ка2",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "977d5e6da644b735",
+      "query_text": "+\"ут 11.6\" +\"бп 3.0\"",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 4.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "994f52cd99ab4a4b",
+      "query_text": "тинькофф касса и сбп как разносить в 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 5.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "9f05682b84084c92",
+      "query_text": "выгрузка из 1с в гугл таблицы",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "9f3c40bb52a5a6c7",
+      "query_text": "1с:платежный шлюз для сбп",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 7.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "a1339e0f6d7a133c",
+      "query_text": "1с:ут 11.6.1.53",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 35.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "a3846afdd457a46f",
+      "query_text": "corebridge or massmutual or barings or aig private markets alternatives investment director new york hiring icims",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "a435bab6edc0c71b",
+      "query_text": "corebridge",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 1.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "a5335d05a10e7c94",
+      "query_text": "настройка печати этикетки fbs",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "a6030101c590ff46",
+      "query_text": "как разорвать сопоставление товара в 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "a62fd1923c363ab4",
+      "query_text": "n8n автоматизация 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "af6e6765935cca61",
+      "query_text": "интеграция 1с и whatsapp статус not_authorized",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "afd3e95afbf9ac2a",
+      "query_text": "ack id в 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 7.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "b5c40171fb681c14",
+      "query_text": "fbm схема отгрузки",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "cabfe7a622bffd12",
+      "query_text": "n8n 1c",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 7.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "cad55bf850f39f5f",
+      "query_text": "1с унф интеграция с гугл таблицами",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "ce6f64473948f516",
+      "query_text": "внешнюю обработка для сдэк для ут 11",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "d24947d22719f256",
+      "query_text": "jwt 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 21.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "d962249e27b661be",
+      "query_text": "схема поставки fbm",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 6.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "dad8300c834bf849",
+      "query_text": "что значит зарезервировано на озон",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 14.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "dedd22ff6aa4c625",
+      "query_text": "отгрузка по схеме fbm",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "e0ef88e29a820c62",
+      "query_text": "учет остатков маркетплейсов ул люблинская д 141",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "e452f713de4fa587",
+      "query_text": "как добавить инн при поиске контрагента в 1с ут11",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 4.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "ee4154950454094a",
+      "query_text": "кассовая ссылка сбп от тбанка как настроить в 1с ут",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 27.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "f08d036ea785713b",
+      "query_text": "гтд как выглядит для озон",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "fb2f95a34482e31f",
+      "query_text": "интеграция с маркетплейсами bridge",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 3.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "fbae54a5357a6eae",
+      "query_text": "1с установка .epf",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 15.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "02c168a0d9b49e9f",
+      "query_text": "юкасса интеграция 1с ут11",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "05a3fcbb4a2e2e26",
+      "query_text": "интеграция 1с и вк",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "15006c8f8bac0f13",
+      "query_text": "яндекс маркет стол",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 18.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "17374d57cae9d87b",
+      "query_text": "заказы мп - google таблицы",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 7.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "17d17077c6d43f82",
+      "query_text": "обработка для выгрузки 1с erp в гугл таблицы",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "17dc2b96d24757df",
+      "query_text": "n8n 1c8",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "1f6529100d1122c1",
+      "query_text": "jwt токен 1с erp",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "2517daf6fdb0233a",
+      "query_text": "яндекс доставка как сделать интеграцию с 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 6.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "2675778971ca93c5",
+      "query_text": "интеграция 1с crm и вк",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "3115e704db01f989",
+      "query_text": "n8n для 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 6.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "3940e6766fa0b968",
+      "query_text": "работа с ям в 1с ка",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 5.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "4270e78ee1894634",
+      "query_text": "как завести ям в 1с ка",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 6.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "42f1ff0c6c8d8a29",
+      "query_text": "как в 1с унф работать с ю кассой",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 8.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "455f00f7caaa764d",
+      "query_text": "интеграция 1с и google sheets",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "64949882f3c1475e",
+      "query_text": "1с обработка мастер по шагам",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "65d44bd7117f9e74",
+      "query_text": "юkassa инструкция по подключению nfc табличек к 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "6a0fdc612cb19b29",
+      "query_text": "тинькофф касса и сбп как сделать продажу в 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "6eb0f841470d0c64",
+      "query_text": "что даёт интеграция юkassa с 1с:унф приём оплат в интернет-магазине, через счёт или сайт автоматическое создание приходного кассового ордера (пко) при оплате поддержка частичных и полных оплат интеграция с маркетплейсами (wildberries, ozon и др.) работа с сбп через qr-коды прямо из 1с удобный журнал оплат с отслеживанием статусов 🔧 пошаговая инструкция: как подключить юkassa к 1с:унф подключение мо",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 4.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "6fff0c639a5afe6d",
+      "query_text": "добавление e-mail контрагенту бп программно",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "7a0e3dca97cfb171",
+      "query_text": "выгрузка из 1 с гугл таблицу",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    }
+  ],
+  "queries_count": 60,
+  "in_search_history": [
+    {
+      "date": "2026-08-23T10:00:07.817+03:00",
+      "value": 6
+    },
+    {
+      "date": "2026-08-25T10:00:04.617+03:00",
+      "value": 6
+    },
+    {
+      "date": "2026-08-27T10:00:10.872+03:00",
+      "value": 6
+    },
+    {
+      "date": "2026-08-28T10:00:06.215+03:00",
+      "value": 43
+    }
+  ]
+}
