@@ -35,6 +35,8 @@ case "${1:-collect}" in
     else
       log "webmaster: токена нет, пропускаю"
     fi
+    # просмотры опубликованных статей: без них вердикт по H-003 не вынести
+    python3 fetch_platform_stats.py    >>"$LOG" 2>&1 || log "platform_stats: ошибка"
     python3 watchdog.py                >>"$LOG" 2>&1 || log "watchdog: ошибка"
     log "── сбор закончен"
     ;;

@@ -129,6 +129,37 @@ def month_progress() -> str:
             f"<b>непрямых {indirect} из {goal_indirect}</b> — {pace}")
 
 
+def publications() -> str:
+    """Опубликованное и что оно принесло.
+
+    Две цифры рядом, потому что порознь они обманывают: 500 открытий без
+    переходов означает «текст читают, но ссылка не работает», а 20 открытий
+    без переходов означает «площадка не показала», и это разные выводы.
+    """
+    path = m.DATA / "platforms.json"
+    if not path.exists():
+        return ""
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not data:
+        return ""
+
+    conn = m.db()
+    lines = []
+    for url, rec in data.items():
+        daily = rec.get("daily") or {}
+        if not daily:
+            continue
+        last = daily[max(daily)]
+        campaign = rec.get("campaign") or "—"
+        clicks = conn.execute(
+            "SELECT count(DISTINCT visitor_id) c FROM events "
+            "WHERE utm_campaign = ? AND is_bot = 0 AND origin = 'nginx'", (campaign,)
+        ).fetchone()["c"]
+        lines.append(f"{campaign} ({rec.get('platform')}): "
+                     f"открытий {last.get('hits', '?')}, переходов {clicks}")
+    return "\nпубликации: " + " · ".join(lines) if lines else ""
+
+
 def week_digest(end: date) -> str:
     days = [end - timedelta(days=i) for i in range(7)]
     cur = [load_day(d) for d in days]
@@ -168,7 +199,7 @@ def main() -> None:
 
     d = date.fromisoformat(args.day)
     text = ((week_digest(d) if args.week else day_digest(d))
-            + month_progress() + stale_reminder())
+            + publications() + month_progress() + stale_reminder())
     print(text)
     if not args.dry_run:
         m.telegram(text, silent=True)
