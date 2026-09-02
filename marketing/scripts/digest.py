@@ -114,7 +114,7 @@ def month_progress() -> str:
         ).fetchone()["c"]
 
     direct = count("AND source IN ('direct', 'internal')")
-    indirect = count("AND source NOT IN ('direct', 'internal')")
+    indirect = count("AND source NOT IN ('direct', 'internal', 'referrer-spam')")
 
     goal = next((g for g in GOALS if today <= g[0]), GOALS[-1])
     _, goal_direct, goal_indirect = goal

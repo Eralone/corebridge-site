@@ -8,5 +8,15 @@
     "published": "2026-09-01",
     "draft": "content/drafts/2026-08-31-ostatki-ne-shodyatsya.md",
     "link": "https://corebridge.ru/docs/epf/ostatki?utm_source=vc&utm_medium=article&utm_campaign=ostatki"
+  },
+  {
+    "platform": "vc",
+    "url": "https://vc.ru/marketplace/3116133-oplata-po-sbp-v-1s",
+    "campaign": "sbp",
+    "hypothesis": "H-003",
+    "format": "короткая инструкция",
+    "published": "2026-09-02",
+    "draft": "content/drafts/2026-09-01-sbp-v-1s.md",
+    "link": "https://corebridge.ru/docs/epf/priyom-oplaty?utm_source=vc&utm_medium=article&utm_campaign=sbp"
   }
 ]

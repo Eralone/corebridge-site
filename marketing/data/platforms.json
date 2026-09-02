@@ -9,6 +9,25 @@
         "hits": 19,
         "comments": 0,
         "favorites": 1
+      },
+      "2026-09-02": {
+        "views": 137,
+        "hits": 23,
+        "comments": 0,
+        "favorites": 1
+      }
+    }
+  },
+  "https://vc.ru/marketplace/3116133-oplata-po-sbp-v-1s": {
+    "platform": "vc",
+    "campaign": "sbp",
+    "published": "2026-09-02",
+    "daily": {
+      "2026-09-02": {
+        "views": 95,
+        "hits": 19,
+        "comments": 0,
+        "favorites": 0
       }
     }
   }

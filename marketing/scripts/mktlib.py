@@ -103,7 +103,9 @@ BOT_RE = re.compile(
     r"bot|crawl|spider|slurp|zgrab|masscan|curl|wget|python-requests|go-http|"
     r"headless|monitoring|uptime|scanner|facebookexternalhit|preview|fetch|"
     # Googlebot ходит под этим мобильным UA без слова bot — узнаётся по модели
-    r"Nexus 5X Build/MMB29P|libredtail",
+    r"Nexus 5X Build/MMB29P|libredtail|"
+    # сборщики превью и сканеры сети, приходящие с меткой в ссылке
+    r"Embed PHP|PHP library|CensysInspect|Expanse|InternetMeasurement",
     re.I,
 )
 
@@ -280,6 +282,18 @@ def parse_utm(path: str) -> dict[str, str | None]:
     return {k: (q[k][0][:120] if k in q else None) for k in UTM_KEYS}
 
 
+# Реферер-мусор: сканеры и «накрутчики», которые ставят свой домен в Referer,
+# чтобы владелец сайта пришёл к ним в статистику. Настоящего перехода за этим
+# нет, а в непрямые источники они попадают и завышают главную метрику.
+# Список пополняется по факту, а не заранее: увидел новый в отчёте - дописал.
+REFERRER_SPAM = {"dataindex.pro", "signaliks.ru", "semalt.com", "buttons-for-website.com"}
+
+# Свой же сервер по IP: так ходят сканеры, подставляя в Referer адрес хоста.
+OWN_IPS = {"77.90.61.5"}
+
+_IP_RE = re.compile(r"^\d{1,3}(\.\d{1,3}){3}$")
+
+
 def classify_source(referrer: str, utm_source: str | None) -> str:
     """Один источник строкой. Разметка utm важнее реферера — она наша."""
     if utm_source:
@@ -290,8 +304,13 @@ def classify_source(referrer: str, utm_source: str | None) -> str:
     # как свой и попадает в непрямые источники, завышая главную метрику
     host = referrer.split("//", 1)[-1].split("/", 1)[0].lower()
     host = host.split(":", 1)[0].removeprefix("www.")
-    if host.endswith("corebridge.ru"):
+    if host.endswith("corebridge.ru") or host in OWN_IPS:
         return "internal"
+    # Голый IP в реферере: живой браузер так не приходит, это всегда сканер.
+    if _IP_RE.match(host):
+        return "internal"
+    if host in REFERRER_SPAM:
+        return "referrer-spam"
     for engine, name in (
         ("yandex", "yandex-search"), ("google", "google-search"), ("bing", "bing-search"),
         ("duckduckgo", "ddg-search"), ("mail.ru", "mailru-search"),

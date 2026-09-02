@@ -67,7 +67,21 @@ def main() -> None:
         day = r["ts"].date().isoformat()
         visitor = hashlib.sha256(f"{salt}{r['ip']}{r['ua']}".encode()).hexdigest()[:16]
         utm = m.parse_utm(r["path"])
-        bot = r["is_bot"] or (day, r["ip"]) not in browsers
+
+        # Проверка «качал ли этот IP site.css» отсеивает роботов, но заодно
+        # теряет живых: у вернувшегося посетителя стили лежат в кеше браузера,
+        # и второй раз он их не запрашивает. Обнаружено 02.09 — первый переход
+        # с VC (Firefox, реферер vc.ru) был записан в роботы именно так.
+        #
+        # Поэтому для запросов с меткой или с внешним реферером эта проверка
+        # не применяется: там источник известен, и решать должны UA и поведение
+        # (`mark_bots`), а не наличие запроса за стилями. Ровно эти запросы
+        # и составляют главную метрику, ошибаться в них дороже всего.
+        external = bool(utm["utm_source"]) or (
+            r["referrer"] not in ("", "-")
+            and "corebridge.ru" not in r["referrer"]
+        )
+        bot = r["is_bot"] or (not external and (day, r["ip"]) not in browsers)
 
         key = hashlib.sha256(
             f"{r['ts'].isoformat()}{r['ip']}{r['path']}{r['status']}".encode()
