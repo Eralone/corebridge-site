@@ -1,0 +1,51 @@
+{
+  "date_from": "2026-08-28",
+  "date_to": "2026-09-03",
+  "queries": [
+    {
+      "query_id": "d8153df05bce1240",
+      "query_text": "интеграционная обработка_ут_11_5.epf",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 3.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "f253923ff6f0d7c1",
+      "query_text": "jwt токен 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 18.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "fd2bdc9cc4325969",
+      "query_text": "jwt-токен для 1с где взять",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    }
+  ],
+  "queries_count": 3,
+  "in_search_history": [
+    {
+      "date": "2026-08-28T10:00:06.215+03:00",
+      "value": 43
+    },
+    {
+      "date": "2026-08-31T10:00:08.757+03:00",
+      "value": 43
+    },
+    {
+      "date": "2026-09-02T10:00:11.180+03:00",
+      "value": 43
+    }
+  ]
+}

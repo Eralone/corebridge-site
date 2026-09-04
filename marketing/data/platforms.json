@@ -15,6 +15,18 @@
         "hits": 23,
         "comments": 0,
         "favorites": 1
+      },
+      "2026-09-03": {
+        "views": 143,
+        "hits": 23,
+        "comments": 0,
+        "favorites": 1
+      },
+      "2026-09-04": {
+        "views": 168,
+        "hits": 26,
+        "comments": 0,
+        "favorites": 1
       }
     }
   },
@@ -26,6 +38,44 @@
       "2026-09-02": {
         "views": 95,
         "hits": 19,
+        "comments": 0,
+        "favorites": 0
+      },
+      "2026-09-03": {
+        "views": 105,
+        "hits": 19,
+        "comments": 0,
+        "favorites": 0
+      },
+      "2026-09-04": {
+        "views": 113,
+        "hits": 23,
+        "comments": 0,
+        "favorites": 0
+      }
+    }
+  },
+  "https://vc.ru/marketplace/3118166-avtomatizatsiya-perenosa-kodov-markirovki": {
+    "platform": "vc",
+    "campaign": "markirovka",
+    "published": "2026-09-03",
+    "daily": {
+      "2026-09-04": {
+        "views": 102,
+        "hits": 21,
+        "comments": 0,
+        "favorites": 1
+      }
+    }
+  },
+  "https://vc.ru/marketplace/3118588-ogranicheniya-zaprosov-na-marketpleysakh-ozon-i-wildberries": {
+    "platform": "vc",
+    "campaign": "limity-api",
+    "published": "2026-09-04",
+    "daily": {
+      "2026-09-04": {
+        "views": 86,
+        "hits": 5,
         "comments": 0,
         "favorites": 0
       }

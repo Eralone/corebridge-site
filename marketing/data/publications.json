@@ -18,5 +18,25 @@
     "published": "2026-09-02",
     "draft": "content/drafts/2026-09-01-sbp-v-1s.md",
     "link": "https://corebridge.ru/docs/epf/priyom-oplaty?utm_source=vc&utm_medium=article&utm_campaign=sbp"
+  },
+  {
+    "platform": "vc",
+    "url": "https://vc.ru/marketplace/3118166-avtomatizatsiya-perenosa-kodov-markirovki",
+    "campaign": "markirovka",
+    "hypothesis": "H-003",
+    "format": "история",
+    "published": "2026-09-03",
+    "draft": "content/drafts/2026-09-02-chestny-znak-vruchnuyu.md",
+    "link": "https://corebridge.ru/docs/epf/markirovka-chestny-znak?utm_source=vc&utm_medium=article&utm_campaign=markirovka"
+  },
+  {
+    "platform": "vc",
+    "url": "https://vc.ru/marketplace/3118588-ogranicheniya-zaprosov-na-marketpleysakh-ozon-i-wildberries",
+    "campaign": "limity-api",
+    "hypothesis": "H-003",
+    "format": "статистика",
+    "published": "2026-09-04",
+    "draft": "content/drafts/2026-09-02-limity-api-marketpleysov.md",
+    "link": "https://corebridge.ru/docs/epf/podklyuchit-ozon?utm_source=vc&utm_medium=article&utm_campaign=limity-api"
   }
 ]
