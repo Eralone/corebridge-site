@@ -77,10 +77,15 @@ def main() -> None:
         # не применяется: там источник известен, и решать должны UA и поведение
         # (`mark_bots`), а не наличие запроса за стилями. Ровно эти запросы
         # и составляют главную метрику, ошибаться в них дороже всего.
-        external = bool(utm["utm_source"]) or (
-            r["referrer"] not in ("", "-")
-            and "corebridge.ru" not in r["referrer"]
-        )
+        # ⚠️ Проверку «качал ли site.css» обходит ТОЛЬКО наша собственная метка.
+        #
+        # 02.09 я разрешил обходить её и по внешнему рефереру — это было ошибкой,
+        # видно 07.09: сканеры подставляют в Referer google.com, bing.com
+        # и собственный IP сервера, и десятки их прошли как живые посетители.
+        # Реферер подделывается тривиально, имя кампании в метке — нет:
+        # `utm_campaign=ostatki` неоткуда взять, кроме нашей же публикации.
+        src = m.classify_source(r["referrer"], utm["utm_source"])
+        external = bool(utm["utm_source"])
         bot = r["is_bot"] or (not external and (day, r["ip"]) not in browsers)
 
         key = hashlib.sha256(
@@ -101,7 +106,7 @@ def main() -> None:
                     visitor,
                     r["path"][:500],
                     (r["referrer"] or "")[:300],
-                    m.classify_source(r["referrer"], utm["utm_source"]),
+                    src,
                     utm["utm_source"], utm["utm_medium"], utm["utm_campaign"],
                     utm["utm_content"], utm["utm_term"],
                     r["status"],

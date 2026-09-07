@@ -1,10 +1,10 @@
 {
   "date": "2026-09-01",
-  "generated_at": "2026-09-02T15:32:22",
+  "generated_at": "2026-09-07T18:46:00",
   "traffic": {
     "visits": 0,
     "pageviews": 0,
-    "norm_visits_median_4w": 2,
+    "norm_visits_median_4w": 1,
     "delta_pct": -100,
     "sources": [],
     "tracker_visits": 0,

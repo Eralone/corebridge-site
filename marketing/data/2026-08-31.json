@@ -1,12 +1,16 @@
 {
   "date": "2026-08-31",
-  "generated_at": "2026-09-01T10:12:02",
+  "generated_at": "2026-09-07T18:45:59",
   "traffic": {
-    "visits": 1,
-    "pageviews": 8,
-    "norm_visits_median_4w": 2,
-    "delta_pct": -50,
+    "visits": 2,
+    "pageviews": 9,
+    "norm_visits_median_4w": null,
+    "delta_pct": null,
     "sources": [
+      {
+        "source": "vc",
+        "visitors": 1
+      },
       {
         "source": "direct",
         "visitors": 1
@@ -35,6 +39,10 @@
         "visitors": 1
       },
       {
+        "page": "/docs/epf/ostatki",
+        "visitors": 1
+      },
+      {
         "page": "/docs",
         "visitors": 1
       },
@@ -45,7 +53,7 @@
     ]
   },
   "funnel": {
-    "visits": 1,
+    "visits": 2,
     "signups": 0,
     "contact_requests": 0,
     "payments": 0,

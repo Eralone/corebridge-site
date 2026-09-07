@@ -1,11 +1,11 @@
 {
   "date": "2026-08-26",
-  "generated_at": "2026-08-27T02:40:10",
+  "generated_at": "2026-09-07T18:45:57",
   "traffic": {
     "visits": 4,
     "pageviews": 20,
-    "norm_visits_median_4w": 3.5,
-    "delta_pct": 14,
+    "norm_visits_median_4w": null,
+    "delta_pct": null,
     "sources": [
       {
         "source": "direct",

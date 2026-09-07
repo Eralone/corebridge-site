@@ -178,19 +178,12 @@ BOT_PAGES_PER_DAY = 12     # столько страниц за сутки у н
 
 # Пути, которые запрашивают только сканеры уязвимостей.
 PROBE_RE = re.compile(
-    r"(^/\.)|wp-|/vendor/|\.git|phpmyadmin|xmlrpc|cgi-bin|actuator|ignition|"
-    r"/debug|/graphql|administrator|/config\.json|credentials|\.php$|"
-    r"/telescope|/server-status|not_exist|/SDK/",
+    r"(^|/)\.[a-z]"          # /.env, /frontend/.env, /.git, /.aws — точка в любом сегменте
+    r"|wp-|/vendor/|phpmyadmin|phpinfo|xmlrpc|cgi-bin|actuator|ignition"
+    r"|/debug|/graphql|administrator|/boaform|/telescope|/server-status"
+    r"|credentials|/config[./]|application\.propert|not_exist|/SDK/"
+    r"|\.php$|\.asp$|\.aspx$|\.jsp$|\.bak$|\.sql$|\.zip$|\.yml$|\.ini$",
     re.I,
-)
-
-
-# Те же пути в виде шаблонов LIKE для SQL. Один такой запрос выдаёт посетителя
-# целиком: человек не набирает /vendor/ignition/execute-solution.
-PROBE_LIKE = (
-    "/wp-%", "/.env%", "/vendor/%", "/.git%", "/admin.php%", "/phpmyadmin%",
-    "/xmlrpc.php%", "/cgi-bin/%", "/actuator%", "/_ignition%", "/config.json%",
-    "/telescope%", "/.aws%", "/server-status%", "/SDK/%", "/%.php",
 )
 
 
@@ -224,12 +217,20 @@ def mark_bots(conn) -> int:
     )
     # Сканеры уязвимостей: помечаем посетителя целиком, а не отдельный запрос —
     # тот же адрес заодно открывает главную, и она попадала в визиты.
-    conn.execute(
-        "UPDATE events SET is_bot = 1 WHERE is_bot = 0 AND visitor_id IN ("
-        "  SELECT DISTINCT visitor_id FROM events WHERE "
-        + " OR ".join("url LIKE ?" for _ in PROBE_LIKE) + ")",
-        PROBE_LIKE,
-    )
+    #
+    # ⚠️ Раньше здесь стоял узкий список LIKE, и он пропускал /frontend/.env,
+    # /config/application.properties, /phpinfo, /boaform/... Обнаружено 07.09:
+    # такие посетители подделывали ещё и Referer (google.com, bing.com,
+    # свой же IP) и после послабления от 02.09 считались живыми. Теперь
+    # проверка идёт той же регуляркой, что и у сторожа, — один источник правды.
+    probe_visitors = {
+        row["visitor_id"]
+        for row in conn.execute("SELECT DISTINCT visitor_id, url FROM events")
+        if PROBE_RE.search(row["url"] or "")
+    }
+    if probe_visitors:
+        conn.executemany("UPDATE events SET is_bot = 1 WHERE visitor_id = ? AND is_bot = 0",
+                         [(v,) for v in probe_visitors])
     changed = conn.total_changes
 
     # Безголовый браузер не хранит cookie: он выполняет наш счётчик, но на каждой
