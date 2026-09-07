@@ -152,5 +152,18 @@
         "favorites": 0
       }
     }
+  },
+  "https://vc.ru/marketplace/3121657-vygruzka-dannyh-iz-1s-v-google-tablicy": {
+    "platform": "vc",
+    "campaign": "gsheets",
+    "published": "2026-09-05",
+    "daily": {
+      "2026-09-07": {
+        "views": 189,
+        "hits": 25,
+        "comments": 0,
+        "favorites": 0
+      }
+    }
   }
 }
