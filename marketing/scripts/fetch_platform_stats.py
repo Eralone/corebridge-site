@@ -56,7 +56,17 @@ def fetch_vc(url: str) -> dict:
     return out
 
 
-FETCHERS = {"vc": fetch_vc}
+def fetch_dzen(url: str) -> dict:
+    """Дзен счётчики анонимно не отдаёт.
+
+    Проверено 08.09: на запрос без авторизации приходит не статья, а заглушка
+    SSO на 3 КБ - ни текста, ни счётчиков. Просмотры вносит человек
+    из кабинета автора: `./add_stat.py <метка> --platform dzen --hits N`.
+    """
+    return {}
+
+
+FETCHERS = {"vc": fetch_vc, "dzen": fetch_dzen}
 
 
 def main() -> None:
@@ -79,7 +89,11 @@ def main() -> None:
             print(f"{pub['url']}: не открылась ({e})")
             continue
         if not stats:
-            print(f"{pub['url']}: счётчиков в разметке нет — проверить формат")
+            if pub.get("platform") == "dzen":
+                print(f"{pub.get('campaign')}: Дзен счётчики не отдаёт, "
+                      f"вносить вручную через add_stat.py")
+            else:
+                print(f"{pub['url']}: счётчиков в разметке нет — проверить формат")
             continue
 
         key = pub["url"]

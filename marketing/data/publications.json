@@ -48,5 +48,26 @@
     "published": "2026-09-05",
     "draft": "content/drafts/2026-09-04-1s-v-google-tablicy.md",
     "link": "https://corebridge.ru/docs/epf/analitika?utm_source=vc&utm_medium=article&utm_campaign=gsheets"
+  },
+  {
+    "platform": "vc",
+    "url": "https://vc.ru/id6095697/3125890-problemy-s-otgruzkami-v-1s-pochemu-dokumenty-terayutsya",
+    "campaign": "zakazy",
+    "hypothesis": "H-003",
+    "format": "история",
+    "published": "2026-09-07",
+    "draft": "content/drafts/2026-09-07-zakaz-est-otgruzki-net.md",
+    "link": "https://corebridge.ru/docs/epf/zakazy-i-otgruzka?utm_source=vc&utm_medium=article&utm_campaign=zakazy"
+  },
+  {
+    "platform": "dzen",
+    "url": "https://dzen.ru/a/ap8PgTkWs2Owt0sY",
+    "campaign": "НУЖНО-УТОЧНИТЬ",
+    "hypothesis": "H-003",
+    "format": "?",
+    "published": "2026-09-08",
+    "draft": "?",
+    "link": "?",
+    "note": "первая публикация в Дзене. Какой это текст и с какой меткой стоит ссылка - выяснить у человека. Счётчики Дзен анонимно не отдаёт, просмотры вносятся вручную."
   }
 ]

@@ -45,6 +45,12 @@
         "hits": 30,
         "comments": 0,
         "favorites": 1
+      },
+      "2026-09-08": {
+        "views": 194,
+        "hits": 33,
+        "comments": 0,
+        "favorites": 1
       }
     }
   },
@@ -88,6 +94,12 @@
         "hits": 33,
         "comments": 0,
         "favorites": 0
+      },
+      "2026-09-08": {
+        "views": 129,
+        "hits": 33,
+        "comments": 0,
+        "favorites": 0
       }
     }
   },
@@ -116,6 +128,12 @@
       },
       "2026-09-07": {
         "views": 131,
+        "hits": 22,
+        "comments": 0,
+        "favorites": 1
+      },
+      "2026-09-08": {
+        "views": 133,
         "hits": 22,
         "comments": 0,
         "favorites": 1
@@ -150,6 +168,12 @@
         "hits": 6,
         "comments": 0,
         "favorites": 0
+      },
+      "2026-09-08": {
+        "views": 126,
+        "hits": 6,
+        "comments": 0,
+        "favorites": 0
       }
     }
   },
@@ -161,6 +185,25 @@
       "2026-09-07": {
         "views": 189,
         "hits": 25,
+        "comments": 0,
+        "favorites": 0
+      },
+      "2026-09-08": {
+        "views": 200,
+        "hits": 27,
+        "comments": 0,
+        "favorites": 0
+      }
+    }
+  },
+  "https://vc.ru/id6095697/3125890-problemy-s-otgruzkami-v-1s-pochemu-dokumenty-terayutsya": {
+    "platform": "vc",
+    "campaign": "zakazy",
+    "published": "2026-09-07",
+    "daily": {
+      "2026-09-08": {
+        "views": 91,
+        "hits": 6,
         "comments": 0,
         "favorites": 0
       }
