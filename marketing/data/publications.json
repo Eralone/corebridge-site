@@ -62,12 +62,31 @@
   {
     "platform": "dzen",
     "url": "https://dzen.ru/a/ap8PgTkWs2Owt0sY",
-    "campaign": "НУЖНО-УТОЧНИТЬ",
+    "campaign": "ostatki",
     "hypothesis": "H-003",
-    "format": "?",
+    "format": "история",
     "published": "2026-09-08",
-    "draft": "?",
-    "link": "?",
-    "note": "первая публикация в Дзене. Какой это текст и с какой меткой стоит ссылка - выяснить у человека. Счётчики Дзен анонимно не отдаёт, просмотры вносятся вручную."
+    "draft": "content/drafts/2026-08-31-ostatki-ne-shodyatsya.md",
+    "link": "https://corebridge.ru/docs/epf/ostatki?utm_source=dzen&utm_medium=article&utm_campaign=ostatki"
+  },
+  {
+    "platform": "dzen",
+    "url": "https://dzen.ru/a/aqB4hxl6-Q1rqCAQ",
+    "campaign": "sbp",
+    "hypothesis": "H-003",
+    "format": "инструкция",
+    "published": "2026-09-09",
+    "draft": "content/drafts/2026-09-01-sbp-v-1s.md",
+    "link": "https://corebridge.ru/docs/epf/priyom-oplaty?utm_source=dzen&utm_medium=article&utm_campaign=sbp"
+  },
+  {
+    "platform": "vc",
+    "url": "https://vc.ru/marketplace/3128204-postavka-na-sklad-marketpleysa-oformlenie-v-1s",
+    "campaign": "fbm",
+    "hypothesis": "H-003",
+    "format": "инструкция",
+    "published": "2026-09-08",
+    "draft": "content/drafts/2026-09-08-fbm-postavka-na-sklad.md",
+    "link": "https://corebridge.ru/docs/epf/fbm-fbo-postavki?utm_source=vc&utm_medium=article&utm_campaign=fbm"
   }
 ]

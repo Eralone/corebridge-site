@@ -51,6 +51,12 @@
         "hits": 33,
         "comments": 0,
         "favorites": 1
+      },
+      "2026-09-09": {
+        "views": 194,
+        "hits": 33,
+        "comments": 1,
+        "favorites": 1
       }
     }
   },
@@ -100,6 +106,12 @@
         "hits": 33,
         "comments": 0,
         "favorites": 0
+      },
+      "2026-09-09": {
+        "views": 131,
+        "hits": 36,
+        "comments": 1,
+        "favorites": 0
       }
     }
   },
@@ -136,6 +148,12 @@
         "views": 133,
         "hits": 22,
         "comments": 0,
+        "favorites": 1
+      },
+      "2026-09-09": {
+        "views": 133,
+        "hits": 22,
+        "comments": 1,
         "favorites": 1
       }
     }
@@ -174,6 +192,12 @@
         "hits": 6,
         "comments": 0,
         "favorites": 0
+      },
+      "2026-09-09": {
+        "views": 126,
+        "hits": 6,
+        "comments": 1,
+        "favorites": 0
       }
     }
   },
@@ -193,6 +217,12 @@
         "hits": 27,
         "comments": 0,
         "favorites": 0
+      },
+      "2026-09-09": {
+        "views": 205,
+        "hits": 28,
+        "comments": 1,
+        "favorites": 0
       }
     }
   },
@@ -206,6 +236,25 @@
         "hits": 6,
         "comments": 0,
         "favorites": 0
+      },
+      "2026-09-09": {
+        "views": 94,
+        "hits": 8,
+        "comments": 1,
+        "favorites": 0
+      }
+    }
+  },
+  "https://vc.ru/marketplace/3128204-postavka-na-sklad-marketpleysa-oformlenie-v-1s": {
+    "platform": "vc",
+    "campaign": "fbm",
+    "published": "2026-09-08",
+    "daily": {
+      "2026-09-09": {
+        "views": 92,
+        "hits": 8,
+        "comments": 1,
+        "favorites": 1
       }
     }
   }
