@@ -88,5 +88,37 @@
     "published": "2026-09-08",
     "draft": "content/drafts/2026-09-08-fbm-postavka-na-sklad.md",
     "link": "https://corebridge.ru/docs/epf/fbm-fbo-postavki?utm_source=vc&utm_medium=article&utm_campaign=fbm"
+  },
+  {
+    "platform": "vc",
+    "url": "https://vc.ru/marketplace/3130156-chto-delat-pri-oshibkakh-obmena-s-marketpleysami",
+    "campaign": "oshibki-api",
+    "hypothesis": "H-003",
+    "format": "статистика",
+    "published": "2026-09-09",
+    "draft": "content/drafts/2026-09-09-chto-delaet-obmen-pri-oshibke.md",
+    "link": "https://corebridge.ru/docs/epf/proizvolnaya-integratsiya?utm_source=vc&utm_medium=article&utm_campaign=oshibki-api"
+  },
+  {
+    "platform": "dzen",
+    "url": "https://dzen.ru/a/dzen-markirovka",
+    "campaign": "markirovka",
+    "hypothesis": "H-003",
+    "format": "история",
+    "published": "2026-09-09",
+    "draft": "content/drafts/2026-09-02-chestny-znak-vruchnuyu.md",
+    "link": "https://corebridge.ru/docs/epf/markirovka-chestny-znak?utm_source=dzen&utm_medium=article&utm_campaign=markirovka",
+    "note": "адрес статьи не сообщён, публикация видна по статистике Дзена"
+  },
+  {
+    "platform": "dzen",
+    "url": "https://dzen.ru/a/aqGVi1f2PwbeHmUy",
+    "campaign": "УТОЧНИТЬ",
+    "hypothesis": "H-003",
+    "format": "?",
+    "published": "2026-09-10",
+    "draft": "?",
+    "link": "?",
+    "note": "какой это текст - спросить; Дзен анонимно страницу не отдаёт"
   }
 ]

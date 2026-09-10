@@ -57,6 +57,12 @@
         "hits": 33,
         "comments": 1,
         "favorites": 1
+      },
+      "2026-09-10": {
+        "views": 195,
+        "hits": 33,
+        "comments": 1,
+        "favorites": 1
       }
     }
   },
@@ -112,6 +118,12 @@
         "hits": 36,
         "comments": 1,
         "favorites": 0
+      },
+      "2026-09-10": {
+        "views": 132,
+        "hits": 36,
+        "comments": 1,
+        "favorites": 0
       }
     }
   },
@@ -153,6 +165,12 @@
       "2026-09-09": {
         "views": 133,
         "hits": 22,
+        "comments": 1,
+        "favorites": 1
+      },
+      "2026-09-10": {
+        "views": 135,
+        "hits": 23,
         "comments": 1,
         "favorites": 1
       }
@@ -198,6 +216,12 @@
         "hits": 6,
         "comments": 1,
         "favorites": 0
+      },
+      "2026-09-10": {
+        "views": 126,
+        "hits": 6,
+        "comments": 1,
+        "favorites": 0
       }
     }
   },
@@ -223,6 +247,12 @@
         "hits": 28,
         "comments": 1,
         "favorites": 0
+      },
+      "2026-09-10": {
+        "views": 205,
+        "hits": 28,
+        "comments": 1,
+        "favorites": 0
       }
     }
   },
@@ -242,6 +272,12 @@
         "hits": 8,
         "comments": 1,
         "favorites": 0
+      },
+      "2026-09-10": {
+        "views": 95,
+        "hits": 11,
+        "comments": 1,
+        "favorites": 0
       }
     }
   },
@@ -255,6 +291,48 @@
         "hits": 8,
         "comments": 1,
         "favorites": 1
+      },
+      "2026-09-10": {
+        "views": 102,
+        "hits": 8,
+        "comments": 1,
+        "favorites": 1
+      }
+    }
+  },
+  "https://dzen.ru/a/dzen-markirovka": {
+    "platform": "dzen",
+    "campaign": "markirovka",
+    "published": "2026-09-09",
+    "daily": {
+      "2026-09-10": {
+        "views": 4,
+        "hits": 2,
+        "source": "вручную"
+      }
+    }
+  },
+  "https://dzen.ru/a/aqB4hxl6-Q1rqCAQ": {
+    "platform": "dzen",
+    "campaign": "sbp",
+    "published": "2026-09-09",
+    "daily": {
+      "2026-09-10": {
+        "views": 5,
+        "hits": 1,
+        "source": "вручную"
+      }
+    }
+  },
+  "https://dzen.ru/a/ap8PgTkWs2Owt0sY": {
+    "platform": "dzen",
+    "campaign": "ostatki",
+    "published": "2026-09-08",
+    "daily": {
+      "2026-09-10": {
+        "views": 17,
+        "hits": 2,
+        "source": "вручную"
       }
     }
   }

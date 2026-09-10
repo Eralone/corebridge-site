@@ -88,6 +88,13 @@ def main() -> None:
         external = bool(utm["utm_source"])
         bot = r["is_bot"] or (not external and (day, r["ip"]) not in browsers)
 
+        # Хеш сети /16, а не самого адреса: по нему видно, что десяток «разных
+        # посетителей» пришёл из одного дата-центра, но восстановить конкретный
+        # адрес нельзя. Нужен для отсева проверяльщиков ссылок - см. mark_bots.
+        net = hashlib.sha256(
+            f"{salt}{'.'.join(r['ip'].split('.')[:2])}".encode()
+        ).hexdigest()[:12]
+
         key = hashlib.sha256(
             f"{r['ts'].isoformat()}{r['ip']}{r['path']}{r['status']}".encode()
         ).hexdigest()[:24]
@@ -112,7 +119,7 @@ def main() -> None:
                     r["status"],
                     1 if bot else 0,
                     "nginx",
-                    json.dumps({"ua": r["ua"][:200]}, ensure_ascii=False),
+                    json.dumps({"ua": r["ua"][:200], "net": net}, ensure_ascii=False),
                     key,
                 ),
             )

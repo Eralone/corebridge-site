@@ -1,0 +1,67 @@
+{
+  "date_from": "2026-09-03",
+  "date_to": "2026-09-09",
+  "queries": [
+    {
+      "query_id": "d17081d6ced71261",
+      "query_text": "возможности интеграции тарифы контакты",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 8.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "c78fd1d5b26c0f87",
+      "query_text": "corebridge software что за компания",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 2.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "19f7760f871bd3b3",
+      "query_text": "corebridge software",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 2.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "69f2eb541ca848f1",
+      "query_text": "jwt-токен интеграция erp и документооборот",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "70e0bad760fa4675",
+      "query_text": "загрузка оплат юкассаъ в 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    }
+  ],
+  "queries_count": 5,
+  "in_search_history": [
+    {
+      "date": "2026-09-06T10:00:09.133+03:00",
+      "value": 43
+    },
+    {
+      "date": "2026-09-07T10:00:02.566+03:00",
+      "value": 44
+    }
+  ]
+}

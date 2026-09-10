@@ -151,11 +151,17 @@ def publications() -> str:
             continue
         last = daily[max(daily)]
         campaign = rec.get("campaign") or "—"
+        platform = rec.get("platform") or "?"
+        # Метка кампании у VC и Дзена одна и та же (тема), различает площадки
+        # `utm_source`. Без него переходы двух площадок складывались в одну
+        # цифру, и сравнение площадок, ради которого всё и размечалось,
+        # не работало.
         clicks = conn.execute(
             "SELECT count(DISTINCT visitor_id) c FROM events "
-            "WHERE utm_campaign = ? AND is_bot = 0 AND origin = 'nginx'", (campaign,)
+            "WHERE utm_campaign = ? AND utm_source = ? AND is_bot = 0 "
+            "AND origin = 'nginx'", (campaign, platform)
         ).fetchone()["c"]
-        lines.append(f"{campaign} ({rec.get('platform')}): "
+        lines.append(f"{campaign} ({platform}): "
                      f"открытий {last.get('hits', '?')}, переходов {clicks}")
     return "\nпубликации: " + " · ".join(lines) if lines else ""
 
