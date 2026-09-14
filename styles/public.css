@@ -670,13 +670,19 @@ ul.legal-list li { min-width: 0; overflow-wrap: anywhere; }
 }
 /* Высота задана соотношением, а не пикселями: обложки приходят разной формы
    (1200x600, 1200x750), и без этого карточки в ряду разъезжались бы.
-   ⚠️ Соотношение 3:1, а не 1200x630 как у исходников. При полной высоте
-   на первом экране помещались одни картинки без единой строки текста —
-   человек попадал на страницу и не видел, о чём она. Картинка здесь
-   опознавательный знак, а не иллюстрация, ей хватает полосы. */
+   Соотношение 2:1 — компромисс: картинка не занимает весь первый экран,
+   но и не превращается в узкую полосу.
+
+   ⚠️ `contain`, а не `cover`. С `cover` картинка обрезалась по краям, и смысл
+   рисунка пропадал: на обложке про возвраты, например, срезало монету,
+   ради которой она и нарисована. Лучше поля по бокам, чем половина смысла.
+
+   ⚠️ `height: auto` обязателен: атрибуты width и height у <img> браузер
+   применяет как стиль, CSS-ширина их перебивает, а высота 630px остаётся
+   и молча отменяет aspect-ratio. */
 .razbory-card img {
-  width: 100%; height: auto; aspect-ratio: 3 / 1;
-  object-fit: cover; display: block; background: var(--bg-tinted);
+  width: 100%; height: auto; aspect-ratio: 2 / 1;
+  object-fit: contain; display: block; background: var(--bg-tinted);
 }
 .razbory-card-body { padding: 16px 18px 20px; }
 .razbory-card h3 { font-size: 17px; line-height: 1.35; margin: 0 0 8px; }
@@ -704,11 +710,16 @@ ul.legal-list li { min-width: 0; overflow-wrap: anywhere; }
 /* ⚠️ `height: auto` здесь обязателен, и это не косметика. Атрибуты width
    и height у <img> браузер применяет как стиль; CSS-ширина их перебивает,
    а высота 630px остаётся и отменяет aspect-ratio. Без этой строки обложки
-   занимали весь первый экран, хотя правило про соотношение уже стояло. */
+   занимали весь первый экран, хотя правило про соотношение уже стояло.
+
+   На самой статье картинка показывается целиком и в своей форме: место
+   тут есть, а обрезать иллюстрацию, которую человек уже открыл читать,
+   незачем. Ограничена только высота — чтобы текст начинался на первом экране. */
 .razbory-cover {
-  width: 100%; height: auto; aspect-ratio: 3 / 1;
-  object-fit: cover; display: block; margin-bottom: 28px;
+  width: 100%; height: auto; max-height: 380px;
+  object-fit: contain; object-position: left; display: block; margin-bottom: 28px;
   border: 1px solid var(--border); border-radius: var(--radius-lg);
+  background: var(--bg-tinted);
 }
 
 @media (max-width: 640px) {
