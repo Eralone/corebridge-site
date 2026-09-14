@@ -72,7 +72,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       />
       <PublicHeader active="razbory" />
 
-      <main className="wrap razbory-article">
+      <main className="razbory-article">
         <div className="p-crumbs">
           <Link href="/">Главная</Link> / <Link href="/razbory">Разборы</Link>
         </div>

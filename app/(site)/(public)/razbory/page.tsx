@@ -40,7 +40,7 @@ export default function Page() {
       />
       <PublicHeader active="razbory" />
 
-      <main className="wrap" style={{ paddingTop: 40, paddingBottom: 64 }}>
+      <main className="razbory-wrap">
         <div className="p-crumbs">
           <Link href="/">Главная</Link> / Разборы
         </div>

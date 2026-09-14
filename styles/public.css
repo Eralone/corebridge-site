@@ -647,6 +647,13 @@ ul.legal-list li { min-width: 0; overflow-wrap: anywhere; }
    берёт готовый `.doc-body` из документации — жанр разный, типографика одна,
    и второй набор правил для тех же <p> и <ul> только разошёлся бы с первым. */
 
+/* ⚠️ Контейнер обязателен. Сначала здесь стоял класс `wrap`, которого
+   в дизайне не существует: страница растягивалась на всю ширину окна
+   и прилипала к краям. Отступы и предельная ширина берутся те же, что
+   у остальных публичных страниц (см. .n8n-wrap, .container). */
+.razbory-wrap { max-width: 1200px; margin: 40px auto 80px; padding: 0 24px; }
+@media (max-width: 520px) { .razbory-wrap { padding: 0 16px; margin: 28px auto 56px; } }
+
 .razbory-grid {
   display: grid; gap: 22px;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -662,10 +669,14 @@ ul.legal-list li { min-width: 0; overflow-wrap: anywhere; }
   border-color: var(--blue-500); text-decoration: none; transform: translateY(-2px);
 }
 /* Высота задана соотношением, а не пикселями: обложки приходят разной формы
-   (1200x600, 1200x750), и без этого карточки в ряду разъезжались бы */
+   (1200x600, 1200x750), и без этого карточки в ряду разъезжались бы.
+   ⚠️ Соотношение 3:1, а не 1200x630 как у исходников. При полной высоте
+   на первом экране помещались одни картинки без единой строки текста —
+   человек попадал на страницу и не видел, о чём она. Картинка здесь
+   опознавательный знак, а не иллюстрация, ей хватает полосы. */
 .razbory-card img {
-  width: 100%; aspect-ratio: 1200 / 630; object-fit: cover; display: block;
-  background: var(--bg-tinted);
+  width: 100%; height: auto; aspect-ratio: 3 / 1;
+  object-fit: cover; display: block; background: var(--bg-tinted);
 }
 .razbory-card-body { padding: 16px 18px 20px; }
 .razbory-card h3 { font-size: 17px; line-height: 1.35; margin: 0 0 8px; }
@@ -684,11 +695,19 @@ ul.legal-list li { min-width: 0; overflow-wrap: anywhere; }
 
 /* ── Страница одного разбора ─────────────────────────────────────────────── */
 
-.razbory-article { max-width: 760px; padding-top: 40px; padding-bottom: 64px; }
+.razbory-article { max-width: 760px; margin: 40px auto 64px; padding: 0 24px; }
+@media (max-width: 520px) { .razbory-article { padding: 0 16px; margin: 28px auto 48px; } }
 .razbory-article h1 { font-size: 30px; line-height: 1.25; margin: 6px 0 22px; }
 
+/* На самой статье обложка тоже урезана по высоте: читать пришли текст,
+   а не смотреть картинку, и она не должна занимать весь первый экран */
+/* ⚠️ `height: auto` здесь обязателен, и это не косметика. Атрибуты width
+   и height у <img> браузер применяет как стиль; CSS-ширина их перебивает,
+   а высота 630px остаётся и отменяет aspect-ratio. Без этой строки обложки
+   занимали весь первый экран, хотя правило про соотношение уже стояло. */
 .razbory-cover {
-  width: 100%; height: auto; display: block; margin-bottom: 28px;
+  width: 100%; height: auto; aspect-ratio: 3 / 1;
+  object-fit: cover; display: block; margin-bottom: 28px;
   border: 1px solid var(--border); border-radius: var(--radius-lg);
 }
 
