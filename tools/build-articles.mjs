@@ -80,7 +80,9 @@ for (const file of files) {
   const slug = file.replace(/\.md$/, '');
   const { front, body } = parseFront(readFileSync(join(SRC, file), 'utf8'));
 
-  for (const need of ['title', 'lead', 'date', 'cover']) {
+  // Обложка необязательна: страница под поисковый запрос полезна и без неё,
+  // а дублировать одну картинку на двух статьях хуже, чем обойтись без.
+  for (const need of ['title', 'lead', 'date']) {
     if (!front[need]) throw new Error(`${file}: в шапке нет ${need}`);
   }
 
@@ -112,7 +114,7 @@ for (const file of files) {
     lead: front.lead,
     date: front.date,
     format: front.format ?? '',
-    cover: await cover(slug, front.cover),
+    cover: front.cover ? await cover(slug, front.cover) : null,
     seoTitle: front.seoTitle || front.title,
     seoDescription: front.seoDescription || front.lead,
     toc,

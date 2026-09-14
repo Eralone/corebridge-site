@@ -25,8 +25,8 @@ export type Article = {
   date: string;
   /** история | инструкция | разбор — помета в карточке */
   format: string;
-  /** путь к обложке в public */
-  cover: string;
+  /** путь к обложке в public; null — статья без картинки */
+  cover: string | null;
   /** заголовок под поисковый запрос; отличается от title намеренно */
   seoTitle: string;
   seoDescription: string;

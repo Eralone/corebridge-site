@@ -44,7 +44,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       siteName: 'CoreBridge',
       locale: 'ru_RU',
       publishedTime: a.date,
-      images: [{ url: a.cover, width: 1200, height: 630, alt: a.title }],
+      images: [{ url: a.cover ?? '/og.png', width: 1200, height: 630, alt: a.title }],
     },
   };
 }
@@ -84,14 +84,16 @@ export default function Page({ params }: { params: { slug: string } }) {
 
         <h1>{a.title}</h1>
 
-        <img
-          className="razbory-cover"
-          src={a.cover}
-          alt=""
-          width={1200}
-          height={630}
-          fetchPriority="high"
-        />
+        {a.cover ? (
+          <img
+            className="razbory-cover"
+            src={a.cover}
+            alt=""
+            width={1200}
+            height={630}
+            fetchPriority="high"
+          />
+        ) : null}
 
         <article className="doc-body" dangerouslySetInnerHTML={{ __html: html }} />
 

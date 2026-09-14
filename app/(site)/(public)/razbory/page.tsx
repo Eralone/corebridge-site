@@ -57,7 +57,11 @@ export default function Page() {
             const a = articlesBySlug[slug];
             return (
               <Link key={slug} href={`/razbory/${slug}`} className="razbory-card">
-                <img src={a.cover} alt="" width={1200} height={630} loading="lazy" decoding="async" />
+                {a.cover ? (
+                  <img src={a.cover} alt="" width={1200} height={630} loading="lazy" decoding="async" />
+                ) : (
+                  <div className="razbory-card-nocover" aria-hidden />
+                )}
                 <div className="razbory-card-body">
                   <div className="razbory-card-meta">
                     <span className="razbory-tag">{a.format}</span>

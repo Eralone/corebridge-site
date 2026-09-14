@@ -684,6 +684,14 @@ ul.legal-list li { min-width: 0; overflow-wrap: anywhere; }
   width: 100%; height: auto; aspect-ratio: 2 / 1;
   object-fit: contain; display: block; background: var(--bg-tinted);
 }
+/* Заглушка вместо обложки: без неё карточки в ряду разъезжались бы
+   по высоте, а пустой белый прямоугольник читался бы как незагрузившаяся
+   картинка */
+.razbory-card-nocover {
+  width: 100%; aspect-ratio: 2 / 1;
+  background: linear-gradient(135deg, var(--bg-tinted), var(--bg-alt));
+}
+
 .razbory-card-body { padding: 16px 18px 20px; }
 .razbory-card h3 { font-size: 17px; line-height: 1.35; margin: 0 0 8px; }
 .razbory-card p {
