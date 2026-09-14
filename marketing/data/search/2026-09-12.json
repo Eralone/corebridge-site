@@ -1,0 +1,75 @@
+{
+  "date_from": "2026-09-06",
+  "date_to": "2026-09-12",
+  "queries": [
+    {
+      "query_id": "b6492fd09bf0074e",
+      "query_text": "company name: corebridge solutions. type: service-oriented — b2b it consulting and custom automation software for logistics. year 1 team: 10 people total. structure: 2 partners (cto and ceo), 5 developers (1 senior, 2 middle, 2 junior), 1 qa, 1 designer, 1 project/account manager. rationale: faster revenue, lower capital needs. flat structure fits 2 partners. growth target: 15–18 in year 2.",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 2.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "c78fd1d5b26c0f87",
+      "query_text": "corebridge software что за компания",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 2.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "fa255a73ba69d064",
+      "query_text": "как заполнить номер гтд на озон",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "19f7760f871bd3b3",
+      "query_text": "corebridge software",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 2.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "23b043a8febaa9aa",
+      "query_text": "как установить epf модуль унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 3.0,
+        "AVG_CLICK_POSITION": null
+      }
+    }
+  ],
+  "queries_count": 5,
+  "in_search_history": [
+    {
+      "date": "2026-09-06T10:00:09.133+03:00",
+      "value": 43
+    },
+    {
+      "date": "2026-09-07T10:00:02.566+03:00",
+      "value": 44
+    },
+    {
+      "date": "2026-09-09T10:00:06.709+03:00",
+      "value": 44
+    },
+    {
+      "date": "2026-09-10T10:10:02.445+03:00",
+      "value": 44
+    }
+  ]
+}

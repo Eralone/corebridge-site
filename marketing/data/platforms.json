@@ -63,6 +63,30 @@
         "hits": 33,
         "comments": 1,
         "favorites": 1
+      },
+      "2026-09-11": {
+        "views": 195,
+        "hits": 33,
+        "comments": 1,
+        "favorites": 1
+      },
+      "2026-09-12": {
+        "views": 195,
+        "hits": 33,
+        "comments": 1,
+        "favorites": 1
+      },
+      "2026-09-13": {
+        "views": 195,
+        "hits": 34,
+        "comments": 1,
+        "favorites": 1
+      },
+      "2026-09-14": {
+        "views": 197,
+        "hits": 34,
+        "comments": 1,
+        "favorites": 1
       }
     }
   },
@@ -124,6 +148,30 @@
         "hits": 36,
         "comments": 1,
         "favorites": 0
+      },
+      "2026-09-11": {
+        "views": 132,
+        "hits": 36,
+        "comments": 1,
+        "favorites": 0
+      },
+      "2026-09-12": {
+        "views": 132,
+        "hits": 37,
+        "comments": 1,
+        "favorites": 0
+      },
+      "2026-09-13": {
+        "views": 132,
+        "hits": 37,
+        "comments": 1,
+        "favorites": 0
+      },
+      "2026-09-14": {
+        "views": 132,
+        "hits": 37,
+        "comments": 1,
+        "favorites": 0
       }
     }
   },
@@ -170,6 +218,30 @@
       },
       "2026-09-10": {
         "views": 135,
+        "hits": 23,
+        "comments": 1,
+        "favorites": 1
+      },
+      "2026-09-11": {
+        "views": 135,
+        "hits": 23,
+        "comments": 1,
+        "favorites": 1
+      },
+      "2026-09-12": {
+        "views": 135,
+        "hits": 23,
+        "comments": 1,
+        "favorites": 1
+      },
+      "2026-09-13": {
+        "views": 135,
+        "hits": 23,
+        "comments": 1,
+        "favorites": 1
+      },
+      "2026-09-14": {
+        "views": 136,
         "hits": 23,
         "comments": 1,
         "favorites": 1
@@ -222,6 +294,30 @@
         "hits": 6,
         "comments": 1,
         "favorites": 0
+      },
+      "2026-09-11": {
+        "views": 127,
+        "hits": 8,
+        "comments": 1,
+        "favorites": 0
+      },
+      "2026-09-12": {
+        "views": 127,
+        "hits": 8,
+        "comments": 1,
+        "favorites": 0
+      },
+      "2026-09-13": {
+        "views": 127,
+        "hits": 9,
+        "comments": 1,
+        "favorites": 0
+      },
+      "2026-09-14": {
+        "views": 128,
+        "hits": 9,
+        "comments": 1,
+        "favorites": 0
       }
     }
   },
@@ -253,6 +349,30 @@
         "hits": 28,
         "comments": 1,
         "favorites": 0
+      },
+      "2026-09-11": {
+        "views": 205,
+        "hits": 28,
+        "comments": 1,
+        "favorites": 0
+      },
+      "2026-09-12": {
+        "views": 205,
+        "hits": 28,
+        "comments": 1,
+        "favorites": 0
+      },
+      "2026-09-13": {
+        "views": 205,
+        "hits": 28,
+        "comments": 1,
+        "favorites": 0
+      },
+      "2026-09-14": {
+        "views": 206,
+        "hits": 29,
+        "comments": 1,
+        "favorites": 0
       }
     }
   },
@@ -278,6 +398,30 @@
         "hits": 11,
         "comments": 1,
         "favorites": 0
+      },
+      "2026-09-11": {
+        "views": 95,
+        "hits": 11,
+        "comments": 1,
+        "favorites": 0
+      },
+      "2026-09-12": {
+        "views": 95,
+        "hits": 11,
+        "comments": 1,
+        "favorites": 0
+      },
+      "2026-09-13": {
+        "views": 95,
+        "hits": 11,
+        "comments": 1,
+        "favorites": 0
+      },
+      "2026-09-14": {
+        "views": 95,
+        "hits": 13,
+        "comments": 1,
+        "favorites": 0
       }
     }
   },
@@ -295,6 +439,30 @@
       "2026-09-10": {
         "views": 102,
         "hits": 8,
+        "comments": 1,
+        "favorites": 1
+      },
+      "2026-09-11": {
+        "views": 103,
+        "hits": 9,
+        "comments": 1,
+        "favorites": 1
+      },
+      "2026-09-12": {
+        "views": 104,
+        "hits": 9,
+        "comments": 1,
+        "favorites": 1
+      },
+      "2026-09-13": {
+        "views": 104,
+        "hits": 9,
+        "comments": 1,
+        "favorites": 1
+      },
+      "2026-09-14": {
+        "views": 104,
+        "hits": 9,
         "comments": 1,
         "favorites": 1
       }
@@ -333,6 +501,37 @@
         "views": 17,
         "hits": 2,
         "source": "вручную"
+      }
+    }
+  },
+  "https://vc.ru/marketplace/3130156-chto-delat-pri-oshibkakh-obmena-s-marketpleysami": {
+    "platform": "vc",
+    "campaign": "oshibki-api",
+    "published": "2026-09-09",
+    "daily": {
+      "2026-09-11": {
+        "views": 80,
+        "hits": 10,
+        "comments": 1,
+        "favorites": 0
+      },
+      "2026-09-12": {
+        "views": 85,
+        "hits": 10,
+        "comments": 1,
+        "favorites": 0
+      },
+      "2026-09-13": {
+        "views": 85,
+        "hits": 10,
+        "comments": 1,
+        "favorites": 0
+      },
+      "2026-09-14": {
+        "views": 88,
+        "hits": 11,
+        "comments": 1,
+        "favorites": 0
       }
     }
   }

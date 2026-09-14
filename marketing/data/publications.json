@@ -111,14 +111,47 @@
     "note": "адрес статьи не сообщён, публикация видна по статистике Дзена"
   },
   {
+    "platform": "vc",
+    "url": "https://vc.ru/id6095697/3132379-vozvrat-tovara-i-vozvrat-deneg-razlichiya-v-uchyote",
+    "campaign": "vozvraty",
+    "hypothesis": "H-003",
+    "format": "история",
+    "published": "2026-09-10",
+    "draft": "content/drafts/2026-09-10-vozvrat-i-dengi.md",
+    "link": "https://corebridge.ru/docs/epf/vozvraty?utm_source=vc&utm_medium=article&utm_campaign=vozvraty",
+    "note": "вышел после блокировки индексации: 13 показов против ~130 у предыдущих"
+  },
+  {
     "platform": "dzen",
     "url": "https://dzen.ru/a/aqGVi1f2PwbeHmUy",
-    "campaign": "УТОЧНИТЬ",
+    "campaign": "не установлена",
     "hypothesis": "H-003",
     "format": "?",
-    "published": "2026-09-10",
+    "published": "2026-09-10..14",
     "draft": "?",
     "link": "?",
-    "note": "какой это текст - спросить; Дзен анонимно страницу не отдаёт"
+    "note": "текст не установлен. Точная привязка потеряла смысл: в Дзене 2-3 прочтения на пост, различать вклад тем при таком объёме нечем"
+  },
+  {
+    "platform": "dzen",
+    "url": "https://dzen.ru/a/aqgnz1mM02w2snoa",
+    "campaign": "не установлена",
+    "hypothesis": "H-003",
+    "format": "?",
+    "published": "2026-09-10..14",
+    "draft": "?",
+    "link": "?",
+    "note": "текст не установлен. Точная привязка потеряла смысл: в Дзене 2-3 прочтения на пост, различать вклад тем при таком объёме нечем"
+  },
+  {
+    "platform": "dzen",
+    "url": "https://dzen.ru/a/aqMR2N9jIR-8L7Uk",
+    "campaign": "не установлена",
+    "hypothesis": "H-003",
+    "format": "?",
+    "published": "2026-09-10..14",
+    "draft": "?",
+    "link": "?",
+    "note": "текст не установлен. Точная привязка потеряла смысл: в Дзене 2-3 прочтения на пост, различать вклад тем при таком объёме нечем"
   }
 ]
