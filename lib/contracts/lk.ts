@@ -146,11 +146,27 @@ export interface NotificationSettings {
       available: boolean;
     };
   };
-  matrix: Record<
-    'integration_errors' | 'limit_exceeded' | 'reports' | 'news',
-    { email: boolean; telegram: boolean }
-  >;
+  /**
+   * Матрица «событие → канал». Набор ключей задаёт **сервер** и расширяет его
+   * по мере роста механик: с этапом P1 биллинга добавляется `billing`
+   * («Оплата и подписка»). Поэтому здесь открытый Record, а экран рисует строки
+   * по фактическому ответу, а не по своему списку.
+   *
+   * ⚠️ Так и должно быть: `PUT` пропускает только те ключи, которые сервер знает
+   * (`sanitizeMatrix`), — нарисованный заранее переключатель молча сбрасывался бы
+   * при перезагрузке страницы. Появление строки в ответе и есть сигнал
+   * «категория готова».
+   */
+  matrix: Record<NotificationEvent | string, { email: boolean; telegram: boolean }>;
 }
+
+/** Ключи, для которых у сайта есть человеческое название и пояснение */
+export type NotificationEvent =
+  | 'billing'
+  | 'integration_errors'
+  | 'limit_exceeded'
+  | 'reports'
+  | 'news';
 
 export type PrivacyRequestType = 'export' | 'deletion';
 export interface PrivacyRequest {
@@ -240,15 +256,136 @@ export interface WorkflowExecution {
   duration_ms?: number | null;
 }
 
-/** Строка истории платежей из `GET /lk/billing` */
+/**
+ * Статус платежа — единый словарь платформы (F20 §3, миграция 029 держит его
+ * CHECK-констрейнтом). До 029 сервисы расходились: биллинг писал `pending`,
+ * вебхук `confirmed`, админка искала `paid` — возврат не находил ни один платёж.
+ *
+ * ⚠️ `mismatch` — уведомление пришло с суммой, не равной выставленной. Лицензия
+ * сознательно **не выдана**, случай разбирается руками. Предлагать оплатить
+ * повторно в этом состоянии нельзя.
+ */
+export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'expired' | 'refunded' | 'mismatch';
+
+/**
+ * Строка истории из `GET /lk/billing` (последние 50, новые сверху).
+ *
+ * ⚠️ `status` приходит из словаря `PaymentStatus`, но перед отрисовкой
+ * прогоняется через `knownStatus()`: набор задаёт сервер, и седьмое значение
+ * может появиться раньше правки на сайте.
+ *
+ * ⚠️ `payment_method` — это СПОСОБ оплаты (`BankCard`, `SBP`, …), а не реквизиты.
+ * Номеров карт платформа не получает и не хранит: Robokassa их не передаёт.
+ */
 export interface Payment {
-  id: string;
+  /** Непереборный идентификатор для ссылок и поллинга. Наружу — только он */
+  public_id: string;
   plan: PlanCode | string;
-  period?: string | null;
-  amount: number;
-  currency?: string | null;
-  status: 'confirmed' | 'pending' | 'failed' | string;
-  promo_code?: string | null;
+  period: string | null;
+  /** NUMERIC из Postgres приходит строкой: «5990.00» */
+  amount: string;
+  currency: string | null;
+  status: PaymentStatus;
+  description: string | null;
+  payment_method: string | null;
+  is_recurring: boolean;
+  paid_at: string | null;
+  refunded_at: string | null;
+  refund_amount: string | null;
+  failure_reason: string | null;
+  /**
+   * Тариф, с которого уходил клиент. Заполнен только у доплаты за смену тарифа
+   * (P3-2): без него по строке не отличить доплату от обычной покупки, и сумма
+   * вроде «1 240 ₽» выглядела бы как непонятный платёж не по прайсу.
+   */
+  change_from_plan: string | null;
+  created_at: string;
+}
+
+/**
+ * Расчёт смены тарифа — `GET /lk/billing/change-plan/preview?plan=&period=`.
+ * Ничего не меняет: показывает сумму доплаты либо новую дату окончания
+ * **до** того, как человек подтвердит переход.
+ *
+ * ⚠️ Считает сервер. Повторять арифметику на клиенте нельзя: между расчётом
+ * и подтверждением проходит время, и второе число разошлось бы с первым.
+ */
+export interface PlanChangePreview {
+  current_plan: string;
+  current_plan_title: string;
+  current_period: string;
+  current_valid_until: number | null;
+  target_plan: string;
+  target_plan_title: string;
+  target_period: string;
+  /**
+   * `upgrade` — доплата за оставшиеся дни, дата окончания **не меняется**;
+   * `downgrade` — денег не берём, остаток покупает больше дней дешёвого тарифа;
+   * `free` — доплата ниже минимальной, переключаем бесплатно.
+   */
+  kind: 'upgrade' | 'downgrade' | 'free';
+  amount_due: number;
+  remaining_days: number;
+  remaining_value: number;
+  current_daily: number;
+  target_daily: number;
+  /** epoch-секунды: у апгрейда равен текущему сроку, у даунгрейда — больше */
+  new_valid_until: number;
+  free_reason?: string;
+}
+
+/**
+ * Результат `POST /lk/billing/change-plan`.
+ * `applied: true` — тариф уже сменён (даунгрейд и копеечный апгрейд).
+ * Иначе смотрим `payment_url`: тариф сменится после подтверждения оплаты.
+ */
+export interface PlanChangeResult extends PlanChangePreview {
+  applied: boolean;
+  payment_url: string | null;
+  payment_params?: Record<string, string>;
+  payment_id?: string;
+  /** Новый срок после мгновенного применения */
+  valid_until?: number;
+  /** Приходит вместо ссылки, если платёжная система не настроена */
+  message?: string;
+}
+
+/**
+ * Ответ `POST /lk/billing/pay`.
+ *
+ * 🔴 `payment_params.SignatureValue` считает **сервер**. Подпись на фронте
+ * означала бы `Password1` магазина в исходниках страницы — любой посетитель
+ * выписал бы себе «Профессионал» за 1 ₽, и подпись сошлась бы (F20 §4).
+ * Параметры передаются платёжной форме как есть, ничего не пересчитывается
+ * и не докодируется (`Receipt` приходит уже URL-encoded).
+ */
+export interface PaymentCreated {
+  /** Готовая ссылка на форму Robokassa. `null` = платёжка не настроена */
+  payment_url: string | null;
+  /** Приходит вместе с `payment_url: null` */
+  message?: string;
+  /** Те же параметры для встраивания в виджет. Передавать как есть */
+  payment_params?: Record<string, string>;
+  /** Идентификатор для поллинга статуса */
+  payment_id?: string;
+  /** InvId. Внутренний, наружу не показываем — по нему перебираются чужие платежи */
+  external_payment_id?: string;
+  amount?: number;
+  promo?: string | null;
+  autopay?: boolean;
+}
+
+/** Ответ `GET /lk/billing/:public_id` — подмножество истории */
+export interface PaymentState {
+  public_id: string;
+  amount: string;
+  currency: string | null;
+  status: PaymentStatus;
+  plan: PlanCode | string;
+  period: string | null;
+  payment_method: string | null;
+  paid_at: string | null;
+  failure_reason: string | null;
   created_at: string;
 }
 

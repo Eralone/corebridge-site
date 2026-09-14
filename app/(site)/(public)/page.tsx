@@ -7,8 +7,8 @@ import { LandingBody } from './LandingBody';
 export const metadata: Metadata = {
   title: 'Интеграция 1С с маркетплейсами, CRM и сайтами — CoreBridge',
   description:
-    'Интеграция 1С с Ozon, Wildberries, Яндекс.Маркетом, Битрикс24, СДЭК и ещё 30 сервисами. ' +
-    'Один файл .epf для УТ 11, УНФ, КА 2 / ERP и Бухгалтерии 3.0 — без программистов.',
+    'Интеграция 1С с маркетплейсами, сайтами, CRM, доставкой и оплатой: заказы, остатки, цены, ' +
+    'маркировка «Честный знак». Для УТ 11, УНФ, КА 2 / ERP и Бухгалтерии 3.0.',
   alternates: { canonical: 'https://corebridge.ru/' },
 };
 

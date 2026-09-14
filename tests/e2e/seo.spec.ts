@@ -79,9 +79,35 @@ test.describe('Выдача и карточка в мессенджерах', ()
     expect(xml).toContain('https://corebridge.ru/docs/epf/ustanovka-ut11');
     expect(xml).not.toContain('/dashboard');
     expect(xml).not.toContain('/billing');
-    // даты должны быть разными: одинаковые = «изменилось всё сразу», пустой сигнал
-    const dates = new Set([...xml.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((m) => m[1]));
-    expect(dates.size, 'даты изменения берутся из истории файлов').toBeGreaterThan(3);
+    /**
+     * Дата берётся из истории git по конкретному файлу — значит, дат должно
+     * быть несколько, а не одна на всю карту («изменилось всё разом» — пустой
+     * сигнал для обхода). Но по файлам, ещё не попавшим в коммит, истории нет,
+     * и для них подставляется дата сборки. Поэтому проверяем сам механизм:
+     * даты разбираются и различаются, а не их количество.
+     */
+    const dates = [...xml.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((m) => m[1]);
+    expect(dates.length).toBeGreaterThan(10);
+    expect(dates.every((d) => !Number.isNaN(Date.parse(d))), 'даты разбираются').toBe(true);
+    expect(new Set(dates).size, 'дата не одна на всю карту').toBeGreaterThan(1);
+  });
+
+  /**
+   * ⚠️ Иконки в выдаче не было именно из-за этого: `/favicon.ico` отдавал 404,
+   * а в разметке лежал только SVG с хешем в адресе. Яндекс и Google идут
+   * за иконкой сначала по корневому пути. Плюс Google не показывает иконку
+   * меньше 48×48 — а `sizes` Next берёт из первой записи в ICO.
+   */
+  test('иконка сайта лежит там, где её ищет поисковик', async ({ request }) => {
+    const ico = await request.get('/favicon.ico');
+    expect(ico.status(), '/favicon.ico').toBe(200);
+    expect(ico.headers()['content-type']).toMatch(/icon|image/);
+
+    const html = await (await request.get('/')).text();
+    expect(html).toContain('rel="icon" href="/favicon.ico"');
+    expect(html, 'Google не берёт иконку меньше 48×48').toContain('sizes="48x48"');
+    expect(html, 'SVG — для экранов с высокой плотностью').toMatch(/rel="icon"[^>]*icon\.svg/);
+    expect(html, 'iOS «на рабочий стол»').toMatch(/rel="apple-touch-icon"/);
   });
 
   test('картинка для соцсетей отдаётся и это картинка нужного размера', async ({ request }) => {

@@ -812,6 +812,186 @@
   overflow-x: auto;
 }
 
+/* ══ Оплата и возврат с Robokassa ════════════════════════════════════════
+   Макета у этих экранов нет: в дизайне оплата была попапом-заглушкой
+   (data-robokassa), а страниц возврата не существовало вовсе. Свёрстано
+   по образцу соседних карточек биллинга — те же .card, .field, .btn. */
+
+/* Выбор тарифа и периода. Радиокнопка настоящая, а не div с onClick:
+   иначе выбор недоступен с клавиатуры и не читается скринридером. */
+.pay-opts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pay-opt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.pay-opt:hover {
+  border-color: var(--blue-500);
+}
+.pay-opt.on {
+  border-color: var(--blue-500);
+  background: var(--blue-100);
+}
+.pay-opt input {
+  flex-shrink: 0;
+  accent-color: var(--blue-500);
+}
+.pay-opt .po-body {
+  flex: 1;
+  min-width: 0;
+}
+.pay-opt .po-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--navy-900);
+}
+.pay-opt .po-sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+.pay-opt .po-price {
+  flex-shrink: 0;
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--navy-900);
+  white-space: nowrap;
+}
+.pay-opt .po-price small {
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+/* На телефоне цена не помещается в строку с описанием — переносим её вниз.
+   Требование трёх ширин: 1440 / 820 / 390 без горизонтальной прокрутки. */
+@media (max-width: 560px) {
+  .pay-opt {
+    flex-wrap: wrap;
+  }
+  .pay-opt .po-price {
+    width: 100%;
+    padding-left: 26px;
+  }
+}
+
+.pay-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+}
+.pay-total b {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--orange-500);
+}
+
+/* Страницы возврата: одна карточка по центру, без сетки биллинга */
+.pay-result {
+  max-width: 560px;
+  margin: 0 auto;
+}
+.pay-result .card {
+  text-align: center;
+}
+.pay-result h2 {
+  margin: 16px 0 8px;
+  font-size: 22px;
+  letter-spacing: -0.015em;
+  color: var(--navy-900);
+}
+.pay-result p {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+.pr-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 800;
+}
+.pr-icon.ok {
+  background: var(--success-bg);
+  color: var(--success);
+}
+.pr-icon.fail {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+.pr-icon.neutral {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+.pr-icon.wait {
+  background: var(--bg-alt);
+  color: var(--text-muted);
+}
+.pr-facts {
+  margin: 0 0 20px;
+  padding: 14px 16px;
+  background: var(--bg-alt);
+  border-radius: 10px;
+  text-align: left;
+  font-size: 13.5px;
+}
+.pr-facts > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.pr-facts > div + div {
+  margin-top: 8px;
+}
+.pr-facts dt {
+  color: var(--text-muted);
+}
+.pr-facts dd {
+  margin: 0;
+  font-weight: 600;
+  color: var(--navy-900);
+  text-align: right;
+}
+.pr-wait {
+  margin-bottom: 16px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+/* Плашка «данные карты не храним» — под таблицей истории */
+.pay-note {
+  padding: 14px 24px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-alt);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+
 /* ══ Экран «Настройки» ═══════════════════════════════════════════════════
    Стили из <style> в design-source/settings.html. Не перенесён .api-key:
    ключей вида cb_* на сервере нет, доступ к API даёт JWT со страницы /epf.

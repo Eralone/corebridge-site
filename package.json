@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3005",
-    "build": "node tools/build-docs.mjs && next build",
+    "build": "node tools/build-docs.mjs && node tools/build-articles.mjs && next build",
     "start": "next start -p 3005",
     "lint": "next lint",
     "test": "vitest run",
@@ -15,7 +15,8 @@
     "inspect": "node tools/inspect.mjs",
     "compare": "node tools/compare.mjs",
     "docs": "node tools/build-docs.mjs",
-    "seo": "node tools/seo-audit.mjs"
+    "seo": "node tools/seo-audit.mjs",
+    "articles": "node tools/build-articles.mjs"
   },
   "dependencies": {
     "next": "14.2.35",
@@ -38,6 +39,7 @@
     "msw": "^2.7.0",
     "pixelmatch": "^6.0.0",
     "pngjs": "^7.0.0",
+    "sharp": "^0.35.4",
     "typescript": "^5",
     "vitest": "^2.1.8"
   }

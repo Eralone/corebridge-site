@@ -1,6 +1,6 @@
 import { api } from './client';
 import type {
-  Activity, AuditEntry, Dashboard, EpfConfig, EpfVersion, Integration, NotificationSettings, Payment, Plan, TeamMember, WorkflowExecution, WorkflowTemplate,
+  Activity, AuditEntry, Dashboard, EpfConfig, EpfVersion, Integration, NotificationSettings, Payment, PaymentCreated, PaymentState, Plan, PlanChangePreview, PlanChangeResult, TeamMember, WorkflowExecution, WorkflowTemplate,
   PrivacyRequest, PrivacyRequestType, Profile, Session, TwoFactorStatus, ContactSource,
 } from '@/lib/contracts/lk';
 
@@ -128,19 +128,85 @@ export const activateWorkflow = (template_id: string, integration_id: string) =>
     { method: 'POST', body: { template_id, integration_id } },
   );
 
-/** История платежей. Пустой массив — оплат ещё не было */
+/**
+ * История платежей (последние 50, новые сверху). Пустой массив — оплат не было.
+ * Только владелец: остальным ролям сервер отвечает `403 FORBIDDEN`.
+ *
+ * Разбирается как есть: слой совместимости со старой формой ответа снят после
+ * выкладки F20 P0 (см. `lib/billing/payment.ts`).
+ */
 export const getPayments = () => api<Payment[]>('/lk/billing');
 
 /**
- * Инициация оплаты.
- * ⚠️ До подключения Robokassa вернётся ошибка или `payment_url: null` —
- * заглушка на этот случай нужна и после подключения, на случай сбоя платёжки.
+ * Инициация оплаты. Только владелец.
+ *
+ * ⚠️ Поле промо называется `promo`, а не `promo_code`: сайт слал второе, и оно
+ * молча игнорировалось — сервер разбирает только `plan` и `period` (F20 §2).
+ *
+ * Повторные нажатия безопасны: живая ссылка моложе 30 минут на тот же тариф
+ * и период переиспользуется, новый счёт не заводится, `payment_id` возвращается
+ * прежний. Кнопку всё равно блокируем на время запроса.
+ *
+ * `payment_url: null` + `message` — платёжная система не настроена. Эта ветка
+ * нужна и после подключения Robokassa: шлюз может лежать.
  */
-export const startPayment = (plan: string, period: 'monthly' | 'yearly', promo_code?: string) =>
-  api<{ payment_url: string | null; payment_id?: string }>('/lk/billing/pay', {
+export const startPayment = (
+  plan: string,
+  period: 'monthly' | 'yearly',
+  opts: { promo?: string; autopay?: boolean } = {},
+) =>
+  api<PaymentCreated>('/lk/billing/pay', {
     method: 'POST',
-    body: { plan, period, ...(promo_code ? { promo_code } : {}) },
+    body: {
+      plan,
+      period,
+      ...(opts.promo ? { promo: opts.promo } : {}),
+      ...(opts.autopay ? { autopay: true } : {}),
+    },
   });
+
+/**
+ * Расчёт смены тарифа. Ничего не меняет — можно звать при каждом изменении
+ * выбора. Только владелец.
+ *
+ * Коды отказа (все со стороны сервера, повторять его арифметику нельзя):
+ * `SAME_PLAN` — это продление, оно идёт через `startPayment`;
+ * `NO_PAID_REMAINDER` (409) — остатка нет: пробная бессрочная лицензия либо
+ * подписка уже кончилась, тоже обычная оплата;
+ * `NO_ACTIVE_LICENSE` (409), `CANNOT_SWITCH_TO_TRIAL`, `CUSTOM_PRICE_PLAN`,
+ * `INVALID_PLAN`, `INVALID_PERIOD`, `PRICE_UNAVAILABLE`.
+ */
+export const previewPlanChange = (plan: string, period: 'monthly' | 'yearly') =>
+  api<PlanChangePreview>(
+    `/lk/billing/change-plan/preview?plan=${encodeURIComponent(plan)}&period=${period}`,
+  );
+
+/**
+ * Сменить тариф с пропорциональным пересчётом (F20 P3-2).
+ *
+ * Даунгрейд и копеечный апгрейд применяются **сразу** — `applied: true`,
+ * денег не берут. Платный апгрейд возвращает `payment_url`: тариф сменится
+ * при подтверждении оплаты, а платёж несёт с собой срок, который получит
+ * лицензия, — поэтому дата не «уползёт» между расчётом и уведомлением.
+ */
+export const changePlan = (plan: string, period: 'monthly' | 'yearly') =>
+  api<PlanChangeResult>('/lk/billing/change-plan', {
+    method: 'POST',
+    body: { plan, period },
+  });
+
+/**
+ * Статус одного платежа для страницы возврата.
+ *
+ * 🔴 Возврат на SuccessURL сам по себе **ничего не подтверждает** — он
+ * подделывается тривиально. Единственный авторитет оплаты — уведомление
+ * ResultURL, которое Robokassa шлёт напрямую на API. Поэтому страница успеха
+ * спрашивает статус здесь, а не верит адресу возврата.
+ *
+ * 404 `PAYMENT_NOT_FOUND` — платежа нет либо он чужого тенанта.
+ */
+export const getPaymentState = (publicId: string) =>
+  api<PaymentState>(`/lk/billing/${encodeURIComponent(publicId)}`);
 
 // ── Настройки ──────────────────────────────────────────────────────────────
 export const updateProfile = (body: Partial<{ name: string; phone: string }> & Partial<Profile['company']>) =>

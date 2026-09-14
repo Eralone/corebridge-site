@@ -36,6 +36,7 @@ import type {
   TwoFactorStatus,
 } from '@/lib/contracts/lk';
 import { timeAgo } from '@/components/lk/events';
+import { matrixRows } from '@/lib/notifications/events';
 
 /**
  * Настройки. Самый большой разрыв между макетом и сервером.
@@ -701,14 +702,7 @@ function SecurityCard({ profile, ok, fail }: { profile: Profile | null; ok: OK; 
 }
 
 /* ── Уведомления ─────────────────────────────────────────────────────────── */
-type NotifEvent = keyof NotificationSettings['matrix'];
-
-const EVENTS: { key: NotifEvent; label: string; hint: string }[] = [
-  { key: 'integration_errors', label: 'Ошибки интеграций', hint: 'Обмен не прошёл, сервис недоступен' },
-  { key: 'limit_exceeded', label: 'Лимиты тарифа', hint: 'Приближение к лимиту и его исчерпание' },
-  { key: 'reports', label: 'Отчёты', hint: 'Сводка за период' },
-  { key: 'news', label: 'Новости продукта', hint: 'Новые механики и сервисы' },
-];
+type NotifEvent = string;
 
 function NotificationsCard({ ok, fail }: { ok: OK; fail: FAIL }) {
   const [s, setS] = useState<NotificationSettings | null>(null);
@@ -833,26 +827,43 @@ function NotificationsCard({ ok, fail }: { ok: OK; fail: FAIL }) {
             </tr>
           </thead>
           <tbody>
-            {EVENTS.map((ev) => (
-              <tr key={ev.key}>
-                <td>
-                  {ev.label}
-                  <div className="hint">{ev.hint}</div>
-                </td>
-                {(['email', 'telegram'] as const).map((ch) => (
-                  <td key={ch}>
-                    <button
-                      type="button"
-                      aria-label={`${ev.label}: ${ch}`}
-                      aria-pressed={Boolean(s.matrix[ev.key]?.[ch])}
-                      className={`toggle${s.matrix[ev.key]?.[ch] ? ' on' : ''}`}
-                      disabled={ch === 'telegram' && !s.channels.telegram.linked}
-                      onClick={() => setMatrix(ev.key, ch, !s.matrix[ev.key]?.[ch])}
-                    />
+            {matrixRows(s.matrix).map((ev) => {
+              const off = ev.warn != null && !s.matrix[ev.key]?.email && !s.matrix[ev.key]?.telegram;
+              return (
+                <tr key={ev.key}>
+                  <td>
+                    {ev.label}
+                    {ev.hint && <div className="hint">{ev.hint}</div>}
+                    {/* предупреждение показываем всегда, а выключенной категории —
+                        ещё и заметнее: именно в этот момент оно и нужно */}
+                    {ev.warn && (
+                      <div
+                        className="hint"
+                        style={
+                          off
+                            ? { marginTop: 6, color: 'var(--warning)', fontWeight: 600 }
+                            : { marginTop: 6 }
+                        }
+                      >
+                        {ev.warn}
+                      </div>
+                    )}
                   </td>
-                ))}
-              </tr>
-            ))}
+                  {(['email', 'telegram'] as const).map((ch) => (
+                    <td key={ch}>
+                      <button
+                        type="button"
+                        aria-label={`${ev.label}: ${ch}`}
+                        aria-pressed={Boolean(s.matrix[ev.key]?.[ch])}
+                        className={`toggle${s.matrix[ev.key]?.[ch] ? ' on' : ''}`}
+                        disabled={ch === 'telegram' && !s.channels.telegram.linked}
+                        onClick={() => setMatrix(ev.key, ch, !s.matrix[ev.key]?.[ch])}
+                      />
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

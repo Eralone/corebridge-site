@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { execFileSync } from 'node:child_process';
 import { docOrder, docsBySlug } from '@/lib/docs';
+import { articleOrder, articlesBySlug } from '@/lib/articles';
 
 /**
  * Карта сайта. Только публичные страницы: экраны ЛК закрыты guard'ом из
@@ -21,6 +22,7 @@ const PAGES: { path: string; priority: number; changeFrequency: MetadataRoute.Si
   { path: '/integrations', priority: 0.9, changeFrequency: 'weekly', source: 'app/(site)/(public)/integrations/page.tsx' },
   { path: '/docs', priority: 0.8, changeFrequency: 'monthly', source: 'app/(site)/(public)/docs/page.tsx' },
   { path: '/docs/epf', priority: 0.8, changeFrequency: 'monthly', source: 'content/docs/epf/manifest.json' },
+  { path: '/razbory', priority: 0.8, changeFrequency: 'weekly', source: 'content/articles-built/manifest.json' },
   { path: '/n8n', priority: 0.7, changeFrequency: 'monthly', source: 'app/(site)/(public)/n8n/page.tsx' },
   { path: '/for-business', priority: 0.7, changeFrequency: 'monthly', source: 'app/(site)/(public)/for-business/page.tsx' },
   { path: '/contacts', priority: 0.6, changeFrequency: 'monthly', source: 'app/(site)/(public)/contacts/page.tsx' },
@@ -70,6 +72,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       // страницы установки отвечают на самые частые запросы — им вес выше
       priority: docsBySlug[slug].section === 'install' ? 0.7 : 0.6,
+    })),
+    // Разборы: тот же принцип, список из манифеста сборки. Дата — по своему
+    // markdown-исходнику. Вес чуть выше инструкций: раздел заведён ради поиска
+    ...articleOrder.map((slug) => ({
+      url: `${HOST}/razbory/${slug}`,
+      lastModified: new Date(articlesBySlug[slug].date),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
     })),
   ];
 }

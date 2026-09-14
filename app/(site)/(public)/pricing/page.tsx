@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { PublicHeader } from '@/components/PublicHeader';
 import { PublicFooter } from '@/components/PublicFooter';
+import { billingFlags } from '@/lib/billing/flags';
 import { PricingBody } from './PricingBody';
 
 export const metadata: Metadata = {
@@ -24,7 +25,7 @@ export default async function Page() {
   return (
     <>
       <PublicHeader active="pricing" />
-      <PricingBody hasSession={hasSession} />
+      <PricingBody hasSession={hasSession} flags={billingFlags()} />
       <PublicFooter />
     </>
   );

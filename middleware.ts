@@ -85,18 +85,49 @@ export async function middleware(req: NextRequest) {
     return NextResponse.rewrite(url);
   }
 
+  // ── Возврат с формы Robokassa ─────────────────────────────────────────────
+  // ⚠️ Запасной путь. В кабинете Robokassa с 2026-08-06 стоят канонические
+  // /billing/success и /billing/fail, и сюда запрос приходить не должен.
+  // Но старый адрес мог где-то остаться, а /lk/ целиком принадлежит API:
+  // без подмены пути возврат клиента после оплаты ушёл бы в lk-api.
+  // Та же природа, что у ссылки из письма-приглашения выше.
+  //
+  // Совпадение с серверным GET /lk/billing/:public_id закрыто на стороне
+  // сервера: параметр ограничен префиксом `pay_`. До этого развязка держалась
+  // только на порядке location в нашем nginx.
+  //
+  // Дальше по коду работает обычный guard ЛК: страницы возврата закрытые,
+  // без сессии их показывать нечему — статус платежа спрашивается от имени
+  // владельца. Поэтому здесь только подмена пути, без раннего возврата.
+  const ROBOKASSA_RETURN: Record<string, string> = {
+    '/lk/billing/success': '/billing/success',
+    '/lk/billing/fail': '/billing/fail',
+  };
+  const returnPath = ROBOKASSA_RETURN[pathname];
+
   // ── Основной домен: админские роуты закрыты ───────────────────────────────
   if (pathname === '/admin' || pathname.startsWith('/admin/')) {
     return new NextResponse(null, { status: 404 });
   }
 
   // ── Guard ЛК ──────────────────────────────────────────────────────────────
-  const needsAuth = LK_ROUTES.some((r) => pathname === r || pathname.startsWith(`${r}/`));
-  if (!needsAuth) return NextResponse.next();
+  // Путь, по которому решаем всё дальнейшее: для возврата с Robokassa это уже
+  // наш /billing/*, а не /lk/billing/*, — иначе guard не узнал бы закрытый экран
+  // и пустил бы на страницу платежа кого угодно.
+  const routed = returnPath ?? pathname;
+
+  /** Пропустить дальше: обычный next или подмена пути для возврата с Robokassa */
+  const pass = () =>
+    returnPath
+      ? NextResponse.rewrite(new URL(returnPath + req.nextUrl.search, req.url))
+      : NextResponse.next();
+
+  const needsAuth = LK_ROUTES.some((r) => routed === r || routed.startsWith(`${r}/`));
+  if (!needsAuth) return pass();
 
   // Без cookie сессии не тратим запрос к API — сразу на вход.
   if (!req.cookies.has('lk_session')) {
-    return redirectToLogin(req);
+    return redirectToLogin(req, routed);
   }
 
   try {
@@ -109,7 +140,7 @@ export async function middleware(req: NextRequest) {
       cache: 'no-store',
     });
 
-    if (res.ok) return NextResponse.next();
+    if (res.ok) return pass();
 
     if (res.status === 403) {
       // Сервер различает два состояния (S8 §3.3): заблокирован админом и
@@ -126,19 +157,21 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    return redirectToLogin(req);
+    return redirectToLogin(req, routed);
   } catch {
     // API недоступен — не пускаем в ЛК, но и не показываем пустой экран.
     // Пользователь увидит форму входа, а не сломанный дашборд.
-    return redirectToLogin(req);
+    return redirectToLogin(req, routed);
   }
 }
 
-function redirectToLogin(req: NextRequest) {
+function redirectToLogin(req: NextRequest, path?: string) {
   const url = new URL('/login', req.url);
   // Куда вернуть после входа. Сервер после своего редиректа ведёт на /dashboard,
-  // здесь — на страницу, которую человек пытался открыть.
-  url.searchParams.set('next', req.nextUrl.pathname + req.nextUrl.search);
+  // здесь — на страницу, которую человек пытался открыть. Для возврата
+  // с Robokassa возвращаем на наш путь, а не на /lk/... — второй раз через
+  // nginx он прошёл бы, но в адресной строке остался бы префикс API.
+  url.searchParams.set('next', (path ?? req.nextUrl.pathname) + req.nextUrl.search);
   return NextResponse.redirect(url);
 }
 

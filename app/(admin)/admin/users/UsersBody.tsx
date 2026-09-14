@@ -245,15 +245,29 @@ export function UsersBody() {
                     </div>
                   </td>
                   <td style={{ textAlign: 'right' }}>
-                    <RowMenu
-                      onProfile={() => setSheet(u)}
-                      onToken={() => setTokenFor(u)}
-                      onPlan={() => setPlanFor(u)}
-                      onBlock={() => toggleBlock(u)}
-                      blocked={u.tenant_status === 'blocked'}
-                      /* удалённый тенант трогать нечем — данные уже вычищены */
-                      frozen={u.tenant_status === 'purged'}
-                    />
+                    {/* ⚠️ «Сменить тариф» вынесена из меню ⋮ отдельной кнопкой:
+                        это самое частое действие в панели (выдать подписку,
+                        продлить, перевести на другой тариф), а под тремя точками
+                        его попросту не находили. В меню пункт тоже остался —
+                        там же блокировка, JWT и профиль. */}
+                    <div className="row gap-8" style={{ justifyContent: 'flex-end' }}>
+                      <button
+                        className="btn btn-outline btn-sm"
+                        disabled={u.tenant_status === 'purged'}
+                        onClick={() => setPlanFor(u)}
+                      >
+                        Тариф
+                      </button>
+                      <RowMenu
+                        onProfile={() => setSheet(u)}
+                        onToken={() => setTokenFor(u)}
+                        onPlan={() => setPlanFor(u)}
+                        onBlock={() => toggleBlock(u)}
+                        blocked={u.tenant_status === 'blocked'}
+                        /* удалённый тенант трогать нечем — данные уже вычищены */
+                        frozen={u.tenant_status === 'purged'}
+                      />
+                    </div>
                   </td>
                 </tr>
               ))
@@ -283,7 +297,22 @@ export function UsersBody() {
         </div>
       </div>
 
-      {sheet && <ProfileSheet user={sheet} onClose={() => setSheet(null)} />}
+      {sheet && (
+        <ProfileSheet
+          user={sheet}
+          onClose={() => setSheet(null)}
+          /* панель закрываем: модалка тарифа и панель — оба поверх страницы,
+             вместе они наложились бы друг на друга */
+          onPlan={() => {
+            setPlanFor(sheet);
+            setSheet(null);
+          }}
+          onToken={() => {
+            setTokenFor(sheet);
+            setSheet(null);
+          }}
+        />
+      )}
       {planFor && (
         <ChangePlan
           user={planFor}
@@ -396,8 +425,24 @@ function RowMenu({
   );
 }
 
-/** Боковая панель профиля. Часть блоков зависит от эндпоинтов, которые сейчас 500 */
-function ProfileSheet({ user, onClose }: { user: AdminUser; onClose: () => void }) {
+/**
+ * Боковая панель профиля.
+ *
+ * ⚠️ Была только на чтение: человек открывал «Просмотр профиля», видел тариф
+ * и срок — и не имел отсюда ни одного способа их изменить. Действия лежали
+ * в меню ⋮ строки, то есть на шаг назад. Теперь те же действия есть и здесь.
+ */
+function ProfileSheet({
+  user,
+  onClose,
+  onPlan,
+  onToken,
+}: {
+  user: AdminUser;
+  onClose: () => void;
+  onPlan: () => void;
+  onToken: () => void;
+}) {
   const [payments, setPayments] = useState<AdminPayment[] | null>(null);
   const [tokens, setTokens] = useState<AdminTokenRecord[] | null>(null);
   const [n8n, setN8n] = useState<AdminN8nStats['tenants'][number] | null>(null);
@@ -430,6 +475,25 @@ function ProfileSheet({ user, onClose }: { user: AdminUser; onClose: () => void 
           </button>
         </div>
         <div className="sheet-body">
+          <div className="sheet-section">
+            <div className="row gap-8" style={{ flexWrap: 'wrap' }}>
+              <button
+                className="btn btn-primary btn-sm"
+                disabled={user.tenant_status === 'purged'}
+                onClick={onPlan}
+              >
+                Сменить тариф
+              </button>
+              <button
+                className="btn btn-outline btn-sm"
+                disabled={user.tenant_status === 'purged'}
+                onClick={onToken}
+              >
+                Выдать JWT
+              </button>
+            </div>
+          </div>
+
           <div className="sheet-section">
             <h5>Личные данные</h5>
             <Kv k="Email" v={user.email} />

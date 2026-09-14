@@ -3,9 +3,19 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ApiError } from '@/lib/api/client';
-import { getDashboard, getPayments, getPlans, getProfile, sendContact, startPayment } from '@/lib/api/lk';
+import { getDashboard, getPayments, getPlans, getProfile } from '@/lib/api/lk';
 import type { Dashboard, Payment, Plan, Profile } from '@/lib/contracts/lk';
-import { Popup } from '@/components/Popup';
+import type { BillingFlags } from '@/lib/billing/flags';
+import {
+  PERIOD_LABEL,
+  formatAmount,
+  knownStatus,
+  methodLabel,
+  statusClass,
+  statusLabel,
+} from '@/lib/billing/payment';
+import { isCompanyPayer, payerCompanyName } from '@/lib/billing/payer';
+import { InvoiceRequest } from '@/components/billing/InvoiceRequest';
 
 /**
  * Биллинг и тариф. Отличия от design-source/billing.html:
@@ -18,34 +28,52 @@ import { Popup } from '@/components/Popup';
  * · срок действия: признак бессрочности — `valid_until === null`, а не
  *   `days_left` (на пробном тарифе сервер отдаёт `0` при бессрочной лицензии);
  * · цены, лимиты и промо — только из `GET /lk/plans`, ничего не зашито;
- * · оплата ждёт merchant ID Robokassa: кнопка объясняет состояние, а не ведёт
- *   в ошибку. Заглушка на `payment_url: null` останется и после подключения —
- *   на случай сбоя платёжки;
  * · «Запросить счёт» шлёт реальную заявку через `POST /lk/contact`.
+ *
+ * Оплата отсюда не начинается: кнопки ведут на `/billing/pay`, где живёт
+ * единственный вызов `POST /lk/billing/pay`. Пока флаг `BILLING_PAY_ENABLED`
+ * не снят, их не видно — ждём живого тестового платежа владельца
+ * (см. `lib/billing/flags.ts`).
  */
-
-const RUB = (v: number) => `${v.toLocaleString('ru-RU', { minimumFractionDigits: 2 })} ₽`;
-
-export function BillingBody() {
+export function BillingBody({ flags }: { flags: BillingFlags }) {
   const [data, setData] = useState<Dashboard | null>(null);
   const [plans, setPlans] = useState<Plan[] | null>(null);
   const [payments, setPayments] = useState<Payment[] | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [failed, setFailed] = useState(false);
+  const [paymentsError, setPaymentsError] = useState<string | null>(null);
   const [note, setNote] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
   const [invoiceOpen, setInvoiceOpen] = useState(false);
 
   useEffect(() => {
-    Promise.all([getDashboard(), getPlans(), getPayments(), getProfile()])
-      .then(([d, p, pay, pr]) => {
+    Promise.all([getDashboard(), getPlans(), getProfile()])
+      .then(([d, p, pr]) => {
         setData(d);
         setPlans(p.plans);
-        setPayments(pay);
         setProfile(pr);
       })
       .catch(() => setFailed(true));
+
+    /**
+     * ⚠️ История платежей — только для владельца, остальным ролям сервер
+     * отвечает `403 FORBIDDEN`. В общем `Promise.all` этот отказ ронял всю
+     * загрузку, и менеджер видел «не удалось загрузить данные тарифа» вместо
+     * своего тарифа и лимитов, которые ему как раз доступны.
+     */
+    getPayments()
+      .then(setPayments)
+      .catch((e) =>
+        setPaymentsError(
+          e instanceof ApiError && e.status === 403
+            ? 'История платежей видна только владельцу аккаунта.'
+            : 'Не удалось загрузить историю платежей. Обновите страницу.',
+        ),
+      );
   }, []);
+
+  /** Плательщик-компания — по заполненному ИНН (см. lib/billing/payer.ts) */
+  const company = isCompanyPayer(profile);
+  const companyName = payerCompanyName(profile);
 
   const plan = plans?.find((p) => p.code === data?.plan);
   const promoPlan = plans?.find((p) => p.promo);
@@ -62,30 +90,11 @@ export function BillingBody() {
   /** Продление доступно на платном тарифе: у пробного срока нет, энтерпрайз — по счёту */
   const canRenew = plan != null && !plan.is_trial && !plan.is_custom_price;
 
-  async function pay(code: string, promo?: string) {
-    setBusy(true);
-    setNote(null);
-    try {
-      const r = await startPayment(code, 'monthly', promo);
-      if (r.payment_url) {
-        window.location.href = r.payment_url;
-        return;
-      }
-      // payment_url: null — платёжка недоступна. Это состояние нужно и после
-      // подключения Robokassa: шлюз может лежать
-      setNote('Оплата сейчас недоступна. Мы уже знаем — напишите на info@corebridge.ru, поможем вручную.');
-    } catch (e) {
-      setNote(
-        e instanceof ApiError && e.code === 'CUSTOM_PRICE_PLAN'
-          ? 'Этот тариф оформляется по счёту — запросите его кнопкой ниже.'
-          : e instanceof ApiError && e.code === 'PROMO_ALREADY_USED'
-            ? 'Промо-период уже использован на этом аккаунте.'
-            : 'Онлайн-оплата ещё подключается. Пока можем выставить счёт — кнопка «Запросить счёт».',
-      );
-    } finally {
-      setBusy(false);
-    }
-  }
+  /** Адрес оформления: тариф и промо передаём параметрами, форму заполняет /billing/pay */
+  const checkout = (code: string, promo?: string) =>
+    `/billing/pay?plan=${encodeURIComponent(code)}&period=monthly${
+      promo ? `&promo=${encodeURIComponent(promo)}` : ''
+    }`;
 
   return (
     <>
@@ -157,27 +166,31 @@ export function BillingBody() {
             </p>
 
             <div className="row gap-8" style={{ flexWrap: 'wrap', marginTop: 28 }}>
-              {showPromo && promoPlan?.promo ? (
-                <button
-                  className="btn btn-primary"
-                  disabled={busy}
-                  onClick={() => pay(promoPlan.code, promoPlan.promo!.code)}
-                >
+              {/* Кнопки оплаты появляются со снятием флага (F20 §6). Экран
+                  оформления собран и работает и сейчас — см. /billing/pay. */}
+              {flags.pay && showPromo && promoPlan?.promo ? (
+                <Link href={checkout(promoPlan.code, promoPlan.promo.code)} className="btn btn-primary">
                   {promoPlan.promo.cta_label || promoPlan.promo.label}
-                </button>
-              ) : canRenew ? (
-                <button className="btn btn-primary" disabled={busy} onClick={() => pay(plan!.code)}>
+                </Link>
+              ) : flags.pay && canRenew ? (
+                <Link href={checkout(plan!.code)} className="btn btn-primary">
                   Продлить на месяц
-                </button>
+                </Link>
               ) : null}
               <Link href="/pricing" className="btn btn-outline">
                 Все тарифы
               </Link>
+              {!flags.pay && (
+                <button className="btn btn-outline" onClick={() => setInvoiceOpen(true)}>
+                  Запросить счёт
+                </button>
+              )}
             </div>
             <p className="text-muted" style={{ fontSize: 12, marginTop: 14, marginBottom: 0 }}>
               {/* про это Дмитрий просил написать прямо */}
-              Автопродления нет: когда оплаченный период закончится, доступ просто прекратится —
-              деньги повторно не спишутся.
+              {flags.pay
+                ? 'Автопродления нет: когда оплаченный период закончится, доступ просто прекратится — деньги повторно не спишутся. Мы предупредим письмом за 7, 3 и 1 день.'
+                : 'Онлайн-оплата ещё подключается. Пока оформляем по счёту — заявка уходит на info@corebridge.ru, счёт выставим в течение рабочего дня.'}
             </p>
           </div>
 
@@ -194,7 +207,12 @@ export function BillingBody() {
               </span>
             </div>
 
-            {payments === null ? (
+            {paymentsError ? (
+              <div className="lk-empty">
+                <div className="ttl">История недоступна</div>
+                {paymentsError}
+              </div>
+            ) : payments === null ? (
               <div className="lk-empty">Загружаем…</div>
             ) : payments.length === 0 ? (
               <div className="lk-empty">
@@ -208,6 +226,7 @@ export function BillingBody() {
                     <tr>
                       <th style={{ paddingLeft: 24 }}>Дата</th>
                       <th>Описание</th>
+                      <th>Способ</th>
                       <th>Сумма</th>
                       <th style={{ paddingRight: 24 }}>Статус</th>
                       {/* колонки «Документы» нет: сервер чеков и УПД не отдаёт */}
@@ -215,7 +234,7 @@ export function BillingBody() {
                   </thead>
                   <tbody>
                     {payments.map((p) => (
-                      <tr key={p.id}>
+                      <tr key={p.public_id}>
                         <td style={{ paddingLeft: 24 }}>
                           {new Date(p.created_at).toLocaleDateString('ru-RU')}
                           <div className="doc">
@@ -226,13 +245,43 @@ export function BillingBody() {
                           </div>
                         </td>
                         <td>
-                          <b>{plans?.find((x) => x.code === p.plan)?.title ?? p.plan}</b>
-                          {p.period ? ` · ${p.period}` : ''}
-                          {p.promo_code && <div className="doc">промо {p.promo_code}</div>}
+                          {/* описание собирает сервер; своё название тарифа —
+                              запасной вариант для строк старого формата */}
+                          <b>
+                            {p.description ??
+                              plans?.find((x) => x.code === p.plan)?.title ??
+                              p.plan}
+                          </b>
+                          {!p.description && p.period ? ` · ${PERIOD_LABEL[p.period] ?? p.period}` : ''}
+                          {/* доплата за смену тарифа: без этой строки сумма
+                              «1 240 ₽» выглядела бы платежом не по прайсу */}
+                          {p.change_from_plan && (
+                            <div className="doc">
+                              переход с «
+                              {plans?.find((x) => x.code === p.change_from_plan)?.title ??
+                                p.change_from_plan}
+                              »
+                            </div>
+                          )}
+                          {p.is_recurring && <div className="doc">автоплатёж</div>}
+                          {p.refunded_at && (
+                            <div className="doc">
+                              возврат {formatAmount(p.refund_amount)} ·{' '}
+                              {new Date(p.refunded_at).toLocaleDateString('ru-RU')}
+                            </div>
+                          )}
+                          {p.failure_reason && <div className="doc">{p.failure_reason}</div>}
                         </td>
-                        <td className="amt">{RUB(p.amount)}</td>
+                        {/* ⚠️ способ оплаты, а НЕ реквизиты: номеров карт платформа
+                            не получает и не хранит — Robokassa их не передаёт */}
+                        <td className="text-muted">{methodLabel(p.payment_method) ?? '—'}</td>
+                        <td className="amt">{formatAmount(p.amount)}</td>
                         <td style={{ paddingRight: 24 }}>
-                          <span className={`ph-status ${statusClass(p.status)}`}>{statusLabel(p.status)}</span>
+                          {/* knownStatus: словарь ведёт сервер, седьмое значение
+                              может приехать раньше правки здесь */}
+                          <span className={`ph-status ${statusClass(knownStatus(p.status))}`}>
+                            {statusLabel(knownStatus(p.status))}
+                          </span>
                         </td>
                       </tr>
                     ))}
@@ -241,18 +290,10 @@ export function BillingBody() {
               </div>
             )}
 
-            <div
-              style={{
-                padding: '14px 24px',
-                borderTop: '1px solid var(--border)',
-                background: 'var(--bg-alt)',
-                fontSize: 12,
-                color: 'var(--text-muted)',
-                borderRadius: '0 0 var(--radius) var(--radius)',
-              }}
-            >
-              Платежи проходят через защищённый шлюз <b>Robokassa</b>. Чек по 54-ФЗ приходит на почту
-              от платёжного оператора.
+            <div className="pay-note">
+              <b>Мы не храним данные вашей карты.</b> Её номер вводится на стороне Robokassa
+              и к нам не попадает — платформа получает только способ оплаты и сумму.
+              Чек по 54-ФЗ приходит на почту от платёжного оператора.
             </div>
           </div>
         </div>
@@ -297,31 +338,58 @@ export function BillingBody() {
             </div>
             <div className="text-muted" style={{ fontSize: 12, lineHeight: 1.6 }}>
               Форма оплаты открывается в защищённом окне. Привязка карты не требуется — каждый платёж
-              подтверждается отдельно.
+              подтверждается отдельно. Способ оплаты один для всех: и физлицо, и компания
+              платят картой или через СБП.
             </div>
 
             <div className="mt-20" style={{ paddingTop: 16, borderTop: '1px solid var(--border)' }}>
-              <b style={{ fontSize: 14 }}>Оплата по счёту для юрлиц</b>
+              <b style={{ fontSize: 14 }}>
+                {company ? 'Счёт для бухгалтерии' : 'Нужен счёт для компании?'}
+              </b>
               <p className="text-muted" style={{ fontSize: 13, margin: '6px 0 10px' }}>
-                Выставим счёт на реквизиты вашей компании
+                {company
+                  ? `Выставим счёт на ${companyName ?? 'ваши реквизиты'} — оплата по безналу`
+                  : 'Вы оплачиваете как физическое лицо. Счёт нужен, только если платит компания'}
               </p>
-              <button className="btn btn-outline btn-block btn-sm" onClick={() => setInvoiceOpen(true)}>
+              <button
+                className={`btn btn-block btn-sm ${company ? 'btn-outline' : 'btn-ghost'}`}
+                onClick={() => setInvoiceOpen(true)}
+              >
                 Запросить счёт
               </button>
             </div>
           </div>
 
+          {/* ⚠️ Раньше здесь у всех висело «Организация — Не заполнено», и человек,
+              оплачивающий как физлицо, читал это как «аккаунт считается компанией,
+              данные не введены». Реквизиты — не обязательный атрибут аккаунта,
+              а условие выставления счёта: нет их — значит платит человек. */}
           <div className="card mt-24">
             <h3>Реквизиты плательщика</h3>
-            <div style={{ fontSize: 13, lineHeight: 1.7 }}>
-              <div className="text-muted">Организация</div>
-              <div>{profile?.company.company_name || 'Не заполнено'}</div>
-              <div className="text-muted mt-8">ИНН</div>
-              <div>{profile?.company.company_inn || 'Не заполнено'}</div>
-            </div>
-            <Link href="/settings" className="btn btn-ghost btn-sm mt-16">
-              Заполнить в настройках
-            </Link>
+            {profile?.company.company_name || profile?.company.company_inn ? (
+              <>
+                <div style={{ fontSize: 13, lineHeight: 1.7 }}>
+                  <div className="text-muted">Организация</div>
+                  <div>{profile.company.company_name || '—'}</div>
+                  <div className="text-muted mt-8">ИНН</div>
+                  <div>{profile.company.company_inn || '—'}</div>
+                </div>
+                <Link href="/settings" className="btn btn-ghost btn-sm mt-16">
+                  Изменить в настройках
+                </Link>
+              </>
+            ) : (
+              <>
+                <div className="text-muted" style={{ fontSize: 13, lineHeight: 1.7 }}>
+                  Вы оплачиваете как физическое лицо — реквизиты не нужны.
+                  Заполните их, только если счёт оплачивает компания: тариф
+                  и оплаченный срок от этого не меняются.
+                </div>
+                <Link href="/settings" className="btn btn-ghost btn-sm mt-16">
+                  Указать реквизиты компании
+                </Link>
+              </>
+            )}
           </div>
 
           {showPromo && promoPlan?.promo && (
@@ -342,13 +410,56 @@ export function BillingBody() {
                 {promoPlan.limits.monthly_operations.toLocaleString('ru-RU')} операций в месяц
                 {promoPlan.features.n8n_ui ? ', прямой доступ к n8n UI' : ''}. {promoPlan.promo.label}.
               </p>
-              <button
-                className="btn btn-primary btn-block"
-                disabled={busy}
-                onClick={() => pay(promoPlan.code, promoPlan.promo!.code)}
-              >
-                {promoPlan.promo.cta_label || 'Подключить'}
-              </button>
+              {flags.pay ? (
+                <Link
+                  href={checkout(promoPlan.code, promoPlan.promo.code)}
+                  className="btn btn-primary btn-block"
+                >
+                  {promoPlan.promo.cta_label || 'Подключить'}
+                </Link>
+              ) : (
+                <Link href="/pricing" className="btn btn-primary btn-block">
+                  Посмотреть условия
+                </Link>
+              )}
+            </div>
+          )}
+
+          {/* ── Как прекратить подписку ─────────────────────────────────
+              Вопрос звучит как «где кнопка отмены», а ответ — что отменять
+              нечего: автосписаний нет, подписка просто заканчивается. Раньше
+              это было сказано одной строкой под кнопкой продления, и человек,
+              искавший «Отменить подписку», её не находил. */}
+          {plan && !plan.is_trial && (
+            <div className="card mt-24">
+              <h3>Как прекратить подписку</h3>
+              <div className="text-muted" style={{ fontSize: 13, lineHeight: 1.65 }}>
+                {flags.autopay ? (
+                  <>
+                    Отключите автопродление на странице оплаты — списаний больше не будет,
+                    а оплаченный срок доработает до конца.
+                  </>
+                ) : (
+                  <>
+                    <b style={{ color: 'var(--navy-900)' }}>Ничего делать не нужно.</b>{' '}
+                    Мы не храним привязанную карту и не списываем автоматически: когда
+                    оплаченный период закончится
+                    {data?.valid_until
+                      ? ` (${new Date(data.valid_until * 1000).toLocaleDateString('ru-RU')})`
+                      : ''}
+                    , обмен просто остановится. Предупредим письмом за 7, 3 и 1 день.
+                  </>
+                )}
+                <div className="mt-8">
+                  Нужно платить меньше — перейдите на тариф дешевле: оплаченный остаток
+                  не сгорит, он купит больше дней нового тарифа.
+                </div>
+                <div className="mt-8">
+                  Данные при остановке остаются на месте. Если нужно удалить аккаунт
+                  и всё, что с ним связано, — это в{' '}
+                  <Link href="/settings">настройках, раздел «Данные и приватность»</Link>.
+                </div>
+              </div>
             </div>
           )}
 
@@ -364,7 +475,16 @@ export function BillingBody() {
       </div>
 
       {invoiceOpen && (
-        <InvoiceRequest profile={profile} onClose={() => setInvoiceOpen(false)} onDone={setNote} />
+        <InvoiceRequest
+          profile={profile}
+          intro={
+            company
+              ? undefined
+              : 'Счёт выставляем на компанию — укажите её название и ИНН. Тариф и оплаченный срок от этого не изменятся.'
+          }
+          onClose={() => setInvoiceOpen(false)}
+          onDone={setNote}
+        />
       )}
     </>
   );
@@ -386,13 +506,6 @@ function priceLine(p: Plan): string {
   if (p.is_custom_price) return 'по запросу';
   if (!p.price.monthly) return '0 ₽';
   return `${p.price.monthly.toLocaleString('ru-RU')} ₽`;
-}
-
-function statusClass(s: string) {
-  return s === 'confirmed' ? 'ok' : s === 'pending' ? 'pending' : 'fail';
-}
-function statusLabel(s: string) {
-  return s === 'confirmed' ? 'Оплачено' : s === 'pending' ? 'В обработке' : 'Не прошёл';
 }
 
 function Usage({
@@ -441,67 +554,5 @@ function DocLink({ href, children }: { href: string; children: React.ReactNode }
       {children}
       <span className="text-faint">↗</span>
     </Link>
-  );
-}
-
-/** Запрос счёта. В макете это была заглушка-попап, здесь настоящая заявка */
-function InvoiceRequest({
-  profile,
-  onClose,
-  onDone,
-}: {
-  profile: Profile | null;
-  onClose: () => void;
-  onDone: (s: string) => void;
-}) {
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [company, setCompany] = useState(profile?.company.company_name ?? '');
-  const [inn, setInn] = useState(profile?.company.company_inn ?? '');
-
-  return (
-    <Popup open title="Счёт для юрлица" onClose={onClose} actions={[]}>
-      <p className="text-muted" style={{ fontSize: 13.5, marginTop: 0 }}>
-        Заявка уйдёт на info@corebridge.ru. Счёт и договор вышлем на {profile?.user.email ?? 'вашу почту'}.
-      </p>
-      {error && <div className="lk-error">{error}</div>}
-      <div className="field">
-        <label htmlFor="inv-company">Организация</label>
-        <input id="inv-company" className="input" value={company} onChange={(e) => setCompany(e.target.value)} />
-      </div>
-      <div className="field">
-        <label htmlFor="inv-inn">ИНН</label>
-        <input id="inv-inn" className="input" value={inn} onChange={(e) => setInn(e.target.value)} />
-      </div>
-      <div className="row gap-8" style={{ justifyContent: 'flex-end', marginTop: 20 }}>
-        <button className="btn btn-outline" onClick={onClose} disabled={busy}>
-          Отмена
-        </button>
-        <button
-          className="btn btn-primary"
-          disabled={busy || !company || !inn}
-          onClick={async () => {
-            setBusy(true);
-            setError(null);
-            try {
-              const r = await sendContact({
-                name: profile?.user.name || profile?.user.email || 'Клиент',
-                email: profile?.user.email ?? '',
-                message: `Запрос счёта для юрлица. Организация: ${company}. ИНН: ${inn}.`,
-                source: 'billing',
-              });
-              onDone(`Заявка принята, номер ${r.ref}. Счёт вышлем в течение рабочего дня.`);
-              onClose();
-            } catch {
-              setError('Не удалось отправить заявку. Напишите на info@corebridge.ru.');
-            } finally {
-              setBusy(false);
-            }
-          }}
-        >
-          {busy ? 'Отправляем…' : 'Отправить запрос'}
-        </button>
-      </div>
-    </Popup>
   );
 }

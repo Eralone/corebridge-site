@@ -7,7 +7,9 @@ export const metadata: Metadata = {
   // ⚠️ в эталоне описание обещало «офис в Москве, Telegram» — ни того, ни другого нет.
   // Телефона тоже не обещаем: обращения только по email (решение Дмитрия 2026-08-01)
   title: 'Контакты CoreBridge — связаться с командой',
-  description: 'Контакты CoreBridge: email, форма обращения. Реквизиты Исполнителя.',
+  description:
+    'Как связаться с CoreBridge: почта info@corebridge.ru, форма обращения по вопросам ' +
+    'интеграции 1С, подключения и оплаты. Реквизиты Исполнителя и ИНН.',
   alternates: { canonical: 'https://corebridge.ru/contacts' },
 };
 

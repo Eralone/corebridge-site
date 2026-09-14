@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { ApiError } from '@/lib/api/client';
 import { sendContact } from '@/lib/api/lk';
+import type { ContactSource } from '@/lib/contracts/lk';
 
 /**
  * Контакты. Перенос design-source/contacts.html — **с изъятиями**, и это главное,
@@ -70,7 +72,11 @@ export function ContactsBody() {
           </p>
         </div>
 
-        <ContactForm />
+        {/* Suspense нужен из-за useSearchParams: без него Next не может
+            отрисовать страницу статически (тема письма приходит в ?topic=) */}
+        <Suspense fallback={<div className="card">Загружаем форму…</div>}>
+          <ContactForm />
+        </Suspense>
       </section>
 
       <section className="req-strip">
@@ -102,17 +108,31 @@ export function ContactsBody() {
 
 const TOPICS = [
   'Вопрос о продукте',
+  'Оплата и счета',
   'Корпоративное внедрение',
   'Техническая поддержка',
   'Партнёрство / агентская программа',
   'Пресса, интервью',
 ];
 
+/**
+ * Тема из адреса. Страница тарифов приводит сюда «Энтерпрайз» (цена по запросу,
+ * оплатить его нельзя — сервер отвечает `400 CUSTOM_PRICE_PLAN`) и запрос счёта,
+ * пока онлайн-оплата закрыта флагом. Такие обращения помечаются `source: 'billing'`,
+ * чтобы их было видно отдельно от общих вопросов.
+ */
+const TOPIC_BY_QUERY: Record<string, { topic: string; source: ContactSource }> = {
+  enterprise: { topic: 'Корпоративное внедрение', source: 'billing' },
+  billing: { topic: 'Оплата и счета', source: 'billing' },
+  support: { topic: 'Техническая поддержка', source: 'contacts' },
+};
+
 function ContactForm() {
+  const preset = TOPIC_BY_QUERY[useSearchParams().get('topic') ?? ''];
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [company, setCompany] = useState('');
-  const [topic, setTopic] = useState(TOPICS[0]);
+  const [topic, setTopic] = useState(preset?.topic ?? TOPICS[0]);
   const [message, setMessage] = useState('');
   const [agree, setAgree] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -138,7 +158,7 @@ function ContactForm() {
         name: name.trim(),
         email: email.trim(),
         message: body,
-        source: 'contacts',
+        source: preset?.source ?? 'contacts',
       });
       setDone(r.ref);
     } catch (err) {

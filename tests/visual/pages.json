@@ -265,6 +265,36 @@
       "note": "Первый экран 6,3 %. Убраны ссылки «Чек» и «УПД»: сервер документов не отдаёт."
     },
     {
+      "id": "billing-pay",
+      "path": "/billing/pay",
+      "host": "main",
+      "design": null,
+      "auth": "lk",
+      "ported": false,
+      "maxDiff": null,
+      "note": "Макета нет: в дизайне оплата была попапом-заглушкой data-robokassa. Единственное место, зовущее POST /lk/billing/pay. Кнопка оплаты закрыта флагом BILLING_PAY_ENABLED (F20 §6)."
+    },
+    {
+      "id": "billing-success",
+      "path": "/billing/success",
+      "host": "main",
+      "design": null,
+      "auth": "lk",
+      "ported": false,
+      "maxDiff": null,
+      "note": "SuccessURL Robokassa, макета нет. Возврат ничего не подтверждает — статус опрашивается у GET /lk/billing/:public_id. Доступна и по /lk/billing/success."
+    },
+    {
+      "id": "billing-fail",
+      "path": "/billing/fail",
+      "host": "main",
+      "design": null,
+      "auth": "lk",
+      "ported": false,
+      "maxDiff": null,
+      "note": "FailURL Robokassa, макета нет. Ничего не опрашивает: платёж не прошёл, деньги не списаны."
+    },
+    {
       "id": "settings",
       "path": "/settings",
       "host": "main",

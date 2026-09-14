@@ -1,0 +1,19 @@
+User-Agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /epf
+Disallow: /my-integrations
+Disallow: /workflows
+Disallow: /billing
+Disallow: /settings
+Disallow: /support
+Disallow: /invite/
+Disallow: /reset-password
+Disallow: /verify-email
+Disallow: /lk/
+Disallow: /admin
+Disallow: /api/
+Disallow: /m/
+
+Host: https://corebridge.ru
+Sitemap: https://corebridge.ru/sitemap.xml

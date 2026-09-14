@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ApiError } from '@/lib/api/client';
-import { getDashboard, getPlans, startPayment } from '@/lib/api/lk';
+import { getDashboard, getPlans } from '@/lib/api/lk';
 import type { Dashboard, Plan } from '@/lib/contracts/lk';
+import type { BillingFlags } from '@/lib/billing/flags';
 
 type Period = 'monthly' | 'yearly';
 
@@ -20,19 +20,26 @@ type Period = 'monthly' | 'yearly';
  *   редактирования макета (`<td>\n</td>` шесть раз);
  * · **кнопки оплаты знают, вошёл ли человек.** В макете `data-robokassa` открывал
  *   попап-заглушку. Здесь: без сессии ведём на регистрацию (оплачивать нечего,
- *   тенанта ещё нет), с сессией — реальный `POST /lk/billing/pay`;
+ *   тенанта ещё нет), с сессией — на `/billing/pay`, где выбирается период
+ *   и промо. Сам `POST /lk/billing/pay` зовётся только оттуда: у публичной
+ *   страницы нет ни сессии гостя, ни выбора периода, а копия разбора семи
+ *   кодов ошибок неизбежно разошлась бы с оригиналом;
  * · **отметка «Текущий»** ставится по фактическому тарифу из `GET /lk/dashboard`,
  *   а не на пробном жёстко, как в макете. Наличие сессии приходит с сервера
  *   (cookie httpOnly), чтобы гость не получал заведомый 401 в консоли;
  * · **четыре ответа в FAQ переписаны** — в макете они обещали механики, которых
  *   на сервере нет. Каждый помечен рядом с текстом.
  */
-export function PricingBody({ hasSession }: { hasSession: boolean }) {
+export function PricingBody({
+  hasSession,
+  flags,
+}: {
+  hasSession: boolean;
+  flags: BillingFlags;
+}) {
   const [plans, setPlans] = useState<Plan[] | null>(null);
   const [period, setPeriod] = useState<Period>('monthly');
   const [me, setMe] = useState<Dashboard | null>(null);
-  const [busy, setBusy] = useState<string | null>(null);
-  const [note, setNote] = useState<string | null>(null);
 
   useEffect(() => {
     getPlans()
@@ -43,32 +50,6 @@ export function PricingBody({ hasSession }: { hasSession: boolean }) {
   }, [hasSession]);
 
   const discount = plans?.find((p) => p.price.discount_percent)?.price.discount_percent ?? null;
-
-  async function pay(plan: Plan) {
-    if (!me) return; // гостя ведём ссылкой на регистрацию, сюда он не попадёт
-    setBusy(plan.code);
-    setNote(null);
-    try {
-      const r = await startPayment(plan.code, period, plan.promo?.code);
-      if (r.payment_url) {
-        window.location.href = r.payment_url;
-        return;
-      }
-      setNote(
-        'Онлайн-оплата ещё подключается. Мы можем выставить счёт — напишите на info@corebridge.ru.',
-      );
-    } catch (e) {
-      setNote(
-        e instanceof ApiError && e.code === 'PROMO_ALREADY_USED'
-          ? 'Промо-период уже использован на этом аккаунте. Оформите тариф по обычной цене.'
-          : e instanceof ApiError && e.code === 'CUSTOM_PRICE_PLAN'
-            ? 'Этот тариф оформляется по счёту — напишите на info@corebridge.ru.'
-            : 'Онлайн-оплата ещё подключается. Напишите на info@corebridge.ru, оформим по счёту.',
-      );
-    } finally {
-      setBusy(null);
-    }
-  }
 
   return (
     <>
@@ -110,12 +91,6 @@ export function PricingBody({ hasSession }: { hasSession: boolean }) {
 
       <section className="plans">
         <div className="container">
-          {note && (
-            <div className="lk-error" style={{ maxWidth: 720, margin: '0 auto 20px' }}>
-              {note}
-            </div>
-          )}
-
           {plans === null ? (
             <p className="text-center text-muted">Загружаем тарифы…</p>
           ) : plans.length === 0 ? (
@@ -132,8 +107,7 @@ export function PricingBody({ hasSession }: { hasSession: boolean }) {
                   period={period}
                   isCurrent={me?.plan === p.code}
                   loggedIn={me !== null}
-                  busy={busy === p.code}
-                  onPay={() => pay(p)}
+                  flags={flags}
                 />
               ))}
             </div>
@@ -165,15 +139,13 @@ function PlanCard({
   period,
   isCurrent,
   loggedIn,
-  busy,
-  onPay,
+  flags,
 }: {
   plan: Plan;
   period: Period;
   isCurrent: boolean;
   loggedIn: boolean;
-  busy: boolean;
-  onPay: () => void;
+  flags: BillingFlags;
 }) {
   const l = plan.limits;
   const highlight = plan.promo != null;
@@ -244,44 +216,43 @@ function PlanCard({
         )}
       </ul>
 
-      <PlanAction
-        plan={plan}
-        isCurrent={isCurrent}
-        loggedIn={loggedIn}
-        busy={busy}
-        onPay={onPay}
-      />
+      <PlanAction plan={plan} period={period} isCurrent={isCurrent} loggedIn={loggedIn} flags={flags} />
     </div>
   );
 }
 
 /**
- * Кнопка карточки. Четыре состояния, и это не украшательство: без сессии платить
- * нечем — тенанта ещё не существует, сервер ответит 401. Гостя ведём в регистрацию.
+ * Кнопка карточки. Пять состояний, и это не украшательство:
+ *
+ * · **гость** — платить нечем, тенанта ещё нет, сервер ответит 401. В регистрацию;
+ * · **энтерпрайз** — цена по запросу, оплата запрещена (`400 CUSTOM_PRICE_PLAN`).
+ *   Ведём на форму контактов, а не в почтовый клиент: заявка попадает в обращения
+ *   с `source: "billing"` и не теряется (F20 §7.6);
+ * · **свой тариф** — чип без действия;
+ * · **оплата закрыта флагом** — честное «оформим по счёту» вместо кнопки,
+ *   которая до этапа P1 сожжёт клиенту остаток оплаченного периода (F20 §6);
+ * · **оплата открыта** — на `/billing/pay` с выбранным тарифом и периодом.
  */
 function PlanAction({
   plan,
+  period,
   isCurrent,
   loggedIn,
-  busy,
-  onPay,
+  flags,
 }: {
   plan: Plan;
+  period: Period;
   isCurrent: boolean;
   loggedIn: boolean;
-  busy: boolean;
-  onPay: () => void;
+  flags: BillingFlags;
 }) {
   if (isCurrent) return <div className="cur-chip">Текущий тариф</div>;
 
   if (plan.is_custom_price) {
     return (
-      <a
-        href={`mailto:${plan.contact_email ?? 'info@corebridge.ru'}?subject=${encodeURIComponent('Тариф «Энтерпрайз»')}`}
-        className="btn btn-outline btn-block"
-      >
+      <Link href="/contacts?topic=enterprise" className="btn btn-outline btn-block">
         Обсудить
-      </a>
+      </Link>
     );
   }
 
@@ -304,14 +275,23 @@ function PlanAction({
     );
   }
 
+  if (!flags.pay) {
+    return (
+      <Link href="/contacts?topic=billing" className="btn btn-outline btn-block">
+        Запросить счёт
+      </Link>
+    );
+  }
+
   return (
-    <button
+    <Link
+      href={`/billing/pay?plan=${encodeURIComponent(plan.code)}&period=${period}${
+        plan.promo ? `&promo=${encodeURIComponent(plan.promo.code)}` : ''
+      }`}
       className={`btn btn-block ${plan.promo ? 'btn-primary' : 'btn-outline'}`}
-      disabled={busy}
-      onClick={onPay}
     >
-      {busy ? 'Открываем оплату…' : plan.promo?.cta_label || 'Оплатить'}
-    </button>
+      {plan.promo?.cta_label || 'Оплатить'}
+    </Link>
   );
 }
 

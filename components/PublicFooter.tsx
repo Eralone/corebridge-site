@@ -27,6 +27,7 @@ export function PublicFooter() {
             <Link href="/integrations">Интеграции</Link>
             <Link href="/pricing">Тарифы</Link>
             <Link href="/docs">Документация</Link>
+            <Link href="/razbory">Разборы</Link>
           </div>
           <div>
             <h5>Компания</h5>

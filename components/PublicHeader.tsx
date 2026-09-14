@@ -17,7 +17,14 @@ import { isSignedIn } from '@/lib/auth/session-probe';
  * Добавлено: до 900px меню и кнопки уезжают в раскрывающуюся панель,
  * в строке остаются логотип и кнопка-гамбургер. Вид на десктопе не менялся.
  */
-export type PublicNavId = 'features' | 'integrations' | 'pricing' | 'docs' | 'about';
+/**
+ * ⚠️ `razbory` есть в типе, но нет в ITEMS намеренно. Пять пунктов меню стоят
+ * в одну строку без переноса, как в эталоне; шестой ломает раскладку шапки
+ * и заново создаёт горизонтальную прокрутку на 820px. Раздел «Разборы»
+ * доступен из подвала и со страницы документации.
+ */
+export type PublicNavId =
+  | 'features' | 'integrations' | 'pricing' | 'docs' | 'about' | 'razbory';
 
 const ITEMS: { id: PublicNavId; label: string; href: string }[] = [
   { id: 'features', label: 'Возможности', href: '/#features' },
