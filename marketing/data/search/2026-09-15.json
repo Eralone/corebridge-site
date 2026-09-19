@@ -1,0 +1,67 @@
+{
+  "date_from": "2026-09-09",
+  "date_to": "2026-09-15",
+  "queries": [
+    {
+      "query_id": "7a79c3895fb1b197",
+      "query_text": "ut11_unf.xml",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.5,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "93ffa0535176c9ce",
+      "query_text": "как сгенерировать и проверить bearer token на 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "b6492fd09bf0074e",
+      "query_text": "company name: corebridge solutions. type: service-oriented — b2b it consulting and custom automation software for logistics. year 1 team: 10 people total. structure: 2 partners (cto and ceo), 5 developers (1 senior, 2 middle, 2 junior), 1 qa, 1 designer, 1 project/account manager. rationale: faster revenue, lower capital needs. flat structure fits 2 partners. growth target: 15–18 in year 2.",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 2.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "fa255a73ba69d064",
+      "query_text": "как заполнить номер гтд на озон",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "23b043a8febaa9aa",
+      "query_text": "как установить epf модуль унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 3.0,
+        "AVG_CLICK_POSITION": null
+      }
+    }
+  ],
+  "queries_count": 5,
+  "in_search_history": [
+    {
+      "date": "2026-09-09T10:00:06.709+03:00",
+      "value": 44
+    },
+    {
+      "date": "2026-09-10T10:10:02.445+03:00",
+      "value": 44
+    }
+  ]
+}

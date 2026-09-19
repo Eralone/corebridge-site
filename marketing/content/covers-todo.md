@@ -1,76 +1,66 @@
-# Промты для обложек: две страницы про маркировку
+# Промты для обложек: эквайринг и коды маркировки
 
-✅ **Сделано 16.09.** Обе обложки на месте, страницы выложены.
-Файл оставлен как образец промта для следующих статей.
+Формат тот же: 1200x630, без надписей. Формат файла любой, PNG или JPEG:
+сборщик читает оба и сам ужимает до 30-50 КБ.
 
-⚠️ Формат исходника значения не имеет: `sharp` читает и PNG, и JPEG,
-на выходе всегда `.jpg`. Вторая обложка пришла в JPEG, первая в PNG
-на 3,8 МБ - обе ужались до 39 и 47 КБ.
-
-Формат тот же, что и раньше: 1200x630, без надписей. Кириллицу генераторы
-рисуют криво, поэтому текст в промтах запрещён явно.
-
-Обе картинки должны отличаться от уже существующей обложки про маркировку
-(ночной стол с лампой и стопкой этикеток) — она стоит на статье
-«Вечера, потраченные на коды маркировки».
+Обе картинки должны отличаться от уже стоящих в разделе: конвейеры, склады,
+цепочка с пунктиром, кольцо с галочкой, ночной стол с этикетками.
 
 ---
 
-## 1. Честный знак в 1С:Бухгалтерия 3.0
+## 1. Поступление по эквайрингу
 
-**Смысл, который надо показать:** цепочка из двух шагов, где второй шаг
-не выполняется. Коды в документ попадают, вывод из оборота не создаётся.
+**Смысл:** сумма на входе больше, чем на выходе. Часть удерживается
+по дороге, и приходит пачкой, а не по одному.
 
 **Промт (английский, для Midjourney / DALL-E / Kandinsky):**
 
 ```
-Flat isometric illustration, a two step process on a clean surface: on the
-left a document sheet with an abstract barcode pattern resting in a solid
-tray, connected by a short arrow to a second tray on the right which is empty
-and drawn only as a dashed outline, the arrow between them faded and
-interrupted in the middle, muted corporate palette of deep blue and white with
-one warm amber accent on the first tray, clean vector style, soft even
-lighting, no text, no letters, no numbers, no logos, generous negative space
-at the top, 1200x630 aspect ratio
+Flat isometric illustration, several coins of equal size entering a funnel
+on the left side, a single smaller stack of coins coming out on the right,
+one coin visibly diverted upward into a small separate tray above the funnel,
+muted corporate palette of deep blue and white with one warm amber accent
+on the diverted coin, clean vector style, soft even lighting, no text,
+no letters, no numbers, no logos, generous negative space at the top,
+1200x630 aspect ratio
 ```
 
-**Что должно получиться:** слева документ со штрихкодом в лотке, справа
-пустой лоток пунктиром, стрелка между ними прерывается. Читается без подписи:
-первый шаг есть, второго нет.
+**Что должно получиться:** монеты входят в воронку, выходит стопка поменьше,
+одна монета ушла вбок в отдельный лоток. Читается без подписи: часть суммы
+удержана по дороге.
 
-**Сохранить как:** `marketing/content/drafts/2026-09-16-chestny-znak-bp.png`
+**Сохранить как:** `marketing/content/drafts/2026-09-19-ekvayring.png`
 
 ---
 
-## 2. Честный знак в 1С:УНФ
+## 2. Как коды маркировки попадают в 1С
 
-**Смысл:** замкнутый цикл. Всё проходит до конца, без ручных шагов.
+**Смысл:** коды приходят снаружи, а не рождаются внутри. Три источника,
+один приемник.
 
 **Промт (английский):**
 
 ```
-Flat isometric illustration, a closed circular loop made of three connected
-stages: a cardboard box, a document sheet with an abstract barcode pattern,
-and a simple check mark badge, arrows running continuously between all three
-forming an unbroken ring, muted corporate palette of deep blue and white with
-one warm amber accent on the check mark, clean vector style, soft even
-lighting, no text, no letters, no numbers, no logos, generous negative space
-at the top, 1200x630 aspect ratio
+Flat isometric illustration, three separate small tags with abstract barcode
+patterns arriving along three different paths from the left, converging into
+a single document sheet on the right, the paths drawn as thin clean lines
+of different lengths, muted corporate palette of deep blue and white with one
+warm amber accent on the document, clean vector style, soft even lighting,
+no text, no letters, no numbers, no logos, generous negative space at the top,
+1200x630 aspect ratio
 ```
 
-**Что должно получиться:** коробка, документ со штрихкодом и галочка,
-соединённые стрелками в непрерывное кольцо. Читается как «цикл закрывается».
+**Что должно получиться:** три этикетки со штрихкодами по трем разным путям
+сходятся в один документ. Читается как «коды приходят извне, из разных мест».
 
-**Сохранить как:** `marketing/content/drafts/2026-09-16-chestny-znak-unf.png`
+**Сохранить как:** `marketing/content/drafts/2026-09-19-kody-istochniki.png`
 
 ---
 
 ## После генерации
 
-Положи файлы в `marketing/content/drafts/` под указанными именами и скажи —
-я пропишу их в исходники статей, пересоберу и выложу. Пересборка занимает
-полминуты, обложки ужимаются автоматически до 24–75 КБ.
+Положи файлы в `marketing/content/drafts/` под этими именами и скажи.
+Пропишу в исходники, пересоберу и выложу, это полминуты.
 
-⚠️ Если генератор дорисовал текст или цифры — перегенерируй, а не замазывай.
-Кривые буквы на обложке выглядят хуже, чем отсутствие обложки: сейчас
-страницы стоят без картинок, и это нормально.
+⚠️ Дорисованный текст или цифры — перегенерировать, а не замазывать.
+Страницы уже работают без обложек, так что спешки нет.

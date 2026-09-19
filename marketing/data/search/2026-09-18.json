@@ -1,0 +1,33 @@
+{
+  "date_from": "2026-09-12",
+  "date_to": "2026-09-18",
+  "queries": [
+    {
+      "query_id": "7a79c3895fb1b197",
+      "query_text": "ut11_unf.xml",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.5,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "93ffa0535176c9ce",
+      "query_text": "как сгенерировать и проверить bearer token на 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    }
+  ],
+  "queries_count": 2,
+  "in_search_history": [
+    {
+      "date": "2026-09-15T10:00:10.113+03:00",
+      "value": 40
+    }
+  ]
+}
