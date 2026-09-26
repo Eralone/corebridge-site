@@ -114,7 +114,13 @@ ASSET_RE = re.compile(r"\.(css|js|mjs|woff2?|ttf|png|jpe?g|svg|ico|webp|map|xml|
 # Пути, принадлежащие не сайту: API кабинета, API типа 1, выдача файлов, админка
 # и приём событий своего счётчика (`/m/e` — он же попадал в просмотры страниц
 # и добавлял по визиту на каждый просмотр).
-NOT_SITE_RE = re.compile(r"^/(lk|api|cdn|admin|internal|m|_next/(static|image))/")
+NOT_SITE_RE = re.compile(r"^/(lk|api|cdn|admin|internal|m|sub|_next/(static|image))/")
+
+# ⚠️ Логи всех vhost'ов лежат в одном файле без поля $host, поэтому запросы
+# к соседним поддоменам отличаются только по пути. С 25.09 на vpn.corebridge.ru
+# работает панель VPN: её эндпоинты дают сотни ответов 500 в сутки, и сторож
+# принимал их за аварию нашего сайта. Пути панели отсекаем явно.
+FOREIGN_RE = re.compile(r"^/(api/wireguard|sub/|panel/|xui/|app/api/)", re.I)
 
 
 def read_nginx(days: int = 2) -> list[dict]:
@@ -148,8 +154,11 @@ def read_nginx(days: int = 2) -> list[dict]:
 
 
 def is_site_request(row: dict) -> bool:
-    """Запрос к страницам сайта, а не к API, файлам и админке."""
-    return not NOT_SITE_RE.match(row["path"]) and not row["is_asset"]
+    """Запрос к страницам сайта, а не к API, файлам, админке и соседним
+    поддоменам вроде панели VPN."""
+    return (not NOT_SITE_RE.match(row["path"])
+            and not FOREIGN_RE.match(row["path"])
+            and not row["is_asset"])
 
 
 def is_human(row: dict) -> bool:

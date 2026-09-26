@@ -1,0 +1,1217 @@
+{
+  "date_from": "2026-09-17",
+  "date_to": "2026-09-23",
+  "queries": [
+    {
+      "query_id": "b2569c578635cf72",
+      "query_text": "1с унф вывод из оборота в документе не указ не один код индефикации",
+      "indicators": {
+        "TOTAL_SHOWS": 3.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 8.666666666666666,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "86835d92c56176f3",
+      "query_text": "унф в расходной накладной маркировка пишет, что поле серия не заполнена, хотя она не используется",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "95c3d6e56ac69357",
+      "query_text": "вывод из оборота и мп в 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "a868553e87cce892",
+      "query_text": "как сделать отгрузку в унф с честным знаком",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "d453a7472a404930",
+      "query_text": "маркировка 1с бухгалтерия 3.0",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.5,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "eb29766c52d244f9",
+      "query_text": "1с унф 3.0 загрузить джитины из честного знака",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 7.5,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "23b64b16242174ac",
+      "query_text": "как в 1с унф проверить обмен с честным знаком",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "2fe24f5b8a04b886",
+      "query_text": "1с унф как проверять совпадение продукции по честному знаку",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 8.5,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "48bdb4eb7f337b2e",
+      "query_text": "вывод из оборота честный знак 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 5.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "4ee413731c893d6b",
+      "query_text": "честный знак в 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.5,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "5798eb5219fd47b9",
+      "query_text": "как вывести из оборота маркированный товар в 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 3.5,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "58b86576e655560f",
+      "query_text": "унф фреш как собрать коды маркировки в набор",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 16.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "6996ea0bb74b4885",
+      "query_text": "продажа организации с выводом марок из честного знака 1с бухгалтерия",
+      "indicators": {
+        "TOTAL_SHOWS": 2.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.5,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "8217d79db8b83010",
+      "query_text": "унф списать на себя товар с честным знаком",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 4.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "82bb7df5fda3de9d",
+      "query_text": "автоматический вывод кодов из оборота в честном знаке 1с расширение инфостарт",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "834c320fa92ae573",
+      "query_text": "как в 1с унф при выводе из оборота подобрать вручную марку товара",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 4.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "872decd23667b5e4",
+      "query_text": "как в унф 3.0.13 проверить связь с оисм",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 4.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "88e02eef04756470",
+      "query_text": "1с унф вывод из оборота парфюм",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 1.0,
+        "AVG_SHOW_POSITION": 2.0,
+        "AVG_CLICK_POSITION": 2.0
+      }
+    },
+    {
+      "query_id": "895baff35749aa84",
+      "query_text": "проверка марок в унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "89ee8dce87bfbae0",
+      "query_text": "где в унф хранится пул кодов маркировки",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "8dd8e22162e8e263",
+      "query_text": "как передавать коды маркировки в унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "92539fe2bdf34f24",
+      "query_text": "будет ли работать блок маркировки товаров в 1с унф в период эксперимента",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "94179625fdb1e406",
+      "query_text": "долго происходит вывод из оборота через 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "96559ee563d6dcb6",
+      "query_text": "ордерная схема в унф обмен с 1с:бп",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "9ed64ba0fcd4f5a5",
+      "query_text": "почему 1с унф не передает параметр paymenttype в честный знак",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 7.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "9f05682b84084c92",
+      "query_text": "выгрузка из 1с в гугл таблицы",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 7.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "a048b4130097c54a",
+      "query_text": "1с унф вывод из оборота парфюр",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 2.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "a0d70288e18455ae",
+      "query_text": "унф 3.0 документ вывод из оборота порядок оформления",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 1.0,
+        "AVG_SHOW_POSITION": 3.0,
+        "AVG_CLICK_POSITION": 3.0
+      }
+    },
+    {
+      "query_id": "a49cc35cd0f474bb",
+      "query_text": "как в лк озон добавить гтд при отгрузке импортного товара",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 4.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "aa821746ee74ec71",
+      "query_text": "1с унф честный знак",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 14.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "abe4b64f9eeeb975",
+      "query_text": "как работает честный знак в унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 14.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "ac1bdd8e34c13750",
+      "query_text": "1с бп 3.0 вывод маркированного товара на собственные нужды",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "ad62ebb27094231f",
+      "query_text": "как в унф провести честный знак",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "af8dc3272afd1085",
+      "query_text": "ут 11.5 как задать контрагенту причину вывода из оборота по умолчанию",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 6.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "afca80cb08c65c5b",
+      "query_text": "формирование маркированных наборов в 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "b2c57ce17d64bc43",
+      "query_text": "1с унф ввод в оборот кодов маркировки",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "b3192d1495e5c13f",
+      "query_text": "как в унф посмотреть что было выбытие с оборота честный знак",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 2.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "b34be33c0f57d7a6",
+      "query_text": "маркировка честный знак 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "b42cc99f6ed9fb3f",
+      "query_text": "вывод из оборота ис мп 1с бухгалтерия",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 8.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "b8a7117fc7cbe136",
+      "query_text": "унф пул кодов маркировки",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "be74823fafdb7332",
+      "query_text": "какие сведения необходимо проверить у клиента до настройки работы с маркированным товаром в унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "c153c2b9dbcf1469",
+      "query_text": "настройка честного знака в унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 8.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "c8e927488e1f6d87",
+      "query_text": "как вводить в оборот маркировку при поступлении товаров из китая 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "ccdfc23811f8167b",
+      "query_text": "честный знак в унф 1.6",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "cdc05ce2d8bedbfa",
+      "query_text": "1с унф переключение режим работы с маркировкой",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "d04dea8b93716c04",
+      "query_text": "где в 1с бухгалтерия посмотреть реестр вывод из оборота",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "d1a2c49262f5c8a0",
+      "query_text": "как как в унф 3.0 посмотреть содержимое входящей накладной с маркированным товаром",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 5.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "d47a638683b7147b",
+      "query_text": "1с бухгалтерия вывод из оборота ис мп",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "d9bdce5a5df338d3",
+      "query_text": "отгрузочные документы в 1с сделали, а по факту товар не забрали",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 14.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "dc853889034ef899",
+      "query_text": "отгрузка товара с fbs как оформить в 1с erp?",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 21.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "e040788faa4bff79",
+      "query_text": "как достать коды из пула маркировки в 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 6.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "e4109fd9fbfcc5a8",
+      "query_text": "маркировка в 1с унф юик",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "e46215f1374dcf38",
+      "query_text": "1с бухгалтерия релиз 3.0.201 вывод из оборота ис мп",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 5.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "e541bf23de34da87",
+      "query_text": "1с унф где находится документ маркировка товаров ис мп",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "e572be3eccf67dfd",
+      "query_text": "как выровнять сумму оплат в 1 с по терминалу с терминалом",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 7.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "ea1b7c528217594e",
+      "query_text": "1с унф честный знак юик",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 2.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "ebb5c1f798c3b725",
+      "query_text": "маркировка товаров в 1с бухгалтерия 3.0",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 14.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "ee3c6b8b2d8dbe7d",
+      "query_text": "как в 1с унф узнать сколько есть кодов маркировки",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "f0f3157b481598ca",
+      "query_text": "какими документами можно вывести маркировку в унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "f2054876cc433410",
+      "query_text": "1с как настроить чз в расходной накладной",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 5.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "f3dfbcd4a7dabd9a",
+      "query_text": "унф списание в честный знак",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 7.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "f4b05290a6560b01",
+      "query_text": "честный знак подключение у унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 8.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "f78abbb528d478b9",
+      "query_text": "унф инн владельца маркировка",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "f835a148325b9db2",
+      "query_text": "как в 1с унф проверить коды честного знака",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 6.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "0416481dfbd99e64",
+      "query_text": "как загрузить коды маркировки из личного кабинета честного знака в 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 3.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "058c86701807131c",
+      "query_text": "унф 1с редакция 3 как сделать списание маркировочного товара",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "08c73a3de02747ee",
+      "query_text": "вывод из оборота честный знактрестораны автоматизация с 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "091bb5c409d04181",
+      "query_text": "настройка честного знака в бп 3.0",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "098732f023392a3c",
+      "query_text": "если в 1 с сумма оплаты по термилу больше чем на терминале как исправить",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 5.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "0bca986408f211a2",
+      "query_text": "как вывести из оборота маркированный товар в честном знаке вручную в 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 6.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "0e2e293da29c970c",
+      "query_text": "печать cvs кодов маркировки из честного знака унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 8.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "0f2ac6b440af3231",
+      "query_text": "диджитал спасес маркировка товаров в 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 7.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "13801930fd9059ac",
+      "query_text": "как в бухгалтерии 3.0 создать формирование упаковки в честном знаке",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 8.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "138306fd44bcac08",
+      "query_text": "1с бп как создать реализацию маркированного товара в 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "146c798d1e50dc90",
+      "query_text": "вывод из оборота ис мп в 1с торговля где прописывается сертификат для этой операции",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "159231556f2c7620",
+      "query_text": "1с бп как отменить вывод из оборота",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "18dc52a91e4d00a8",
+      "query_text": "1с унф маркировка честный знак",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "19b1c2fc32da6178",
+      "query_text": "как в унф вернуть аннулированный вывод товара из оборота",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "1dfd7afcd42aad10",
+      "query_text": "комиссия экв банка не берется,а берется другая сумма к",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 7.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "2365c38ac98e7a49",
+      "query_text": "как коды маркировки скопировать в 1с унф из прихода в расходную накладную",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 3.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "2724f590d8265958",
+      "query_text": "1c унф не могу в ручную выбрать маркировку",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "28f284bcfce4ec4a",
+      "query_text": "1с бп 3.0 открыть настройки честный знак",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "29c704eef7d65864",
+      "query_text": "где посмотреть id честного знака в 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "2af0ed9c068dda6f",
+      "query_text": "выводит ли заказ покупателя маркировку в унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "2c0031d365ab8a2e",
+      "query_text": "как сделать списание в честном знаке через 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 8.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "2e3ba8a2d7b08f68",
+      "query_text": "где посмотреть куаркод 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "3226ba3535e90eb0",
+      "query_text": "1с унф пришли неверные коды маркировки по",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "344418f1e9d59279",
+      "query_text": "1c унф не могу в ручную подобрать маркировку",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "353dd86fd3f4dbaf",
+      "query_text": "реализация с выводом из оборота в 1с бух 3",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 3.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "371014d927a59617",
+      "query_text": "ут 11.5 как задать контрагенту причину вывода из оборота",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 7.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "3996e1cea28ee018",
+      "query_text": "dsdjl xtcnys[ pyfrjd bp j,hfotybz 1c ,e[ufknthbz",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 4.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "39b7a370fefb3418",
+      "query_text": "1с унф и честный знак",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "3cf2e71005e72e6c",
+      "query_text": "1с унф настройки очистки кодов маркировки",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "43e5dfed945b699c",
+      "query_text": "как загрузить коды маркировки из честного знака в 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 7.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "44736d7a3ec67382",
+      "query_text": "где посмотреть в 1с код для вывода из оборота в честном знаке",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 7.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "44877a3e52343242",
+      "query_text": "честный знак 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "476b493172507c4d",
+      "query_text": "где в накладной в унф gtin",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "49be8dbbd126aa84",
+      "query_text": "вывод из оборота ис мп 1с бухгалтерия getmark",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 5.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "4a6f1de32d3a5733",
+      "query_text": "как в 1с вывести список по которым есть оплата но нет отгрузки",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "51a3f76a8745e5fd",
+      "query_text": "выбытие маркируемой продукции в 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "5269771141ac138d",
+      "query_text": "вывод из оборота кода маркировки в унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 3.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "56435c3131cc322b",
+      "query_text": "унф как отключить владельца маркировки",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "588b5958c7ce2775",
+      "query_text": "расширение для унф 3.0, которое позволяет сканировать коды маркировки в заказ покупателя и переносить их в расходную накладную.",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "5992dbf69a008d3b",
+      "query_text": "унф маркировка честный знак",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "5c55c7697c7c81b8",
+      "query_text": "в 1с унф списание товара для нужд организации честный знак",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 6.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "5cbf2288e812fd10",
+      "query_text": "выгрузка в гугл таблицы из 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 7.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "5e238d8316152300",
+      "query_text": "как провести честный знак через 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 14.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "60989010fb6bf6ff",
+      "query_text": "выгрузка остатков из 1с в гугл таблицу",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 6.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "6220afbb3d2907de",
+      "query_text": "маркировка унф 1с",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "640ad0f30248654f",
+      "query_text": "маркировка в бухгалтерии 3.0",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "676ccdb8bf5ba2b2",
+      "query_text": "как в 1с провести поступления по сбп",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 10.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "6ec9b165ad8acdec",
+      "query_text": "как в унф найти код маркировки в чеке",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "70d5dd94b6aefcc4",
+      "query_text": "распечатка марки честного знака из 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 13.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "72580450f4813b8f",
+      "query_text": "где в 1с унф статусы контрагентов ис мп",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "73dc98044d69e468",
+      "query_text": "как настроить в унф интеграцию с ис мп честный знак пошагово",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 9.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "7440a43bae843f55",
+      "query_text": "как в унф сделать честный знак на коробку",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "74d1d38e84d9bc07",
+      "query_text": "отчет вывод из оборота в унф не подтягивает количество товара",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 5.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "75be099d0e7d3ea5",
+      "query_text": "1с унф фреш как собрать коды маркировки в набор",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 20.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "7994498317713d5d",
+      "query_text": "как в 1с управление нашей фирмой найти значок честного знака",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 11.0,
+        "AVG_CLICK_POSITION": null
+      }
+    },
+    {
+      "query_id": "7e6437704fe2a66e",
+      "query_text": "как выводить из оборота честный знак при продаже на озон в 1с унф",
+      "indicators": {
+        "TOTAL_SHOWS": 1.0,
+        "TOTAL_CLICKS": 0.0,
+        "AVG_SHOW_POSITION": 12.0,
+        "AVG_CLICK_POSITION": null
+      }
+    }
+  ],
+  "queries_count": 120,
+  "in_search_history": [
+    {
+      "date": "2026-09-19T10:00:11.592+03:00",
+      "value": 40
+    },
+    {
+      "date": "2026-09-20T10:00:02.413+03:00",
+      "value": 50
+    }
+  ]
+}

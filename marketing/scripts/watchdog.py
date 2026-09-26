@@ -103,7 +103,10 @@ def check_errors(rows: list[dict]) -> list[str]:
     hour_ago = datetime.now(timezone.utc) - timedelta(hours=1)
     recent = [r for r in rows if r["ts"] >= hour_ago and m.is_site_request(r)]
 
-    fives = [r for r in recent if r["status"] >= 500]
+    # Чужие 5xx сюда не считаем: с 25.09 панель VPN на соседнем поддомене
+    # отдаёт сотни ответов 500 в сутки на своих эндпоинтах, а лог у vhost'ов
+    # общий. За трое суток это дало 3124 ответа 500 и одну ложную тревогу.
+    fives = [r for r in recent if r["status"] >= 500 and m.is_site_request(r)]
     if fives:
         paths = ", ".join(sorted({r["path"][:60] for r in fives})[:5])
         return [f"🔴 {len(fives)} ответов 5xx за час: {paths}"]
